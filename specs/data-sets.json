@@ -1,0 +1,1661 @@
+{
+  "info": {
+    "title": "data-sets",
+    "version": ""
+  },
+  "paths": {
+    "/v1/data-sets": {
+      "post": {
+        "tags": [
+          "data-set"
+        ],
+        "summary": "Save new data set",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSet"
+                }
+              }
+            },
+            "description": "Created new data set successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "operationId": "saveDataSet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSet"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "data-set"
+        ],
+        "summary": "Batch delete data sets.",
+        "responses": {
+          "204": {
+            "description": "Deleted data sets."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "operationId": "batchDeleteDataSets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchIdDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-sets/{data-set-id}": {
+      "get": {
+        "tags": [
+          "data-set"
+        ],
+        "summary": "Get data set by ID.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSet"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "data-set-id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "projections",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "required": false,
+            "description": "Comma-separated fields to return in the response."
+          }
+        ],
+        "operationId": "getDataSet",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "data-set"
+        ],
+        "summary": "Patch data set.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSet"
+                }
+              }
+            },
+            "description": "Patched data set successfully."
+          },
+          "204": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSet"
+                }
+              }
+            },
+            "description": "Patched data set successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "data-set-id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "patchDataSet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/JsonPatch"
+                },
+                "description": "Array of JSON patch documents as defined by RFC 6902."
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "put": {
+        "tags": [
+          "data-set"
+        ],
+        "summary": "Update data set.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSet"
+                }
+              }
+            },
+            "description": "Updated data set successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "data-set-id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "updateDataSet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSet"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-sets/{data-set-id}/profiles": {
+      "get": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Get profile for the given dataset and connection Id pair, if the profile already exists in the system. Profile returned can be either latest or Stale one based on when it was computed.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageDataSetProfile"
+                }
+              }
+            },
+            "description": "Return profiles of data set."
+          },
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageDataSetProfile"
+                }
+              }
+            },
+            "description": "The profile is currently running."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "data-set-id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "dataConnectionIds",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Comma-separated data connection IDs."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100
+            },
+            "required": false,
+            "description": "Page size limit."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "projections",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "required": false,
+            "description": "Comma-separated fields to return in the response."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "required": false
+          }
+        ],
+        "operationId": "getDataSetProfiles",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/build"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "BatchIdDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "BinnedFrequency": {
+        "type": "object",
+        "properties": {
+          "binEdge": {
+            "type": "number",
+            "format": "double"
+          },
+          "frequency": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Classification": {
+        "type": "object",
+        "properties": {
+          "pii": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "sensitive": {
+            "type": "boolean"
+          },
+          "obfuscation": {
+            "type": "string"
+          }
+        }
+      },
+      "DataAssetInfo": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "dataStoreInfo": {
+            "$ref": "#/components/schemas/DataStoreInfo"
+          }
+        }
+      },
+      "DataField": {
+        "type": "object",
+        "required": [
+          "dataType",
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "An array of system tags"
+            },
+            "description": "An array of system tags",
+            "uniqueItems": true
+          },
+          "alias": {
+            "type": "string"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "orphan": {
+            "type": "boolean"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/FieldDataType"
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "userTags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserTag"
+            },
+            "description": "An array of user-supplied tags",
+            "uniqueItems": true
+          },
+          "encrypted": {
+            "type": "boolean"
+          },
+          "sensitive": {
+            "type": "boolean"
+          },
+          "primaryKey": {
+            "type": "boolean"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "ordinalPositionInKey": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "DataSet": {
+        "type": "object",
+        "title": "Data Set",
+        "required": [
+          "dataAssetInfo",
+          "qri",
+          "secureQri",
+          "technicalName"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Only required when updating the resource. Must be null for new resources."
+          },
+          "qri": {
+            "type": "string",
+            "format": "qdf:<store-type>:<tenant-guid>:<<uid@/sid@>user/space guid>:<path-to-file>",
+            "maxLength": 1024,
+            "minLength": 8,
+            "description": "NOTE: this will be deprecated after migration to secureQri. Required user defined field. All the parts in the format must be separated by ':'. The first part denotes the resourceType, followed by dataStoreType and tenant guid. The spaceGuid or userGuid is to be populated based on if the dataset is in shared or private space and finally the full file name. This field is auto populated for the dataSet generated for qix-datafiles."
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "type": {
+            "type": "string"
+          },
+          "schema": {
+            "$ref": "#/components/schemas/Schema"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "The value is automatically set by the application."
+          },
+          "spaceId": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Only required when updating the resource. Must be null for new resources."
+          },
+          "tenantId": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The value is automatically set by the application. User defined value is ignored."
+          },
+          "createdBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The value is automatically set by the application. User defined value is ignored."
+          },
+          "secureQri": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "description": "A Map of name-value pairs.",
+            "additionalProperties": {
+              "type": "object",
+              "description": "A Map of name-value pairs."
+            }
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The value is automatically set by the application. User defined value is ignored."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 0
+          },
+          "operational": {
+            "$ref": "#/components/schemas/Operational"
+          },
+          "dataAssetInfo": {
+            "$ref": "#/components/schemas/DataAssetInfo"
+          },
+          "technicalName": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The value is automatically set by the application. User defined value is ignored."
+          },
+          "appTypeOverride": {
+            "type": "string",
+            "description": "Optional override of DataAsset appType."
+          },
+          "lastModifiedTime": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The value is automatically set by the application. User defined value is ignored."
+          },
+          "additionalSchemas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Schema"
+            },
+            "description": "Optional field to specify additional schemas for files where multiple tables or sheets are available. User must define primary schema in 'schema' attribute and rest of the sheets/ tables can be defined using this field. This field is not populated for the dataSets with single schema"
+          },
+          "technicalDescription": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 0
+          },
+          "createdByConnectionId": {
+            "type": "string",
+            "description": "The connectionId that created the Dataset. Optional."
+          }
+        }
+      },
+      "DataSetProfile": {
+        "type": "object",
+        "title": "Data Set Profile",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/ProfileMetadata"
+          },
+          "samples": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableSample"
+            },
+            "readOnly": true
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableProfile"
+            },
+            "readOnly": true
+          }
+        }
+      },
+      "DataStoreInfo": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "FieldDataType": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "DATE",
+              "TIME",
+              "DATETIME",
+              "TIMESTAMP",
+              "STRING",
+              "DOUBLE",
+              "DECIMAL",
+              "INTEGER",
+              "BOOLEAN",
+              "BINARY",
+              "CUSTOM"
+            ],
+            "type": "string",
+            "description": "Each datatype may vary in terms of required properties. Example: Datatype DECIMAL requires two mandatory properties to be defined - precision and scale, each one accepts integer value. All other datatypes does not have any required properties."
+          },
+          "properties": {
+            "type": "object",
+            "description": "The properties map key is string and the value is of type object. Please note, Datatype DECIMAL requires two mandatory properties to be defined; these properties must be named: precision and scale, each of these property accepts integer value.  All other datatypes does not require any manadatory properties to be defined.",
+            "additionalProperties": {
+              "type": "object",
+              "description": "The properties map key is string and the value is of type object. Please note, Datatype DECIMAL requires two mandatory properties to be defined; these properties must be named: precision and scale, each of these property accepts integer value.  All other datatypes does not require any manadatory properties to be defined."
+            }
+          },
+          "originalType": {
+            "type": "string"
+          }
+        }
+      },
+      "FieldProfile": {
+        "type": "object",
+        "title": "Field Profile",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "median": {
+            "type": "number",
+            "format": "double"
+          },
+          "average": {
+            "type": "number",
+            "format": "double"
+          },
+          "dataType": {
+            "enum": [
+              "DATE",
+              "TIME",
+              "DATETIME",
+              "TIMESTAMP",
+              "STRING",
+              "DOUBLE",
+              "DECIMAL",
+              "INTEGER",
+              "BOOLEAN",
+              "BINARY",
+              "CUSTOM"
+            ],
+            "type": "string"
+          },
+          "kurtosis": {
+            "type": "number",
+            "format": "double"
+          },
+          "skewness": {
+            "type": "number",
+            "format": "double"
+          },
+          "fractiles": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "sampleValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "technicalName": {
+            "type": "string"
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "nullValueCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "textValueCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "zeroValueCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "maxNumericValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxStringLength": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "minNumericValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "minStringLength": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sumStringLength": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "emptyStringCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sumNumericValues": {
+            "type": "number",
+            "format": "double"
+          },
+          "numericValueCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "standardDeviation": {
+            "type": "number",
+            "format": "double"
+          },
+          "distinctValueCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mostFrequentValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Frequency"
+            }
+          },
+          "negativeValueCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "positiveValueCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "averageStringLength": {
+            "type": "number",
+            "format": "double"
+          },
+          "frequencyDistribution": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BinnedFrequency"
+            }
+          },
+          "lastSortedStringValue": {
+            "type": "string"
+          },
+          "firstSortedStringValue": {
+            "type": "string"
+          },
+          "sumSquaredNumericValues": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Frequency": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "JsonPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "add",
+              "remove",
+              "replace",
+              "move",
+              "copy",
+              "test"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "from": {
+            "type": "string",
+            "description": "A JSON Pointer path pointing to the location to move/copy from."
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON pointer to the property being affected."
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to add, replace or test."
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "properties": {
+          "last": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "next": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "first": {
+            "$ref": "#/components/schemas/Link"
+          }
+        }
+      },
+      "Operational": {
+        "type": "object",
+        "title": "Operational",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string"
+          },
+          "rowCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "logMessage": {
+            "type": "string"
+          },
+          "tableOwner": {
+            "type": "string"
+          },
+          "lastLoadTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "contentUpdated": {
+            "type": "boolean"
+          },
+          "lastUpdateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tableConnectionInfo": {
+            "$ref": "#/components/schemas/TableConnectionInfo"
+          }
+        }
+      },
+      "PageDataSetProfile": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSetProfile"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ProfileMetadata": {
+        "type": "object",
+        "title": "Profile Metadata",
+        "properties": {
+          "status": {
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "FINISHED",
+              "FAILED",
+              "INCOMPLETE",
+              "CANCELLED",
+              "STALE",
+              "PARTIAL",
+              "DEFERRED"
+            ],
+            "type": "string"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataSetId": {
+            "type": "string"
+          },
+          "resultType": {
+            "enum": [
+              "NORMAL",
+              "BASIC"
+            ],
+            "type": "string"
+          },
+          "connectionId": {
+            "type": "string"
+          },
+          "lastLoadTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "computationEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "computationStartTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Schema": {
+        "type": "object",
+        "title": "Schema",
+        "required": [
+          "dataFields"
+        ],
+        "properties": {
+          "anomalies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Anomalies associated with this schema. Example: $warning-unknown-headers"
+            },
+            "description": "Anomalies associated with this schema. Example: $warning-unknown-headers",
+            "uniqueItems": true
+          },
+          "dataFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataField"
+            }
+          },
+          "schemaName": {
+            "type": "string"
+          },
+          "loadOptions": {
+            "type": "object",
+            "description": "Options for loading files. Example: \"qLabel\": \"embedded labels\"",
+            "additionalProperties": {
+              "type": "object",
+              "description": "Options for loading files. Example: \"qLabel\": \"embedded labels\""
+            }
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "overrideSchemaAnomalies": {
+            "type": "boolean"
+          }
+        },
+        "description": "Optional field to specify additional schemas for files where multiple tables or sheets are available. User must define primary schema in 'schema' attribute and rest of the sheets/ tables can be defined using this field. This field is not populated for the dataSets with single schema"
+      },
+      "TableConnectionInfo": {
+        "type": "object",
+        "properties": {
+          "tableName": {
+            "type": "string"
+          },
+          "selectionScript": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TableProfile": {
+        "type": "object",
+        "title": "Table Profile",
+        "properties": {
+          "name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "sizeInBytes": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "numberOfRows": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "fieldProfiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldProfile"
+            },
+            "readOnly": true
+          }
+        }
+      },
+      "TableRecord": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TableSample": {
+        "type": "object",
+        "title": "Table Sample",
+        "properties": {
+          "name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableRecord"
+            },
+            "readOnly": true
+          },
+          "fieldNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "readOnly": true
+          }
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "UserTag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The id of the tag in Collections"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1
+          }
+        },
+        "description": "An array of user-supplied tags"
+      }
+    }
+  }
+}

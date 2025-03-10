@@ -1,0 +1,1976 @@
+{
+  "info": {
+    "title": "users",
+    "version": ""
+  },
+  "paths": {
+    "/v1/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "List users",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            },
+            "description": "Successful query, returns an array of users"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request parameters for querying users."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A comma-delimited string of the requested fields per entity. If the 'links' value is omitted, then the entity HATEOAS link will also be omitted."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://datatracker.ietf.org/doc/rfc7644/) for the syntax. Cannot be combined with any of the fields marked as deprecated. All conditional statements within this query parameter are case insensitive.\n\nThe following fields support the `eq` operator: `id`, `subject`, `name`, `email`, `status`, `clientId`, `assignedRoles.id` `assignedRoles.name`, `assignedGroups.id`, `assignedGroupsAssignedRoles.name`\n\nAdditionally, the following fields support the `co` operator: `name`, `email`, `subject`\n\nQueries may be rate limited if they differ greatly from these examples:\n\n```\n(id eq \"62716ab404a7bd8626af9bd6\" or id eq \"62716ac4c7e500e13ff5fa22\") and (status eq \"active\" or status eq \"disabled\")\n```\n\n```\nname co \"query\" or email co \"query\" or subject co \"query\" or id eq \"query\" or assignedRoles.name eq \"query\"\n```\n\nAny filters for status must be grouped together and applied to the whole query.\n\nValid:\n\n```\n(name eq \"Bob\" or name eq \"Alice\") and (status eq \"active\" or status eq \"disabled\")\n```\n\nInvalid:\n\n```\nname eq \"Bob\" or name eq \"Alice\" and (status eq \"active\" or status eq \"disabled\")\n```\n"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The number of user entries to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Get users that come after this cursor value when sorted. Cannot be used in conjunction with `prev`."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Get users that come before this cursor value when sorted. Cannot be used in conjunction with `next`."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "name",
+                "+name",
+                "-name",
+                "_id",
+                "+_id",
+                "-_id",
+                "id",
+                "+id",
+                "-id",
+                "tenantId",
+                "+tenantId",
+                "-tenantId",
+                "clientId",
+                "+clientId",
+                "-clientId",
+                "status",
+                "+status",
+                "-status",
+                "subject",
+                "+subject",
+                "-subject",
+                "email",
+                "+email",
+                "-email",
+                "inviteExpiry",
+                "+inviteExpiry",
+                "-inviteExpiry",
+                "createdAt",
+                "+createdAt",
+                "-createdAt"
+              ],
+              "type": "string",
+              "default": "+name"
+            },
+            "required": false,
+            "description": "The field to sort by, with +/- prefix indicating sort order"
+          },
+          {
+            "in": "query",
+            "name": "totalResults",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Whether to return a total match count in the result. Defaults to false. It will trigger an extra DB query to count, reducing the efficiency of the endpoint."
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            },
+            "required": false,
+            "description": "The email to filter by. Deprecated. Use the new `filter` parameter to provide an advanced query filter.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "in": "query",
+            "name": "endingBefore",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Get users with IDs that are lower than the target user ID. Cannot be used in conjunction with startingAfter. Deprecated. Use `prev` instead.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "in": "query",
+            "name": "role",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The role to filter by. Deprecated.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "enum": [
+                "name"
+              ],
+              "type": "string",
+              "default": "name"
+            },
+            "required": false,
+            "description": "The user parameter to sort by. Deprecated. Use `sort` instead.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string",
+              "default": "asc"
+            },
+            "required": false,
+            "description": "The sort order, either ascending or descending. Deprecated. Use `sort` instead.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "in": "query",
+            "name": "startingAfter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Get users with IDs that are higher than the target user ID. Cannot be used in conjunction with endingBefore. Deprecated. Use `next` instead.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "enum": [
+                "active",
+                "invited",
+                "disabled",
+                "deleted",
+                "provisioned"
+              ],
+              "type": "string",
+              "default": "active"
+            },
+            "required": false,
+            "description": "The status to filter by. Supports multiple values delimited by commas. Deprecated. Use the new `filter` parameter to provide an advanced query filter.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "in": "query",
+            "name": "subject",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The subject to filter by. Deprecated. Use the new `filter` parameter to provide an advanced query filter.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "in": "query",
+            "name": "tenantId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": false,
+            "description": "The tenant ID to filter by. Deprecated.",
+            "x-qlik-deprecated": true
+          }
+        ],
+        "description": "Returns a list of users using cursor-based pagination.",
+        "operationId": "getUsers",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Create user",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "User": {
+                    "$ref": "#/components/examples/PostUser201Response"
+                  }
+                }
+              }
+            },
+            "description": "User created successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized to create a user."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from creating a user."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "User conflict when attempting to create a new user."
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Payload was too large (limit of 500kB)"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Creates an invited user.",
+        "operationId": "createUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPostSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/users/{userId}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get user by ID",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "User resource"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from getting a user."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "User was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The user's unique identifier"
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A comma-delimited string of the requested fields per entity. If the 'links' value is omitted, then the entity HATEOAS link will also be omitted."
+          }
+        ],
+        "description": "Returns the requested user.",
+        "operationId": "getUserById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update user by ID",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "User updated successfully."
+          },
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "User update was partially successful with non-critical failures."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request for patching a user."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from patching a user."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "User was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the user to update."
+          }
+        ],
+        "description": "Updates fields for a user resource",
+        "operationId": "updateUserById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JSONPatchArray"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete user by ID",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "User deleted successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request for deleting a user."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from deleting a user."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "User was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the user to delete."
+          }
+        ],
+        "description": "Deletes the requested user.",
+        "operationId": "deleteUserById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/users/actions/count": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Count users",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCount"
+                }
+              }
+            },
+            "description": "The count of users."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from reading the count."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "tenantId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": false,
+            "description": "The tenant ID to filter by.",
+            "x-qlik-deprecated": true
+          }
+        ],
+        "description": "Returns the number of users in a given tenant",
+        "operationId": "countUsers",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/users/actions/filter": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Filter users",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            },
+            "description": "Users retrieved."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Advanced query filter syntax error or query params format error or filter too complex."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The operation failed due to unsufficient permissions."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A comma-delimited string of the requested fields per entity. If the 'links' value is omitted, then the entity HATEOAS link will also be omitted."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The number of user entries to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Get users with IDs that are higher than the target user ID. Cannot be used in conjunction with prev."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Get users with IDs that are lower than the target user ID. Cannot be used in conjunction with next."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "name",
+                "+name",
+                "-name"
+              ],
+              "type": "string",
+              "default": "+name"
+            },
+            "required": false,
+            "description": "The field to sort by, with +/- prefix indicating sort order"
+          }
+        ],
+        "description": "Retrieves a list of users matching the filter using an advanced query string.",
+        "operationId": "users_api_actions_filter",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Filter"
+              }
+            }
+          },
+          "required": false,
+          "description": "Will contain the query filter to apply. It shall not contain more than 100 ids."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 200
+        }
+      }
+    },
+    "/v1/users/actions/invite": {
+      "post": {
+        "tags": [
+          "invite"
+        ],
+        "summary": "Invite one or more users by email address.",
+        "responses": {
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteDataResponse"
+                }
+              }
+            },
+            "description": "Request completed successfully. See Results for ResultDetail on each invite."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsResponse"
+                }
+              }
+            },
+            "description": "Request denied."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsResponse"
+                }
+              }
+            },
+            "description": "Request error. See Errors."
+          }
+        },
+        "operationId": "inviteUsers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteRequest"
+              },
+              "example": {
+                "invitees": [
+                  {
+                    "name": "Elvis Presley",
+                    "email": "foo@qlik.com",
+                    "resend": true,
+                    "language": "en"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/users/me": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get my user",
+        "responses": {
+          "301": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "url"
+                },
+                "description": "The URI to the user resource."
+              }
+            },
+            "description": "Successful redirect."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "description": "Redirects to retrieve the user resource associated with the JWT claims.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "examples": {
+      "PostUser201Response": {
+        "value": {
+          "id": "62b6024fcdf339bb986fae75",
+          "name": "John Smith",
+          "email": "john.smith@corp.example",
+          "roles": [
+            "Developer"
+          ],
+          "status": "invited",
+          "created": "2022-06-24T18:28:31.301Z",
+          "picture": "https://corp.example/docs/jsmith.png",
+          "subject": "1234asdasa6789",
+          "tenantId": "q3VRZ4YMixRaLKEPhkZWM-XMIDN7cO8f",
+          "createdAt": "2022-06-24T18:28:31.301Z",
+          "lastUpdated": "2022-06-24T18:28:31.301Z",
+          "inviteExpiry": 1656700111,
+          "assignedRoles": [
+            {
+              "id": "60804cf8a77b649c66733f65",
+              "name": "Developer",
+              "type": "default",
+              "level": "user"
+            }
+          ],
+          "lastUpdatedAt": "2022-06-24T18:28:31.301Z"
+        }
+      }
+    },
+    "schemas": {
+      "AssignedGroups": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uid",
+              "example": "507f191e810c19729de860eb",
+              "description": "The unique group identitier"
+            },
+            "name": {
+              "type": "string",
+              "example": "Finance",
+              "readOnly": true,
+              "description": "The group name"
+            },
+            "providerType": {
+              "enum": [
+                "idp",
+                "custom"
+              ],
+              "type": "string",
+              "example": "idp",
+              "description": "The provider type of the group"
+            },
+            "assignedRoles": {
+              "$ref": "#/components/schemas/AssignedRoles"
+            }
+          },
+          "description": "represents a group entity stored in the database"
+        },
+        "description": "An array of group references."
+      },
+      "AssignedGroupsRefNames": {
+        "type": "array",
+        "items": {
+          "required": [
+            "name",
+            "providerType"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Developers",
+              "description": "The name of the group"
+            },
+            "providerType": {
+              "enum": [
+                "idp",
+                "custom"
+              ],
+              "type": "string",
+              "example": "idp",
+              "description": "The type of provider for the group."
+            }
+          }
+        },
+        "example": [
+          {
+            "name": "Developers",
+            "providerType": "custom"
+          }
+        ],
+        "description": "An array of group reference names and provider type."
+      },
+      "AssignedRoles": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "type",
+            "level"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uid",
+              "example": "507f191e810c19729de860ea",
+              "description": "The unique role identitier"
+            },
+            "name": {
+              "type": "string",
+              "example": "Developer",
+              "readOnly": true,
+              "description": "The role name",
+              "x-qlik-filterable": true
+            },
+            "type": {
+              "enum": [
+                "default",
+                "custom"
+              ],
+              "type": "string",
+              "example": "default",
+              "readOnly": true,
+              "description": "The type of role"
+            },
+            "level": {
+              "enum": [
+                "admin",
+                "user"
+              ],
+              "type": "string",
+              "example": "user",
+              "readOnly": true,
+              "description": "The role level"
+            }
+          },
+          "description": "represents a role entity stored in the database"
+        },
+        "description": "An array of role references. Visibility dependant on access level. Must have access to roles to view other users' assigned roles."
+      },
+      "AssignedScopes": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "readOnly": true,
+        "description": "An array of scopes assigned to a user"
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON Pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          },
+          "status": {
+            "type": "number",
+            "description": "The HTTP status code."
+          }
+        },
+        "description": "An error object describing the error."
+      },
+      "ErrorItem": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem"
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem (if applicable)"
+          }
+        },
+        "description": "Error object."
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "USERS-7",
+              "title": "Not found",
+              "status": 404
+            }
+          ],
+          "traceId": "000000000000000079cf1ebeae103de1"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "An array of errors related to the operation."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique identifier for tracing the error."
+          }
+        },
+        "description": "The error response object describing the error from the handling of an HTTP request."
+      },
+      "ErrorsResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorItem"
+            }
+          }
+        }
+      },
+      "Filter": {
+        "properties": {
+          "filter": {
+            "type": "string",
+            "example": "(id eq \"626949b9017b657805080bbd\" or id eq \"626949bf017b657805080bbe\") and (status eq \"active\" or status eq \"deleted\")",
+            "description": "The advanced filtering to be applied the query. All conditional statements within this query parameter are case insensitive."
+          }
+        },
+        "description": "An advanced query filter to be used for complex user querying in the tenant."
+      },
+      "InviteDataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ResultItem"
+                },
+                {
+                  "$ref": "#/components/schemas/InviteErrorItem"
+                }
+              ]
+            }
+          }
+        },
+        "description": "Data list - ResultItem or ErrorItem for each InviteeItem."
+      },
+      "InviteErrorItem": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorItem"
+          },
+          {
+            "type": "object",
+            "required": [
+              "status",
+              "email"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Error code - | HTTP Status code | 1001 - Active User | 1002 - Disabled User | 1003 - Default External Dependency Error |"
+              },
+              "email": {
+                "type": "string",
+                "description": "Invitee email"
+              },
+              "status": {
+                "enum": [
+                  "error"
+                ],
+                "type": "string",
+                "description": "Result status = \"error\""
+              }
+            }
+          }
+        ],
+        "description": "Error object."
+      },
+      "InviteItem": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Optional display name for this invitee. Example - \"Elvis Presley\"."
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address for this invitee. Example - \"foo@qlik.com\"."
+          },
+          "resend": {
+            "type": "boolean",
+            "description": "Flag - when true invite message is sent to inactive or invited users. Typically used to force email resend to users who are not yet active."
+          },
+          "language": {
+            "type": "string",
+            "description": "Optional ISO 639-1 2 letter code for invite language. Defaults to 'en' when missing or not found."
+          }
+        }
+      },
+      "InviteRequest": {
+        "type": "object",
+        "properties": {
+          "invitees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InviteItem"
+            },
+            "required": [
+              "items"
+            ],
+            "description": "List of invitees who should receive an invite email."
+          }
+        }
+      },
+      "JSONPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace",
+              "set",
+              "unset",
+              "add",
+              "renew",
+              "remove-value"
+            ],
+            "type": "string",
+            "description": "The operation to be performed. The fields `set` and `unset` are deprecated."
+          },
+          "path": {
+            "enum": [
+              "/name",
+              "/roles",
+              "/assignedRoles",
+              "/inviteExpiry",
+              "/preferredZoneinfo",
+              "/preferredLocale",
+              "/status",
+              "/assignedGroups"
+            ],
+            "type": "string",
+            "description": "A JSON Pointer. The field `roles` is deprecated."
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "$ref": "#/components/schemas/RefIDs"
+              },
+              {
+                "$ref": "#/components/schemas/RefNames"
+              },
+              {
+                "$ref": "#/components/schemas/AssignedGroupsRefNames"
+              }
+            ],
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "JSONPatchArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/JSONPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "John"
+          },
+          {
+            "op": "replace",
+            "path": "/assignedRoles",
+            "value": [
+              {
+                "name": "Developer"
+              }
+            ]
+          },
+          {
+            "op": "replace",
+            "path": "/email",
+            "value": "unicorn@corp.example"
+          },
+          {
+            "op": "replace",
+            "path": "/preferredZoneInfo",
+            "value": "America/Halifax"
+          },
+          {
+            "op": "replace",
+            "path": "/preferredLocale",
+            "value": "en_US_POSIX"
+          },
+          {
+            "op": "replace",
+            "path": "/status",
+            "value": "active"
+          },
+          {
+            "op": "add",
+            "path": "/assignedRoles/-",
+            "value": {
+              "name": "TenantAdmin"
+            }
+          },
+          {
+            "op": "remove-value",
+            "path": "/assignedRoles",
+            "value": {
+              "id": "67ac386d2bab6dd4925008e8"
+            }
+          }
+        ],
+        "description": "An array of JSON Patch documents"
+      },
+      "RefIDs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uid",
+              "example": "507f191e810c19729de860ea",
+              "description": "The unique identitier"
+            }
+          },
+          "description": "represents an entity stored in the database"
+        },
+        "example": [
+          {
+            "id": "507f191e810c19729de860ea"
+          }
+        ],
+        "description": "An array of entity reference identifiers (e.g. roles, groups)."
+      },
+      "RefNames": {
+        "type": "array",
+        "items": {
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "TenantAdmin",
+              "description": "The name of the entity"
+            }
+          }
+        },
+        "example": [
+          {
+            "name": "TenantAdmin"
+          }
+        ],
+        "description": "An array of reference names (e.g. roles)."
+      },
+      "ResultItem": {
+        "type": "object",
+        "required": [
+          "status",
+          "email",
+          "subject",
+          "userId"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email specified for this invitee"
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "exists"
+            ],
+            "type": "string",
+            "description": "Result status = {\"ok\" (new user; email sent) | \"exists\" (existing user; no email sent)}"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uid",
+            "description": "UserId for this invitee"
+          },
+          "subject": {
+            "type": "string",
+            "format": "uuid",
+            "description": "IdP generated UUID for this invitee"
+          }
+        },
+        "description": "Invitee result item"
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "subject",
+          "name",
+          "tenantId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique user identifier.",
+            "x-qlik-filterable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the user.",
+            "x-qlik-filterable": true
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address for the user.",
+            "x-qlik-filterable": true
+          },
+          "links": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "self": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://mytenant.elastic.example/api/v1/users/DKNmFJCNo8SGURUdh2ll--------USER",
+                    "description": "URL that defines the resource."
+                  }
+                },
+                "description": "A link to this user."
+              }
+            },
+            "description": "Pagination links to the user."
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "TenantAdmin",
+                "Developer",
+                "AnalyticsAdmin",
+                "DataAdmin",
+                "DataSpaceCreator",
+                "ManagedSpaceCreator",
+                "SharedSpaceCreator"
+              ],
+              "type": "string"
+            },
+            "description": "List of system roles to which the user has been assigned. Only returned when permitted by access control. Deprecated. Use `assignedRoles` instead.",
+            "x-qlik-deprecated": true
+          },
+          "locale": {
+            "type": "string",
+            "description": "Represents the end-user's language tag."
+          },
+          "status": {
+            "enum": [
+              "active",
+              "invited",
+              "disabled",
+              "deleted",
+              "provisioned"
+            ],
+            "type": "string",
+            "description": "The status of the user within the tenant.",
+            "x-qlik-filterable": true
+          },
+          "created": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true,
+            "description": "Deprecated. Use `createdAt` instead.",
+            "x-qlik-deprecated": true
+          },
+          "picture": {
+            "type": "string",
+            "format": "url",
+            "description": "A static url linking to the avatar of the user."
+          },
+          "subject": {
+            "type": "string",
+            "description": "The unique user identitier from an identity provider.",
+            "x-qlik-filterable": true
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The tenant that the user belongs too."
+          },
+          "zoneinfo": {
+            "type": "string",
+            "description": "Represents the end-user's time zone."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The timestamp for when the user record was created."
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true,
+            "description": "Deprecated. Use `lastUpdatedAt` instead.",
+            "x-qlik-deprecated": true
+          },
+          "inviteExpiry": {
+            "type": "number",
+            "readOnly": true,
+            "description": "The Unix timestamp indicating when the invite will expire."
+          },
+          "assignedRoles": {
+            "$ref": "#/components/schemas/AssignedRoles"
+          },
+          "lastUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The timestamp for when the user record was last updated."
+          },
+          "assignedGroups": {
+            "$ref": "#/components/schemas/AssignedGroups"
+          },
+          "assignedScopes": {
+            "$ref": "#/components/schemas/AssignedScopes"
+          },
+          "preferredLocale": {
+            "type": "string",
+            "description": "Represents the end-user's preferred language tag."
+          },
+          "preferredZoneinfo": {
+            "type": "string",
+            "description": "Represents the end-user's preferred time zone."
+          }
+        },
+        "description": "A user object."
+      },
+      "UserCount": {
+        "type": "object",
+        "required": [
+          "total"
+        ],
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "The total number of users in the tenant."
+          }
+        },
+        "description": "The result object for the user count."
+      },
+      "UserPostSchema": {
+        "type": "object",
+        "example": {
+          "name": "John Smith",
+          "email": "john.smith@corp.example",
+          "status": "invited",
+          "picture": "https://corp.example/docs/jsmith.png",
+          "subject": "1234asdasa6789",
+          "tenantId": "q3VRZ4YMixRaLKEPhkZWM-XMIDN7cO8f",
+          "assignedRoles": [
+            {
+              "name": "Developer"
+            }
+          ]
+        },
+        "required": [
+          "subject"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the user."
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address for the user. This is a required field when inviting a user."
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "TenantAdmin",
+                "Developer",
+                "AnalyticsAdmin",
+                "DataAdmin",
+                "DataSpaceCreator",
+                "ManagedSpaceCreator",
+                "SharedSpaceCreator"
+              ],
+              "type": "string"
+            },
+            "description": "List of system roles to which the user has been assigned. Only returned when permitted by access control.",
+            "x-qlik-deprecated": true
+          },
+          "status": {
+            "enum": [
+              "invited"
+            ],
+            "type": "string",
+            "example": "invited",
+            "description": "The status of the created user within the tenant."
+          },
+          "picture": {
+            "type": "string",
+            "format": "url",
+            "description": "A static url linking to the avatar of the user."
+          },
+          "subject": {
+            "type": "string",
+            "example": "foo\\12345",
+            "description": "The unique user identitier from an identity provider."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "DKNmFJCNo8SGURUdh2ll------TENANT",
+            "description": "The tenant that the user will belong too."
+          },
+          "assignedRoles": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RefIDs"
+              },
+              {
+                "$ref": "#/components/schemas/RefNames"
+              }
+            ],
+            "description": "The roles to assign to the user."
+          }
+        }
+      },
+      "Users": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "description": "List of users."
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "next": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "URL to the next page of records"
+                  }
+                },
+                "description": "Link information for next page"
+              },
+              "prev": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "URL to the previous page of records"
+                  }
+                },
+                "description": "Link information for previous page"
+              },
+              "self": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "URL to the current page of records"
+                  }
+                },
+                "description": "Link information for current page"
+              }
+            },
+            "description": "Pagination links"
+          },
+          "totalResults": {
+            "type": "integer",
+            "description": "Indicates the total number of matching documents. Will only be returned if the query parameter \"totalResults\" is true."
+          }
+        }
+      }
+    }
+  }
+}

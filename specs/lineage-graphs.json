@@ -1,0 +1,1591 @@
+{
+  "info": {
+    "title": "lineage-graphs",
+    "version": ""
+  },
+  "paths": {
+    "/v1/lineage-graphs/impact/{id}/actions/expand": {
+      "get": {
+        "tags": [
+          "impact"
+        ],
+        "summary": "Returns next-level nodes inside a specified node on an impact analysis graph retrieved using a base node. \n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/graphResponse"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-400"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-403"
+                }
+              }
+            },
+            "description": "User does not have access to the node."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-404"
+                }
+              }
+            },
+            "description": "The record is not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-429"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "example": 15
+                },
+                "description": "The number of seconds until new requests are allowed"
+              }
+            },
+            "description": "Too many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-500"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-503"
+                }
+              }
+            },
+            "description": "Service unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "required": true,
+            "description": "The QRI for base node."
+          },
+          {
+            "in": "query",
+            "name": "level",
+            "schema": {
+              "enum": [
+                "field",
+                "table"
+              ],
+              "type": "string",
+              "default": "table"
+            },
+            "required": true,
+            "description": "The level to get the nodes on."
+          },
+          {
+            "in": "query",
+            "name": "node",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The node in the downstream graph to get next-level nodes for. For instance, to get the TABLE level nodes inside a RESOURCE level node,\nuse the RESOURCE level QRI for the node. Similarly, use the TABLE level QRI to get the FIELD level nodes.\nIf a TABLE level QRI is used with `level` parameter being `TABLE`, only the RESOURCE level of the node will be\ntaken into consideration.\n"
+          },
+          {
+            "in": "query",
+            "name": "down",
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "required": false,
+            "description": "The number of downstream resource levels nodes to retrieve. (5 if not provided, -1 means unlimited and 1 means direct lineage)"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 20
+        }
+      }
+    },
+    "/v1/lineage-graphs/impact/{id}/actions/search": {
+      "get": {
+        "tags": [
+          "impact"
+        ],
+        "summary": "Search all labels within a impact graph on all available levels. \nReturns result per level\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/graphsResponse"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-400"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-403"
+                }
+              }
+            },
+            "description": "User does not have access to the node."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-404"
+                }
+              }
+            },
+            "description": "The record is not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-429"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "example": 15
+                },
+                "description": "The number of seconds until new requests are allowed"
+              }
+            },
+            "description": "Too many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-500"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-503"
+                }
+              }
+            },
+            "description": "Service unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "required": true,
+            "description": "The qri for root node."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "example": "label co \"label1\" or label co \"label2\"",
+            "required": true,
+            "description": "The expression that matches the SCIM filter format. The filter has to be encoded.\nThe currently supported attribute is \"label\", attribute operator \"co\" (contains), and grouping operator \"or\". Example: 'label co \"label1\" or label co \"label2\"'. The search queries are case insensetive.\n"
+          },
+          {
+            "in": "query",
+            "name": "down",
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "required": false,
+            "description": "The number of downstream resource levels nodes to search. (5 if not provided, -1 means unlimited) and 1 means direct lineage."
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 20
+        }
+      }
+    },
+    "/v1/lineage-graphs/impact/{id}/overview": {
+      "get": {
+        "tags": [
+          "impact"
+        ],
+        "summary": "Returns all RESOURCE level nodes that are impacted by a change in the source node. \nThe number of tables and fields that are impacted for each resource are included as metadata.\nThe id (QRI) can be on any level (FIELD, TABLE or RESOURCE) and the impact will be collected based on the starting QRI.   \n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/graphResponse"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-400"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-403"
+                }
+              }
+            },
+            "description": "User does not have access to the node."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-404"
+                }
+              }
+            },
+            "description": "The record is not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-429"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "example": 15
+                },
+                "description": "The number of seconds until new requests are allowed"
+              }
+            },
+            "description": "Too many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-500"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-503"
+                }
+              }
+            },
+            "description": "Service unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "required": true,
+            "description": "The qri for root node."
+          },
+          {
+            "in": "query",
+            "name": "down",
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "required": false,
+            "description": "The number of downstream resource levels nodes to retrieve. (5 if not provided, -1 means unlimited and 1 means direct lineage)"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 20
+        }
+      }
+    },
+    "/v1/lineage-graphs/impact/{id}/source": {
+      "get": {
+        "tags": [
+          "impact"
+        ],
+        "summary": "Returns all levels of the requested root node. Only node information will be returned.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/graphsResponse"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-400"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-403"
+                }
+              }
+            },
+            "description": "User does not have access to the node."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-404"
+                }
+              }
+            },
+            "description": "The record is not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-429"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "example": 15
+                },
+                "description": "The number of seconds until new requests are allowed"
+              }
+            },
+            "description": "Too many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-500"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-503"
+                }
+              }
+            },
+            "description": "Service unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "required": true,
+            "description": "The id (QRI) for root node."
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 20
+        }
+      }
+    },
+    "/v1/lineage-graphs/nodes/{id}": {
+      "get": {
+        "tags": [
+          "lineage-graphs"
+        ],
+        "summary": "Returns lineage graphs for requested levels of a source node. \nThe id (QRI) can point to an item on the field, table and resource level.\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/graphLevelsResponse"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-400"
+                }
+              }
+            },
+            "description": "The request is in incorrect format"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-403"
+                }
+              }
+            },
+            "description": "User does not have access to the node."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-404"
+                }
+              }
+            },
+            "description": "The record is not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-429"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "example": 15
+                },
+                "description": "The number of seconds until new requests are allowed"
+              }
+            },
+            "description": "Too many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-500"
+                }
+              }
+            },
+            "description": "Internal server error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-503"
+                }
+              }
+            },
+            "description": "Service unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "required": true,
+            "description": "The id (QRI) for the source node."
+          },
+          {
+            "in": "query",
+            "name": "collapse",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "required": false,
+            "description": "To collapse internal nodes, set to true, false otherwise."
+          },
+          {
+            "in": "query",
+            "name": "level",
+            "schema": {
+              "enum": [
+                "field",
+                "table",
+                "resource",
+                "all"
+              ],
+              "type": "string",
+              "default": "resource"
+            },
+            "required": false,
+            "description": "The graph level to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "up",
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "required": false,
+            "description": "The number of upstream levels of nodes to retrieve. (5 if not provided, -1 means unlimited)"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 20
+        }
+      }
+    },
+    "/v1/lineage-graphs/nodes/{id}/actions/expand": {
+      "get": {
+        "tags": [
+          "lineage-graphs"
+        ],
+        "summary": "Returns the expanded node and its edges. \nUp and downstream nodes are not part of the response, edges are.\nThe id is the root node that lineage is requested for. The QRI of the node to expand is sent as the query parameter \"node\" for expansion.\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/graphResponse"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-400"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-403"
+                }
+              }
+            },
+            "description": "User does not have access to the node."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-404"
+                }
+              }
+            },
+            "description": "The record is not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-429"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "example": 15
+                },
+                "description": "The number of seconds until new requests are allowed"
+              }
+            },
+            "description": "Too many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-500"
+                }
+              }
+            },
+            "description": "Internal server error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-503"
+                }
+              }
+            },
+            "description": "Service unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "required": true,
+            "description": "The id (QRI) for the source node."
+          },
+          {
+            "in": "query",
+            "name": "level",
+            "schema": {
+              "enum": [
+                "field",
+                "table"
+              ],
+              "type": "string",
+              "default": "table"
+            },
+            "required": true,
+            "description": "The level to expand to."
+          },
+          {
+            "in": "query",
+            "name": "node",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The QRI of the node in the upstream graph for expansion."
+          },
+          {
+            "in": "query",
+            "name": "collapse",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "required": false,
+            "description": "To collapse internal nodes, set to true, false otherwise."
+          },
+          {
+            "in": "query",
+            "name": "up",
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "required": false,
+            "description": "The number of upstream levels of nodes retrieved to expand. (5 if not provided, -1 means unlimited)"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 20
+        }
+      }
+    },
+    "/v1/lineage-graphs/nodes/{id}/actions/search": {
+      "get": {
+        "tags": [
+          "lineage-graphs"
+        ],
+        "summary": "Search all labels within a lineage graph on all available levels. \nReturns result per level.\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/graphsResponse"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-400"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-403"
+                }
+              }
+            },
+            "description": "User does not have access to the node."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-404"
+                }
+              }
+            },
+            "description": "The record is not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-429"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "example": 15
+                },
+                "description": "The number of seconds until new requests are allowed"
+              }
+            },
+            "description": "Too many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-500"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-503"
+                }
+              }
+            },
+            "description": "Service unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "required": true,
+            "description": "The qri for root node."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "example": "label co \"label1\" or label co \"label2\"",
+            "required": true,
+            "description": "The expression that matches the SCIM filter format. The filter has to be encoded.\nThe currently supported attribute is \"label\", attribute operator \"co\" (contains), and grouping operator \"or\". Example: 'label co \"label1\" or label co \"label2\"'. The search queries are case insensitive.\n"
+          },
+          {
+            "in": "query",
+            "name": "collapse",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "required": false,
+            "description": "To collapse internal nodes, set to true, false otherwise."
+          },
+          {
+            "in": "query",
+            "name": "up",
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "required": false,
+            "description": "The number of upstream levels of nodes retrieved to search. (5 if not provided, -1 means unlimited)"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 20
+        }
+      }
+    },
+    "/v1/lineage-graphs/nodes/{id}/overview": {
+      "post": {
+        "tags": [
+          "lineage-graphs"
+        ],
+        "summary": "Returns the first generation upstream direct lineage. \nFor each field QRI, will find any direct linege dataset or application.  \n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/overviewItems"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/emptyReturn"
+                }
+              }
+            },
+            "description": "Successfully created new resource."
+          },
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/multiStatusResponse"
+                }
+              }
+            },
+            "description": "Request partially succeeded."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-400"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-403"
+                }
+              }
+            },
+            "description": "User does not have access to the node."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-404"
+                }
+              }
+            },
+            "description": "The record is not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-500"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse-503"
+                }
+              }
+            },
+            "description": "Service unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "required": true,
+            "description": "The qri for root node."
+          },
+          {
+            "in": "query",
+            "name": "collapse",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "required": false,
+            "description": "To collapse internal nodes, set to true, false otherwise."
+          },
+          {
+            "in": "query",
+            "name": "up",
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "required": false,
+            "description": "The number of upstream levels of nodes retrieved to get overview from. (5 if not provided, -1 means unlimited)"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qris"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "dataAsset": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "qri:app:landing://65083739daf9b2658503f93c",
+            "description": "The id (QRI) of the data asset"
+          },
+          "type": {
+            "type": "string",
+            "example": "DI_APP",
+            "description": "The type of the data asset"
+          },
+          "label": {
+            "type": "string",
+            "example": "example.Landing.Asset",
+            "description": "The lable of the data asset"
+          },
+          "subtype": {
+            "type": "string",
+            "example": "LANDING_SAAS_MANAGED",
+            "description": "The subtype of the data asset"
+          }
+        },
+        "description": "The data integration data asset where the node belongs to"
+      },
+      "edge": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "description": "The index of edges. This is only used in the POST request."
+          },
+          "source": {
+            "type": "string",
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "description": "The id (QRI) of the source node on this edge."
+          },
+          "target": {
+            "type": "string",
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "description": "The id (QRI) of the target node on this edge."
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              }
+            }
+          },
+          "relation": {
+            "type": "string",
+            "example": [
+              "LOAD",
+              "STORE",
+              "READ",
+              "FROM"
+            ]
+          }
+        }
+      },
+      "emptyReturn": {
+        "type": "object"
+      },
+      "errorResponse-400": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-400"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Bad Request"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "Something is not right in the request."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "errorResponse-403": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-403"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Forbidden"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "You don't have sufficient permissions to access this resource."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "errorResponse-404": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-404"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Not Found"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The resource either never existed, or may have been deleted."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "errorResponse-429": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "RATE-001"
+          },
+          "title": {
+            "type": "string",
+            "example": "Too many requests"
+          }
+        }
+      },
+      "errorResponse-500": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-500"
+                },
+                "meta": {
+                  "type": "object",
+                  "example": "{\"id\":\"e5c651d5-1198-45a2-be5d-f016cee0baf5\"}",
+                  "description": "The meta contains additional inforomation when requests fail due to internal errors."
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "Something went wrong in the server."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "errorResponse-503": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-503"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Service Unavailable"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The service is unavailable."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "graph": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/edge"
+            }
+          },
+          "label": {
+            "type": "string",
+            "description": "Label string for this graph."
+          },
+          "nodes": {
+            "$ref": "#/components/schemas/nodes"
+          },
+          "directed": {
+            "type": "boolean",
+            "description": "Returns true if the graph is directed."
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "The total number of nodes retrieved in this graph."
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "The date and time when the graph is created."
+              },
+              "producerId": {
+                "type": "string",
+                "example": "qri:db:oracle://LfxVj_3du3GYdWdNaa721lOWvbhENXEArBpl58h96YE#ZfH0lkXnTTGu7QGnIvKZpIxFNagQivBtnbC_cAoCPOs",
+                "description": "The id (QRI) of the graph producer."
+              },
+              "specVersion": {
+                "type": "string"
+              },
+              "producerType": {
+                "type": "string",
+                "example": [
+                  "QDA",
+                  "EXTERNAL"
+                ],
+                "description": "The type of the graph producer."
+              }
+            }
+          }
+        },
+        "description": "The lineage graph containing the node."
+      },
+      "graphLevelsResponse": {
+        "type": "object",
+        "title": "Response with graphs for requested levels",
+        "properties": {
+          "graph": {
+            "$ref": "#/components/schemas/graph"
+          },
+          "graphs": {
+            "$ref": "#/components/schemas/graphs"
+          }
+        }
+      },
+      "graphResponse": {
+        "type": "object",
+        "title": "Response with a single graph",
+        "properties": {
+          "graph": {
+            "$ref": "#/components/schemas/graph"
+          }
+        }
+      },
+      "graphs": {
+        "type": "object",
+        "title": "Graphs",
+        "properties": {
+          "graphs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/graph"
+            }
+          }
+        },
+        "description": "The list of lineage graphs."
+      },
+      "graphsResponse": {
+        "type": "object",
+        "title": "Response with all graphs",
+        "properties": {
+          "graphs": {
+            "$ref": "#/components/schemas/graphs"
+          }
+        }
+      },
+      "lineageOverviewInfo": {
+        "type": "object",
+        "properties": {
+          "tableQRI": {
+            "type": "string",
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "nullable": true,
+            "description": "Table level QRI that the field belongs to."
+          },
+          "tableLabel": {
+            "type": "string",
+            "nullable": true,
+            "description": "Table level label"
+          },
+          "resourceQRI": {
+            "type": "string",
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "nullable": true,
+            "description": "Resource level QRI"
+          },
+          "resourceLabel": {
+            "type": "string",
+            "nullable": true,
+            "description": "Resource level label"
+          }
+        }
+      },
+      "multiStatusResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/multiStatusResponseItem"
+            }
+          }
+        }
+      },
+      "multiStatusResponseItem": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "HTTP-404"
+          },
+          "title": {
+            "type": "string",
+            "example": "Resource not found."
+          },
+          "status": {
+            "type": "integer",
+            "example": 404
+          },
+          "resource": {
+            "$ref": "#/components/schemas/overviewItem"
+          }
+        }
+      },
+      "node": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Name label of the node."
+          },
+          "metadata": {
+            "type": "object",
+            "required": [
+              "id",
+              "type"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "qri:app:sense://3634fc0d-273d-429e-8d0b-1b4b1b66a1f2",
+                "description": "The id (QRI) of the node"
+              },
+              "type": {
+                "type": "string",
+                "example": [
+                  "DA_APP",
+                  "DA_APP_LINK",
+                  "DATASET",
+                  "TABLE",
+                  "FIELD"
+                ],
+                "description": "The type of the node."
+              },
+              "fields": {
+                "type": "integer",
+                "example": 1,
+                "description": "The number of fields that are impacted. \nThis will be returned as part of the response from /impact/{id}/overview and /impact/{id}/actions/expand on the table level.\n"
+              },
+              "tables": {
+                "type": "integer",
+                "example": 1,
+                "description": "The number of tables that are impacted. \nThis will be returned as part of the response from /impact/{id}/overview.\n"
+              },
+              "subtype": {
+                "type": "string",
+                "example": [
+                  "PROCESSOR",
+                  "APPLICATION",
+                  "FILE"
+                ],
+                "description": "The subtype of the node."
+              },
+              "filePath": {
+                "type": "string",
+                "example": "example.qvd",
+                "description": "The file path of a node"
+              },
+              "dataAsset": {
+                "$ref": "#/components/schemas/dataAsset"
+              }
+            },
+            "description": "This contains additional node information such as node types, subtypes, queryExpressions, etc."
+          }
+        }
+      },
+      "nodes": {
+        "type": "object",
+        "example": "{\"qri:app:sense://3634fc0d-273d-429e-8d0b-1b4b1b66a1f2\":{\"label\":\"a\",\"metadata\":{\"id\":\"qri:app:sense://3634fc0d-273d-429e-8d0b-1b4b1b66a1f2\",\"subtype\":\"PROCESSOR\",\"type\":\"DA_APP\",\"filePath\":\"example.qvd\"}}}",
+        "description": "All the nodes contained in a graph.",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/node"
+        }
+      },
+      "overviewItem": {
+        "type": "object",
+        "properties": {
+          "qri": {
+            "type": "string",
+            "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+            "description": "Input QRI that we are getting the overview for."
+          },
+          "lineage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/lineageOverviewInfo"
+            }
+          }
+        }
+      },
+      "overviewItems": {
+        "type": "object",
+        "properties": {
+          "resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/overviewItem"
+            }
+          }
+        }
+      },
+      "qris": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": "qri:app:sense://e5c651d5-1198-45a2-be5d-f016cee0baf5",
+          "description": "List of qri to find direct lineage for."
+        }
+      }
+    }
+  }
+}

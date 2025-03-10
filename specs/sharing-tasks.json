@@ -1,0 +1,2676 @@
+{
+  "info": {
+    "title": "sharing-tasks",
+    "version": ""
+  },
+  "paths": {
+    "/v1/sharing-tasks": {
+      "get": {
+        "tags": [
+          "sharing tasks"
+        ],
+        "summary": "Lists all sharing tasks.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SharingTaskRecurringListResponse"
+                }
+              }
+            },
+            "description": "The sharing task list has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "appid",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "the filter by sharing task resource app id. TenantAdmin users may omit this parameter to list all sharing-tasks in the tenant."
+          },
+          {
+            "in": "query",
+            "name": "excludeDeleting",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "description": "Indicates if task with the status DELETING should be excluded from the list"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "Limit the returned result set"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            },
+            "required": false,
+            "description": "Offset for finding a list of entities - used for pagination"
+          },
+          {
+            "in": "query",
+            "name": "owner",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "the filter by sharing task resource owner id."
+          },
+          {
+            "in": "query",
+            "name": "ownername",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "the filter by sharing task resource owner name."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the page of data."
+          },
+          {
+            "in": "query",
+            "name": "role",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "owner",
+                  "recipient"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "the filter by sharing task resource role."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "-datecreated",
+                  "datecreated",
+                  "+datecreated",
+                  "-name",
+                  "name",
+                  "+name",
+                  "-ownername",
+                  "ownername",
+                  "+ownername",
+                  "-enabled",
+                  "enabled",
+                  "+enabled",
+                  "-status",
+                  "status",
+                  "+status",
+                  "-type",
+                  "type",
+                  "+type",
+                  "-sent",
+                  "sent",
+                  "+sent",
+                  "-scheduled",
+                  "scheduled",
+                  "+scheduled",
+                  "-appname",
+                  "appname",
+                  "+appname",
+                  "-appid",
+                  "appid",
+                  "+appid"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Sort the returned result set by the specified field"
+          },
+          {
+            "in": "query",
+            "name": "templateId",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "array of template ids to filter by"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "chart-monitoring",
+                  "chart-sharing",
+                  "sheet-sharing",
+                  "template-sharing"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "the filter by sharing task resource type. If type is template-sharing only and user is not tenant admin, appid is also required."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the next page of data. Only one of next or previous may be specified.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the previous page of data. Only one of next or previous may be specified.",
+            "x-qlik-deprecated": true
+          }
+        ],
+        "operationId": "sharingTasksList",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "sharing tasks"
+        ],
+        "summary": "Creates a new recurring sharing task.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SharingTaskRecurringResponse"
+                }
+              }
+            },
+            "description": "The sharing task has been successfully created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "sharingTasksCreateRecurring",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharingTaskRecurringCreateRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "The sharing task create request definition."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/sharing-tasks/{taskId}": {
+      "get": {
+        "tags": [
+          "sharing tasks"
+        ],
+        "summary": "See details about a sharing task",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SharingTaskRecurringResponse"
+                }
+              }
+            },
+            "description": "Sharing task has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task or execution not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The sharing task identifier."
+          }
+        ],
+        "operationId": "sharingTasksIDGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "sharing tasks"
+        ],
+        "summary": "Updates an existing sharing task.",
+        "responses": {
+          "204": {
+            "description": "The sharing task has been successfully updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The specified task ID or body is invalid (e.g. not a number)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "A task with the specified ID was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The sharing task identifier."
+          }
+        ],
+        "operationId": "sharingTasksUpdate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharingTaskPatchRequestCompliantList"
+              }
+            }
+          },
+          "required": true,
+          "description": "The sharing task definition."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "sharing tasks"
+        ],
+        "summary": "Deletes a sharing task.",
+        "responses": {
+          "204": {
+            "description": "The sharing task has been successfully deleted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The specified task ID is invalid (e.g. not a number)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "A task with the specified ID was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The sharing task identifier."
+          }
+        ],
+        "operationId": "sharingTasksDelete",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/sharing-tasks/{taskId}/actions/cancel": {
+      "post": {
+        "tags": [
+          "sharing tasks actions"
+        ],
+        "summary": "Cancels a recurring sharing task",
+        "responses": {
+          "204": {
+            "description": "The sharing task has been successfully cancelled."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task not found, if the provided sharing task cannot be found or otherwise unable to be cancelled"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The sharing task identifier."
+          }
+        ],
+        "operationId": "sharingTasksActionsCancel",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/sharing-tasks/actions/execute": {
+      "post": {
+        "tags": [
+          "sharing tasks actions"
+        ],
+        "summary": "Executes a recurring sharing task",
+        "responses": {
+          "204": {
+            "description": "The sharing task has been successfully set up for execution."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task not found, if the provided sharing task cannot be found or otherwise unable to be executed"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "sharingTasksActionsRecurring",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharingActionsTriggerCreateRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "The sharing task execute request definition."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/sharing-tasks/settings": {
+      "get": {
+        "tags": [
+          "sharing settings"
+        ],
+        "summary": "Lists sharing settings.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SharingSettings"
+                }
+              }
+            },
+            "description": "The sharing settings have been successfully returned"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "sharingSettingsGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "sharing settings"
+        ],
+        "summary": "Patches sharing features toggles. Accessible only by tenant admins.",
+        "responses": {
+          "204": {
+            "description": "Sharing settings have been successfully updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request body"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "sharingSettingsPatch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharingSettingsPatchCompliantList"
+              }
+            }
+          },
+          "required": true,
+          "description": "Request for updating the API settings"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "put": {
+        "tags": [
+          "sharing settings"
+        ],
+        "summary": "Updates API configuration. Accessible only by tenant admins.",
+        "responses": {
+          "204": {
+            "description": "API settings have been successfully updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request body"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "sharingAPISettingsUpload",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APISettingsUpload"
+              }
+            }
+          },
+          "required": true,
+          "description": "Request for updating the API settings"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/build",
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "AlertingTaskGroupRecipientError": {
+        "type": "object",
+        "properties": {
+          "added": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          },
+          "value": {
+            "enum": [
+              "GROUP_IS_DISABLED",
+              "MAX_ALERTS_LIMIT_REACHED",
+              "GROUP_WITH_NO_APP_ACCESS",
+              "GROUP_IS_DELETED"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on alerting task"
+          }
+        }
+      },
+      "AlertingTaskRecipientError": {
+        "type": "object",
+        "properties": {
+          "added": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          },
+          "value": {
+            "enum": [
+              "USER_IS_DELETED",
+              "USER_DISABLED_IN_QCS",
+              "NO_ACCESS_TO_APP",
+              "UNSUBSCRIBED_FROM_ALERT",
+              "CONDITION_EVAL_ERROR",
+              "USER_DISABLED_IN_ALERT_BY_OWNER",
+              "MAX_ALERTS_LIMIT_REACHED"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on alerting task"
+          }
+        }
+      },
+      "APISettingsUpload": {
+        "type": "object",
+        "required": [
+          "enable-sharing"
+        ],
+        "properties": {
+          "maxRecipients": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true,
+            "description": "Maximum number of recipients when creating a sharing task"
+          },
+          "enable-sharing": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether API endpoints for sharing are enabled"
+          }
+        }
+      },
+      "ChartTemplate": {
+        "type": "object",
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "bdf2efee-815e-4eb7-9e1e-c42d516baf29",
+            "description": "ID of app"
+          },
+          "jsOpts": {
+            "type": "object",
+            "properties": {},
+            "description": "Visualization state from client as a string json value. Can include language, theme, viewState etc."
+          },
+          "outDpi": {
+            "type": "integer",
+            "example": 96,
+            "description": "outDpi of chart"
+          },
+          "outZoom": {
+            "type": "number",
+            "example": 1,
+            "description": "outZoom of chart"
+          },
+          "patches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            },
+            "description": "Soft property changes on chart"
+          },
+          "sheetId": {
+            "type": "string",
+            "example": "bdf2efee-815e-4eb7-9e1e-asdfasdfasdf",
+            "description": "sheetId of app"
+          },
+          "widthPx": {
+            "type": "integer",
+            "example": 1584,
+            "description": "widthPx of chart"
+          },
+          "heightPx": {
+            "type": "integer",
+            "example": 587,
+            "description": "heightPx of chart"
+          },
+          "objectId": {
+            "type": "string",
+            "example": "167f3e67-ff3b-4ead-a09e-e8cc81d8ad78",
+            "description": "ID of object"
+          },
+          "objectDef": {
+            "type": "object",
+            "properties": {},
+            "description": "Session chart object definition"
+          }
+        },
+        "description": "If the template type is not \"chart\", this can be null. Otherwise, the following properties are required: appId, sheetId, objectId, widthPx, heightPx, language. The following properties are optional: outZoom, outDpi"
+      },
+      "EmailAddressRecipientPersist": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "email",
+            "example": "abc@xyz.com",
+            "description": "Email of recipient (external user)."
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient can receive alerts."
+          },
+          "taskRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskRecipientError"
+            }
+          }
+        },
+        "description": "recipient object model that is directly persisted in the DB"
+      },
+      "EmailComposition": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "example": "report body string"
+          },
+          "subject": {
+            "type": "string",
+            "example": "report subject"
+          }
+        },
+        "x-omitempty": false
+      },
+      "EncryptedProperty": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "x-go-type": {
+              "type": "[]byte",
+              "hints": {
+                "kind": "primitive"
+              },
+              "embedded": true
+            }
+          },
+          "cipher": {
+            "type": "string"
+          }
+        },
+        "description": "Encrypted property in DB"
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to sharing service."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Error_meta"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "detail": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      },
+      "Error_meta": {
+        "type": "object",
+        "properties": {
+          "httpCode": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "HTTP error code."
+          }
+        }
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "HTTP-123",
+              "title": "short error message",
+              "details": "detailed error message"
+            }
+          ],
+          "traceId": "7975401f3954aa47"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "GroupIDRecipientPersist": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "group1",
+            "description": "Group ID of recipient."
+          },
+          "enabledByUser": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient can receive alerts, set by api calls."
+          },
+          "enabledBySystem": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient can receive alerts, set by external settings."
+          },
+          "taskGroupRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskGroupRecipientError"
+            }
+          },
+          "alertingTaskGroupRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlertingTaskGroupRecipientError"
+            }
+          }
+        },
+        "description": "recipient object model that is directly persisted in the DB"
+      },
+      "InsightURL": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "successful",
+              "failed"
+            ],
+            "type": "string",
+            "description": "the status of the creation for this insight URL"
+          },
+          "directURL": {
+            "type": "string"
+          },
+          "insightID": {
+            "type": "string"
+          },
+          "resourceID": {
+            "type": "string",
+            "description": "an identifier for the object within the template that this insight link points to"
+          },
+          "templateID": {
+            "type": "string",
+            "description": "an identifier for the template that this insight link points to",
+            "x-qlik-deprecated": true
+          },
+          "fallbackURL": {
+            "type": "string"
+          }
+        },
+        "description": "In case of multiple insight urls for multi-sheet sharing (or subsequent multi types) this defines those URLs and a mapping to the correct object."
+      },
+      "Links": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "$ref": "#/components/schemas/Self"
+          }
+        }
+      },
+      "ListLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Self"
+          }
+        }
+      },
+      "MultiSheetTemplate": {
+        "type": "object",
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "bdf2efee-815e-4eb7-9e1e-c42d516baf29",
+            "description": "ID of app"
+          },
+          "jsOpts": {
+            "type": "object",
+            "properties": {},
+            "description": "Sheet state from client as a string json value. Can include language, theme, viewState etc."
+          },
+          "sheetId": {
+            "type": "string",
+            "example": "39a671a-5f58-468c-bb49-dff933294774",
+            "description": "ID of sheet"
+          },
+          "widthPx": {
+            "type": "integer",
+            "example": 1584,
+            "description": "widthPx of chart, must be 0 or omitted for autofit."
+          },
+          "heightPx": {
+            "type": "integer",
+            "example": 587,
+            "description": "heightPx of chart, must be 0 or omitted for autofit."
+          },
+          "isPrivate": {
+            "type": "boolean",
+            "example": false,
+            "description": "optional value to indicate that this sheet is private",
+            "x-omitempty": true
+          },
+          "sheetName": {
+            "type": "string",
+            "example": "My new sheet",
+            "description": "an optional name for the sheet",
+            "x-omitempty": true
+          },
+          "jsOptsById": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {},
+              "description": "Visualizations state from client as a string json value. Can include language, theme, viewState etc."
+            }
+          },
+          "resizeType": {
+            "enum": [
+              "none",
+              "fit",
+              "autofit"
+            ],
+            "type": "string",
+            "description": "Currently only autofit is supported.\nIf omitted, autofit is the default.\nThe type of resize to be performed:\n  - none is used to export a visualization, sheet as is (e.g. normal size), regardless its size. This may result in cropping.\n  - autofit automatically fits the visualization, sheet into the output size (i.e. A4, A3 etc.). Any provided resizeData parameter will be ignored for this configuration.\n  - fit fits the visualization, sheet into the area specified in resizeData. The content will be rescaled to fit in that area.\n"
+          },
+          "patchesById": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              },
+              "description": "Soft property changes on charts"
+            }
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items?limit=12",
+            "description": "URL to particular set of elements"
+          },
+          "type": {
+            "enum": [
+              "prev",
+              "next"
+            ],
+            "type": "string",
+            "example": "next",
+            "description": "Page type, can be next or prev"
+          },
+          "token": {
+            "type": "string",
+            "example": "JwAAAAJfaWQAGQAAADVjZjUwM2NjMjVkYzlhMTM1MzYwZTVjZAAA",
+            "description": "Page unique token"
+          }
+        }
+      },
+      "RecipientsPersist": {
+        "type": "object",
+        "properties": {
+          "DLUsers": {
+            "type": "array"
+          },
+          "userIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserIDRecipientPersist"
+            }
+          },
+          "DLGroups": {
+            "type": "array"
+          },
+          "groupIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupIDRecipientPersist"
+            }
+          },
+          "emailAddresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailAddressRecipientPersist"
+            }
+          }
+        },
+        "description": "List of persisted recipients."
+      },
+      "RetentionPolicy": {
+        "type": "object",
+        "properties": {
+          "historySize": {
+            "type": "integer",
+            "example": 10,
+            "description": "Number indicating the size of the window which stores the history. For Chart monitoring, the size should be 10."
+          },
+          "overrideInterval": {
+            "type": "string",
+            "default": "FREQ=DAILY;INTERVAL=1",
+            "example": "FREQ=DAILY;INTERVAL=1",
+            "description": "Using RFC-5545 provide the time interval in which the previous generated can be overridden with the newly generated report. For Chart monitoring, interval should be FREQ=DAILY;INTERVAL=1"
+          }
+        }
+      },
+      "ScheduleOptions": {
+        "type": "object",
+        "properties": {
+          "timezone": {
+            "type": "string",
+            "example": "Canada/Pacific",
+            "nullable": true,
+            "description": "The timezone for time calculations in SCHEDULED triggers, optional."
+          },
+          "recurrence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "RRULE:FREQ=HOURLY;INTERVAL=2"
+            ],
+            "description": "List of RRULEs for SCHEDULED triggers, as specified in RFC5545. Note that DTSTART and DTEND, UNTIL lines are not allowed in this field; start and end times are specified in the start and end fields. RDATE and EXDATE lines are not currently supported. EXRULE is not supported since it is deprecated by RFC5545. It is mandatory if the trigger type is SCHEDULED. At least 1 rule must be set and maximum 5 rules are allowed."
+          },
+          "endDateTime": {
+            "type": "string",
+            "default": "",
+            "example": "2026-01-02T16:04:05",
+            "nullable": true,
+            "description": "EndDateTime is a local date time with respect to the above timezone parameter. If the timezone parameter is missing, then the timezone used is the one retrieved from user infos. Therefore ISO8601 time offsets are not allowed (e.g. \"2026-01-02T16:04:05Z\" or \"2026-01-02T16:04:05+01\"), if passed an error will be returned. EndDateTime is an optional parameter, when not set or when it's an empty string, the recurrence is intended to be never ending."
+          },
+          "chronosJobID": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The chronos job identifier. It is set once the related chronos job is created."
+          },
+          "startDateTime": {
+            "type": "string",
+            "example": "2006-01-02T16:04:05",
+            "nullable": true,
+            "description": "StartDateTime is a local date time with respect to the above timezone parameter. If the timezone parameter is missing, then the timezone used is the one retrieved from user infos. Therefore ISO8601 time offsets are not allowed (e.g. \"2026-01-02T16:04:05Z\" or \"2026-01-02T16:04:05+01\"), if passed an error will be returned. StartDateTime should not be older than 1 year from current date. StartDateTime is an optional parameter, when not set or when it's an empty string, its value is set to the current local date time."
+          },
+          "lastExecutionTime": {
+            "type": "string",
+            "example": "2020-11-20T12:00:55.000Z",
+            "nullable": true,
+            "readOnly": true,
+            "description": "lastExecutionTime is the time of the chronos job last execution in RFC3339 format (a time with a fixed UTC offset). Could be empty if job has not run yet."
+          },
+          "nextExecutionTime": {
+            "type": "string",
+            "example": "2020-11-20T12:00:55.000Z",
+            "nullable": true,
+            "readOnly": true,
+            "description": "nextExecutionTime is the time of the chronos job next execution in RFC3339 format (a time with a fixed UTC offset). Could be empty if the job is completed."
+          }
+        }
+      },
+      "Selection": {
+        "type": "object",
+        "required": [
+          "isNumeric",
+          "name",
+          "stateName",
+          "values"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isNumeric": {
+            "type": "boolean"
+          },
+          "stateName": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "displayValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Self": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items/5da5825325dc9a0dd0260af9"
+          }
+        },
+        "description": "Object with Href to a particular element or set of elements"
+      },
+      "SharingActionsTriggerCreateRequest": {
+        "type": "object",
+        "required": [
+          "sharingTaskID"
+        ],
+        "properties": {
+          "sharingTaskID": {
+            "type": "string",
+            "example": "a1b2c3d4f5"
+          }
+        }
+      },
+      "SharingSettings": {
+        "type": "object",
+        "required": [
+          "enable-report-subscription",
+          "enable-reporting-template-subscription",
+          "enable-sharing"
+        ],
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "example": "cgdsAumGmQ6l0Bi7CUKt9V8P_Y9GL0sC",
+            "readOnly": true,
+            "description": "These persisted sharing settings are only available for this tenant. Extracted from request JWT."
+          },
+          "maxRecipients": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true,
+            "description": "Maximum number of recipients when creating a sharing task"
+          },
+          "enable-sharing": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether API endpoints for sharing are enabled"
+          },
+          "reportSubscriptionStatus": {
+            "enum": [
+              "none",
+              "enabling",
+              "disabling"
+            ],
+            "type": "string",
+            "example": "disabling",
+            "readOnly": true,
+            "description": "This indicates that there is an ongoing operation to either disable or enable the report subscription feature. none means that no such operation is ongoing. enabling/disabling means that system is currently enabling/disabling the feature"
+          },
+          "maxSubscriptionRecipients": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "Max Recipients accepted when creating a new subscription (excluding the owner)",
+            "x-omitempty": true
+          },
+          "enable-report-subscription": {
+            "type": "boolean",
+            "example": true,
+            "description": "true if report-subscription feature is enabled for this tenant"
+          },
+          "reporting-service-license-status": {
+            "enum": [
+              "enabled",
+              "disabled"
+            ],
+            "type": "string",
+            "description": "Whether the license for the tenant has the reportingService feature enabled.",
+            "x-omitempty": true
+          },
+          "reportSubscriptionStatusChangeTime": {
+            "type": "string",
+            "example": "2020-09-02T13:44:33Z",
+            "readOnly": true,
+            "description": "UTC timestamp of the most recent change of reportSubscriptionStatus. If there has not been any such change, this is the timestamp of the initial creation of the record."
+          },
+          "reportingTemplateSubscriptionStatus": {
+            "enum": [
+              "none",
+              "enabling",
+              "disabling"
+            ],
+            "type": "string",
+            "example": "disabling",
+            "readOnly": true,
+            "description": "This indicates that there is an ongoing operation to either disable or enable the reporting template subscription feature. none means that no such operation is ongoing. enabling/disabling means that system is currently enabling/disabling the feature"
+          },
+          "enable-reporting-template-subscription": {
+            "type": "boolean",
+            "example": true,
+            "description": "true if reporting-template-subscription feature is enabled for this tenant"
+          },
+          "reportingTemplateSubscriptionStatusChangeTime": {
+            "type": "string",
+            "example": "2020-09-02T13:44:33Z",
+            "readOnly": true,
+            "description": "UTC timestamp of the most recent change of reportSubscriptionStatus. If there has not been any such change, this is the timestamp of the initial creation of the record."
+          }
+        }
+      },
+      "SharingSettingsPatchCompliant": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "enum": [
+              "/enable-sharing",
+              "/enable-report-subscription",
+              "/enable-reporting-template-subscription"
+            ],
+            "type": "string",
+            "description": "The path for the given resource field to patch."
+          },
+          "value": {
+            "type": "object",
+            "properties": {},
+            "description": "The value to be used for this operation."
+          }
+        }
+      },
+      "SharingSettingsPatchCompliantList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SharingSettingsPatchCompliant"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/enable-sharing",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/enable-sharing",
+            "value": false
+          },
+          {
+            "op": "replace",
+            "path": "/enable-report-subscription",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/enable-report-subscription",
+            "value": false
+          },
+          {
+            "op": "replace",
+            "path": "/enable-reporting-template-subscription",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/enable-reporting-template-subscription",
+            "value": false
+          }
+        ],
+        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902."
+      },
+      "SharingTaskPatchRequestCompliantList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SharingTaskRecurringPatchRequestCompliant"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "new name"
+          },
+          {
+            "op": "replace",
+            "path": "/tags",
+            "value": [
+              "tag1",
+              "tag2"
+            ]
+          },
+          {
+            "op": "replace",
+            "path": "/tags",
+            "value": "new-tag"
+          },
+          {
+            "op": "replace",
+            "path": "/tags",
+            "value": "deleted-tag"
+          },
+          {
+            "op": "replace",
+            "path": "/ownerId",
+            "value": "new-owner"
+          },
+          {
+            "op": "replace",
+            "path": "/enabled",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/description",
+            "value": "new-description"
+          }
+        ]
+      },
+      "SharingTaskRecurringCreateRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "state",
+          "templates",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Example Sharing Task",
+            "minLength": 1,
+            "description": "Name of this sharing task"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "used to assign sharing task to a collection bucket (tags)"
+          },
+          "type": {
+            "enum": [
+              "chart-monitoring",
+              "chart-sharing",
+              "sheet-sharing",
+              "template-sharing"
+            ],
+            "type": "string",
+            "description": "the sharing task resource type."
+          },
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "appName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Name of the app associated (through the templates) with this sharing task",
+            "x-qlik-deprecated": true
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "Toggle for enabling sharing task."
+          },
+          "message": {
+            "type": "string",
+            "example": "Look at the presentation.",
+            "maxLength": 280,
+            "description": "Message along with sharing task"
+          },
+          "spaceId": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Space ID of the sharing task"
+          },
+          "subType": {
+            "enum": [
+              "pdf",
+              "pptx",
+              "xlsx",
+              "html"
+            ],
+            "type": "string",
+            "description": "the sharing task resource mashup sub type."
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/Trigger"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Time to start capturing the history"
+          },
+          "templates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateResult"
+            }
+          },
+          "expiration": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the termination of the task"
+          },
+          "recipients": {
+            "$ref": "#/components/schemas/SharingTaskRecurringRecipients"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Description of the sharing task"
+          },
+          "emailContent": {
+            "$ref": "#/components/schemas/EmailComposition"
+          },
+          "retentionPolicy": {
+            "$ref": "#/components/schemas/RetentionPolicy"
+          },
+          "scheduleOptions": {
+            "$ref": "#/components/schemas/ScheduleOptions"
+          },
+          "dataConnectionID": {
+            "type": "string",
+            "description": "the id of the data connection"
+          },
+          "sharePointFolder": {
+            "type": "string",
+            "description": "the SharePoint folder to upload the report to"
+          },
+          "executeOnCreation": {
+            "type": "boolean",
+            "default": true,
+            "description": "making this true will execute the sharing task upon creation regardless of next trigger"
+          },
+          "transportChannels": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "email",
+                "sharepoint"
+              ],
+              "type": "string"
+            },
+            "description": "the transport type for the report"
+          },
+          "distributionListId": {
+            "type": "string",
+            "example": "mpoXaH22_vLR1pStfI7oUdGya1nKK24",
+            "description": "the id of the distribution list associated to the app"
+          }
+        }
+      },
+      "SharingTaskRecurringListResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StandardListResponseProps"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "links": {
+                "$ref": "#/components/schemas/ListLinks"
+              },
+              "recipients": {
+                "$ref": "#/components/schemas/SharingTaskRecurringRecipients"
+              },
+              "sharingTasks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SharingTaskRecurringResponse"
+                },
+                "description": "Gets a list of recurring sharing tasks."
+              }
+            }
+          }
+        ]
+      },
+      "SharingTaskRecurringPatchRequestCompliant": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed"
+          },
+          "path": {
+            "enum": [
+              "/name",
+              "/tags",
+              "/ownerId",
+              "/enabled",
+              "/description",
+              "/scheduleOptions",
+              "/templates",
+              "/recipients",
+              "/recipient",
+              "/sharePointFolder",
+              "/dataConnectionID",
+              "/transportChannels"
+            ],
+            "type": "string",
+            "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902"
+          },
+          "value": {
+            "type": "object",
+            "properties": {},
+            "description": "The value to be used for this operation."
+          }
+        }
+      },
+      "SharingTaskRecurringPersist": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Gets the sharing task resource identifier.",
+            "x-go-custom-tag": "bson:\"_id\""
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of this sharing task"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "type": {
+            "enum": [
+              "chart-monitoring",
+              "chart-sharing",
+              "sheet-sharing",
+              "template-sharing"
+            ],
+            "type": "string",
+            "description": "The sharing task resource type"
+          },
+          "appId": {
+            "type": "string",
+            "description": "ID of the app associated (through the templates) with this sharing task"
+          },
+          "owner": {
+            "type": "string",
+            "example": "pXVNKqotgEMwbKwhz2agPE4yFelnPcWO",
+            "description": "User id of owner of the sharing task"
+          },
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "tenant": {
+            "type": "string",
+            "example": "_mpoXaH22_vLR1pStfI7oUdGya1nKK24",
+            "description": "Tenant of the sharing task"
+          },
+          "appName": {
+            "type": "string",
+            "description": "Name of the app associated (through the templates) with this sharing task"
+          },
+          "lastRun": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "The last execution start date time timestamp of the task"
+          },
+          "message": {
+            "type": "string",
+            "example": "Look at the presentation.",
+            "maxLength": 280,
+            "description": "Message along with sharing task"
+          },
+          "spaceId": {
+            "type": "string",
+            "description": "spaceId of the app associated to this task definition"
+          },
+          "subType": {
+            "enum": [
+              "pdf",
+              "pptx",
+              "xlsx",
+              "html"
+            ],
+            "type": "string",
+            "readOnly": true,
+            "description": "Mashup subType of sharing task"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/Trigger"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "ID of creator",
+            "x-omitempty": false
+          },
+          "insightID": {
+            "type": "string",
+            "description": "The identifier for the insight URLs in this sharing task. Needed to remove the permanent insight upon task deletion. (currently not used in multi-sheet scenarios)"
+          },
+          "ownerName": {
+            "type": "string",
+            "example": "Harley Kiffe",
+            "description": "User name of owner of the sharing task"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Time to start capturing the history"
+          },
+          "templates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateResult"
+            }
+          },
+          "thumbnail": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "ID of a user that updated this task last",
+            "x-omitempty": false
+          },
+          "expiration": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Time for the termination of the task"
+          },
+          "recipients": {
+            "$ref": "#/components/schemas/RecipientsPersist"
+          },
+          "statusCode": {
+            "enum": [
+              "CHART_NOT_FOUND",
+              "APP_NOT_FOUND",
+              "STORY_NOT_FOUND",
+              "SHEET_NOT_FOUND",
+              "ENGINE_POD_NOT_AVAILABLE",
+              "APP_FORBIDDEN",
+              "CHART_TYPE_NOT_ALLOWED",
+              "FAILED",
+              "DELETING",
+              "IN_PROGRESS",
+              "VALID",
+              "MAX_FAILURES_REACHED",
+              "BOOKMARK_NOT_FOUND",
+              "CANCELLING",
+              "CANCELLED",
+              "REPORTING_CONSUMPTION_EXCEEDED",
+              "REPORTING_CAPABILITY_NOT_FOUND"
+            ],
+            "type": "string",
+            "readOnly": true,
+            "description": "the status of this recurring sharing task"
+          },
+          "taskErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskError"
+            }
+          },
+          "templateId": {
+            "type": "string",
+            "example": "da5825325dc9a0dd0260af9",
+            "readOnly": true,
+            "description": "ID of unique template"
+          },
+          "dateCreated": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the task"
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of this sharing task"
+          },
+          "lastUpdated": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp of the most recent update."
+          },
+          "statusLabel": {
+            "type": "string",
+            "readOnly": true,
+            "description": "error message indicating the underlying failure"
+          },
+          "emailContent": {
+            "$ref": "#/components/schemas/EmailComposition"
+          },
+          "enabledByUser": {
+            "type": "boolean",
+            "example": true,
+            "description": "Toggle for enabling sharing task (user level). Example: user chooses to enable/ disable task."
+          },
+          "encryptedState": {
+            "$ref": "#/components/schemas/EncryptedProperty"
+          },
+          "byokMigrationId": {
+            "type": "string",
+            "description": "internal identifier used when migrating keys"
+          },
+          "enabledBySystem": {
+            "type": "boolean",
+            "example": true,
+            "description": "Toggle for enabling sharing task (system level). Example: when task owner gets enabled/ disabled."
+          },
+          "retentionPolicy": {
+            "$ref": "#/components/schemas/RetentionPolicy"
+          },
+          "scheduleOptions": {
+            "$ref": "#/components/schemas/ScheduleOptions"
+          },
+          "selectionErrors": {
+            "type": "object",
+            "properties": {},
+            "description": "reporting service returns rendering errors for missing selections"
+          },
+          "dataConnectionID": {
+            "type": "string",
+            "description": "the id of the data connection"
+          },
+          "hasSectionAccess": {
+            "type": "boolean",
+            "description": "true if the associated app has section access enabled"
+          },
+          "insightDirectURL": {
+            "type": "string",
+            "description": "The direct insights URL for the first template of this sharing task. (currently not used in multi-sheet scenarios)"
+          },
+          "multiInsightURLs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InsightURL"
+            },
+            "description": "Contains one or more insight links. Currently only used in multi sheet scenarios. Sharing will ensure that the persisted sort order is aligned to the order of sheets provided."
+          },
+          "nextScheduledRun": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Time for the next scheduled run"
+          },
+          "reportProperties": {
+            "type": "object",
+            "properties": {}
+          },
+          "sharePointFolder": {
+            "type": "string",
+            "description": "the SharePoint folder to upload the report to"
+          },
+          "executeOnCreation": {
+            "type": "boolean",
+            "description": "making this true will execute the sharing task upon creation regardless of next trigger"
+          },
+          "lastExecutionDate": {
+            "type": "string",
+            "example": "2019-10-15T16:09:01.492Z",
+            "readOnly": true,
+            "description": "The last execution end date time timestamp of the task"
+          },
+          "transportChannels": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "email",
+                "sharepoint"
+              ],
+              "type": "string"
+            },
+            "description": "the transport type for the report"
+          },
+          "distributionListId": {
+            "type": "string",
+            "example": "vXVNKqotgEMwbKwhz2agPE4yFelnPcWX",
+            "description": "the id of the distribution list associated to the app"
+          },
+          "encryptedTemplates": {
+            "$ref": "#/components/schemas/EncryptedProperty"
+          },
+          "insightFallbackURL": {
+            "type": "string",
+            "description": "The insights fallback URL for the first template of this sharing task. (currently not used in multi-sheet scenarios)"
+          },
+          "encryptedEmailContent": {
+            "$ref": "#/components/schemas/SharingTaskRecurringPersist_encryptedEmailContent"
+          },
+          "failedExecutionsCount": {
+            "type": "integer",
+            "description": "the number of consecutive failed executions for all recipeints. This is reset on a successful execution for at least one recipient"
+          },
+          "failedVerificationsCount": {
+            "type": "integer",
+            "description": "the number of failed verifications. This is reset on a successful verification"
+          },
+          "isCandidateForVerification": {
+            "type": "boolean",
+            "description": "true if the sharing task is a candidate for verification"
+          },
+          "persistentBookmarkIncludeVariables": {
+            "type": "boolean",
+            "description": "flag sent by UI to configure the persistent bookmark to use variables"
+          }
+        },
+        "description": "Type of object stored in the database. Required fields mean that property cannot be null"
+      },
+      "SharingTaskRecurringPersist_encryptedEmailContent": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/components/schemas/EncryptedProperty"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/EncryptedProperty"
+          }
+        },
+        "description": "the subject and body content for the email to send on report subscriptions"
+      },
+      "SharingTaskRecurringRecipients": {
+        "type": "object",
+        "properties": {
+          "DLUsers": {
+            "type": "array"
+          },
+          "userIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserIDRecipient"
+            }
+          },
+          "DLGroups": {
+            "type": "array"
+          },
+          "emailAddresses": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "email",
+              "example": "abc@xyz.com",
+              "description": "Email of recipient (external user)."
+            }
+          }
+        },
+        "description": "List of recipients. An internal recipient is represented by their user id."
+      },
+      "SharingTaskRecurringResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SharingTaskRecurringPersist"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "links": {
+                "$ref": "#/components/schemas/Links"
+              },
+              "enabled": {
+                "type": "boolean",
+                "description": "true if the sharing task is enabled"
+              },
+              "latestExecutionURL": {
+                "type": "string",
+                "description": "URL to querying the latest execution tied to this sharing task"
+              },
+              "latestExecutionFilesURL": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "URL to querying the files of the latest execution tied to this sharing task"
+              }
+            }
+          }
+        ],
+        "description": "Whatever is persisted in the db + links"
+      },
+      "SheetTemplate": {
+        "type": "object",
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "bdf2efee-815e-4eb7-9e1e-c42d516baf29",
+            "description": "ID of app"
+          },
+          "jsOpts": {
+            "type": "object",
+            "properties": {},
+            "description": "Sheet state from client as a string json value. Can include language, theme, viewState etc."
+          },
+          "sheetId": {
+            "type": "string",
+            "example": "39a671a-5f58-468c-bb49-dff933294774",
+            "description": "ID of sheet"
+          },
+          "widthPx": {
+            "type": "integer",
+            "example": 1584,
+            "description": "widthPx of chart"
+          },
+          "heightPx": {
+            "type": "integer",
+            "example": 587,
+            "description": "heightPx of chart"
+          },
+          "isPrivate": {
+            "type": "boolean",
+            "example": false,
+            "description": "optional value to indicate that this sheet is private (used in multi-sheet sharing)",
+            "x-omitempty": true,
+            "x-qlik-deprecated": true
+          },
+          "sheetName": {
+            "type": "string",
+            "example": "My new sheet",
+            "description": "an optional name for the sheet (used in multi-sheet sharing)",
+            "x-omitempty": true,
+            "x-qlik-deprecated": true
+          },
+          "jsOptsById": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {},
+              "description": "Visualizations state from client as a string json value. Can include language, theme, viewState etc."
+            }
+          },
+          "patchesById": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              },
+              "description": "Soft property changes on charts"
+            }
+          }
+        },
+        "x-qlik-deprecated": true
+      },
+      "StandardListResponseProps": {
+        "type": "object",
+        "required": [
+          "currentPageCount",
+          "totalCount"
+        ],
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "description": "total count of entries in the collection as a whole"
+          },
+          "currentPageCount": {
+            "type": "integer",
+            "description": "count of entries on the currently shown page"
+          }
+        },
+        "description": "properties that should be added to every list response"
+      },
+      "State": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            },
+            "description": "Selected fields that led to discovery of monitored Insight Advisor chart"
+          },
+          "queryItems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            },
+            "description": "Query that led to discovery of monitored Insight Advisor chart"
+          },
+          "selections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Selection"
+            }
+          }
+        },
+        "description": "State of the selections and jsOpts"
+      },
+      "StoryTemplate": {
+        "type": "object",
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "bdf2efee-815e-4eb7-9e1e-c42d516baf29",
+            "description": "ID of app"
+          },
+          "storyId": {
+            "type": "string",
+            "example": "39a671a-5f58-468c-bb49-dff933294774",
+            "description": "ID of story"
+          }
+        }
+      },
+      "TaskError": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "enum": [
+              "OWNER_DISABLED",
+              "OWNER_ACCESS",
+              "OWNER_LICENSE",
+              "APP_DELETED",
+              "NO_RECIPIENTS",
+              "PARTIAL_ACCESS",
+              "ORPHAN",
+              "PARTIAL_SENT",
+              "FATAL_SENT_ERROR",
+              "SECTION_ACCESS_MODIFIED",
+              "INVALID_DISTRIBUTION_LIST",
+              "MAX_DL_RECIPIENTS_LIMIT_REACHED",
+              "TEMPLATE_NOT_FOUND",
+              "REPORTING_BOOKMARK_NOT_FOUND",
+              "DATA_CONNECTION_NOT_FOUND",
+              "INVALID_SHAREPOINT_DIRECTORY",
+              "GENERIC_FILE_UPLOAD_ERROR",
+              "DISABLED_DUE_TO_OWNERSHIP_CHANGE",
+              "REPORTING_CONSUMPTION_EXCEEDED",
+              "REPORTING_CAPABILITY_NOT_FOUND",
+              "EXECUTION_TIME_OUT",
+              "OWNER_INSUFFICIENT_PERMISSIONS",
+              "MAX_UNIQUE_REPORTS_LIMIT_REACHED",
+              "MISSING_DISTRIBUTION_LIST",
+              "SECTION_ACCESS_NOT_SUPPORTED"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on sharing task"
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          }
+        }
+      },
+      "TaskGroupRecipientError": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "enum": [
+              "GROUP_IS_DISABLED",
+              "MAX_ALERTS_LIMIT_REACHED",
+              "GROUP_WITH_NO_APP_ACCESS",
+              "GROUP_IS_DELETED",
+              "GROUP_NOT_FOUND_DL",
+              "GROUP_DISABLED_IN_DL"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on sharing task specific for group recipient"
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          }
+        }
+      },
+      "TaskRecipientError": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "enum": [
+              "USER_IS_DELETED",
+              "USER_DISABLED_IN_QCS",
+              "NO_ACCESS_TO_APP",
+              "UNSUBSCRIBED_FROM_SHARING",
+              "USER_DISABLED_IN_SHARING_BY_OWNER",
+              "CHART_NOT_FOUND",
+              "APP_NOT_FOUND",
+              "SHEET_NOT_FOUND",
+              "ENGINE_POD_NOT_AVAILABLE",
+              "CHART_TYPE_NOT_ALLOWED",
+              "GENERIC_EXECUTION_FAILURE",
+              "USER_NOT_FOUND_DL",
+              "USER_DISABLED_IN_DL",
+              "FILTER_NOT_FOUND",
+              "BOOKMARK_NOT_FOUND"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on sharing task specific for recipient"
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          }
+        }
+      },
+      "TemplatePersist": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "file",
+              "chart",
+              "story",
+              "sheet",
+              "multi-sheet",
+              "excel",
+              "pixel-perfect",
+              "html"
+            ],
+            "type": "string",
+            "example": "file"
+          },
+          "subType": {
+            "enum": [
+              "image",
+              "snapshot",
+              "pdf",
+              "pptx",
+              "xlsx",
+              "qpxp",
+              "qhtml"
+            ],
+            "type": "string",
+            "default": "image"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "fileName to be used when generating the report"
+          },
+          "chartData": {
+            "$ref": "#/components/schemas/ChartTemplate"
+          },
+          "fileAlias": {
+            "type": "string",
+            "description": "fileAlias provide an opaqueId for the client which can be used to filter and select the report generated"
+          },
+          "sheetData": {
+            "$ref": "#/components/schemas/SheetTemplate"
+          },
+          "storyData": {
+            "$ref": "#/components/schemas/StoryTemplate"
+          },
+          "templateId": {
+            "type": "string",
+            "example": "da5825325dc9a0dd0260af9",
+            "readOnly": true,
+            "description": "ID of unique template",
+            "x-qlik-deprecated": true
+          },
+          "fileTimeStamp": {
+            "enum": [
+              "yyyy-MM-dd",
+              "yyyy-MM-dd_HH-mm",
+              "yyyyMMdd",
+              "yyyyMMdd_HH-mm"
+            ],
+            "type": "string",
+            "description": "file name timestamp to be used when generating the report"
+          },
+          "multiSheetData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MultiSheetTemplate"
+            },
+            "description": "array of sheet data for multi-sheet type template"
+          }
+        },
+        "description": "Depending on the value of type, sharing service will internally validate a specific property regarding its data. Type \"file\" validates property \"fileData\", type \"chart\" validates property \"chartData\", type \"story\" validates property \"storyData\". Check description of each of the models for their required properties."
+      },
+      "TemplateResult": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TemplatePersist"
+          },
+          {}
+        ]
+      },
+      "Trigger": {
+        "type": "object",
+        "required": [
+          "recurrence"
+        ],
+        "properties": {
+          "recurrence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "description": "List of RRULE lines for a recurring event, as specified in RFC5545. Note that DTSTART and DTEND, UNTIL lines are not allowed in this field; event start and end times are specified in the start and end fields. RDATE and EXDATE lines are not currently supported. EXRULE is not supported since it is deprecated by RFC5545. This field is omitted for single events."
+          },
+          "chronosJobID": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The chronosJobId which triggers the sharing task",
+            "x-omitempty": false
+          },
+          "executeOnAppReload": {
+            "type": "boolean",
+            "default": true,
+            "description": "Toggle for executing sharing task on app reload."
+          },
+          "executionHistoryInterval": {
+            "enum": [
+              "minutely",
+              "hourly",
+              "daily",
+              "weekly",
+              "monthly",
+              "quarterly",
+              "yearly"
+            ],
+            "type": "string",
+            "description": "To prevent overflow in the history, setting this to daily store the chart of a previous day in the history and maintain the live version with the tag latest."
+          }
+        }
+      },
+      "UserIDRecipient": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "1b263bs8m0mm_s21s3f",
+            "description": "User ID of recipient (internal user)."
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "addedIndividually",
+              "group1",
+              "group2"
+            ],
+            "description": "A list of associated groups. If a user is added individually the \"addedIndividually\" pseudo group is included"
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient can receive alerts."
+          },
+          "subscribed": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient is subscribed to alerts of a task"
+          },
+          "taskRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskRecipientError"
+            },
+            "nullable": true
+          },
+          "alertingTaskRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlertingTaskRecipientError"
+            }
+          }
+        },
+        "description": "an internal recipient based on its user id."
+      },
+      "UserIDRecipientPersist": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "1b263bs8m0mm_s21s3f",
+            "description": "User ID of recipient (internal user)."
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "addedIndividually",
+              "group1",
+              "group2"
+            ],
+            "description": "A list of associated groups. If a user is added individually the \"addedIndividually\" pseudo group is included"
+          },
+          "subscribed": {
+            "type": "boolean",
+            "description": "Whether this user is subscribed to alerts in this task"
+          },
+          "enabledByUser": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient can receive alerts, set by api calls."
+          },
+          "enabledBySystem": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient can receive alerts, set by external settings."
+          },
+          "taskRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskRecipientError"
+            }
+          },
+          "alertingTaskRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlertingTaskRecipientError"
+            }
+          }
+        },
+        "description": "recipient object model that is directly persisted in the DB"
+      }
+    }
+  }
+}

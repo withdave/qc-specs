@@ -1,0 +1,934 @@
+{
+  "info": {
+    "title": "csp-origins",
+    "version": ""
+  },
+  "paths": {
+    "/v1/csp-origins": {
+      "get": {
+        "tags": [
+          "csp-origins"
+        ],
+        "summary": "List CSPs",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CSPEntryList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "childSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'childSrc', true/false."
+          },
+          {
+            "in": "query",
+            "name": "connectSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'connectSrc', true/false."
+          },
+          {
+            "in": "query",
+            "name": "connectSrcWSS",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'connectSrcWSS', true/false."
+          },
+          {
+            "in": "query",
+            "name": "fontSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'fontSrc', true/false."
+          },
+          {
+            "in": "query",
+            "name": "formAction",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'formAction', true/false."
+          },
+          {
+            "in": "query",
+            "name": "frameAncestors",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'frameAncestors', true/false."
+          },
+          {
+            "in": "query",
+            "name": "frameSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'frameSrc', true/false."
+          },
+          {
+            "in": "query",
+            "name": "imgSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'imgSrc', true/false."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "Maximum number of CSP-Origins to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "mediaSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'mediaSrc', true/false."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by name (wildcard and case insensitive)."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cursor to the next page."
+          },
+          {
+            "in": "query",
+            "name": "objectSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'objectSrc', true/false."
+          },
+          {
+            "in": "query",
+            "name": "origin",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by origin (wildcard and case insensitive)."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cursor to previous next page."
+          },
+          {
+            "in": "query",
+            "name": "scriptSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'scriptSrc', true/false."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "name",
+                "-name",
+                "origin",
+                "-origin",
+                "createdDate",
+                "-createdDate",
+                "modifiedDate",
+                "-modifiedDate"
+              ],
+              "type": "string"
+            },
+            "description": "Field to sort by, prefix with -/+ to indicate order."
+          },
+          {
+            "in": "query",
+            "name": "styleSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'styleSrc', true/false."
+          },
+          {
+            "in": "query",
+            "name": "workerSrc",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by directive 'workerSrc', true/false."
+          }
+        ],
+        "description": "Retrieves all content security policies for a tenant.",
+        "operationId": "listCSPEntries",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/embed"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "csp-origins"
+        ],
+        "summary": "Create a new CSP",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CSPEntry"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "description": "Creates a new content security policy for an origin.",
+        "operationId": "createCSPEntry",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CSPEntryContent"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/embed"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/csp-origins/{id}": {
+      "get": {
+        "tags": [
+          "csp-origins"
+        ],
+        "summary": "Get a CSP",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CSPEntry"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The CSP entry's unique identifier."
+          }
+        ],
+        "description": "Returns details for a specific content security policy.",
+        "operationId": "getCSPEntry",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/embed"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "csp-origins"
+        ],
+        "summary": "Update a CSP",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CSPEntry"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The CSP entry's unique identifier."
+          }
+        ],
+        "description": "Updates a content security policy.",
+        "operationId": "updateCSPEntry",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CSPEntryContent"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/embed"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "csp-origins"
+        ],
+        "summary": "Delete a CSP",
+        "responses": {
+          "204": {
+            "description": "No Content response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The CSP entry's unique identifier."
+          }
+        ],
+        "description": "Deletes a specific content security policy.",
+        "operationId": "deleteCSPEntry",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/embed"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/csp-origins/actions/generate-header": {
+      "get": {
+        "tags": [
+          "csp-origins"
+        ],
+        "summary": "Retrieve CSP header",
+        "responses": {
+          "200": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CSPHeader"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Accept",
+            "schema": {
+              "enum": [
+                "application/json",
+                "text/plain"
+              ],
+              "type": "string",
+              "default": "application/json"
+            },
+            "description": "The Accept request HTTP header indicates which content types, expressed as MIME types, the client is able to understand"
+          }
+        ],
+        "description": "Retrieves the full content security policy header (including all configured policies and origins) for the tenant.",
+        "operationId": "getCSPHeader",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/embed"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/embed"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "CSPEntry": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CSPEntryContent"
+          }
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The CSP entry's unique identifier."
+          }
+        }
+      },
+      "CSPEntryContent": {
+        "type": "object",
+        "required": [
+          "origin"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "The name for this entry."
+          },
+          "imgSrc": {
+            "type": "boolean",
+            "description": "Specifies valid sources of images and favicons."
+          },
+          "origin": {
+            "type": "string",
+            "maxLength": 256,
+            "description": "The origin that the CSP directives should be applied to."
+          },
+          "fontSrc": {
+            "type": "boolean",
+            "description": "Specifies valid sources for loading fonts."
+          },
+          "childSrc": {
+            "type": "boolean",
+            "description": "Defines the valid sources for loading web workers and nested browsing contexts using elements such as frame and iFrame."
+          },
+          "frameSrc": {
+            "type": "boolean",
+            "description": "Specifies valid sources for loading nested browsing contexts using elements such as frame and iFrame."
+          },
+          "mediaSrc": {
+            "type": "boolean",
+            "description": "Specifies valid sources for loading media using the audio and video elements."
+          },
+          "styleSrc": {
+            "type": "boolean",
+            "description": "Specifies valid sources for stylesheets."
+          },
+          "objectSrc": {
+            "type": "boolean",
+            "description": "Specifies valid sources for the object, embed, and applet elements."
+          },
+          "scriptSrc": {
+            "type": "boolean",
+            "description": "Specifies valid sources for JavaScript."
+          },
+          "workerSrc": {
+            "type": "boolean",
+            "description": "Specifies valid sources for Worker, SharedWorker, or ServiceWorker scripts."
+          },
+          "connectSrc": {
+            "type": "boolean",
+            "description": "Restricts the URLs that can be loaded using script interfaces."
+          },
+          "formAction": {
+            "type": "boolean",
+            "description": "Allow forms to be submitted to the origin."
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the CSP entry was created."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "The reason for adding this origin to the Content Security Policy."
+          },
+          "modifiedDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the CSP entry was last modified."
+          },
+          "connectSrcWSS": {
+            "type": "boolean",
+            "description": "Restricts the URLs that can be connected to websockets (all sources will be prefixed with 'wss://')."
+          },
+          "frameAncestors": {
+            "type": "boolean",
+            "description": "Specifies valid sources for embedding the resource using frame, iFrame, object, embed and applet."
+          }
+        }
+      },
+      "CSPEntryList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CSPEntry"
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        }
+      },
+      "CSPHeader": {
+        "type": "object",
+        "properties": {
+          "Content-Security-Policy": {
+            "type": "string",
+            "description": "The compiled CSP header."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The unique code for the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of what went wrong."
+          },
+          "detail": {
+            "type": "string",
+            "description": "May be used to provide additional details."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "URL to a resource request."
+          }
+        }
+      }
+    }
+  }
+}

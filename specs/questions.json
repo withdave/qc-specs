@@ -1,0 +1,967 @@
+{
+  "info": {
+    "title": "questions",
+    "version": ""
+  },
+  "paths": {
+    "/v1/questions/actions/ask": {
+      "post": {
+        "tags": [
+          "questions"
+        ],
+        "summary": "Returns the generated response for parsed chat queries, if no app was specified nor present in conversation context, suggests matching apps.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryNotCreated"
+                }
+              }
+            },
+            "description": "The sentence is not created as an app was not specified, but matching apps are suggested"
+          },
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryCreated"
+                }
+              }
+            },
+            "description": "The sentence created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request. The payload is not formed correctly."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "User is not authorized"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unprocessable entity. The payload contains fields\nthat are invalid, such as too long of a query.\n"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "qlik-web-integration-id",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "This header is only required for external clients or mashups for QCS, this value of this property should be the id of the web integration set up for the external client/mashup"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/embed"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/questions/actions/filter": {
+      "post": {
+        "tags": [
+          "questions"
+        ],
+        "summary": "Returns NL metrics based on provided app IDs the user has access to.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NLMetricsResponse"
+                }
+              }
+            },
+            "description": "If the user has access to any of the provided app id"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request. The payload is not formed correctly."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "User is not authorized"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unprocessable entity. The payload contains fields\nthat are invalid, such as too long of a query.\n"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The preferred number of entries returned"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A cursor pointing to the page of data to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "createdAt",
+                "updatedAt",
+                "+createdAt",
+                "+updatedAt",
+                "-createdAt",
+                "-updatedAt"
+              ],
+              "type": "string",
+              "default": "+createdAt"
+            },
+            "required": false,
+            "description": "A single field from the data model on which to sort the response. The '+' or '-' operator may be used to specify ascending or desending order.\n"
+          }
+        ],
+        "operationId": "filterMetrics",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NLMetricsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/embed"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/embed"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Analysis": {
+        "enum": [
+          "breakdown",
+          "changePoint",
+          "comparison",
+          "contribution",
+          "correlation",
+          "fact",
+          "mutualInfo",
+          "rank",
+          "spike",
+          "trend",
+          "values"
+        ],
+        "type": "string"
+      },
+      "AnalysisGroup": {
+        "enum": [
+          "anomaly",
+          "brekadown",
+          "comparison",
+          "correl",
+          "fact",
+          "list",
+          "mutualInfo",
+          "rank"
+        ],
+        "type": "string"
+      },
+      "AppMetadata": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "space_id": {
+            "type": "string"
+          },
+          "space_name": {
+            "type": "string"
+          },
+          "space_type": {
+            "type": "string"
+          },
+          "limited_access": {
+            "type": "boolean"
+          },
+          "last_reload_date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "description": "Metadata for app"
+      },
+      "ChartType": {
+        "enum": [
+          "barchart",
+          "combochart",
+          "distributionplot",
+          "kpi",
+          "linechart",
+          "map",
+          "scatterplot",
+          "table"
+        ],
+        "type": "string",
+        "description": "Chart type given to current recommendation"
+      },
+      "ConversationalResponsePart": {
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "infoType": {
+            "type": "string"
+          },
+          "sentence": {
+            "properties": {
+              "text": {
+                "type": "string"
+              }
+            }
+          },
+          "narrative": {
+            "$ref": "#/components/schemas/NarrativeResponse"
+          },
+          "infoValues": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QlikApp"
+                  }
+                }
+              ]
+            }
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "followupSentence": {
+            "type": "string"
+          },
+          "renderVisualization": {
+            "$ref": "#/components/schemas/RenderVisualization"
+          }
+        },
+        "x-qlik-visibility": "public"
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON Pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          }
+        },
+        "description": "An error object.",
+        "x-qlik-visibility": "public"
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        },
+        "x-qlik-visibility": "public"
+      },
+      "Href": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://example.com"
+          }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Href"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Href"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Href"
+          }
+        }
+      },
+      "NarrativeResponse": {
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "x-qlik-visibility": "public"
+      },
+      "NLMetricRecommendation": {
+        "type": "object",
+        "properties": {
+          "dims": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Dimension(s) considered for recommendation"
+          },
+          "msrs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Measure(s) considered for recommendation"
+          },
+          "analysis": {
+            "$ref": "#/components/schemas/Analysis"
+          },
+          "chartType": {
+            "$ref": "#/components/schemas/ChartType"
+          },
+          "relevance": {
+            "type": "number"
+          },
+          "analysisGroup": {
+            "$ref": "#/components/schemas/AnalysisGroup"
+          }
+        },
+        "description": "Visualisation recommendation specs for the query"
+      },
+      "NLMetricRecord": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "appId",
+          "questionId",
+          "version"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique record id stored in database"
+          },
+          "apps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppMetadata"
+            }
+          },
+          "lang": {
+            "type": "string",
+            "description": "language selected for query from insight advisor or insight advisor chat or third party api"
+          },
+          "appId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Qlik sense app id that is being used to answer the question"
+          },
+          "appName": {
+            "type": "string",
+            "description": "Qlik sense app name that is being used to answer the question"
+          },
+          "nluInfo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartialNluInfo"
+            }
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the metric model"
+          },
+          "feedback": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecFeedback"
+            }
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Qlik sense tenant Id"
+          },
+          "channelId": {
+            "type": "string",
+            "description": "Source from which conversation is happening"
+          },
+          "chartType": {
+            "type": "string",
+            "description": "Chart type for given query. For insight advisor it would be 'native' and for insight advisor chat, it could be 'static' or 'responsive'"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Record created date",
+            "x-qlik-filterable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Qlik sense user id who is interacting with insight advisor or insight advisor chat or third party api"
+          },
+          "queryText": {
+            "type": "string",
+            "description": "Query asked by user in insight advisor or insight advisor or third party api"
+          },
+          "queryType": {
+            "enum": [
+              "appList",
+              "appSuggested",
+              "dimensionList",
+              "exploreThisFurther",
+              "followup",
+              "greetings",
+              "measureList",
+              "query",
+              "sampleQuestion"
+            ],
+            "type": "string",
+            "description": "Nature of query being asked during the conversation e.g. query, applist, measurelist, dimensionlist"
+          },
+          "responses": {
+            "$ref": "#/components/schemas/NLResponses"
+          },
+          "stopWords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tokens from question parsed which are ignored"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Record modified date",
+            "x-qlik-filterable": true
+          },
+          "queryError": {
+            "type": "boolean",
+            "default": false
+          },
+          "questionId": {
+            "type": "string",
+            "description": "Unique id assigned to user query"
+          },
+          "queryOrigin": {
+            "enum": [
+              "askQuestion",
+              "iaAnalysis",
+              "iaAssetsPanel"
+            ],
+            "type": "string",
+            "default": "askQuestion",
+            "description": "Refers to source from where narrative request is called"
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NLMetricRecommendation"
+            }
+          },
+          "isContextualQuery": {
+            "type": "boolean",
+            "default": false,
+            "description": "Boolean value indicates whether given query is contextual or not. It would be false for insight advisor"
+          },
+          "unmatchedEntities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tokens parsed as entities but not matched with app's field/dimension/measure"
+          }
+        }
+      },
+      "NLMetricsRequest": {
+        "required": [
+          "filter"
+        ],
+        "properties": {
+          "filter": {
+            "type": "string",
+            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://www.rfc-editor.org/rfc/rfc7644#section-3.4.2.2) for the syntax.\n\nFilter on createdAt and updatedAt fields are encouraged and support `eq`, `ne`, `gt`, `ge`, `lt`, `le` comparison operators along with `and` and `or` logical operators.\n\nFilter on tenantId field is not supported.\n\n`co`, `sw` and `ew` operators are not supported.\n\nExamples:\n```\nappId eq 'appId1'\n```\n```\n(appId eq 'appId1' or appId eq 'appId2')\n```\n```\n(appId eq 'appId1' or appId eq 'appId2') and (createdAt gt '2022-08-03T00:00:00.000Z' and createdAt lt '2022-08-04T00:00:00.000Z')\n```\n\n```\n(appId eq 'appId1') and (createdAt ge '2022-08-03T00:00:00.000Z')\n```\n\n```\n(appId eq 'appId1') and (createdAt le '2022-08-23:59:59.000Z')\n```\n\n```\n(appId eq 'appId1') and (questionId eq '12345')\n```\n"
+          }
+        }
+      },
+      "NLMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NLMetricRecord"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "total"
+            ],
+            "properties": {
+              "total": {
+                "type": "integer",
+                "description": "The total number of metrics matching the current filter."
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "NLResponses": {
+        "type": "object",
+        "properties": {
+          "hasChart": {
+            "type": "boolean",
+            "description": "Chart was provided"
+          },
+          "hasInsights": {
+            "type": "boolean",
+            "description": "Narrative was provided"
+          },
+          "hasSuggestions": {
+            "type": "boolean",
+            "description": "Suggestion questions was provided"
+          },
+          "hasMetadataApps": {
+            "type": "boolean",
+            "description": "App list was provided"
+          },
+          "hasSampleQueries": {
+            "type": "boolean",
+            "description": "Sample questions was provided"
+          },
+          "hasMetadataMeasures": {
+            "type": "boolean",
+            "description": "Measures list was provided"
+          },
+          "hasMetadataDimensions": {
+            "type": "boolean",
+            "description": "Dimensions list was provided"
+          }
+        },
+        "description": "Provides info what was included in response for given query"
+      },
+      "NluInfo": {
+        "properties": {
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NluInfoElements"
+            }
+          }
+        },
+        "x-qlik-visibility": "public"
+      },
+      "NluInfoElements": {
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "entity": {
+            "type": "boolean"
+          },
+          "isFilter": {
+            "type": "boolean"
+          },
+          "typeName": {
+            "type": "string"
+          },
+          "errorText": {
+            "type": "string"
+          },
+          "filterText": {
+            "type": "string"
+          },
+          "typeTranslated": {
+            "type": "string"
+          },
+          "filterFieldName": {
+            "type": "string"
+          }
+        },
+        "x-qlik-visibility": "public"
+      },
+      "PartialNluInfo": {
+        "properties": {
+          "role": {
+            "enum": [
+              "dimension",
+              "measure",
+              "date"
+            ],
+            "type": "string",
+            "description": "Role of the token or phrase from query"
+          },
+          "text": {
+            "type": "string",
+            "description": "Matching token or phrase from query"
+          },
+          "type": {
+            "enum": [
+              "field",
+              "filter",
+              "master_dimension",
+              "master_measure",
+              "custom_analysis"
+            ],
+            "type": "string",
+            "description": "Type of token from query"
+          },
+          "fieldName": {
+            "type": "string",
+            "description": "Qlik sense application field selected for given token or phrase"
+          },
+          "fieldValue": {
+            "type": "string",
+            "description": "Filter value found from query"
+          }
+        },
+        "description": "Contains break down of the asked question in the form of tokens with their classification."
+      },
+      "QlikApp": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "x-qlik-visibility": "public"
+      },
+      "QueryCreate": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "app": {
+            "$ref": "#/components/schemas/QlikApp"
+          },
+          "lang": {
+            "type": "string",
+            "description": "The language to assume when parsing, specified as an ISO-639-1 code.\nDefaults to 'en' (English).\n"
+          },
+          "text": {
+            "type": "string",
+            "description": "The sentence that will be parsed."
+          },
+          "disableFollowups": {
+            "type": "boolean",
+            "default": false,
+            "description": "The flag specifies whether to disable follow-up recommendations."
+          },
+          "disableNarrative": {
+            "type": "boolean",
+            "default": false,
+            "description": "Flag that specifies whether the narratives should be generated for the user query or not."
+          },
+          "recommendationId": {
+            "type": "string",
+            "description": "property that contains the Id of the recommendation for which the response should be generated."
+          },
+          "clearEntityContext": {
+            "type": "boolean",
+            "default": false,
+            "description": "Flag that clears the entity context."
+          },
+          "visualizationTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Specify visualizationTypes for only which visualization object should be provided if enableVisualizations is set to true. For eg. ['linechart', 'barchart']"
+          },
+          "enableVisualizations": {
+            "type": "boolean",
+            "default": false,
+            "description": "Flag that specifies whether visualization object should be provided or not."
+          },
+          "disableConversationContext": {
+            "type": "boolean",
+            "default": false,
+            "description": "Flag that specifies either to enable converastion context."
+          }
+        },
+        "x-qlik-visibility": "public"
+      },
+      "QueryCreated": {
+        "type": "object",
+        "properties": {
+          "apps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QlikApp"
+            }
+          },
+          "nluInfo": {
+            "$ref": "#/components/schemas/NluInfo"
+          },
+          "conversationalResponse": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QueryResponse"
+            },
+            "description": "A list of conversational responses."
+          }
+        },
+        "description": "The attributes of sentences.",
+        "x-qlik-visibility": "public"
+      },
+      "QueryNotCreated": {
+        "type": "object",
+        "properties": {
+          "apps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QlikApp"
+            }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "nluInfo": {
+            "$ref": "#/components/schemas/NluInfo"
+          },
+          "conversationalResponse": {
+            "$ref": "#/components/schemas/QueryResponse"
+          }
+        },
+        "x-qlik-visibility": "public"
+      },
+      "QueryResponse": {
+        "type": "object",
+        "properties": {
+          "apps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QlikApp"
+            }
+          },
+          "responses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversationalResponsePart"
+            }
+          },
+          "contextInfo": {
+            "type": "string",
+            "description": "For contextual responses, this string contains a list of entities that are used to produce the response."
+          },
+          "drillDownURI": {
+            "type": "string",
+            "description": "The URL with the query injected to insight advisor of the app to which the query belongs."
+          },
+          "sentenceWithMatches": {
+            "type": "string"
+          }
+        },
+        "x-qlik-visibility": "public"
+      },
+      "RecFeedback": {
+        "type": "object",
+        "required": [
+          "recommendationAddedToSheet",
+          "recommendationAddedToHub",
+          "recommendationDisliked",
+          "recommendationLiked"
+        ],
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "chartType": {
+            "type": "string"
+          },
+          "analysisType": {
+            "type": "string"
+          },
+          "recommendationLiked": {
+            "type": "boolean"
+          },
+          "recommendationDisliked": {
+            "type": "boolean"
+          },
+          "recommendationAddedToHub": {
+            "type": "boolean"
+          },
+          "recommendationAddedToSheet": {
+            "type": "boolean"
+          }
+        },
+        "description": "Any feedback from the user about a given recommendation"
+      },
+      "RenderVisualization": {
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "Data object should be used to render visualization"
+          },
+          "language": {
+            "type": "string"
+          }
+        },
+        "x-qlik-visibility": "public"
+      }
+    }
+  }
+}

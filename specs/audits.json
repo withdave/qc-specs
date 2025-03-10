@@ -1,0 +1,809 @@
+{
+  "info": {
+    "title": "audits",
+    "version": ""
+  },
+  "paths": {
+    "/v1/audits": {
+      "get": {
+        "tags": [
+          "audits"
+        ],
+        "summary": "List recent audit events",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetResult"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "eventTime",
+            "schema": {
+              "type": "string",
+              "example": "2021-07-14T18:41:15.00Z/2021-07-14T18:41:15.99Z",
+              "pattern": "YYYY-MM-DDThh:mm:ss.sssZ/YYYY-MM-DDThh:mm:ss.sssZ"
+            },
+            "description": "The start/end time interval formatted in ISO 8601 to search by eventTime. For example, \"?eventTime=2021-07-14T18:41:15.00Z/2021-07-14T18:41:15.99Z\"."
+          },
+          {
+            "in": "query",
+            "name": "eventType",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The case-sensitive string used to search by eventType. Retrieve a list of possible eventTypes with `/v1/audits/types`."
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The comma separated list of audit unique identifiers."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The maximum number of resources to return for a request."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The cursor to the next page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The cursor to the previous page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "default": "-eventTime"
+            },
+            "description": "The property of a resource to sort on (default sort is -eventTime). The supported properties are source, eventType, and eventTime. A property must be prefixed by + or - to indicate ascending or descending sort order respectively."
+          },
+          {
+            "in": "query",
+            "name": "source",
+            "schema": {
+              "type": "string",
+              "example": "com.qlik/licenses"
+            },
+            "description": "The case-sensitive string used to search by source. Retrieve a list of possible sources with `/v1/audits/sources`."
+          },
+          {
+            "in": "query",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The case-sensitive string used to search by userId."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
+          }
+        ],
+        "description": "Retrieves list of events for subscribed services for your tenant. Stores events for 90 days, after which they can be accessed via `/v1/audits/archive`.",
+        "operationId": "audits",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/audits/{id}": {
+      "get": {
+        "tags": [
+          "audits"
+        ],
+        "summary": "Get a specific audit event",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetByIDResult"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The audit item's unique identifier."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
+          }
+        ],
+        "description": "Finds and returns a specific audit events for the given event ID.",
+        "operationId": "audit",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/audits/archive": {
+      "get": {
+        "tags": [
+          "audits"
+        ],
+        "summary": "List archived audit events",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetArchiveResult"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2020-02-20",
+              "pattern": "YYYY-MM-DD"
+            },
+            "required": true,
+            "description": "Date to be used as filter and criteria during extraction.",
+            "allowEmptyValue": false
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The JWT is used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
+          }
+        ],
+        "description": "Retrieves audit events from long term storage. Finds and returns audit events from the archive, formatted as a JSON array, for the given date and tenant (in JWT). Archived events are not removed.",
+        "operationId": "archive",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/audits/settings": {
+      "get": {
+        "tags": [
+          "audits"
+        ],
+        "summary": "Get server configuration options",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSettingsResult"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
+          }
+        ],
+        "description": "Returns the server configuration options. It includes options that represent the server configuration state and parameters that were used to run the server with certain functionality.",
+        "operationId": "getSettings",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/audits/sources": {
+      "get": {
+        "tags": [
+          "audits"
+        ],
+        "summary": "List possible event sources",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetObjectsResult"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
+          }
+        ],
+        "description": "Finds and returns the list of possible event sources for this tenant.",
+        "operationId": "sources",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/audits/types": {
+      "get": {
+        "tags": [
+          "audits"
+        ],
+        "summary": "List possible event types",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetObjectsResult"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
+          }
+        ],
+        "description": "Finds and returns the list of possible event types for this tenant.",
+        "operationId": "eventTypes",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "ArchiveItem": {
+        "type": "object",
+        "title": "ArchiveItem is schema for the achived audit entry.",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "Additional information about the event's details. The structure depends on the type and version of the event."
+          },
+          "source": {
+            "type": "string",
+            "description": "The source of the event message, usually the producing service."
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the user who performed the action that triggered the event."
+          },
+          "eventId": {
+            "type": "string",
+            "description": "The event's unique identifier."
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "The ID of the tenant that owns the item. This is populated using the JWT."
+          },
+          "eventTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the event happened."
+          },
+          "eventType": {
+            "type": "string",
+            "description": "The type of event that describes committed action."
+          },
+          "extensions": {
+            "$ref": "#/components/schemas/EventExtensions"
+          },
+          "contentType": {
+            "type": "string",
+            "description": "The type that content is encoded in, always \"application/json\"."
+          },
+          "eventTypeVersion": {
+            "type": "string",
+            "description": "The version of the event type."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "title": "ErrorResponse indicates the error response.",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-400"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "error title"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "error details"
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "example": "507f191e810c19729de860ea"
+          }
+        }
+      },
+      "EventExtensions": {
+        "type": "object",
+        "title": "Additional metadata and custom fields.",
+        "properties": {
+          "actor": {
+            "type": "object",
+            "properties": {
+              "sub": {
+                "type": "string",
+                "description": "Opaque value identifying impersonating entity."
+              },
+              "subType": {
+                "type": "string",
+                "description": "The type of the impersonating entity."
+              }
+            },
+            "description": "Specifies the entity performing the action on behalf of another party listed as triggering the action."
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "Id of the owner of the resource affected by the eventContext."
+          },
+          "spaceId": {
+            "type": "string",
+            "description": "Id of the space related to the action performed on the eventContext."
+          },
+          "updates": {
+            "description": "Might be present if the action is of type \"updated\" and should contain information about the changes made to the resource."
+          },
+          "topLevelResourceId": {
+            "type": "string",
+            "description": "If the event originated from a sub resource the topLevelResourceId contains the id of the top level resource associated with the sub resource."
+          }
+        },
+        "description": "The availability of the properties depends on the event and the context it was triggered in."
+      },
+      "GetArchiveResult": {
+        "type": "object",
+        "title": "GetArchiveResult is the result type of the audit service GetArchive method.",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArchiveItem"
+            },
+            "description": "List of archived events. The structure of the events depend on their type and version."
+          }
+        }
+      },
+      "GetByIDResult": {
+        "type": "object",
+        "title": "GetByIDResult is the result type of the audit service GetByID method.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The resource item's unique identifier."
+          },
+          "data": {
+            "type": "object",
+            "description": "Additional information about the event's details. The structure depends on the type and version of the event."
+          },
+          "links": {
+            "$ref": "#/components/schemas/GetLinks"
+          },
+          "source": {
+            "type": "string",
+            "description": "The source of the event message, usually the producing service."
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the user who performed the action that triggered the event."
+          },
+          "eventId": {
+            "type": "string",
+            "description": "The event's unique identifier."
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "The ID of the tenant that owns the item. This is populated using the JWT."
+          },
+          "eventTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the event happened."
+          },
+          "eventType": {
+            "type": "string",
+            "description": "The type of event that describes committed action."
+          },
+          "extensions": {
+            "$ref": "#/components/schemas/EventExtensions"
+          },
+          "contentType": {
+            "type": "string",
+            "description": "The type that content is encoded in, always \"application/json\"."
+          },
+          "eventTypeVersion": {
+            "type": "string",
+            "description": "The version of the event type."
+          }
+        }
+      },
+      "GetLinks": {
+        "type": "object",
+        "title": "GetLinks are the HAL links for a single result.",
+        "properties": {
+          "self": {
+            "$ref": "#/components/schemas/href"
+          }
+        }
+      },
+      "GetObjectsResult": {
+        "type": "object",
+        "title": "GetObjectsResult is the result type of audit service generic resources.",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of requested resources."
+          },
+          "links": {
+            "$ref": "#/components/schemas/ListLinks"
+          }
+        }
+      },
+      "GetResult": {
+        "type": "object",
+        "title": "GetResult is the result type of the audit service Get method.",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetByIDResult"
+            },
+            "description": "List of audit items."
+          },
+          "links": {
+            "$ref": "#/components/schemas/ListLinks"
+          }
+        }
+      },
+      "GetSettingsResult": {
+        "type": "object",
+        "title": "GetSettingsResult is the result type of a getSettings request.",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "EventTTL": {
+                "type": "integer",
+                "description": "The events TTL in seconds."
+              },
+              "ArchiveEnabled": {
+                "type": "boolean",
+                "description": "Is Long Term Storage archiving enabled?."
+              }
+            },
+            "description": "Server configuration options."
+          }
+        }
+      },
+      "href": {
+        "type": "object",
+        "title": "href is a URL.",
+        "properties": {
+          "href": {
+            "type": "string"
+          }
+        }
+      },
+      "ListLinks": {
+        "type": "object",
+        "title": "ListLinks are the HAL links for a list result.",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/href"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/href"
+          },
+          "self": {
+            "$ref": "#/components/schemas/href"
+          }
+        }
+      }
+    }
+  }
+}

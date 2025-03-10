@@ -1,0 +1,2798 @@
+{
+  "info": {
+    "title": "knowledgebases",
+    "version": ""
+  },
+  "paths": {
+    "/v1/knowledgebases": {
+      "get": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "List knowledgebases",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/knowledgeBasesResult"
+                }
+              }
+            },
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of knowledgebases to get."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the next page."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the previous page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "NAME",
+                "-NAME",
+                "DESCRIPTION",
+                "-DESCRIPTION",
+                "CREATED",
+                "-CREATED",
+                "UPDATED",
+                "-UPDATED"
+              ],
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, case insensitive, eg. name. Can be prefixed with - to set descending order, defaults to ascending."
+          },
+          {
+            "in": "query",
+            "name": "countTotal",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Optional parameter to request total count for query",
+            "x-qlik-deprecated": true
+          }
+        ],
+        "description": "Returns a list of all knowledgebases the user has access to.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Create new knowledgebase",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/knowledgeBaseLight"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Knowledgebase version"
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the knowledgebase"
+              }
+            },
+            "description": "Successfully created a new knowledgebase."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          }
+        },
+        "description": "Creates a new knowledgebase.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createKnowledgeBase"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}": {
+      "get": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Retrieve a knowledgebase",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/knowledgeBase"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Knowledgebase version"
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the knowledgebase"
+              }
+            },
+            "description": "Successfully retrieved the knowledgebase."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The knowledgebase is not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase to retrieve."
+          }
+        ],
+        "description": "Retrieves a specific knowledgebase.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Update a knowledgebase",
+        "responses": {
+          "204": {
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Knowledgebase version"
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the knowledgebase"
+              }
+            },
+            "description": "Knowledgebase updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Bad request. Payload could not be parsed to a JSON Patch or Patch operations are invalid."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The term to patch was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The knowledgebase id."
+          },
+          {
+            "in": "header",
+            "name": "if-match",
+            "schema": {
+              "type": "string",
+              "example": "if-match: B323333"
+            },
+            "description": "Optional header to do conditional updates. Using the Etag value that was returned the last time the knowledgebase was fetched."
+          }
+        ],
+        "description": "Updates properties of a specific knowledgebase.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JSONPatchArray"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Delete a knowledgebase",
+        "responses": {
+          "204": {
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The knowledgebase is not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase to delete."
+          }
+        ],
+        "description": "Deletes a knowledgebase and all of its resources.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}/datasources": {
+      "post": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Add a datasource to a knowledgebase",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dataSource"
+                }
+              }
+            },
+            "description": "Successfully added a datasource to the knowledgebase."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The knowledgebase is not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase."
+          }
+        ],
+        "description": "Adds a datasource to a knowledgebase.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createDataSource"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}/datasources/{datasourceId}": {
+      "put": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Update a knowledgebase datasource",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dataSource"
+                }
+              }
+            },
+            "description": "Successfully updated the datasource."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The record is not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource to update."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of a knowledgebase."
+          }
+        ],
+        "description": "Updates a specified datasource.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dataSource"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Delete a knowledgebase datasource",
+        "responses": {
+          "204": {
+            "description": "Successful Operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The knowledgebase is not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource to delete."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase the datasource belongs to."
+          }
+        ],
+        "description": "Deletes a specified datasource and all its resources.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}/datasources/{datasourceId}/actions/cancel": {
+      "post": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Cancel sync of a knowledgebase datasource",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dataSourceSync"
+                }
+              }
+            },
+            "description": "Successfully cancelled sync."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource does not exist."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource to cancel sync for."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase the datasource belongs to."
+          }
+        ],
+        "description": "Cancels ongoing sync for a specified datasource.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}/datasources/{datasourceId}/actions/download": {
+      "post": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Download knowledgebase datasource reference",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/downloadFileResponse"
+                }
+              }
+            },
+            "description": "Download a file from a datasource."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource does not exist."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource to download from."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase the datasource belongs to."
+          }
+        ],
+        "description": "Downloads a specified reference.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/downloadFile"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}/datasources/{datasourceId}/actions/sync": {
+      "post": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Sync a knowledgebase datasource",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dataSourceSync"
+                }
+              }
+            },
+            "description": "Successfully started sync."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource does not exist."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource to sync."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase the datasource belongs to."
+          },
+          {
+            "in": "query",
+            "name": "migrate",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Optional parameter to migrate indexed files to docdetails collection"
+          }
+        ],
+        "description": "Starts syncing a specified datasource to a specified knowledgebase index.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}/datasources/{datasourceId}/histories": {
+      "get": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "List knowledgebase datasource sync histories",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/syncHistoryResult"
+                }
+              }
+            },
+            "description": "List of sync items ordered by the completed time."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The datasource is not found, the datasource has no sync history (no syncs have been run), or the calling user doesn't have access to this datasource in the knowledgebase."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase the datasource belongs to."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of knowledgebases to get."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the next page."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the previous page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "COMPLETED",
+                "-COMPLETED"
+              ],
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, case insensitive, eg. name. Can be prefixed with - to set descending order, defaults to ascending."
+          }
+        ],
+        "description": "Retrieves sync history for a specified datasource in a knowledgebase. Returns a `404` if there is no sync history, or if the calling user doesn't have access to the datasource.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}/datasources/{datasourceId}/histories/{syncId}": {
+      "get": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Retrieve a knowledgebase datasource sync history",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/syncHistoryDetails"
+                }
+              }
+            },
+            "description": "List of sync items ordered by the start time."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource does not exist."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase the datasource belongs to."
+          },
+          {
+            "in": "path",
+            "name": "syncId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The sync identifier."
+          }
+        ],
+        "description": "Retrieves detailed sync history for a specified datasource.",
+        "x-qlik-deprecated": true,
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}/datasources/{datasourceId}/schedules": {
+      "get": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Get a knowledgebase datasource schedule",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scheduleWithManifest"
+                }
+              }
+            },
+            "description": "Successfully created a schedule."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource does not exist."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource the schedule belongs to."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase the schedule belongs to."
+          }
+        ],
+        "description": "Returns a datasource schedule.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Create a knowledgebase datasource schedule",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scheduleWithManifest"
+                }
+              }
+            },
+            "description": "Successfully created a schedule."
+          },
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scheduleWithManifest"
+                }
+              }
+            },
+            "description": "Successfully created a schedule."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource does not exist."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource the schedule belongs to."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase the schedule belongs to."
+          }
+        ],
+        "description": "Creates or updates a specified datasource schedule.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/schedule"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Delete knowledgebase datasource schedule",
+        "responses": {
+          "204": {
+            "description": "Successfully deleted a schedule."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource does not exist."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "datasourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the datasource the schedule belongs to."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase the schedule belongs to."
+          }
+        ],
+        "description": "Deletes a datasource schedule.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/knowledgebases/{id}/histories": {
+      "get": {
+        "tags": [
+          "knowledgebases"
+        ],
+        "summary": "Retrieve knowledgebase sync history",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/syncHistoryResult"
+                }
+              }
+            },
+            "description": "List of sync items ordered by the completed time."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The knowledgebase is not found, the knowledgebase has no sync history, or the calling user doesn't have access to the datasources in the knowledgebase."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+            },
+            "required": true,
+            "description": "The id of the knowledgebase."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of sync histories to get."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the next page."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the previous page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "COMPLETED",
+                "-COMPLETED"
+              ],
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, case insensitive, eg. name. Can be prefixed with - to set descending order, defaults to ascending."
+          }
+        ],
+        "description": "Retrieves sync history for the specified knowledgebase. Will return a `404` if no sync history exists, or if the calling user does not have access to synced datasources.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "chunking": {
+        "type": "object",
+        "required": [
+          "type",
+          "size",
+          "overlap",
+          "separators",
+          "keepSeparator"
+        ],
+        "properties": {
+          "size": {
+            "type": "integer",
+            "default": 1024,
+            "example": 1024,
+            "description": "Size of chunks"
+          },
+          "type": {
+            "type": "string",
+            "example": "recursive",
+            "description": "Chunking strategy"
+          },
+          "overlap": {
+            "type": "integer",
+            "example": 20,
+            "description": "Chunk overlap, should be less than size"
+          },
+          "separators": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "\n",
+              ".",
+              " "
+            ],
+            "description": "List of separators to chunk by"
+          },
+          "keepSeparator": {
+            "type": "boolean",
+            "example": false,
+            "description": "Allows to keep or remove separators used"
+          }
+        }
+      },
+      "contentSummary": {
+        "type": "object",
+        "required": [
+          "fileCount",
+          "effectivePages",
+          "textSize",
+          "fileSize"
+        ],
+        "properties": {
+          "fileSize": {
+            "type": "integer"
+          },
+          "textSize": {
+            "type": "integer"
+          },
+          "fileCount": {
+            "type": "integer"
+          },
+          "effectivePages": {
+            "type": "integer"
+          }
+        }
+      },
+      "createDataSource": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the datasource"
+          },
+          "type": {
+            "enum": [
+              "file",
+              "web",
+              "database"
+            ],
+            "type": "string"
+          },
+          "fileConfig": {
+            "$ref": "#/components/schemas/dataSourceFileConfig"
+          },
+          "crawlerConfig": {
+            "$ref": "#/components/schemas/dataSourceCrawlConfig"
+          }
+        },
+        "description": "Specification on where to fetch the files for. This is required when the type == 'file'. Only one of path and files can be set. Path takes precedence if both are provided."
+      },
+      "createKnowledgeBase": {
+        "type": "object",
+        "required": [
+          "name",
+          "spaceId"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Organization wide knowledgebase",
+            "description": "Name of the knowledgebase"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Red",
+              "Sales"
+            ],
+            "description": "List of tags for knowledgebase"
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the space to contain the knowledgebase"
+          },
+          "description": {
+            "type": "string",
+            "example": "This knowledgebase is used for...",
+            "description": "Description of the knowledgebase"
+          },
+          "selectedErrorsCount": {
+            "type": "integer",
+            "example": 10,
+            "description": "Number of selected errors to store in the case of any failed datasources. Optional value with a default of 10."
+          }
+        }
+      },
+      "dataSource": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "contentSummary"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "Unique identifier of the datasource"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the datasource"
+          },
+          "type": {
+            "enum": [
+              "file",
+              "web",
+              "database"
+            ],
+            "type": "string"
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "description": "The unique identifier of the space containing the datasource"
+          },
+          "chunking": {
+            "$ref": "#/components/schemas/chunking"
+          },
+          "syncInfo": {
+            "$ref": "#/components/schemas/dataSourceSyncStatus"
+          },
+          "fileConfig": {
+            "$ref": "#/components/schemas/dataSourceFileConfig"
+          },
+          "sourceCount": {
+            "type": "integer",
+            "example": 10,
+            "description": "The number of times that a datasource was referenced as a source in an answer"
+          },
+          "crawlerConfig": {
+            "$ref": "#/components/schemas/dataSourceCrawlConfig"
+          },
+          "contentSummary": {
+            "$ref": "#/components/schemas/contentSummary"
+          }
+        },
+        "description": "Specification on where to fetch the files for. This is required when the type == 'file'. Only one of path and files can be set. Path takes precedence if both are provided."
+      },
+      "dataSourceCrawlConfig": {
+        "type": "object",
+        "required": [
+          "url",
+          "scope"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "http://www.example.com",
+            "description": "Seed URL that crawling will start on."
+          },
+          "scope": {
+            "$ref": "#/components/schemas/dataSourceCrawlScope"
+          },
+          "crawlPatterns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dataSourceCrawlPattern"
+            },
+            "description": "Pattern matching links to crawl"
+          },
+          "indexPatterns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dataSourceCrawlPattern"
+            },
+            "description": "Pattern matching links to index"
+          }
+        },
+        "description": "Configuration for webcrawling"
+      },
+      "dataSourceCrawlPattern": {
+        "type": "object",
+        "required": [
+          "type",
+          "pattern"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "include",
+              "exclude"
+            ],
+            "type": "string",
+            "example": "include",
+            "description": "include or exclude"
+          },
+          "pattern": {
+            "type": "string",
+            "example": "(.*)example(.*)",
+            "description": "Regex patterna to filter links on"
+          }
+        },
+        "description": "Include or exclude pattern"
+      },
+      "dataSourceCrawlScope": {
+        "type": "object",
+        "required": [
+          "scope",
+          "depth"
+        ],
+        "properties": {
+          "depth": {
+            "type": "integer",
+            "example": 1,
+            "description": "The number of levels of links the crawler will traverse"
+          },
+          "scope": {
+            "enum": [
+              "all",
+              "domain",
+              "subdomain"
+            ],
+            "type": "string",
+            "example": "all",
+            "description": "The scope that the crawler will crawl."
+          },
+          "maxSize": {
+            "type": "integer",
+            "example": 1000000,
+            "description": "Optional parameter. Max size of downloaded files in bytes"
+          },
+          "maxLinks": {
+            "type": "integer",
+            "example": 100,
+            "description": "Maximum number of links per page that will be extracted"
+          },
+          "downloadFiles": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "if set to true crawler will try to download and index other supported content like pdf:s from links"
+          }
+        },
+        "description": "Scope for th webcrawler"
+      },
+      "dataSourceFileConfig": {
+        "type": "object",
+        "required": [
+          "connectionId",
+          "userId"
+        ],
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "scope": {
+            "$ref": "#/components/schemas/dataSourceFileCrawlScope"
+          },
+          "folder": {
+            "type": "string",
+            "example": "folderA/folderB",
+            "description": "Root folder for traversing."
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "userId of the owner of the datasource fileConfig"
+          },
+          "connectionId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "connection id to be used to retrieve the raw data"
+          },
+          "crawlPatterns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dataSourceCrawlPattern"
+            },
+            "description": "Pattern matching links to crawl"
+          }
+        },
+        "description": "Specification on where to fetch the files for. This is required when the type == 'file'. Only one of path and files can be set. Path takes precedence if both are provided."
+      },
+      "dataSourceFileCrawlScope": {
+        "type": "object",
+        "required": [
+          "depth"
+        ],
+        "properties": {
+          "depth": {
+            "type": "integer",
+            "example": 1,
+            "description": "The number of levels of sub folders that should be considered"
+          },
+          "maxSize": {
+            "type": "integer",
+            "example": 1000000,
+            "description": "Optional parameter. Max size of downloaded files in bytes"
+          },
+          "extensions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "pdf"
+            ],
+            "description": "list of file extensions to be considered"
+          },
+          "maxFilesTotal": {
+            "type": "integer",
+            "example": 50,
+            "description": "Total number of files that should be considered"
+          },
+          "modifiedAfter": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "description": "only files modified after this time should be indexed. If set older files will be removed from index."
+          },
+          "maxFilesPerFolder": {
+            "type": "integer",
+            "example": 100,
+            "description": "Maximum number of files per folder that should be considered"
+          }
+        },
+        "description": "Scope for the file crawler."
+      },
+      "dataSourceSync": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "Unique identifier of the sync"
+          }
+        },
+        "description": "Response when a datasource sync is started, contains the sync Id"
+      },
+      "dataSourceSyncStatus": {
+        "type": "object",
+        "required": [
+          "syncId",
+          "startedAt",
+          "completedAt",
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "neverIndexed",
+              "progress",
+              "completed",
+              "completedWithError",
+              "toAdd",
+              "toDelete"
+            ],
+            "type": "string",
+            "readOnly": true,
+            "description": "Sync status"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the sync task was started"
+          },
+          "lastSyncId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "sync Id"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the sync task was completed"
+          }
+        }
+      },
+      "docStats": {
+        "type": "object",
+        "required": [
+          "added",
+          "updated",
+          "deleted",
+          "errors",
+          "deltaBytes",
+          "largestFileSize",
+          "totalBytesProcessed",
+          "deltaEffectivePages",
+          "deltaTextSize"
+        ],
+        "properties": {
+          "added": {
+            "type": "integer",
+            "example": 1,
+            "readOnly": true
+          },
+          "errors": {
+            "type": "integer",
+            "example": 0,
+            "readOnly": true
+          },
+          "deleted": {
+            "type": "integer",
+            "example": 0,
+            "readOnly": true
+          },
+          "updated": {
+            "type": "integer",
+            "example": 0,
+            "readOnly": true
+          },
+          "deltaBytes": {
+            "type": "integer",
+            "example": 0,
+            "readOnly": true
+          },
+          "deltaTextSize": {
+            "type": "integer",
+            "example": 0,
+            "readOnly": true
+          },
+          "largestFileSize": {
+            "type": "integer",
+            "example": 123044444,
+            "readOnly": true
+          },
+          "deltaEffectivePages": {
+            "type": "integer",
+            "example": 0,
+            "readOnly": true
+          },
+          "totalBytesProcessed": {
+            "type": "integer",
+            "example": 123044444,
+            "readOnly": true
+          }
+        },
+        "description": "Summary of documents processed"
+      },
+      "downloadFile": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "example": "folder/file.pdf",
+            "description": "file path to the file to downlaod."
+          }
+        }
+      },
+      "downloadFileResponse": {
+        "type": "object",
+        "required": [
+          "url",
+          "name",
+          "mimeType",
+          "spaceId",
+          "lastUpdatedAt",
+          "fileSize"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "/v1/temp-contents/65f4287d785c400fe6d1e861",
+            "description": "URL to download the file."
+          },
+          "name": {
+            "type": "string",
+            "example": "stories/content/billy.txt",
+            "description": "The requested file name."
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Space id the file belongs in."
+          },
+          "fileSize": {
+            "type": "integer",
+            "example": 542,
+            "description": "Size of downloaded file."
+          },
+          "mimeType": {
+            "type": "string",
+            "example": "text/plain",
+            "description": "The mimetype of the file."
+          },
+          "lastUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-04-16T23:17:28Z",
+            "description": "Date for last time the file was modified."
+          }
+        },
+        "description": "Download information for the file."
+      },
+      "duration": {
+        "type": "object",
+        "required": [
+          "download",
+          "parse",
+          "chunk",
+          "embed",
+          "store"
+        ],
+        "properties": {
+          "chunk": {
+            "type": "integer",
+            "example": 0,
+            "readOnly": true
+          },
+          "embed": {
+            "type": "integer",
+            "example": 996,
+            "readOnly": true
+          },
+          "parse": {
+            "type": "integer",
+            "example": 0,
+            "readOnly": true
+          },
+          "store": {
+            "type": "integer",
+            "example": 3653363805,
+            "readOnly": true
+          },
+          "download": {
+            "type": "integer",
+            "example": 207,
+            "readOnly": true
+          }
+        }
+      },
+      "errorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/errorResponseCode"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "example": "507f191e810c19729de860ea"
+          }
+        }
+      },
+      "errorResponseCode": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      },
+      "JSONPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "REPLACE"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON Pointer."
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "JSONPatchArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/JSONPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "new name"
+          },
+          {
+            "op": "replace",
+            "path": "/description",
+            "value": "new description"
+          }
+        ],
+        "description": "An array of JSON Patch documents"
+      },
+      "knowledgeBase": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/knowledgeBaseLight"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "description",
+              "tags",
+              "ownerId",
+              "createdBy",
+              "createdAt",
+              "updatedBy",
+              "updatedAt",
+              "spaceId",
+              "contentSummary"
+            ],
+            "properties": {
+              "datasources": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/dataSource"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "knowledgeBaseLight": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "tags",
+          "ownerId",
+          "createdBy",
+          "createdAt",
+          "updatedBy",
+          "updatedAt",
+          "spaceId",
+          "contentSummary"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "Unique identifier of the knowledgebase"
+          },
+          "name": {
+            "type": "string",
+            "example": "Organization wide knowledgebase",
+            "description": "Name of the knowledgebase"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Red",
+              "Sales"
+            ],
+            "description": "List of tags associated with the knowledgebase."
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "description": "The unique identifier of the knowledgebase owner"
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "description": "The unique identifier of the space containing the knowledgebase"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the tenant"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the knowledgebase was created"
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "description": "Unique identifier of the user who created the knowledgebase"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the knowledgebase was updated"
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "description": "The unique identifier of the user who last updated the knowledgebase"
+          },
+          "description": {
+            "type": "string",
+            "example": "This knowledgebase is used for...",
+            "description": "Description of the knowledgebase"
+          },
+          "lastIndexedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the knowledgebase was last indexed"
+          },
+          "contentSummary": {
+            "$ref": "#/components/schemas/contentSummary"
+          },
+          "selectedErrorsCount": {
+            "type": "integer",
+            "example": 10,
+            "description": "Number of selected errors to store in the case of any failed datasources."
+          }
+        }
+      },
+      "knowledgeBasesResult": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/knowledgeBaseLight"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/pageLinks"
+          }
+        }
+      },
+      "pageLink": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          }
+        }
+      },
+      "pageLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/pageLink"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/pageLink"
+          },
+          "self": {
+            "$ref": "#/components/schemas/pageLink"
+          }
+        }
+      },
+      "resultMeta": {
+        "type": "object",
+        "properties": {
+          "countTotal": {
+            "type": "integer"
+          }
+        }
+      },
+      "schedule": {
+        "type": "object",
+        "properties": {
+          "calendars": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleCalendar"
+            }
+          },
+          "intervals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleInterval"
+            }
+          }
+        }
+      },
+      "scheduleCalendar": {
+        "type": "object",
+        "required": [
+          "second",
+          "minute",
+          "hour",
+          "dayOfMonth",
+          "month",
+          "year",
+          "dayOfWeek",
+          "comment"
+        ],
+        "properties": {
+          "hour": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleRange"
+            },
+            "description": "Hour range to match (0-23). Default matches 0"
+          },
+          "year": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleRange"
+            },
+            "description": "Year range to match. Default matches all years"
+          },
+          "month": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleRange"
+            },
+            "description": "Month range to match (1-12). Default matches all months"
+          },
+          "minute": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleRange"
+            },
+            "description": "Minute range to match (0-59). Default matches 0"
+          },
+          "second": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleRange"
+            },
+            "description": "Second range to match (0-59). Default matches 0"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Description of the intention of this schedule"
+          },
+          "dayOfWeek": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleRange"
+            },
+            "description": "DayOfWeek range to match (0-6; 0 is Sunday). Default matches all days of the week"
+          },
+          "dayOfMonth": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleRange"
+            },
+            "description": "DayOfMonth range to match (1-31). Default matches all days"
+          }
+        },
+        "description": "An event specification relative to the calendar, similar to a traditional cron specification."
+      },
+      "scheduleInterval": {
+        "type": "object",
+        "required": [
+          "every"
+        ],
+        "properties": {
+          "every": {
+            "type": "string",
+            "example": "5h30m",
+            "description": "The period to repeat the interval"
+          },
+          "offset": {
+            "type": "string",
+            "default": "0s",
+            "example": "19m",
+            "description": "A fixed offset added to the intervals period. Optional, defaults to 0"
+          }
+        },
+        "description": "For example, an `every` of 1 hour with `offset` of zero would match every hour, on the hour. The same `every` but an `offset` of 19 minutes would match every `xx:19:00`."
+      },
+      "scheduleRange": {
+        "type": "object",
+        "required": [
+          "start"
+        ],
+        "properties": {
+          "end": {
+            "type": "integer",
+            "description": "End of the range (inclusive). If end < start, then end is interpreted as equal to start. Optional, defaulted to Start"
+          },
+          "step": {
+            "type": "integer",
+            "default": 1,
+            "description": "Step to be take between each value. Optional, defaulted to 1"
+          },
+          "start": {
+            "type": "integer",
+            "description": "Start of the range (inclusive)"
+          }
+        },
+        "description": "ScheduleRange represents a set of integer values, used to match fields of a calendar time in scheduleCalendar. If end < start, then end is interpreted as equal to start"
+      },
+      "scheduleWithManifest": {
+        "type": "object",
+        "required": [
+          "tenantId",
+          "ownerId",
+          "knowledgebaseId",
+          "calendars"
+        ],
+        "properties": {
+          "ownerId": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ed"
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ec"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860eb"
+          },
+          "calendars": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleCalendar"
+            }
+          },
+          "intervals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scheduleInterval"
+            }
+          },
+          "datasourceId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+          },
+          "knowledgebaseId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+          }
+        }
+      },
+      "syncHistory": {
+        "type": "object",
+        "required": [
+          "id",
+          "datasourceId",
+          "startedAt",
+          "status",
+          "triggerType",
+          "docStats",
+          "connectionId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "sync id"
+          },
+          "status": {
+            "enum": [
+              "neverIndexed",
+              "progress",
+              "completed",
+              "completedWithError"
+            ],
+            "type": "string",
+            "example": [
+              "neverIndexed | progress | completed | completedWithError"
+            ],
+            "readOnly": true,
+            "description": "Sync status"
+          },
+          "docStats": {
+            "$ref": "#/components/schemas/docStats"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the sync task was started"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the sync task was completed"
+          },
+          "triggerType": {
+            "type": "string",
+            "example": [
+              "manual | schedule"
+            ],
+            "description": "Datasource trigger type, was it manually or automatically synced"
+          },
+          "connectionId": {
+            "type": "string",
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "description": "Connection id that the datasource used"
+          },
+          "datasourceId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "datasource id"
+          },
+          "selectedErrors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "unsupported file extension"
+            ],
+            "description": "populated with up to the first selectedErrorsCount errors if there were any during sync"
+          }
+        }
+      },
+      "syncHistoryDetails": {
+        "type": "object",
+        "required": [
+          "syncId",
+          "action",
+          "syncedAt",
+          "id",
+          "source",
+          "explicitPages"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "document Id"
+          },
+          "error": {
+            "type": "string",
+            "example": "unsupported file extension",
+            "description": "error if one happened during sync"
+          },
+          "action": {
+            "enum": [
+              "add",
+              "delete",
+              "update"
+            ],
+            "type": "string",
+            "readOnly": true,
+            "description": "acion performed"
+          },
+          "chunks": {
+            "type": "integer",
+            "example": 10,
+            "readOnly": true,
+            "description": "number of chunks"
+          },
+          "source": {
+            "type": "string",
+            "example": "myfile.pdf",
+            "readOnly": true,
+            "description": "Source of the document"
+          },
+          "syncId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "sync Id"
+          },
+          "duration": {
+            "$ref": "#/components/schemas/duration"
+          },
+          "fileSize": {
+            "type": "integer",
+            "example": 123044444,
+            "readOnly": true,
+            "description": "file size"
+          },
+          "syncedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the sync task was executed"
+          },
+          "chunkSize": {
+            "type": "integer",
+            "example": 14721,
+            "readOnly": true,
+            "description": "chunk size"
+          },
+          "explicitPages": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "page count"
+          },
+          "fileStartedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the file processing started"
+          },
+          "fileCompletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:21:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the file processing finished"
+          },
+          "fileLastModified": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-02-16T20:06:02Z",
+            "readOnly": true,
+            "description": "Datetime when the file was last modified"
+          }
+        }
+      },
+      "syncHistoryResult": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/syncHistory"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/resultMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/pageLinks"
+          }
+        }
+      }
+    }
+  }
+}

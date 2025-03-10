@@ -1,0 +1,238 @@
+{
+  "info": {
+    "title": "notes",
+    "version": ""
+  },
+  "paths": {
+    "/v1/notes/settings": {
+      "get": {
+        "tags": [
+          "setting"
+        ],
+        "summary": "Get the enablement status of the notes feature set for this tenant and user.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotesUserSettings"
+                }
+              }
+            },
+            "description": "Notes enablement status."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "notesConfigGet",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "setting"
+        ],
+        "summary": "update the settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteSettingsPutResponse"
+                }
+              }
+            },
+            "description": "The newly applied note settings for the tenant."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Request content error."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized user."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "updateNoteSettingsConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteSettingsPutPayload"
+              }
+            }
+          },
+          "required": true,
+          "description": "A JSON payload containing note settings to put."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "ConfigReasonCode": {
+        "enum": [
+          "deployment",
+          "toggle",
+          "license"
+        ],
+        "type": "string",
+        "description": "The possible states for the status of notes configuration GET or POST operation"
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to notes broker service."
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "detail": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "HTTP-123",
+              "title": "short error message",
+              "details": "detailed error message"
+            }
+          ],
+          "traceId": "7326ce0d-1946-41d0-b890-609865cc42ea"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "An optional traceId"
+          }
+        }
+      },
+      "NoteSettingsPutPayload": {
+        "type": "object",
+        "properties": {
+          "toggledOn": {
+            "type": "boolean",
+            "description": "pass 'true' to enable the note toggle for the tenant, 'false' to disable the toggle (other values are ignore)."
+          }
+        }
+      },
+      "NoteSettingsPutResponse": {
+        "type": "object",
+        "properties": {
+          "toggleOn": {
+            "type": "boolean",
+            "description": "'true' if the note feature is enabled for this tenant and user otherwise 'false'."
+          }
+        }
+      },
+      "NotesUserSettings": {
+        "type": "object",
+        "required": [
+          "available"
+        ],
+        "properties": {
+          "reason": {
+            "$ref": "#/components/schemas/ConfigReasonCode"
+          },
+          "available": {
+            "type": "boolean",
+            "description": "'true' if the note feature is enabled for this tenant and user otherwise 'false'."
+          },
+          "lastFetch": {
+            "type": "string",
+            "description": "The timestamp for the last time this users notes settings were fetched from downstream services."
+          }
+        }
+      }
+    }
+  }
+}

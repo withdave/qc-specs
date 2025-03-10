@@ -1,0 +1,291 @@
+{
+  "info": {
+    "title": "oauth-tokens",
+    "version": ""
+  },
+  "paths": {
+    "/v1/oauth-tokens": {
+      "get": {
+        "tags": [
+          "oauth-tokens"
+        ],
+        "summary": "List OAuth tokens",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oauth-token-page"
+                }
+              }
+            },
+            "description": "The page result."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request parameter for querying tokens."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Authentication failed."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of tokens to return."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The target page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "userId"
+              ],
+              "type": "string",
+              "default": "userId"
+            },
+            "required": false,
+            "description": "The field to sort by."
+          },
+          {
+            "in": "query",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The ID of the user to limit results to."
+          }
+        ],
+        "description": "Retrieve list of OAuth tokens that the user has access to. Users assigned with a `TenantAdmin` role can list OAuth tokens generated for all users in the tenant.",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/oauth-tokens/{tokenId}": {
+      "delete": {
+        "tags": [
+          "oauth-tokens"
+        ],
+        "summary": "Revoke an OAuth token by ID",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Token deleted successfully."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Authentication failed."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tokenId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the token to revoke."
+          }
+        ],
+        "description": "Revokes a specific OAuth token by ID. Requesting user must have `TenantAdmin` role assigned to delete tokens owned by other users.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/authenticate"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Non-standard information about the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "The error title."
+          },
+          "detail": {
+            "type": "string",
+            "description": "The detailed error message."
+          },
+          "status": {
+            "type": "string",
+            "description": "The http status code."
+          }
+        },
+        "description": "An error object."
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "List of errors and their properties."
+          }
+        },
+        "description": "A representation of the errors encountered from the HTTP request."
+      },
+      "link": {
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL for the link."
+          }
+        }
+      },
+      "oauth-token": {
+        "required": [
+          "tenantId",
+          "userId",
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The token ID."
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the owning user."
+          },
+          "lastUsed": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last time the token was used."
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "The ID of the owning tenant."
+          },
+          "deviceType": {
+            "type": "string",
+            "description": "The type of the user device the authorization token is generated for (Tablet, Phone etc.)."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the token."
+          }
+        }
+      },
+      "oauth-token-page": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/oauth-token"
+            }
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/link"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

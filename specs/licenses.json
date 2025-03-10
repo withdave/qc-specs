@@ -1,0 +1,1546 @@
+{
+  "info": {
+    "title": "licenses",
+    "version": ""
+  },
+  "paths": {
+    "/v1/licenses/assignments": {
+      "get": {
+        "tags": [
+          "licenses"
+        ],
+        "summary": "Retrieves assignments for the current tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/assignmentsResponse"
+                }
+              }
+            },
+            "description": "List of assignments."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Bad request, invalid query."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized (invalid token)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Insufficient access"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The filter for finding entries."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The preferred number of entries to return."
+          },
+          {
+            "in": "query",
+            "name": "orphans",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Only return assignments which are 'orphans' in the current tenant."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The requested page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The field to sort on; can be prefixed with +/- for ascending/descending sort order."
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Authentication token"
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/licenses/assignments/actions/add": {
+      "post": {
+        "tags": [
+          "licenses"
+        ],
+        "summary": "Assigns license access to the given users",
+        "responses": {
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/assignmentsActionsAddResponse"
+                }
+              }
+            },
+            "description": "Processed. (The status of the individual assignments is found in the response body)"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Body is invalid or missing."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized (invalid token)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Insufficient access"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Authentication token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/assignmentsActionsAddRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "List of subjects to allocate assignments for."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-codegen-request-body-name": "assignments",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/licenses/assignments/actions/delete": {
+      "post": {
+        "tags": [
+          "licenses"
+        ],
+        "summary": "Removes license access for the given users",
+        "responses": {
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/assignmentsActionsDeleteResponse"
+                }
+              }
+            },
+            "description": "Processed. (The status of the individual assignments is found in the response body)"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Body is invalid or missing."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized (invalid token)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Insufficient access"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Authentication token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/assignmentsActionsDeleteRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "List of assignments to delete."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-codegen-request-body-name": "assignments",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/licenses/assignments/actions/update": {
+      "post": {
+        "tags": [
+          "licenses"
+        ],
+        "summary": "Updates license access for the given users",
+        "responses": {
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/assignmentsActionsUpdateResponse"
+                }
+              }
+            },
+            "description": "Processed. (The status of the individual assignments is found in the response body)"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Body is invalid or missing."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized (invalid token)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Insufficient access"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Authentication token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/assignmentsActionsUpdateRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "List of assignments to update."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-codegen-request-body-name": "assignments",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/licenses/consumption": {
+      "get": {
+        "tags": [
+          "licenses"
+        ],
+        "summary": "Retrieves license consumption for the current tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/consumptionEventsResponse"
+                }
+              }
+            },
+            "description": "Successful"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Bad request, malformed query."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized (invalid token)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Insufficient access"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The SCIM filter for the query. Filterable property is \"endTime\"."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 200,
+              "maximum": 200,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The preferred number of entries to return."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The requested page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The field to sort on; can be prefixed with +/- for ascending/descending sort order."
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Authentication token"
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/licenses/overview": {
+      "get": {
+        "tags": [
+          "licenses"
+        ],
+        "summary": "Gets the general information of the license applied to the current tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/licenseOverview"
+                }
+              }
+            },
+            "description": "Licenses overview info."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "invalid tenant"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized (invalid token)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "License not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Authentication token."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/licenses/settings": {
+      "get": {
+        "tags": [
+          "licenses"
+        ],
+        "summary": "Get auto assign settings for tenant.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/settingsBody"
+                }
+              }
+            },
+            "description": "Auto assign settings."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Missing or invalid tenant."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Not allowed"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Insufficient access"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Authentication token"
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "licenses"
+        ],
+        "summary": "Set auto assign settings for tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/settingsBody"
+                }
+              }
+            },
+            "description": "Auto assign settings."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Missing or invalid tenant."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Action not allowed."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Insufficient access"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Authentication token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/settingsBody"
+              }
+            }
+          },
+          "required": false,
+          "description": "Dynamic assignment settings for professional and analyzer users. If professional users and analyzer users are both set, professional users will be automatically assigned, if available. Otherwise, analyzer users will be assigned. If neither of those users are available, analyzer capacity will be assigned, if available."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-codegen-request-body-name": "auto assign settings",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/licenses/status": {
+      "get": {
+        "tags": [
+          "licenses"
+        ],
+        "summary": "Gets the license status information of the current tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/licenseStatus"
+                }
+              }
+            },
+            "description": "License status info."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "invalid tenant"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized (invalid token)."
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Authentication token"
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "assignmentsActionsAddRequest": {
+        "type": "object",
+        "example": {
+          "add": [
+            {
+              "type": "professional",
+              "subject": "qlik\\kalle"
+            },
+            {
+              "type": "analyzer",
+              "subject": "qlik\\nalle"
+            }
+          ]
+        },
+        "required": [
+          "add"
+        ],
+        "properties": {
+          "add": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "subject",
+                "type"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "User name"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Allotment type"
+                },
+                "userId": {
+                  "type": "string",
+                  "description": "User ID",
+                  "x-qlik-deprecated": true
+                },
+                "subject": {
+                  "type": "string",
+                  "description": "User subject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "assignmentsActionsAddResponse": {
+        "type": "object",
+        "example": {
+          "data": [
+            {
+              "type": "professional",
+              "status": 201,
+              "subject": "qlik\\kalle"
+            },
+            {
+              "code": "LICENSES-011",
+              "type": "analyzer",
+              "title": "No available allotment error, No available allotment.",
+              "status": 403,
+              "subject": "qlik\\nalle"
+            }
+          ]
+        },
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "required": [
+                "subject",
+                "status"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "description": "Error code"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Allotment type"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Error title"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "Response status"
+                },
+                "subject": {
+                  "type": "string",
+                  "description": "Subject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "assignmentsActionsDeleteRequest": {
+        "type": "object",
+        "example": {
+          "delete": [
+            {
+              "type": "analyzer",
+              "subject": "qlik\\malik"
+            }
+          ]
+        },
+        "required": [
+          "delete"
+        ],
+        "properties": {
+          "delete": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "subject",
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "Allotment type"
+                },
+                "subject": {
+                  "type": "string",
+                  "description": "User subject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "assignmentsActionsDeleteResponse": {
+        "type": "object",
+        "example": {
+          "data": [
+            {
+              "type": "professional",
+              "status": 200,
+              "subject": "qlik\\malik"
+            },
+            {
+              "code": "LICENSES-016",
+              "type": "analyzer",
+              "title": "Assignment not found.",
+              "status": 404,
+              "subject": "qlik\\no"
+            }
+          ]
+        },
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "description": "Error code"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Allotment type"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Error title"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "Response status"
+                },
+                "subject": {
+                  "type": "string",
+                  "description": "Subject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "assignmentsActionsUpdateRequest": {
+        "type": "object",
+        "example": {
+          "update": [
+            {
+              "type": "professional",
+              "subject": "qlik\\malik",
+              "sourceType": "analyzer"
+            }
+          ]
+        },
+        "required": [
+          "update"
+        ],
+        "properties": {
+          "update": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "subject"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "Target assignment type."
+                },
+                "subject": {
+                  "type": "string",
+                  "description": "User subject, the current or the desired after the patch."
+                },
+                "sourceType": {
+                  "type": "string",
+                  "description": "Current assignment type."
+                },
+                "sourceSubject": {
+                  "type": "string",
+                  "description": "The current user subject, in case that should be patched."
+                }
+              }
+            }
+          }
+        }
+      },
+      "assignmentsActionsUpdateResponse": {
+        "type": "object",
+        "example": {
+          "data": [
+            {
+              "type": "professional",
+              "status": 200,
+              "subject": "qlik\\malik",
+              "sourceType": "analyzer"
+            },
+            {
+              "code": "LICENSES-016",
+              "title": "Assignment not found.",
+              "status": 404,
+              "subject": "qlik/sara",
+              "sourceType": "analyzer"
+            }
+          ]
+        },
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "description": "Error code"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Target allotment type."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Error title"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP status code indicating the result of the individual assignment operation. A value of 200 represents a successful update, while 201 indicates a new resource was created due to a subject update. Any 400-level status codes indicate an error."
+                },
+                "subject": {
+                  "type": "string",
+                  "description": "Target subject."
+                },
+                "sourceType": {
+                  "type": "string",
+                  "description": "Current allotment type."
+                },
+                "sourceSubject": {
+                  "type": "string",
+                  "description": "Current subject."
+                }
+              }
+            }
+          }
+        }
+      },
+      "assignmentsResponse": {
+        "type": "object",
+        "example": {
+          "data": [
+            {
+              "type": "analyzer",
+              "excess": false,
+              "created": "2020-12-03T09:24:48.114Z",
+              "subject": "qlik\\kalle"
+            },
+            {
+              "type": false,
+              "created": "2020-12-03T09:24:48.114Z",
+              "subject": "qlik\\nalle"
+            }
+          ],
+          "links": {
+            "next": {
+              "href": "http://license/v1/licenses/assignments?limit=4&page=bmV4dDpGZ0FBQUFkZmFXUUFYOHBUcTlpM1U4UU1YWHZrQUE%3D"
+            },
+            "prev": {
+              "href": "http://license/v1/licenses/assignments?limit=4&page=cHJldjpGZ0FBQUFkZmFXUUFYOHBUcTlpM1U4UU1YWHZ0QUE%3D"
+            }
+          }
+        },
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "required": [
+                "type",
+                "subject",
+                "excess",
+                "created"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "Allotment type"
+                },
+                "excess": {
+                  "type": "boolean",
+                  "description": "Assignment excess status."
+                },
+                "created": {
+                  "type": "string",
+                  "description": "Assignment created date."
+                },
+                "subject": {
+                  "type": "string",
+                  "description": "Subject"
+                }
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/href"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/href"
+              }
+            }
+          }
+        }
+      },
+      "consumptionEventsResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "ID"
+                },
+                "appId": {
+                  "type": "string",
+                  "description": "App ID"
+                },
+                "userId": {
+                  "type": "string",
+                  "description": "User ID"
+                },
+                "endTime": {
+                  "type": "string",
+                  "description": "Engine session end time.",
+                  "x-qlik-filterable": true
+                },
+                "duration": {
+                  "type": "string",
+                  "description": "Engine session duration."
+                },
+                "sessionId": {
+                  "type": "string",
+                  "description": "Engine session ID."
+                },
+                "allotmentId": {
+                  "type": "string",
+                  "description": "Allotment ID"
+                },
+                "minutesUsed": {
+                  "type": "integer",
+                  "description": "Analyzer capacity minutes consumed."
+                },
+                "capacityUsed": {
+                  "type": "integer",
+                  "description": "Analyzer capacity chunks consumed."
+                },
+                "licenseUsage": {
+                  "type": "string",
+                  "description": "License usage"
+                }
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/href"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/href"
+              }
+            }
+          }
+        }
+      },
+      "errorResponse": {
+        "type": "object",
+        "example": {
+          "error": "util.Error",
+          "errors": [
+            {
+              "code": "LICENSES-123",
+              "title": "error title"
+            }
+          ],
+          "message": "error message"
+        },
+        "required": [
+          "errors",
+          "error",
+          "message"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error type",
+            "x-qlik-deprecated": true
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "title"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "description": "Error code"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Error title"
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "Additional error detail."
+                }
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "x-qlik-deprecated": true
+          }
+        }
+      },
+      "href": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "link"
+          }
+        }
+      },
+      "licenseOverview": {
+        "type": "object",
+        "example": {
+          "trial": false,
+          "valid": "2018-01-01/2018-12-31",
+          "origin": "Internal",
+          "status": "Ok",
+          "product": "Qlik Sense Enterprise SaaS",
+          "allotments": [
+            {
+              "name": "analyzer_time",
+              "units": 300,
+              "overage": 100,
+              "unitsUsed": 242,
+              "usageClass": "time"
+            },
+            {
+              "name": "professional",
+              "units": 200,
+              "unitsUsed": 15,
+              "usageClass": "assigned"
+            }
+          ],
+          "licenseKey": "hejhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IktFWTEifQ.eyJqdGkiOiIxZjZkZTc0Zi04MDcyLTRjMTQtYjc1OS02ZjlkYmJmYWM5MjAiLCJsaWNlbnNlIjoiOTk5OTAwMDAwMDAwMTIzNCJ9.fwa6l6gY1MR_Ja2OMnV65V68fbzQYW5OAKUFnLfG9oZjNAbjhdDkZvS2S2zHaBnSrSva1ARh5iq_S0KTBOKKcJJDTb7jRVURyaAvbCuBDk_0ITrUudHaT9U_Mc9EKkfT8mR6vthhZxVzEhyYPFS7gDw7M6bav2ntpDsoJFPgous",
+          "parameters": [
+            {
+              "name": "qlikAlerting",
+              "valid": "./.",
+              "values": {
+                "saas_alerting": "FULL"
+              }
+            }
+          ],
+          "licenseNumber": "9999000000001204",
+          "secondaryNumber": "12345"
+        },
+        "required": [
+          "allotments",
+          "licenseKey",
+          "licenseNumber",
+          "origin",
+          "updated",
+          "parameters",
+          "product",
+          "status",
+          "trial",
+          "valid",
+          "secondaryNumber"
+        ],
+        "properties": {
+          "trial": {
+            "type": "boolean",
+            "description": "Boolean indicating if it is a trial license."
+          },
+          "valid": {
+            "type": "string",
+            "description": "Period that the license is currently set to be active. Represented as an ISO 8601 time interval with start and end."
+          },
+          "origin": {
+            "enum": [
+              "Internal",
+              "External"
+            ],
+            "type": "string",
+            "description": "Origin of license key."
+          },
+          "status": {
+            "enum": [
+              "Ok",
+              "Blacklisted",
+              "Expired"
+            ],
+            "type": "string",
+            "description": "Enum with status of license. Only status Ok grants license. access."
+          },
+          "product": {
+            "type": "string",
+            "description": "The product the license is valid for."
+          },
+          "updated": {
+            "type": "string",
+            "description": "An ISO 8601 timestamp for when the license was last updated."
+          },
+          "allotments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "units",
+                "unitsUsed",
+                "usageClass"
+              ],
+              "properties": {
+                "name": {
+                  "enum": [
+                    "professional",
+                    "analyzer",
+                    "analyzer_time"
+                  ],
+                  "type": "string"
+                },
+                "units": {
+                  "type": "integer"
+                },
+                "overage": {
+                  "type": "integer",
+                  "description": "Overage value; -1 means unbounded overage."
+                },
+                "unitsUsed": {
+                  "type": "integer"
+                },
+                "usageClass": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "changeTime": {
+            "type": "string",
+            "description": "An ISO 8601 timestamp for when the license was last changed."
+          },
+          "licenseKey": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "valid"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Parameter set (provision) name."
+                },
+                "valid": {
+                  "type": "string",
+                  "pattern": "^(\\.|\\d{4}-\\d{2}-\\d{2})/(\\.|\\d{4}-\\d{2}-\\d{2})$",
+                  "description": "Time interval for parameter validity."
+                },
+                "access": {
+                  "type": "object",
+                  "properties": {
+                    "allotment": {
+                      "type": "string",
+                      "description": "Name of an allotment that the user must have access to. to"
+                    }
+                  },
+                  "description": "Parameters for licenses to control access to the parameters."
+                },
+                "values": {
+                  "type": "object",
+                  "properties": {},
+                  "description": "Parameter values"
+                }
+              }
+            },
+            "description": "The license parameters."
+          },
+          "licenseType": {
+            "type": "string"
+          },
+          "licenseNumber": {
+            "type": "string"
+          },
+          "latestValidTime": {
+            "type": "string",
+            "description": "An ISO 8601 timestamp for when the latest time the license has been known to be valid, a missing value indicates the indefinite future."
+          },
+          "secondaryNumber": {
+            "type": "string",
+            "description": "The secondary number of a definition."
+          },
+          "capabilityBankId": {
+            "type": "string",
+            "description": "the capability bank id"
+          },
+          "parentLicenseNumber": {
+            "type": "string",
+            "description": "the parent number of the license. can be shared by multiple license numbers"
+          }
+        }
+      },
+      "licenseStatus": {
+        "type": "object",
+        "example": {
+          "type": "Signed",
+          "trial": false,
+          "valid": "2018-01-01/2018-12-31",
+          "origin": "Internal",
+          "status": "Ok",
+          "product": "Qlik Sense Business"
+        },
+        "required": [
+          "origin",
+          "product",
+          "status",
+          "trial",
+          "type",
+          "valid"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "Signed",
+              "Plain"
+            ],
+            "type": "string",
+            "description": "Type of license key."
+          },
+          "trial": {
+            "type": "boolean",
+            "description": "Boolean indicating if it is a trial license."
+          },
+          "valid": {
+            "type": "string",
+            "description": "Period that the license is currently set to be active. Represented as an ISO 8601 time interval with start and end."
+          },
+          "origin": {
+            "enum": [
+              "Internal",
+              "External"
+            ],
+            "type": "string",
+            "description": "Origin of license key."
+          },
+          "status": {
+            "enum": [
+              "Ok",
+              "Blacklisted",
+              "Expired",
+              "Missing"
+            ],
+            "type": "string",
+            "description": "Enum with status of license. Only status Ok grants license. access."
+          },
+          "product": {
+            "type": "string",
+            "description": "The product the license is valid for."
+          }
+        }
+      },
+      "settingsBody": {
+        "type": "object",
+        "example": {
+          "autoAssignAnalyzer": true,
+          "autoAssignProfessional": false
+        },
+        "properties": {
+          "autoAssignAnalyzer": {
+            "type": "boolean",
+            "description": "If analyzer users are available, they will be automatically assigned. Otherwise, analyzer capacity will be assigned, if available."
+          },
+          "autoAssignProfessional": {
+            "type": "boolean",
+            "description": "If professional users are available, they will be automatically assigned. Otherwise, analyzer capacity will be assigned, if available."
+          }
+        }
+      }
+    }
+  }
+}

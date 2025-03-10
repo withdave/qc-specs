@@ -1,0 +1,179 @@
+{
+  "info": {
+    "title": "login",
+    "version": ""
+  },
+  "paths": {
+    "/login": {
+      "get": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Login using interactive identity provider",
+        "responses": {
+          "302": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Redirect to the identity provider."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid login."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "returnto",
+            "schema": {
+              "type": "string"
+            },
+            "example": "automations/editor/fef1ba5f-facb-4cd1-9c69-8ddc6c61b7e3",
+            "required": false,
+            "description": "Relative or full URL on the tenant to redirect to after successful login."
+          },
+          {
+            "in": "header",
+            "name": "Qlik-Web-Integration-ID",
+            "schema": {
+              "type": "string"
+            },
+            "example": "OG_YzbL1zweMS4XQcv88J_n0853IbM0R",
+            "required": false,
+            "description": "Web Integration ID associated with origin whitelist used to validate returnto value."
+          }
+        ],
+        "description": "Initiates login using the active interactive identity provider associated with the tenant. Uses default Qlik identity provider if no customer-configured interactive identity provider is active.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/login/jwt-session": {
+      "post": {
+        "tags": [
+          "tokens"
+        ],
+        "summary": "Exchange a token",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "example": "eas.sid=spn3PWVdGDmSs2NH6kEgpIwZft2utI2m;eas.sid.sig=s43MYzD54Z7NsayOdPD0pXm24fc;_csrfToken=jQrrL9KC-OomYaTw2vY8B2sR1uddfwH2q_js;_csrfToken.sig=GRB6I20vR-tlgmFceq8a9mSGyCE"
+                },
+                "description": "session cookie and CSRF token along with their signatures"
+              }
+            },
+            "description": "Successfully exchanged JWT for session."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized."
+          }
+        },
+        "description": "Exchanges a token in the form of a user JWT for a session cookie.\nThe JWT should be securely signed with an algorithm other than HS, and it should contain the following claims:\n1. iss: identifies the principal that issued the JWT; it must match the issuer in the IDP definition.\n2. aud: identifies the recipients of the JWT, which in this case is \"qlik.api/login/jwt-session\".\n3. sub: identifies the subject of the JWT.\n4. subType: the type of identifier the sub represents, which in this case is \"user\".\n5. name: the name of the user.\n6. email: the email address of the user.\n7. email_verified: a claim indicating to Qlik that the JWT source has verified that the email address belongs to the subject.\n9. jti: JWT ID; it should be unique for each consumed JWT token.\n10. iat: identifies the time at which the JWT was issued.\n11. nbf: identifies the starting time on which the JWT is accepted. The current unix time must be passed this value.\n12. exp: identifies the expiration time after which the JWT is not accepted.\n13. keyid: identifies the KeyID used to sign the JWT; it must match the KeyID in the IDP definition.\n\nAnd the time window between exp and nbf should not exceed 1 hour.\n",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/authenticate"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Non-standard information about the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "The error title."
+          },
+          "detail": {
+            "type": "string",
+            "description": "The detailed error message."
+          },
+          "status": {
+            "type": "string",
+            "description": "The http status code."
+          }
+        },
+        "description": "An error object."
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "List of errors and their properties."
+          }
+        },
+        "description": "A representation of the errors encountered from the HTTP request."
+      }
+    }
+  }
+}

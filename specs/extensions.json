@@ -1,0 +1,733 @@
+{
+  "info": {
+    "title": "extensions",
+    "version": ""
+  },
+  "paths": {
+    "/v1/extensions": {
+      "get": {
+        "tags": [
+          "extensions"
+        ],
+        "summary": "List all extensions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/extensions"
+                }
+              }
+            },
+            "description": "OK. Lists all extensions."
+          }
+        },
+        "description": "Lists all imported extensions in the tenant.",
+        "operationId": "getExtensions",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "extensions"
+        ],
+        "summary": "Create a new extension",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/extension"
+                }
+              }
+            },
+            "description": "Created. Creates a new extension and returns it."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Conflict. Resource with same unique identity already exists."
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unsupported media type. Body of the payload is not a valid JSON object."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unprocessable entity. Validation error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "description": "Creates a new extension. Accepts either provided file or data object. The name of the new extension must be different to any existing extensions.",
+        "operationId": "createExtension",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/extension"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Extension archive."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/extensions/{id}": {
+      "get": {
+        "tags": [
+          "extensions"
+        ],
+        "summary": "Get a specific extension",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/extension"
+                }
+              }
+            },
+            "description": "OK. Returns extension with {id}."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to read extension with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find the extension with {id}."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Gone. Extension with {id} has been deleted."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Extension identifier or its qextFilename."
+          }
+        ],
+        "description": "Returns a specific extension matching either extension ID or extension name.",
+        "operationId": "getExtensionById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "extensions"
+        ],
+        "summary": "Update a specific extension",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/extension"
+                }
+              }
+            },
+            "description": "OK. Extension has been updated."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to update extension with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find the extension with {id}."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Conflict. Resource with same unique identity already exists."
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unsupported media type. Body of the payload is not a valid JSON object."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unprocessable entity. Validation error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Extension identifier or its qextFilename."
+          }
+        ],
+        "description": "Updates a specific extension matching either extension ID or extension name. Accepts either provided file or data object.",
+        "operationId": "updateExtensionById",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/extension"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Extension archive."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "extensions"
+        ],
+        "summary": "Delete a specific extension",
+        "responses": {
+          "204": {
+            "description": "No content. Soft deletes the extension."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to delete extension with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find the extension with {id}."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Gone. Extension with {id} has been deleted."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Extension identifier or its qextFilename."
+          }
+        ],
+        "description": "Deletes a specific extension matching either extension ID or extension name.",
+        "operationId": "deleteExtensionById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/extensions/{id}/file": {
+      "get": {
+        "tags": [
+          "extensions"
+        ],
+        "summary": "Download extension as an archive",
+        "responses": {
+          "200": {
+            "description": "OK. Extension exists. Returns the extension archive."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to read extension with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find the extension with {id}."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Gone. Extension with {id} has been deleted."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Extension identifier or its qextFilename."
+          }
+        ],
+        "description": "Downloads all files in the extension matching either extension ID or extension name as a `.zip` archive.",
+        "operationId": "getExtensionArchive",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/extensions/{id}/file/{filepath}": {
+      "get": {
+        "tags": [
+          "extensions"
+        ],
+        "summary": "Download file from extension archive.",
+        "responses": {
+          "200": {
+            "description": "OK. Extension exists and the file specified exists. Returns the specific file."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to read extension with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find the extension with {id} or the file does not exist in the archive."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Gone. Extension with {id} has been deleted."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "filepath",
+            "schema": {
+              "type": "string",
+              "example": "css/styles.css"
+            },
+            "required": true,
+            "description": "Path to the file location within the specified extension archive. Folders separated with forward slashes."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Extension identifier or its qextFilename."
+          }
+        ],
+        "description": "Downloads a specific file from the extension matching either extension ID or extension name, identified by the file path within the imported extension.",
+        "operationId": "getFileFromExtensionArchive",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/extend"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "bundleMeta": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the bundle."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the bundle."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the bundle."
+          }
+        },
+        "description": "Object containing meta data regarding the bundle the extension belongs to. If it does not belong to a bundle, this object is not defined."
+      },
+      "error": {
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/meta"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the HTTP status code."
+          },
+          "source": {
+            "type": "object",
+            "description": "Optional JSON patch object pointing to an invalid property."
+          },
+          "status": {
+            "type": "number",
+            "description": "The HTTP status code."
+          }
+        },
+        "description": "An error object."
+      },
+      "extension": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "file": {
+            "type": "object",
+            "description": "The file that was uploaded with the extension."
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon to show in the client."
+          },
+          "name": {
+            "type": "string",
+            "description": "The display name of this extension."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of tags."
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of this extension (visualization, etc.)."
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of the extension."
+          },
+          "bundle": {
+            "$ref": "#/components/schemas/bundleMeta"
+          },
+          "userId": {
+            "type": "string",
+            "readOnly": true
+          },
+          "bundled": {
+            "type": "boolean",
+            "description": "If the extension is part of an extension bundle."
+          },
+          "license": {
+            "type": "string",
+            "description": "Under which license this extension is published."
+          },
+          "preview": {
+            "type": "string",
+            "description": "Path to an image that enables users to preview the extension."
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the extension."
+          },
+          "checksum": {
+            "type": "string",
+            "description": "Checksum of the extension contents."
+          },
+          "homepage": {
+            "type": "string",
+            "description": "Home page of the extension."
+          },
+          "keywords": {
+            "type": "string",
+            "description": "Keywords for the extension."
+          },
+          "loadpath": {
+            "type": "string",
+            "description": "Relative path to the extension's entry file, defaults to `filename` from the qext file."
+          },
+          "supplier": {
+            "type": "string",
+            "description": "Supplier of the extension."
+          },
+          "tenantId": {
+            "type": "string",
+            "readOnly": true
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true
+          },
+          "supernova": {
+            "type": "boolean",
+            "description": "If the extension is a supernova extension or not."
+          },
+          "deprecated": {
+            "type": "string",
+            "format": "date",
+            "description": "A date noting when the extension was deprecated."
+          },
+          "repository": {
+            "type": "string",
+            "description": "Link to the extension source code."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the extension."
+          },
+          "qextVersion": {
+            "type": "string",
+            "description": "The version from the qext file that was uploaded with this extension."
+          },
+          "dependencies": {
+            "type": "object",
+            "description": "Map of dependencies describing version of the component it requires."
+          },
+          "qextFilename": {
+            "type": "string",
+            "description": "The name of the qext file that was uploaded with this extension."
+          }
+        },
+        "description": "The extension model."
+      },
+      "extensions": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/extension"
+            }
+          }
+        }
+      },
+      "meta": {
+        "properties": {
+          "stack": {
+            "type": "string",
+            "description": "Full stack trace of the error that was raised."
+          },
+          "message": {
+            "type": "string",
+            "description": "A more detailed message explaining the error."
+          },
+          "resourceName": {
+            "type": "string",
+            "description": "Name of the resource related to the error. If there is a conflict, it is the name of the model attempting to be created."
+          }
+        },
+        "description": "Object containing meta data regarding an error. It does not necessarily contain all the properties."
+      }
+    }
+  }
+}

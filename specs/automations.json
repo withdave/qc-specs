@@ -1,0 +1,2079 @@
+{
+  "info": {
+    "title": "automations",
+    "version": ""
+  },
+  "paths": {
+    "/v1/automations": {
+      "get": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Retrieves a list of automations",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "example": "lastRun,lastRunStatus,runMode,createdAt,updatedAt",
+            "required": false,
+            "description": "Allows to select the actual fields to be returned. When no fields are defined, all are returned."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "name eq \"My Automation\" and runMode eq \"scheduled\" and ownerId eq \"sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy\""
+            },
+            "required": false,
+            "description": "Allowed filters: name, runMode, lastRunStatus, ownerId"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "example": 50,
+              "maximum": 200,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The number of automations to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "id",
+                "name",
+                "runMode",
+                "state",
+                "createdAt",
+                "updatedAt",
+                "lastRunAt",
+                "lastRunStatus",
+                "duration",
+                "+id",
+                "+name",
+                "+runMode",
+                "+state",
+                "+createdAt",
+                "+updatedAt",
+                "+lastRunAt",
+                "+lastRunStatus",
+                "-id",
+                "-name",
+                "-runMode",
+                "-state",
+                "-createdAt",
+                "-updatedAt",
+                "-lastRunAt",
+                "-lastRunStatus",
+                "+duration",
+                "-duration"
+              ],
+              "type": "string",
+              "default": "id",
+              "example": "-name"
+            },
+            "required": false,
+            "description": "The field to sort by, with +- prefix indicating sort order. (?query=-name => sort on the name field using descending order)"
+          }
+        ],
+        "operationId": "getAutomations",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Create an automation",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationDetailResponseObject"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "operationId": "createAutomation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutomationDetailRequestObject"
+              }
+            }
+          },
+          "required": true,
+          "description": "Automation object to create"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}": {
+      "get": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Retrieves an automation",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationDetailResponseObject"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "example": "snippetIds,endpointIds,connectorIds,workspace",
+            "required": false,
+            "description": "Allows to select the actual fields to be returned. Where the default is all fields"
+          }
+        ],
+        "operationId": "getAutomation",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Update an automation",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationDetailResponseObject"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          }
+        ],
+        "operationId": "updateAutomation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutomationDetailRequestObject"
+              }
+            }
+          },
+          "required": true,
+          "description": "Automation object to update"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Delete an automation",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          }
+        ],
+        "operationId": "deleteAutomation",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/actions/copy": {
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Copy an automation.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "00000000-0000-0000-0000-000000000000",
+                      "description": "The unique identifier for the automation."
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          }
+        ],
+        "operationId": "copyAutomation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the new automation."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/actions/disable": {
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Disables an automation.",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          }
+        ],
+        "operationId": "disableAutomation",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/actions/enable": {
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Enable an automation.",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          }
+        ],
+        "operationId": "enableAutomation",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/actions/move": {
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Move an automation to a different user.",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          }
+        ],
+        "description": "This step will remove the history and change logs of this automation. All linked connections used inside an automation will be detached.",
+        "operationId": "moveAutomation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "example": "sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/runs": {
+      "get": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Retrieves a list of runs for a specific automation.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "example": "isTestRun,isArchived,error,startTime,stopTime,duration,scheduledStartTIme",
+            "required": false,
+            "description": "Allows to select the actual fields to be returned. Where the default is all fields"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "status eq \"finished\""
+            },
+            "required": false,
+            "description": "Allowed filters: status, context, startTime and title"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "example": 10,
+              "maximum": 200,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The number of runs to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "id",
+                "status",
+                "startTime",
+                "-id",
+                "-status",
+                "-startTime",
+                "+id",
+                "+status",
+                "+startTime"
+              ],
+              "type": "string",
+              "default": "id",
+              "example": "-id"
+            },
+            "required": false,
+            "description": "The field to sort by, with +- prefix indicating sort order. (?query=-startTime => sort on the startTime field using descending order)"
+          }
+        ],
+        "operationId": "getRuns",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Create a run",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetailResponseObject"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          }
+        ],
+        "operationId": "createRun",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunDetailRequestObject"
+              }
+            }
+          },
+          "required": true,
+          "description": "Run object to create"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/runs/{runId}": {
+      "get": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Retrieves a run",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetailResponseObject"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "path",
+            "name": "runId",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the run."
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "example": "id,context,status,title,isTestRun,isArchived,expectedInputs,inputs,error,metrics,startTime,stopTime",
+            "required": false,
+            "description": "Allows to select the actual fields to be returned. Where the default is all fields"
+          }
+        ],
+        "operationId": "getRun",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/automations/{id}/runs/{runId}/actions/export": {
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Export a run.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "example": "https://<bucket>.s3.<region>.amazonaws.com/<run>.json"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "path",
+            "name": "runId",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the run."
+          }
+        ],
+        "description": "Creates a temporary pre-signed AWS S3 URL to download the raw logs of a completed run. This URL is valid for 5 minutes.",
+        "operationId": "exportRun",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/runs/{runId}/actions/retry": {
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Retry a run.",
+        "responses": {
+          "204": {
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "path",
+            "name": "runId",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the run."
+          }
+        ],
+        "description": "This action allows you to retry a specific run by creating a new run using the same inputs.",
+        "operationId": "retryRun",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/runs/{runId}/actions/stop": {
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Stop a running automation.",
+        "responses": {
+          "204": {
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "path",
+            "name": "runId",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the run."
+          }
+        ],
+        "description": "Force a run to be stopped immediately.",
+        "operationId": "stopRun",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/usage": {
+      "get": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Retrieves all automation usage for a tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "name eq \"duration\" and date eq \"2021-12-15\""
+            },
+            "required": true,
+            "description": "Indicates how the metrics should be filtered"
+          },
+          {
+            "in": "query",
+            "name": "breakdownBy",
+            "schema": {
+              "type": "string",
+              "example": "automation"
+            },
+            "required": false,
+            "description": "If specified, result will be broken apart for each automation"
+          }
+        ],
+        "description": "Metrics for automations, paginated.",
+        "operationId": "getUsageMetrics",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/build",
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Bad Request"
+      },
+      "Forbidden": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Forbidden"
+      },
+      "InternalServerError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Internal Server Error"
+      },
+      "NotFound": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Not found"
+      },
+      "ServiceUnavailable": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Service Unavailable"
+      },
+      "Unauthorized": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      }
+    },
+    "schemas": {
+      "AutomationDetailRequestObject": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "available",
+              "unavailable",
+              "disabled"
+            ],
+            "type": "string",
+            "default": "available",
+            "example": "available"
+          },
+          "schedules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleRequestObject"
+            }
+          },
+          "workspace": {
+            "type": "object",
+            "description": "The workspace generated by the Qlik Application Automations editor."
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "AutomationDetailResponseObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "e0e720d0-4947-11ec-a1d2-9559fa35801d",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "available",
+              "unavailable",
+              "disabled"
+            ],
+            "type": "string",
+            "default": "available",
+            "example": "available"
+          },
+          "lastRun": {
+            "$ref": "#/components/schemas/RunDetailResponseObject"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy",
+            "readOnly": true
+          },
+          "runMode": {
+            "enum": [
+              "manual",
+              "scheduled",
+              "triggered",
+              "webhook"
+            ],
+            "type": "string",
+            "example": "triggered",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "lastRunAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "schedules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleResponseObject"
+            }
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "workspace": {
+            "type": "object",
+            "description": "The workspace generated by the Qlik Application Automations editor."
+          },
+          "snippetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "e0e720d0-4947-11ec-a1d2-9559fa35801d"
+            ],
+            "readOnly": true,
+            "description": "A list of snippets that were detected inside the workspace. This includes snippet blocks that are not connected to other blocks. Order of guids is not guaranteed."
+          },
+          "description": {
+            "type": "string"
+          },
+          "endpointIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "9d94bef0-b28c-11eb-8dba-01593c457362",
+              "53a6fb70-b28f-11eb-b601-b545a40867e0"
+            ],
+            "readOnly": true,
+            "description": "A list of endpoints that were detected inside the workspace. This includes Endpoints present in blocks which are not connected to other blocks. Order of guids is not guaranteed."
+          },
+          "connectorIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "0d87808f-27c0-11ea-921c-022e6b5ea1e2",
+              "0d86ee8a-27c0-11ea-921c-022e6b5ea1e2"
+            ],
+            "readOnly": true,
+            "description": "A list of connectors that were detected the workspace. This includes Connectors present in blocks which are not connected to other blocks. Order of guids is not guaranteed."
+          },
+          "lastRunStatus": {
+            "enum": [
+              "failed",
+              "finished",
+              "finished with warnings",
+              "must stop",
+              "not started",
+              "paused",
+              "running",
+              "starting",
+              "stopped"
+            ],
+            "type": "string",
+            "example": "finished",
+            "readOnly": true
+          },
+          "executionToken": {
+            "type": "string",
+            "example": "aZXuEogT9X3le0k0WXMBnzuYKq4xRlkDnurjs8NVhEAAW1BYx8C1PpIl3ielgRb1",
+            "readOnly": true
+          }
+        }
+      },
+      "AutomationList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationListObject"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "AutomationListObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "e0e720d0-4947-11ec-a1d2-9559fa35801d",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "x-qlik-filterable": true
+          },
+          "state": {
+            "enum": [
+              "available",
+              "unavailable",
+              "disabled"
+            ],
+            "type": "string",
+            "default": "available",
+            "example": "available"
+          },
+          "lastRun": {
+            "$ref": "#/components/schemas/RunDetailResponseObject"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy",
+            "readOnly": true,
+            "x-qlik-filterable": true
+          },
+          "runMode": {
+            "enum": [
+              "manual",
+              "scheduled",
+              "triggered",
+              "webhook"
+            ],
+            "type": "string",
+            "example": "triggered",
+            "readOnly": true,
+            "x-qlik-filterable": true
+          },
+          "duration": {
+            "type": "integer",
+            "example": "9001",
+            "readOnly": true,
+            "description": "Duration of the last run, indicated in seconds. Calculated from start and stop times",
+            "x-qlik-filterable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "lastRunAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "workspace": {
+            "type": "object",
+            "example": {},
+            "readOnly": true,
+            "description": "The workspace contains the JSON representation of the used blocks"
+          },
+          "snippetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "e0e720d0-4947-11ec-a1d2-9559fa35801d"
+            ],
+            "readOnly": true,
+            "description": "A list of snippets that were detected inside the workspace. This includes snippet blocks that are not connected to other blocks. Order of guids is not guaranteed."
+          },
+          "description": {
+            "type": "string"
+          },
+          "endpointIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "9d94bef0-b28c-11eb-8dba-01593c457362",
+              "53a6fb70-b28f-11eb-b601-b545a40867e0"
+            ],
+            "readOnly": true,
+            "description": "A list of endpoints that were detected inside the workspace. This includes Endpoints present in blocks which are not connected to other blocks. Order of guids is not guaranteed."
+          },
+          "connectorIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "0d87808f-27c0-11ea-921c-022e6b5ea1e2",
+              "0d86ee8a-27c0-11ea-921c-022e6b5ea1e2"
+            ],
+            "readOnly": true,
+            "description": "A list of connectors that were detected the workspace. This includes Connectors present in blocks which are not connected to other blocks. Order of guids is not guaranteed."
+          },
+          "lastRunStatus": {
+            "enum": [
+              "failed",
+              "finished",
+              "finished with warnings",
+              "must stop",
+              "not started",
+              "paused",
+              "running",
+              "starting",
+              "stopped"
+            ],
+            "type": "string",
+            "example": "finished",
+            "readOnly": true,
+            "x-qlik-filterable": true
+          },
+          "executionToken": {
+            "type": "string",
+            "example": "aZXuEogT9X3le0k0WXMBnzuYKq4xRlkDnurjs8NVhEAAW1BYx8C1PpIl3ielgRb1",
+            "readOnly": true
+          }
+        }
+      },
+      "AutomationUsageObject": {
+        "type": "object",
+        "properties": {
+          "guid": {
+            "type": "string",
+            "example": "00000000-0000-0000-0000-000000000000",
+            "description": "The unique identifier for the automation.",
+            "x-qlik-filterable": true
+          },
+          "name": {
+            "type": "string",
+            "example": "My Automation.",
+            "maxLength": 50,
+            "description": "The name for the automation."
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "KP1zJiPDn0gsla236GmETadFcxBW-J8F",
+            "description": "The unique identifier for the user who owns the automation",
+            "x-qlik-filterable": true
+          },
+          "duration": {
+            "type": "integer",
+            "example": 9001,
+            "description": "Duration of the last run, indicated in seconds. Calculated from start and stop times",
+            "x-qlik-filterable": true
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The unique code for the error"
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of what went wrong"
+          },
+          "detail": {
+            "type": "string",
+            "description": "May be used to provide additional details"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A way to trace the source of the error."
+          }
+        }
+      },
+      "Links": {
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/PaginationLink"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/PaginationLink"
+          }
+        }
+      },
+      "PaginationLink": {
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "The URL to a resource request"
+          }
+        }
+      },
+      "RunDetailRequestObject": {
+        "type": "object",
+        "required": [
+          "context"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d452d100-9b0b-11ec-b199-8323e1031c3e",
+            "readOnly": true
+          },
+          "inputs": {
+            "type": "object",
+            "x-qlik-stability": "private"
+          },
+          "context": {
+            "enum": [
+              "api"
+            ],
+            "type": "string",
+            "example": "api",
+            "description": "The source that triggers the automation will set the context."
+          }
+        }
+      },
+      "RunDetailResponseObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d452d100-9b0b-11ec-b199-8323e1031c3e",
+            "readOnly": true
+          },
+          "error": {
+            "type": "object"
+          },
+          "title": {
+            "type": "string"
+          },
+          "inputs": {
+            "type": "object",
+            "x-qlik-stability": "private"
+          },
+          "status": {
+            "enum": [
+              "failed",
+              "finished",
+              "finished with warnings",
+              "must stop",
+              "not started",
+              "running",
+              "starting",
+              "stopped"
+            ],
+            "type": "string"
+          },
+          "context": {
+            "enum": [
+              "test_run",
+              "editor",
+              "detail",
+              "api_sync",
+              "api_async",
+              "webhook",
+              "lookup"
+            ],
+            "type": "string",
+            "description": "The source that triggers the automation will set the context. Certain contexts impact the execution of an automation (for example, The \"test_run\" context will not process all results when listing items)."
+          },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "connectorGuid",
+                    "rxBytes",
+                    "txBytes"
+                  ],
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "snippetBlock",
+                        "endpointBlock"
+                      ],
+                      "type": "string",
+                      "example": "endpointBlock",
+                      "description": "Type of the block."
+                    },
+                    "rxBytes": {
+                      "type": "integer",
+                      "example": 18329921,
+                      "description": "Total amount of received bytes sent by the current block."
+                    },
+                    "txBytes": {
+                      "type": "integer",
+                      "example": 18329921,
+                      "description": "Total amount of sent bytes sent by the current block."
+                    },
+                    "apiCalls": {
+                      "type": "integer",
+                      "example": 40,
+                      "description": "API calls to external resources made by the current block."
+                    },
+                    "snippetId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Unique identifier for the snippet block used within the execution."
+                    },
+                    "endpointId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Unique identifier for the snippet block used within the execution."
+                    },
+                    "connectorId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Unique identifier for the connector used within the block of the execution."
+                    }
+                  },
+                  "description": "Information of the ended execution per block."
+                },
+                "description": "List of blocks used during execution. Note: this list currently only contains endpointBlocks and snippetBlocks"
+              },
+              "network": {
+                "type": "object",
+                "properties": {
+                  "rxBytes": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "The number of received bytes."
+                  },
+                  "txBytes": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "The number of received bytes."
+                  }
+                }
+              },
+              "totalApiCalls": {
+                "type": "integer",
+                "default": 0,
+                "description": "The number of API calls made."
+              }
+            }
+          },
+          "stopTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "isTestRun": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "isArchived": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "expectedInputs": {
+            "type": "object",
+            "x-qlik-stability": "private"
+          },
+          "scheduledStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          }
+        }
+      },
+      "RunList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RunListObject"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "RunListObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d452d100-9b0b-11ec-b199-8323e1031c3e",
+            "readOnly": true
+          },
+          "error": {
+            "type": "object"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "failed",
+              "finished",
+              "finished with warnings",
+              "must stop",
+              "not started",
+              "running",
+              "starting",
+              "stopped"
+            ],
+            "type": "string",
+            "x-qlik-filterable": true
+          },
+          "context": {
+            "enum": [
+              "test_run",
+              "editor",
+              "detail",
+              "api_sync",
+              "api_async",
+              "webhook",
+              "lookup"
+            ],
+            "type": "string",
+            "x-qlik-filterable": true
+          },
+          "duration": {
+            "type": "integer",
+            "example": "9001",
+            "readOnly": true,
+            "description": "Duration of the run, indicated in seconds. Calculated from start and stop times",
+            "x-qlik-filterable": true
+          },
+          "stopTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "isTestRun": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          },
+          "isArchived": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "scheduledStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "readOnly": true
+          }
+        }
+      },
+      "ScheduleRequestObject": {
+        "type": "object",
+        "properties": {
+          "stopAt": {
+            "type": "string",
+            "example": "2022-12-01 00:00:00"
+          },
+          "startAt": {
+            "type": "string",
+            "example": "2022-01-01 00:00:00"
+          },
+          "interval": {
+            "type": "integer",
+            "example": 30,
+            "description": "time in seconds."
+          },
+          "timezone": {
+            "type": "string",
+            "example": "Europe/Stockholm"
+          }
+        }
+      },
+      "ScheduleResponseObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d452d100-9b0b-11ec-b199-8323e1031c3e",
+            "readOnly": true
+          },
+          "stopAt": {
+            "type": "string",
+            "example": "2022-12-01 00:00:00"
+          },
+          "startAt": {
+            "type": "string",
+            "example": "2021-12-01 00:00:00"
+          },
+          "interval": {
+            "type": "integer",
+            "example": 30,
+            "description": "time in seconds."
+          },
+          "timezone": {
+            "type": "string",
+            "example": "Europe/Stockholm"
+          },
+          "lastStartedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-01T12:28:21.000000Z"
+          }
+        }
+      },
+      "UsageList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UsageObject"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "UsageObject": {
+        "type": "object",
+        "required": [
+          "name",
+          "date",
+          "value"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2021-12-15",
+            "description": "The date for the metric"
+          },
+          "name": {
+            "enum": [
+              "runs",
+              "scheduledRun",
+              "triggeredRun",
+              "webhookRuns",
+              "duration",
+              "bandwidthIn",
+              "bandwidthOut"
+            ],
+            "type": "string",
+            "example": "bandwidthIn",
+            "maxLength": 50,
+            "description": "The name for the metric"
+          },
+          "value": {
+            "type": "integer",
+            "example": 310179713,
+            "description": "The value count of the metric"
+          },
+          "automation": {
+            "$ref": "#/components/schemas/AutomationUsageObject"
+          }
+        }
+      }
+    }
+  }
+}

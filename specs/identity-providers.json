@@ -1,0 +1,1904 @@
+{
+  "info": {
+    "title": "identity-providers",
+    "version": ""
+  },
+  "paths": {
+    "/v1/identity-providers": {
+      "get": {
+        "tags": [
+          "idp"
+        ],
+        "summary": "List IdPs",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDPArray"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "active",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If provided, filters the results by the active field."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The number of IdP entries to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The next page cursor."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The previous page cursor."
+          }
+        ],
+        "description": "This endpoint retrieves any IdPs registered on the tenant.",
+        "operationId": "getIdps",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "idp"
+        ],
+        "summary": "Create a new IdP",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDP"
+                }
+              }
+            },
+            "headers": {
+              "QLIK-IDP-POPTS": {
+                "$ref": "#/components/headers/qlikIdpPopts"
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden. User missing `TenantAdmin` role, or the tenantID in the JWT does not match any of the tenantIDs in the payload."
+          }
+        },
+        "description": "Creates a new IdP on a tenant. Requesting user must be assigned the `TenantAdmin` role. For non-interactive IdPs (e.g. JWT), IdP must be created by sending `options` payload. For interactive IdPs (e.g. SAML or OIDC), send `pendingOptions` payload to require the interactive verification step; or send `options` payload with `skipVerify` set to `true` to skip validation step and make IdP immediately available.",
+        "operationId": "createIdp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IDPPostSchema"
+              }
+            }
+          },
+          "description": "Attributes that the user wants to set for a new identity provider resource."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/identity-providers/.well-known/metadata.json": {
+      "get": {
+        "tags": [
+          "idp"
+        ],
+        "summary": "Return IdP configuration metadata",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "description": "Returns IdP configuration metadata supported on the tenant. Clients can use this information to programmatically configure their interactions with Qlik Cloud.",
+        "operationId": "getWellKnownMetaData",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/identity-providers/{id}": {
+      "get": {
+        "tags": [
+          "idp"
+        ],
+        "summary": "Get an IdP",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDP"
+                }
+              }
+            },
+            "headers": {
+              "QLIK-IDP-POPTS": {
+                "$ref": "#/components/headers/qlikIdpPopts"
+              }
+            },
+            "description": "Success"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The identity provider ID."
+          }
+        ],
+        "description": "Retrieves a specific IdP. Requesting user must be assigned the `TenantAdmin` role.",
+        "operationId": "getIdp",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "idp"
+        ],
+        "summary": "Update an IdP",
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request. Invalid request body, URL, or state transition."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Access Denied. Only the edge-auth service or TenantAdmin user request can patch an IdP."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Precondition Failed. Missing QLIK-IDP-OPTS-MATCH header, or value doesn't match against IdP test configuration value."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error, the operation failed unexpectedly"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The identity provider ID."
+          },
+          {
+            "$ref": "#/components/parameters/qlikIdpPoptsMatch"
+          }
+        ],
+        "description": "Updates the configuration of an IdP. Requesting user must be assigned the `TenantAdmin` role. Partial failure is treated as complete failure and returns an error.",
+        "operationId": "updateIdp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IDPPatchSchema"
+              }
+            }
+          },
+          "description": "Attributes that the user wants to patially update for an identity provider resource."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "idp"
+        ],
+        "summary": "Delete an IdP",
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request. The interactive IdP for the tenant can't be deleted."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The identity provider ID."
+          }
+        ],
+        "description": "Deletes an identity provider. Requesting user must be assigned the `TenantAdmin` role.",
+        "operationId": "deleteIdp",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/identity-providers/me/meta": {
+      "get": {
+        "tags": [
+          "idp"
+        ],
+        "summary": "Return active interactive IdP metadata",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDPMeta"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "description": "Retrieves default IdP metadata when no interactive IdP is enabled.",
+        "operationId": "getMeMeta",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/identity-providers/status": {
+      "get": {
+        "tags": [
+          "idp"
+        ],
+        "summary": "List IdP statuses",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDPsStatus"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Retrieves the status of all IdP configurations. Requires `TenantAdmin` role.",
+        "operationId": "getStatus",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "headers": {
+      "qlikIdpPopts": {
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "A unique string representing a hash of the current configuration being tested."
+      }
+    },
+    "parameters": {
+      "qlikIdpPoptsMatch": {
+        "in": "header",
+        "name": "QLIK-IDP-POPTS-MATCH",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "A unique string representing a hash that should map to an IdP's hash representation of the current configuration being tested."
+      }
+    },
+    "schemas": {
+      "BaseIDP": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the IdP."
+          },
+          "meta": {
+            "type": "object"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Indicates whether the IdP is available for use."
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp for when the IdP was created."
+          },
+          "protocol": {
+            "$ref": "#/components/schemas/IDPProtocol"
+          },
+          "provider": {
+            "$ref": "#/components/schemas/IDPProvider"
+          },
+          "tenantIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The tenant identifiers associated with the given IdP."
+          },
+          "description": {
+            "type": "string"
+          },
+          "interactive": {
+            "type": "boolean",
+            "description": "Indicates the type of connection with the IdP, either interactive login or a machine to machine connection."
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp for when the IdP was last updated."
+          },
+          "clockToleranceSec": {
+            "type": "integer"
+          },
+          "createNewUsersOnLogin": {
+            "type": "boolean",
+            "description": "When the flag is true, new users should be created when logging in for the first time."
+          },
+          "postLogoutRedirectUri": {
+            "type": "string",
+            "description": "Direct the user on logout to a specific URI."
+          }
+        }
+      },
+      "CertificateInfo": {
+        "type": "object",
+        "required": [
+          "certificate"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Given name for this certificate."
+          },
+          "signature": {
+            "type": "boolean",
+            "default": true,
+            "description": "Indicates whether the certificate is used for the signature."
+          },
+          "encryption": {
+            "type": "boolean",
+            "default": false,
+            "description": "Indicates whether the certificate is used for encryption."
+          },
+          "certificate": {
+            "type": "string",
+            "description": "The X.509 certificate for validating signed SAML responses."
+          }
+        }
+      },
+      "claimsMappingInteractive": {
+        "type": "object",
+        "properties": {
+          "sub": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's subject."
+          },
+          "name": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's name."
+          },
+          "email": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's email."
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's groups."
+          },
+          "locale": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's locale."
+          },
+          "picture": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's picture."
+          },
+          "zoneinfo": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's zoneinfo."
+          },
+          "client_id": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's client ID."
+          },
+          "email_verified": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's email_verified claim."
+          }
+        },
+        "description": "Mappings from claim name to an array of JSON pointers that point to locations in the claims from the IdP to retrieve the value from."
+      },
+      "claimsMappingNonInteractive": {
+        "type": "object",
+        "properties": {
+          "sub": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's subject."
+          },
+          "client_id": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of JSON pointers used to map the user's client ID."
+          }
+        },
+        "description": "Mappings from claim name to an array of JSON pointers that point to locations in the claims from the IdP to retrieve the value from."
+      },
+      "claimsMappingSAML": {
+        "type": "object",
+        "required": [
+          "sub",
+          "name",
+          "email",
+          "picture",
+          "groups"
+        ],
+        "properties": {
+          "sub": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of SAML attributes used to map the user's subject."
+          },
+          "name": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of SAML attributes used to map the user's name."
+          },
+          "email": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of SAML attributes used to map the user's email."
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of SAML attributes used to map the user's groups."
+          },
+          "picture": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of SAML attributes used to map the user's picture."
+          }
+        },
+        "description": "Mappings from claim name to an array of SAML attribute names that point to locations in the claims from the IdP to retrieve the value from."
+      },
+      "CreateJWTAuthPayload": {
+        "type": "object",
+        "required": [
+          "provider",
+          "protocol",
+          "options"
+        ],
+        "properties": {
+          "options": {
+            "type": "object",
+            "required": [
+              "issuer",
+              "staticKeys"
+            ],
+            "properties": {
+              "issuer": {
+                "type": "string",
+                "description": "The JWT issuer."
+              },
+              "staticKeys": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "kid",
+                    "pem"
+                  ],
+                  "properties": {
+                    "kid": {
+                      "type": "string",
+                      "description": "Key ID used to sign the JWTs."
+                    },
+                    "pem": {
+                      "type": "string",
+                      "description": "Pem-encoded public key for verifying the JWTs."
+                    }
+                  }
+                },
+                "description": "Keys for verifying JWTs. Limited to 1 key per identity provider."
+              }
+            },
+            "description": "Required IdP configurations."
+          },
+          "protocol": {
+            "enum": [
+              "jwtAuth"
+            ],
+            "type": "string",
+            "description": "The protocol to be used for communicating with the identity provider."
+          },
+          "provider": {
+            "enum": [
+              "external"
+            ],
+            "type": "string",
+            "description": "The identity provider to be used."
+          },
+          "tenantIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The tenant identifiers that map to the given IdP."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "clockToleranceSec": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 7200,
+            "minimum": 0,
+            "description": "There can be clock skew between the IdP and Qlik's login server. In these cases, a tolerance can be set."
+          }
+        },
+        "description": "Payload for creating an identity provider using JWT authentication."
+      },
+      "CreateOIDCPayload": {
+        "type": "object",
+        "required": [
+          "provider",
+          "protocol",
+          "interactive"
+        ],
+        "properties": {
+          "options": {
+            "type": "object",
+            "required": [
+              "claimsMapping"
+            ],
+            "properties": {
+              "realm": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9.\\-_]+$",
+                "maxLength": 254,
+                "description": "The realm identifier for the IdP."
+              },
+              "audience": {
+                "type": "string",
+                "maxLength": 256,
+                "description": "Allows for setting audience in access tokens."
+              },
+              "discoveryUrl": {
+                "type": "string",
+                "description": "The OpenID configuration endpoint. (Ex: https://<domain>/.well-known/openid-configuration). Required if openid_configuration is not given."
+              },
+              "claimsMapping": {
+                "$ref": "#/components/schemas/claimsMappingNonInteractive"
+              },
+              "allowedClientIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Only clients with IDs in this list will be allowed API access. A blank list or empty value means any client IDs authenticated against the IdP will be allowed access."
+              },
+              "openid_configuration": {
+                "$ref": "#/components/schemas/OpenIDConfiguration"
+              }
+            },
+            "description": "Required OIDC configurations for non-interactive IdPs and interactive IdPs with `skipVerify` flag enabled."
+          },
+          "protocol": {
+            "enum": [
+              "OIDC"
+            ],
+            "type": "string",
+            "description": "The protocol to be used for communicating with the identity provider."
+          },
+          "provider": {
+            "enum": [
+              "auth0",
+              "okta",
+              "generic",
+              "salesforce",
+              "keycloak",
+              "adfs",
+              "azureAD"
+            ],
+            "type": "string",
+            "description": "The identity provider to be used."
+          },
+          "tenantIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The tenant identifiers that map to the given IdP."
+          },
+          "skipVerify": {
+            "type": "boolean",
+            "default": false,
+            "description": "If set to `true`, skips IdP verification process and assumes the IdP is verified."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "interactive": {
+            "type": "boolean",
+            "default": false,
+            "description": "Indicates whether the IdP is meant for interactive login."
+          },
+          "pendingOptions": {
+            "type": "object",
+            "required": [
+              "clientId",
+              "clientSecret",
+              "claimsMapping"
+            ],
+            "properties": {
+              "realm": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9.\\-_]+$",
+                "maxLength": 254,
+                "description": "The realm identifier for the IdP."
+              },
+              "scope": {
+                "type": "string",
+                "maxLength": 254,
+                "description": "Scope which will be sent along with token requests to the IdP. Scopes should be space delimited. Will default to certain values depending on the IdP provider."
+              },
+              "clientId": {
+                "type": "string",
+                "description": "The client identifier used as part of authenticating an interactive identity provider."
+              },
+              "clientSecret": {
+                "type": "string",
+                "description": "The client secret used as part of authenticating an interactive identity provider."
+              },
+              "discoveryUrl": {
+                "type": "string",
+                "description": "The OpenID configuration endpoint. (Ex: https://<domain>/.well-known/openid-configuration). Required if openid_configuration is not given."
+              },
+              "claimsMapping": {
+                "$ref": "#/components/schemas/claimsMappingInteractive"
+              },
+              "decryptingKey": {
+                "$ref": "#/components/schemas/decryptingKey"
+              },
+              "idTokenSignatureAlg": {
+                "enum": [
+                  "RS256",
+                  "RS512"
+                ],
+                "type": "string",
+                "default": "RS256",
+                "description": "The algorithm used to sign the ID token. The default algorithm is RS256."
+              },
+              "openid_configuration": {
+                "$ref": "#/components/schemas/OpenIDConfiguration"
+              },
+              "useClaimsFromIdToken": {
+                "type": "boolean",
+                "description": "If true, will use the claims from the ID token. By default it is set to true for ADFS and AzureAD."
+              },
+              "blockOfflineAccessScope": {
+                "type": "boolean",
+                "description": "When true, the `offline_access` scope will not be requested from the IdP where applicable."
+              },
+              "emailVerifiedAlwaysTrue": {
+                "type": "boolean",
+                "description": "Only ADFS and AzureAD IdPs can set this property. For ADFS and AzureAD, it defaults to false. For other IdPs, it defaults to undefined."
+              }
+            },
+            "description": "Required OIDC configurations for interactive IdPs that require verification."
+          },
+          "clockToleranceSec": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 7200,
+            "minimum": 0,
+            "description": "There can be clock skew between the IdP and Qlik's login server. In these cases, a tolerance can be set."
+          },
+          "createNewUsersOnLogin": {
+            "type": "boolean",
+            "default": true,
+            "description": "Tells the consumer of the IdP that new users should be created on login if they don't exist."
+          },
+          "postLogoutRedirectUri": {
+            "type": "string",
+            "maxLength": 2083,
+            "description": "Direct the user on logout to a specific URI."
+          }
+        },
+        "description": "Payload for creating an OIDC-compatible identity provider."
+      },
+      "CreateSAMLPayload": {
+        "type": "object",
+        "required": [
+          "provider",
+          "protocol",
+          "interactive"
+        ],
+        "properties": {
+          "options": {
+            "type": "object",
+            "required": [
+              "claimsMapping"
+            ],
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "description": "The entity ID for the SAML IdP. Required if metadata is not provided."
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "raw"
+                ],
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "The IDP metadata XML in base64-encoded format."
+                  }
+                },
+                "description": "Metadata for the SAML IdP. Required if individual SAML parameters are not provided."
+              },
+              "signOnUrl": {
+                "type": "string",
+                "description": "The sign on URL for the SAML IdP. Required if metadata is not provided."
+              },
+              "certificates": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CertificateInfo"
+                },
+                "maxItems": 5,
+                "minItems": 1,
+                "description": "The certificates used for validating signed responses. Required if metadata is not provided."
+              },
+              "nameIdFormat": {
+                "enum": [
+                  "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                  "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                  "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+                ],
+                "type": "string",
+                "description": "The name identifier format that will be requested from the identity provider."
+              },
+              "claimsMapping": {
+                "$ref": "#/components/schemas/claimsMappingSAML"
+              },
+              "allowIdpInitiatedLogin": {
+                "type": "boolean",
+                "default": false,
+                "description": "Toggle to allow IdP initated login by the SAML IdP."
+              }
+            },
+            "description": "Required SAML configurations for IdPs with `skipVerify` flag enabled."
+          },
+          "protocol": {
+            "enum": [
+              "SAML"
+            ],
+            "type": "string",
+            "description": "The protocol to be used for communicating with the identity provider."
+          },
+          "provider": {
+            "enum": [
+              "okta",
+              "generic",
+              "adfs",
+              "azureAD"
+            ],
+            "type": "string",
+            "description": "The identity provider to be used."
+          },
+          "tenantIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The tenant identifiers that map to the given IdP."
+          },
+          "skipVerify": {
+            "type": "boolean",
+            "default": false,
+            "description": "If set to `true`, skips IdP verification process and assumes the IdP is verified."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "interactive": {
+            "type": "boolean",
+            "description": "Indicates whether the IdP is meant for interactive login. Must be true for SAML IdPs."
+          },
+          "pendingOptions": {
+            "type": "object",
+            "required": [
+              "claimsMapping"
+            ],
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "description": "The entity ID for the SAML IdP. Required if metadata is not provided."
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "raw"
+                ],
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "The IDP metadata XML in base64-encoded format."
+                  }
+                },
+                "description": "Metadata for the SAML IdP. Required if individual SAML parameters are not provided."
+              },
+              "signOnUrl": {
+                "type": "string",
+                "description": "The sign on URL for the SAML IdP. Required if metadata is not provided."
+              },
+              "certificates": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CertificateInfo"
+                },
+                "description": "The certificates used for validating signed responses. Required if metadata is not provided."
+              },
+              "nameIdFormat": {
+                "enum": [
+                  "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                  "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                  "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+                ],
+                "type": "string",
+                "description": "The name identifier format that will be requested from the identity provider."
+              },
+              "claimsMapping": {
+                "$ref": "#/components/schemas/claimsMappingSAML"
+              },
+              "allowIdpInitiatedLogin": {
+                "type": "boolean",
+                "default": false,
+                "description": "Toggle to allow IdP initated login by the SAML IdP."
+              }
+            },
+            "description": "Required configurations for SAML IdPs that require verification."
+          },
+          "clockToleranceSec": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 7200,
+            "minimum": 0,
+            "description": "There can be clock skew between the IdP and Qlik's login server. In these cases, a tolerance can be set."
+          },
+          "createNewUsersOnLogin": {
+            "type": "boolean",
+            "default": true,
+            "description": "Tells the consumer of the IdP that new users should be created on login if they don't exist."
+          },
+          "postLogoutRedirectUri": {
+            "type": "string",
+            "maxLength": 2083,
+            "description": "Direct the user on logout to a specific URI."
+          }
+        },
+        "description": "Payload for creating a SAML compatible identity provider."
+      },
+      "decryptingKey": {
+        "type": "object",
+        "required": [
+          "keyType",
+          "keySize"
+        ],
+        "properties": {
+          "jwks": {
+            "type": "string",
+            "description": "The public key in jwk format"
+          },
+          "keyId": {
+            "type": "string",
+            "description": "The id of the decrypting key"
+          },
+          "keySize": {
+            "type": "integer",
+            "description": "The algorithm size of the decrypting key"
+          },
+          "keyType": {
+            "type": "string",
+            "description": "The algorithm type of the decrypting key"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp for when the decrypting key was created."
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The user id of the user who created the decrypting key"
+          },
+          "publicKey": {
+            "type": "string",
+            "description": "The public key in pem format"
+          },
+          "certificate": {
+            "type": "string",
+            "description": "The key's certificate in pem format"
+          }
+        },
+        "description": "A decrypting key used to decrypt OIDC encrypted assertions"
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          },
+          "status": {
+            "type": "number",
+            "description": "The HTTP status code."
+          }
+        },
+        "description": "An error object."
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        },
+        "description": "A representation of the errors encountered from the HTTP request."
+      },
+      "IDP": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/IDPOIDC"
+          },
+          {
+            "$ref": "#/components/schemas/IDPSAML"
+          },
+          {
+            "$ref": "#/components/schemas/IDPJWTAuth"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "protocol"
+        }
+      },
+      "IDPArray": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IDP"
+            },
+            "description": "An array of IdPs."
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "IDPJWTAuth": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIDP"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "options": {
+                "type": "object",
+                "properties": {
+                  "issuer": {
+                    "type": "string",
+                    "description": "The expected JWT issuer"
+                  },
+                  "staticKeys": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "kid": {
+                          "type": "string",
+                          "description": "Key ID used to sign the JWTs."
+                        },
+                        "pem": {
+                          "type": "string",
+                          "description": "Pem-encoded public key for verifying the JWTs."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "description": "An identity provider for JWT authentication."
+      },
+      "IDPMeta": {
+        "type": "object",
+        "properties": {
+          "userPortalLink": {
+            "type": "string",
+            "description": "A link to direct you to where you can manage your Qlik account. Only available if the default identity provider is used (no custom interactive identity providers are active)."
+          },
+          "upgradeSubscriptionLink": {
+            "type": "string",
+            "description": "A link to direct you to where you can upgrade your trial or manage your subscriptions. Only available if the default identity provider is used (no custom interactive identity providers are active)."
+          }
+        }
+      },
+      "IDPOIDC": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIDP"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "options": {
+                "$ref": "#/components/schemas/IDPOIDCOptions"
+              },
+              "pendingState": {
+                "enum": [
+                  "verified",
+                  "pending",
+                  "error"
+                ],
+                "type": "string",
+                "description": "The state of pendingOptions. This represents the latest IdP test result."
+              },
+              "pendingResult": {
+                "$ref": "#/components/schemas/PendingResult"
+              },
+              "pendingOptions": {
+                "$ref": "#/components/schemas/IDPOIDCOptions"
+              }
+            }
+          }
+        ],
+        "description": "An OIDC-compliant identity provider."
+      },
+      "IDPOIDCOptions": {
+        "type": "object",
+        "properties": {
+          "realm": {
+            "type": "string",
+            "description": "The realm identifier for the IdP."
+          },
+          "scope": {
+            "type": "string",
+            "description": "Scope that will be sent along with token requests to the IdP."
+          },
+          "issuer": {
+            "type": "string",
+            "description": "This field is only used in Qlik Sense Enterprise Client-Managed IdPs."
+          },
+          "clientId": {
+            "type": "string",
+            "description": "The client identifier used as part of authenticating an interactive identity provider."
+          },
+          "clientSecret": {
+            "type": "string",
+            "description": "The client secret used as part of authenticating an interactive identity provider."
+          },
+          "discoveryUrl": {
+            "type": "string",
+            "description": "The OpenID configuration endpoint. (Ex: https://<domain>/.well-known/openid-configuration)."
+          },
+          "claimsMapping": {
+            "$ref": "#/components/schemas/claimsMappingInteractive"
+          },
+          "decryptingKey": {
+            "$ref": "#/components/schemas/decryptingKey"
+          },
+          "openid_configuration": {
+            "$ref": "#/components/schemas/OpenIDConfiguration"
+          },
+          "blockOfflineAccessScope": {
+            "type": "boolean",
+            "description": "If true, the `offline_access` scope will not be requested from the IdP, where applicable."
+          },
+          "emailVerifiedAlwaysTrue": {
+            "type": "boolean",
+            "description": "Determines if email_verified should be always true. This field is only used in ADFS and AzureAD IdPs."
+          }
+        }
+      },
+      "IDPPatchSchema": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatchOIDCPayload"
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatchSAMLPayload"
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatchJWTAuthPayload"
+            }
+          }
+        ]
+      },
+      "IDPPostSchema": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CreateOIDCPayload"
+          },
+          {
+            "$ref": "#/components/schemas/CreateJWTAuthPayload"
+          },
+          {
+            "$ref": "#/components/schemas/CreateSAMLPayload"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "protocol"
+        }
+      },
+      "IDPProtocol": {
+        "enum": [
+          "OIDC",
+          "SAML",
+          "jwtAuth",
+          "qsefw-local-bearer-token"
+        ],
+        "type": "string",
+        "description": "The protocol to be used for communicating with the identity provider. Valid values are `OIDC`, `SAML`, `jwtAuth`, and `qsefw-local-bearer-token`."
+      },
+      "IDPProvider": {
+        "enum": [
+          "auth0",
+          "okta",
+          "qlik",
+          "generic",
+          "salesforce",
+          "keycloak",
+          "adfs",
+          "external",
+          "azureAD"
+        ],
+        "type": "string",
+        "description": "The identity provider to be used. If protocol is `OIDC`, the valid values are `auth0`, `okta`, `generic`, `salesforce`, `keycloak`, `adfs`, and `azureAD`. If protocol is `jwtAuth`, the valid value is `external`."
+      },
+      "IDPSAML": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIDP"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "options": {
+                "$ref": "#/components/schemas/IDPSAMLOptions"
+              },
+              "pendingState": {
+                "enum": [
+                  "verified",
+                  "pending",
+                  "error"
+                ],
+                "type": "string",
+                "description": "The state of pendingOptions. This represents the latest IdP test result."
+              },
+              "pendingResult": {
+                "$ref": "#/components/schemas/PendingResult"
+              },
+              "pendingOptions": {
+                "$ref": "#/components/schemas/IDPSAMLOptions"
+              }
+            }
+          }
+        ],
+        "description": "A SAML-compliant identity provider."
+      },
+      "IDPSAMLOptions": {
+        "type": "object",
+        "properties": {
+          "entityId": {
+            "type": "string",
+            "description": "The entity URL for the SAML IdP."
+          },
+          "signOnUrl": {
+            "type": "string",
+            "description": "The sign on URL for the SAML IdP."
+          },
+          "signingKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SigningKey"
+            },
+            "description": "Set of certificates used to sign SAMLRequest payloads. Not present in `pendingOptions`."
+          },
+          "certificates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CertificateInfo"
+            },
+            "description": "The certificates used for validating signed responses."
+          },
+          "nameIdFormat": {
+            "enum": [
+              "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+              "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+              "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+            ],
+            "type": "string",
+            "description": "The name identifier format that will be requested from the identity provider."
+          },
+          "claimsMapping": {
+            "$ref": "#/components/schemas/claimsMappingSAML"
+          },
+          "allowIdpInitiatedLogin": {
+            "type": "boolean",
+            "description": "Toggle to allow IdP initated login by the SAML IdP."
+          },
+          "signingKeySelectedRefId": {
+            "type": "string",
+            "description": "The reference ID of the chosen signing key pair."
+          }
+        }
+      },
+      "IDPsStatus": {
+        "type": "object",
+        "properties": {
+          "idps_metadata": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "active": {
+                  "type": "boolean",
+                  "description": "Indicates whether the IdP is available for use."
+                },
+                "provider": {
+                  "$ref": "#/components/schemas/IDPProvider"
+                },
+                "interactive": {
+                  "type": "boolean",
+                  "description": "Indicates whether the IdP is meant for interactive login."
+                }
+              }
+            },
+            "description": "A list of IdP metadata."
+          },
+          "active_interactive_idps_count": {
+            "type": "number",
+            "description": "The number of active interactive IdPs."
+          }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string",
+                "description": "Link to the next page of items."
+              }
+            }
+          },
+          "prev": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string",
+                "description": "Link to the previous page of items."
+              }
+            }
+          },
+          "self": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string",
+                "description": "Link to the current page of items."
+              }
+            }
+          }
+        },
+        "description": "Contains pagination links."
+      },
+      "OpenIDConfiguration": {
+        "type": "object",
+        "required": [
+          "issuer",
+          "authorization_endpoint",
+          "token_endpoint",
+          "jwks_uri"
+        ],
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "description": "OpenID Provider issuer"
+          },
+          "jwks_uri": {
+            "type": "string",
+            "description": "URL of the OP's JSON Web Key Set [JWK] document"
+          },
+          "token_endpoint": {
+            "type": "string",
+            "description": "OAuth 2.0 Token Endpoint"
+          },
+          "userinfo_endpoint": {
+            "type": "string",
+            "description": "URL of the OP's UserInfo Endpoint"
+          },
+          "end_session_endpoint": {
+            "type": "string",
+            "description": "URL at the OP to which an RP can perform a redirect to request that the End-User be logged out at the OP."
+          },
+          "authorization_endpoint": {
+            "type": "string",
+            "description": "OAuth 2.0 Authorization Endpoint"
+          },
+          "introspection_endpoint": {
+            "type": "string",
+            "description": "The introspection endpoint is an OAuth 2.0 endpoint that takes a parameter representing an OAuth 2.0 token and returns a JSON [RFC7159] document representing the meta information."
+          }
+        },
+        "description": "OpenID configuration"
+      },
+      "PatchJWTAuthPayload": {
+        "type": "object",
+        "required": [
+          "op"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The \"operation\" to be performed on a given IdP."
+          },
+          "path": {
+            "enum": [
+              "/description"
+            ],
+            "type": "string",
+            "description": "The \"path\" to the part of the IdP document."
+          },
+          "value": {
+            "description": "The \"value\" data type is dependent on the path value being used."
+          }
+        },
+        "description": "A patch request for an identity provider using the `jwtAuth` protocol."
+      },
+      "PatchOIDCPayload": {
+        "type": "object",
+        "required": [
+          "op"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace",
+              "promote-options"
+            ],
+            "type": "string",
+            "description": "The \"operation\" to be performed on a given IdP. Currently supports a custom operation value called \"promote-options\" that allows the test configuration to be promoted to the current configuration used for login."
+          },
+          "path": {
+            "enum": [
+              "/active",
+              "/description",
+              "/meta",
+              "/options",
+              "/options/realm",
+              "/options/discoveryUrl",
+              "/options/claimsMapping",
+              "/pendingOptions",
+              "/pendingOptions/realm",
+              "/pendingOptions/discoveryUrl",
+              "/pendingOptions/clientId",
+              "/pendingOptions/clientSecret",
+              "/pendingOptions/emailVerifiedAlwaysTrue",
+              "/pendingOptions/claimsMapping",
+              "/postLogoutRedirectUri",
+              "/clockToleranceSec",
+              "/pendingOptions/idTokenSignatureAlg",
+              "/pendingOptions/decryptingKey"
+            ],
+            "type": "string",
+            "description": "The \"path\" to the part of the IdP document."
+          },
+          "value": {
+            "description": "The \"value\" data type is dependent on the path value being used."
+          }
+        },
+        "description": "A patch request for an identity provider using the `OIDC` protocol."
+      },
+      "PatchSAMLPayload": {
+        "type": "object",
+        "required": [
+          "op"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace",
+              "promote-options"
+            ],
+            "type": "string",
+            "description": "The \"operation\" to be performed on a given IdP."
+          },
+          "path": {
+            "enum": [
+              "/active",
+              "/description",
+              "/pendingOptions",
+              "/pendingOptions/nameIdFormat",
+              "/pendingOptions/allowIdpInitiatedLogin",
+              "/pendingOptions/entityId",
+              "/pendingOptions/signOnUrl",
+              "/pendingOptions/metadata",
+              "/pendingOptions/certificates",
+              "/pendingOptions/claimsMapping",
+              "/postLogoutRedirectUri",
+              "/clockToleranceSec"
+            ],
+            "type": "string",
+            "description": "The \"path\" to the part of the IdP document."
+          },
+          "value": {
+            "description": "The \"value\" data type is dependent on the path value being used."
+          }
+        },
+        "description": "A patch request for an identity provider using the `SAML` protocol. Supports a custom operation value called `promote-options` that allows the test configuration (`pendingOptions`) to be promoted to the live configuration (`options`) used for login.'"
+      },
+      "PendingResult": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "A unique readable error message based on the error that has occurred."
+          },
+          "status": {
+            "enum": [
+              "success",
+              "pending",
+              "error",
+              "claimsError",
+              "callbackError",
+              "tokenError",
+              "protocolError",
+              "networkError",
+              "configChangedDuringTestError"
+            ],
+            "type": "string",
+            "description": "The status of the IdP configuration being tested."
+          },
+          "started": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp for when the test was started for an IdP configuration. This field is only available during lifespan of the test."
+          },
+          "protocol": {
+            "enum": [
+              "OIDC",
+              "SAML"
+            ],
+            "type": "string",
+            "description": "The protocol used to communicate with the IdP during the test flow."
+          },
+          "idpClaims": {
+            "type": "object",
+            "description": "The claims retrieved from the external IdP."
+          },
+          "oauth2Error": {
+            "type": "object",
+            "required": [
+              "error"
+            ],
+            "properties": {
+              "error": {
+                "type": "string",
+                "description": "An error code to identity the authentication error."
+              },
+              "errorURI": {
+                "type": "string",
+                "description": "An optional URI that includes additional information about the given error."
+              },
+              "errorDescription": {
+                "type": "string",
+                "description": "An optional human-readable description for the given error code."
+              }
+            }
+          },
+          "resultantClaims": {
+            "type": "object",
+            "description": "The resultant claims based on the claims received from the external IdP."
+          }
+        }
+      },
+      "SigningKey": {
+        "type": "object",
+        "properties": {
+          "refId": {
+            "type": "string",
+            "description": "The reference ID for choosing this key pair."
+          },
+          "certificate": {
+            "type": "string",
+            "description": "The certificate to be uploaded to the identity provider for verifying SAML requests."
+          }
+        }
+      }
+    }
+  }
+}

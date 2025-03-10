@@ -1,0 +1,1119 @@
+{
+  "info": {
+    "title": "brands",
+    "version": ""
+  },
+  "paths": {
+    "/v1/brands": {
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "List brands",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandsList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "endingBefore",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Cursor to previous."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 5,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "Maximum number of brands to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "id",
+                "+id",
+                "-id",
+                "createdAt",
+                "+createdAt",
+                "-createdAt",
+                "updatedAt",
+                "+updatedAt",
+                "-updatedAt"
+              ],
+              "type": "string",
+              "default": "-id"
+            },
+            "required": false,
+            "description": "Field to sort by, prefixed with -/+ to indicate the order."
+          },
+          {
+            "in": "query",
+            "name": "startingAfter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Cursor to the next page."
+          }
+        ],
+        "description": "Lists all brand entries for a tenant.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Create a new brand",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            },
+            "description": "Created Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "description": "Creates a new brand.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "logo": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The path and name of a JPG or PNG file that will be adjusted to fit in a 'box' measuring 109px in width and 62 px in height while maintaining aspect ratio. Maximum size of 300 KB, but smaller is recommended."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the brand."
+                  },
+                  "styles": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The path and name of a JSON file to define brand style settings. Maximum size is 100 KB. This property is not currently operational."
+                  },
+                  "favIcon": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The path and name of a properly formatted ICO file. Maximum size is 100 KB."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of the brand."
+                  }
+                }
+              },
+              "example": {
+                "logo": "image-file-content",
+                "name": "My brand",
+                "styles": "json-file-content",
+                "favIcon": "image-file-content",
+                "description": "Some brand description"
+              },
+              "encoding": {
+                "logo": {
+                  "contentType": "image/png, image/jpeg"
+                },
+                "styles": {
+                  "contentType": "application/json"
+                },
+                "favIcon": {
+                  "contentType": "image/x-icon, image/vnd.microsoft.icon"
+                }
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/brands/{brand-id}": {
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Retrieve a brand",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/brand-id"
+          }
+        ],
+        "description": "Returns a specific brand.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Update a brand",
+        "responses": {
+          "204": {
+            "description": "No Content Response."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/brand-id"
+          }
+        ],
+        "description": "Patches a brand.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BrandPatch"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Delete a brand",
+        "responses": {
+          "204": {
+            "description": "No Content Response."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/brand-id"
+          }
+        ],
+        "description": "Deletes a specific brand. If the active brand is deleted, the tenant will return to the Qlik default.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/brands/{brand-id}/actions/activate": {
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Activate a brand",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            },
+            "description": "Responds with the brand that was activated."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/brand-id"
+          }
+        ],
+        "description": "Sets the brand active and de-activates any other active brand. If the brand is already active, no action is taken.",
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/brands/{brand-id}/actions/deactivate": {
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Deactivate a brand",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            },
+            "description": "Responds with the brand that was deactivated."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/brand-id"
+          }
+        ],
+        "description": "Sets the brand so it is no longer active, returning the tenant the Qlik default brand. If the brand is already inactive, no action is taken.",
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/brands/{brand-id}/files/{brand-file-id}": {
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Download brand file",
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/brand-id"
+          },
+          {
+            "$ref": "#/components/parameters/brand-file-id"
+          }
+        ],
+        "description": "Downloads the specified brand file.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Creates a brand file",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandFile"
+                }
+              }
+            },
+            "description": "Created Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/brand-id"
+          },
+          {
+            "$ref": "#/components/parameters/brand-file-id"
+          }
+        ],
+        "description": "Creates a brand file for the specified identifier.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The path and name of a file to upload."
+                  }
+                },
+                "additionalProperties": false
+              },
+              "encoding": {
+                "file": {
+                  "contentType": "image/png, image/jpeg, image/x-icon, image/vnd.microsoft.icon, application/json"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "put": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Update a brand file",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandFile"
+                }
+              }
+            },
+            "description": "OK Response - file updated"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/brand-id"
+          },
+          {
+            "$ref": "#/components/parameters/brand-file-id"
+          }
+        ],
+        "description": "Updates the specified brand file.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "A file to upload."
+                  }
+                },
+                "additionalProperties": false
+              },
+              "encoding": {
+                "file": {
+                  "contentType": "image/png, image/jpeg, image/x-icon, image/vnd.microsoft.icon, application/json"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Delete a brand file",
+        "responses": {
+          "204": {
+            "description": "No content response."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/brand-id"
+          },
+          {
+            "$ref": "#/components/parameters/brand-file-id"
+          }
+        ],
+        "description": "Deletes the specified brand file.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/brands/active": {
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Retrieve active brand",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoActiveBrand"
+                }
+              }
+            },
+            "description": "No active brand, returns an empty response."
+          },
+          "301": {
+            "description": "Successful redirect."
+          }
+        },
+        "description": "Returns the current active brand. If using the Qlik default brand, no value is returned.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "parameters": {
+      "brand-file-id": {
+        "in": "path",
+        "name": "brand-file-id",
+        "schema": {
+          "enum": [
+            "logo",
+            "favIcon",
+            "styles"
+          ],
+          "type": "string"
+        },
+        "required": true,
+        "description": "The unique identifier of a file within a brand."
+      },
+      "brand-id": {
+        "in": "path",
+        "name": "brand-id",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "The brand's unique identifier."
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse400"
+            }
+          }
+        },
+        "description": "Bad Request"
+      },
+      "Forbidden": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse403"
+            }
+          }
+        },
+        "description": "Forbidden"
+      },
+      "InternalServerError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse500"
+            }
+          }
+        },
+        "description": "Internal Server Error"
+      },
+      "NotFound": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse404"
+            }
+          }
+        },
+        "description": "Not found"
+      },
+      "Unauthorized": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse401"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      }
+    },
+    "schemas": {
+      "Brand": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "files"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrandFile"
+            },
+            "description": "Collection of resources that make up the brand."
+          },
+          "active": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the brand was created."
+          },
+          "createdBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "ID of a user that created the brand."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the brand was last updated."
+          },
+          "updatedBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "ID of a user that last updated the brand."
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "description": "A brand is a collection of assets for applying custom branding. Only a single brand can be active in a tenant."
+      },
+      "BrandFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "logo",
+              "favIcon",
+              "styles"
+            ],
+            "type": "string"
+          },
+          "eTag": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          }
+        },
+        "description": "Represents one of the assets used as part of the brand. These include logos, favicons, and some styles."
+      },
+      "BrandPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "add",
+              "remove",
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "enum": [
+              "/name",
+              "/description"
+            ],
+            "type": "string",
+            "example": "/description",
+            "description": "The path for the given resource field to patch."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902."
+      },
+      "BrandsList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Brand"
+            }
+          },
+          "links": {
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        },
+        "description": "A collection of brands."
+      },
+      "ErrorResponse400": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-400"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The request is incorrect."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse401": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-401"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The user is not authorized to access the service."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse403": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-403"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Forbidden"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "You don't have sufficient permissions to access this resource."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse404": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-404"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Not found"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The resource was not found."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse500": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-500"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "Something went wrong in the server."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "Link": {
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "URL of a resource request."
+          }
+        }
+      },
+      "NoActiveBrand": {
+        "type": "object",
+        "description": "Empty object inferring lack of active branding."
+      }
+    }
+  }
+}

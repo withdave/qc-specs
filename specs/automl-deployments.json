@@ -1,0 +1,269 @@
+{
+  "info": {
+    "title": "automl-deployments",
+    "version": ""
+  },
+  "paths": {
+    "/v1/automl-deployments/{deploymentId}/realtime-predictions": {
+      "post": {
+        "tags": [
+          "automl-deployments"
+        ],
+        "summary": "Generate predictions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Stream of combined prediction output returned successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appErrorResponse"
+                }
+              }
+            },
+            "description": "Received a bad argument"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appErrorResponse"
+                }
+              }
+            },
+            "description": "Access forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appErrorResponse"
+                }
+              }
+            },
+            "description": "Resource not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appErrorResponse"
+                }
+              }
+            },
+            "description": "Resource conflict"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appErrorResponse"
+                }
+              }
+            },
+            "description": "Resource unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "includeNotPredictedReason",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, will include a column with the reason why a prediction was not produced."
+          },
+          {
+            "in": "query",
+            "name": "includeShap",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, the shapley values will be included in the response."
+          },
+          {
+            "in": "query",
+            "name": "includeSource",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, the source data will be included in the response"
+          },
+          {
+            "in": "query",
+            "name": "index",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The name of the feature in the source data to use as an index in the response data. The column will be included with its original name and values. This is intended to allow the caller to join results with source data."
+          },
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "description": "Generates predictions in a synchronous request and response.",
+        "operationId": "postRealtimePredictions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/realtimePredictionInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 300
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/build"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "parameters": {
+      "deploymentId": {
+        "in": "path",
+        "name": "deploymentId",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true,
+        "description": "The ID of the ML deployed model that will be employed to produce predictions."
+      }
+    },
+    "schemas": {
+      "appErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/error"
+            }
+          }
+        }
+      },
+      "error": {
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The unique code for the error"
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "details": {
+                "type": "string",
+                "description": "Extra details for what may have caused the error"
+              },
+              "errorId": {
+                "type": "string",
+                "description": "The unique id of the error instance"
+              },
+              "argument": {
+                "type": "string",
+                "description": "The argument"
+              },
+              "resource": {
+                "type": "string",
+                "description": "The resource type that the error occurred on"
+              },
+              "resourceId": {
+                "type": "string",
+                "description": "The resource id that the error occurred on"
+              }
+            }
+          },
+          "issue": {
+            "type": "string",
+            "description": "The issue code"
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of what went wrong"
+          },
+          "errorId": {
+            "type": "string",
+            "description": "The unique id of the error instance"
+          },
+          "argument": {
+            "type": "string",
+            "description": "The argument"
+          },
+          "resource": {
+            "type": "string",
+            "description": "The resource type that the error occurred on"
+          },
+          "resourceId": {
+            "type": "string",
+            "description": "The resource id that the error occurred on"
+          }
+        }
+      },
+      "realtimePredictionInput": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "The rows of the dataset to produce predictions from."
+          },
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/realTimePredictionInputSchema"
+            },
+            "description": "The schema of the input dataset."
+          }
+        }
+      },
+      "realTimePredictionInputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of a feature in the dataset."
+          }
+        }
+      }
+    }
+  }
+}

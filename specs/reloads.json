@@ -1,0 +1,703 @@
+{
+  "info": {
+    "title": "reloads",
+    "version": ""
+  },
+  "paths": {
+    "/v1/reloads": {
+      "get": {
+        "tags": [
+          "reloads"
+        ],
+        "summary": "Find and return reloads",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reloads"
+                }
+              }
+            },
+            "description": "Expected response to a valid request."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow for retrieval of this reload(error code: RELOADS-003)."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "appId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The UUID formatted string used to search for an app's reload history entries. TenantAdmin users may omit this parameter to list all reload history in the tenant."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "example": "(status eq \"FAILED\" or status eq \"EXCEEDED_LIMIT\") and partial eq \"false\" and type eq \"chronos\"\n",
+            "required": false,
+            "description": "SCIM filter expression used to search for reloads.\nThe filter syntax is defined in RFC 7644 section 3.4.2.2\n\nSupported attributes:\n- status: see #schemas/Status\n- partial: see #schemas/Partial\n- type: see #schemas/Type\n\nSupported operators:\n- eq\n"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of resources to return for a request. The limit must be an integer between 1 and 100 (inclusive)."
+          },
+          {
+            "in": "query",
+            "name": "log",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "description": "The boolean value used to include the log field or not, set log=true to include the log field."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the next page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "partial",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "The boolean value used to search for a reload is partial or not."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the previous page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Finds and returns the reloads that the user has access to.",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "reloads"
+        ],
+        "summary": "Reload an app",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reload"
+                }
+              }
+            },
+            "description": "Expected response to a valid request."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow for execution of this reload(error code: RELOADS-003) or the reload frequency quota has been met.(error code: RELOADS-013)."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Too many requests, a pending reload request already exists for this app."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Reloads an app specified by an app ID.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReloadRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "Request body specifying ID of app to be reloaded."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 50
+        }
+      }
+    },
+    "/v1/reloads/{reloadId}": {
+      "get": {
+        "tags": [
+          "reloads"
+        ],
+        "summary": "Get reload record",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reload"
+                }
+              }
+            },
+            "description": "Expected response to a valid request."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow to find or get a reload(error code: RELOADS-003)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "reloadId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier of the reload."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Finds and returns a reload record.",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/reloads/{reloadId}/actions/cancel": {
+      "post": {
+        "tags": [
+          "reloads"
+        ],
+        "summary": "Cancel a reload",
+        "responses": {
+          "202": {
+            "description": "Reload is being cancelled."
+          },
+          "204": {
+            "description": "Reload has been cancelled."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow to cancel a reload(error code: RELOADS-003)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The specified reload record could not be found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Reload is not in a cancellable state."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "reloadId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier of the reload."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Cancels a reload that is in progress or has been queued",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 50
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "RELOADS-001",
+            "description": "The error code is in form of 'RELOADS-xxx'. ranges from 'RELOADS-001' to 'RELOADS-013'. "
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "HTTP-123",
+              "title": "short error message",
+              "details": "detailed error message"
+            }
+          ]
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Href": {
+        "type": "object",
+        "example": {
+          "href": "http://example.com"
+        },
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://example.com"
+          }
+        }
+      },
+      "Partial": {
+        "type": "boolean",
+        "example": false,
+        "description": "The boolean value used to present the reload is partial or not."
+      },
+      "Reload": {
+        "type": "object",
+        "required": [
+          "id",
+          "appId",
+          "tenantId",
+          "userId",
+          "type",
+          "status",
+          "creationTime"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "5be59decca62aa00097268a4",
+            "description": "The ID of the reload."
+          },
+          "log": {
+            "type": "string",
+            "example": "ReloadID: 5be59decca62aa00097268a4\\nStarted loading\\n(A detailed script progress log can be downloaded when the reload is finished)\\nApp saved\\nFinished successfully\\n",
+            "description": "The log describing the result of the latest reload execution from the request."
+          },
+          "type": {
+            "$ref": "#/components/schemas/Type"
+          },
+          "appId": {
+            "type": "string",
+            "example": "116dbfae-7fb9-4983-8e23-5ccd8c508722",
+            "description": "The ID of the app."
+          },
+          "links": {
+            "$ref": "#/components/schemas/ReloadLinks"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "userId": {
+            "type": "string",
+            "example": "FyPG6xWp6prDU6BXQ3g7LY9gWR_YRkkx",
+            "description": "The ID of the user who created the reload."
+          },
+          "endTime": {
+            "type": "string",
+            "example": "2020-11-03T17:00:11.865Z",
+            "description": "The time the reload job finished."
+          },
+          "partial": {
+            "$ref": "#/components/schemas/Partial"
+          },
+          "tenantId": {
+            "type": "string",
+            "example": "efSCcpNYuayTysONkUcE3F80zYQ_LV9w",
+            "description": "The ID of the tenant who owns the reload."
+          },
+          "errorCode": {
+            "type": "string",
+            "example": "EngineConnectionError",
+            "description": "The error code when the status is FAILED."
+          },
+          "startTime": {
+            "type": "string",
+            "example": "2020-11-03T17:00:06.351Z",
+            "description": "The time the reload job was consumed from the queue."
+          },
+          "engineTime": {
+            "type": "string",
+            "example": "2020-11-03T17:00:07.048Z",
+            "description": "The timestamp returned from the Sense engine upon successful reload."
+          },
+          "creationTime": {
+            "type": "string",
+            "example": "2020-11-03T17:00:00.164Z",
+            "description": "The time the reload job was created."
+          },
+          "errorMessage": {
+            "type": "string",
+            "example": "failed to complete reload: unexpected EOF",
+            "description": "The error message when the status is FAILED."
+          }
+        }
+      },
+      "ReloadLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "$ref": "#/components/schemas/Href"
+          }
+        }
+      },
+      "ReloadRequest": {
+        "required": [
+          "appId"
+        ],
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "116dbfae-7fb9-4983-8e23-5ccd8c508722",
+            "description": "The ID of the app to be reloaded."
+          },
+          "partial": {
+            "type": "boolean",
+            "example": false,
+            "description": "The boolean value used to present the reload is partial or not"
+          }
+        }
+      },
+      "Reloads": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reload"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ReloadsLinks"
+          }
+        }
+      },
+      "ReloadsLinks": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ReloadLinks"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Href"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Href"
+              }
+            }
+          }
+        ]
+      },
+      "Status": {
+        "enum": [
+          "QUEUED",
+          "RELOADING",
+          "CANCELING",
+          "SUCCEEDED",
+          "FAILED",
+          "CANCELED",
+          "EXCEEDED_LIMIT"
+        ],
+        "type": "string",
+        "example": "FAILED",
+        "description": "The status of the reload. There are seven statuses. `QUEUED`, `RELOADING`, `CANCELING` are the active statuses. `SUCCEEDED`, `FAILED`, `CANCELED`, `EXCEEDED_LIMIT` are the end statuses."
+      },
+      "Type": {
+        "enum": [
+          "hub",
+          "external",
+          "chronos",
+          "automations",
+          "data-refresh",
+          "choreographer"
+        ],
+        "type": "string",
+        "example": "chronos",
+        "description": "What initiated the reload: hub = one-time reload manually triggered in hub, chronos = time based scheduled reload triggered by chronos, external = reload triggered via external API request, automations = reload triggered in automation, data-refresh = reload triggered by refresh of data, choreographer = reload triggered by choreographer."
+      }
+    }
+  }
+}

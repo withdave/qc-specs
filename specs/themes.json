@@ -1,0 +1,688 @@
+{
+  "info": {
+    "title": "themes",
+    "version": ""
+  },
+  "paths": {
+    "/v1/themes": {
+      "get": {
+        "tags": [
+          "themes"
+        ],
+        "summary": "List all themes",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/themes"
+                }
+              }
+            },
+            "description": "OK. Lists all themes."
+          }
+        },
+        "description": "Lists all imported themes in the tenant.",
+        "operationId": "getThemes",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "themes"
+        ],
+        "summary": "Create a new theme",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/theme"
+                }
+              }
+            },
+            "description": "Created. Creates a new theme and returns it."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Conflict. Resource with same unique identity already exists."
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unsupported media type. Body of the payload is not a valid JSON object."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unprocessable entity. Validation error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "description": "Creates a new theme. Accepts either provided file or data object. The name of the new theme must be different to any existing themes.",
+        "operationId": "createTheme",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/theme"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Theme archive."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/themes/{id}": {
+      "get": {
+        "tags": [
+          "themes"
+        ],
+        "summary": "Return specific theme",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/theme"
+                }
+              }
+            },
+            "description": "OK. Returns theme with {id}."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to read theme with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find the theme with {id}."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Gone. Theme with {id} has been deleted."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Theme identifier or its qextFilename"
+          }
+        ],
+        "description": "Returns a specific theme matching either theme ID or theme name.",
+        "operationId": "getThemeById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "themes"
+        ],
+        "summary": "Update a specific theme",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/themes"
+                }
+              }
+            },
+            "description": "OK. Theme has been updated."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to update theme with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find the theme with {id}."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Conflict. Resource with same unique identity already exists."
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unsupported media type. Body of the payload is not a valid JSON object."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unprocessable entity. Validation error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Theme identifier or its qextFilename."
+          }
+        ],
+        "description": "Updates a specific theme matching either theme ID or theme name. Accepts either provided file or data object.",
+        "operationId": "updateThemeById",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/theme"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Theme archive."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "themes"
+        ],
+        "summary": "Delete specific theme",
+        "responses": {
+          "204": {
+            "description": "No content. Soft deletes the theme."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to delete themes with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find the theme with {id}."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Gone. Theme with {id} has been deleted."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Theme identifier or its qextFilename."
+          }
+        ],
+        "description": "Deletes a specific theme matching either theme ID or theme name.",
+        "operationId": "deleteThemeById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/themes/{id}/file": {
+      "get": {
+        "tags": [
+          "themes"
+        ],
+        "summary": "Download theme as an archive",
+        "responses": {
+          "200": {
+            "description": "OK. Theme exists. Returns the theme archive."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to read theme with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find the theme with {id}."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Gone. Theme with {id} has been deleted."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Theme identifier or its qextFilename"
+          }
+        ],
+        "description": "Downloads all files in the theme matching either theme ID or theme name as a `.zip` archive.",
+        "operationId": "getThemeArchive",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/themes/{id}/file/{filepath}": {
+      "get": {
+        "tags": [
+          "themes"
+        ],
+        "summary": "Download file from theme archive",
+        "responses": {
+          "200": {
+            "description": "OK. Theme exists and the file specified exists. Returns the specific file."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Forbidden. User is not authorized to read theme with {id}."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Not found. Could not find a theme with {id} or the file does not exist in the archive."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            },
+            "description": "Gone. Theme with {id} has been deleted."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "filepath",
+            "schema": {
+              "type": "string",
+              "example": "css/styles.css"
+            },
+            "required": true,
+            "description": "Path to the file location within the specified theme archive. Folders separated with forward slashes."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Theme identifier or its qextFilename."
+          }
+        ],
+        "description": "Downloads a file from the theme matching either theme ID or theme name, identified by the file path within the imported extension.",
+        "operationId": "getFileFromThemeArchive",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/extend"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/extend"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "error": {
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/meta"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the HTTP status code."
+          },
+          "source": {
+            "type": "object",
+            "description": "Optional JSON patch object pointing to an invalid property."
+          },
+          "status": {
+            "type": "number",
+            "description": "The HTTP status code."
+          }
+        },
+        "description": "An error object."
+      },
+      "meta": {
+        "properties": {
+          "stack": {
+            "type": "string",
+            "description": "Full stack trace of the error that was raised."
+          },
+          "message": {
+            "type": "string",
+            "description": "A more detailed message explaining the error."
+          },
+          "resourceName": {
+            "type": "string",
+            "description": "Name of the resource related to the error. If there is a conflict, it is the name of the model attempting to be created."
+          }
+        },
+        "description": "Object containing meta data regarding an error. It does not necessarily contain all the properties."
+      },
+      "theme": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "file": {
+            "type": "object",
+            "description": "The file that was uploaded with the theme."
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon to show in the client."
+          },
+          "name": {
+            "type": "string",
+            "description": "The display name of this theme."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of tags."
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of this theme (visualization, etc.)."
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of the theme."
+          },
+          "userId": {
+            "type": "string",
+            "readOnly": true
+          },
+          "license": {
+            "type": "string",
+            "description": "Under which license this theme is published."
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the theme."
+          },
+          "homepage": {
+            "type": "string",
+            "description": "Home page of the theme."
+          },
+          "keywords": {
+            "type": "string",
+            "description": "Keywords for the theme."
+          },
+          "supplier": {
+            "type": "string",
+            "description": "Supplier of the theme."
+          },
+          "tenantId": {
+            "type": "string",
+            "readOnly": true
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true
+          },
+          "repository": {
+            "type": "string",
+            "description": "Link to the theme source code."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the theme."
+          },
+          "qextVersion": {
+            "type": "string",
+            "description": "The version from the qext file that was uploaded with this extension."
+          },
+          "dependencies": {
+            "type": "object",
+            "description": "Map of dependencies describing version of the component it requires."
+          },
+          "qextFilename": {
+            "type": "string",
+            "description": "The name of the qext file that was uploaded with this theme."
+          }
+        },
+        "description": "The theme model."
+      },
+      "themes": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/theme"
+            }
+          }
+        }
+      }
+    }
+  }
+}

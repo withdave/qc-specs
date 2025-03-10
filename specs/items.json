@@ -1,0 +1,1867 @@
+{
+  "info": {
+    "title": "items",
+    "version": ""
+  },
+  "paths": {
+    "/v1/items": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "List items",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemsListItemsResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "OK response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3 Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Bad Request response."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Unauthorized response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Not Found response."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Internal Server Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "collectionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The collection's unique identifier. Used to filter for items with a specific tag (collection type `public`), or collection."
+          },
+          {
+            "in": "query",
+            "name": "createdByUserId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "User's unique identifier."
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The item's unique identifier."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of resources to return for a request. The limit must be an integer between 1 and 100 (inclusive)."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The case-insensitive string used to search for a resource by name."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the next page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "notCreatedByUserId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "User's unique identifier."
+          },
+          {
+            "in": "query",
+            "name": "notOwnerId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Owner identifier."
+          },
+          {
+            "in": "query",
+            "name": "ownerId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Owner identifier."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the previous page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The case-insensitive string used to search for a resource by name or description."
+          },
+          {
+            "in": "query",
+            "name": "resourceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The case-sensitive string used to search for an item by resourceId. If resourceId is provided, then resourceType must be provided. Provide either the resourceId or resourceLink, but not both."
+          },
+          {
+            "in": "query",
+            "name": "resourceIds",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The case-sensitive strings used to search for an item by resourceIds. The maximum number of resourceIds it supports is 100. If resourceIds is provided, then resourceType must be provided. For example '?resourceIds=appId1,appId2'"
+          },
+          {
+            "in": "query",
+            "name": "resourceLink",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "required": false,
+            "description": "The case-sensitive string used to search for an item by resourceLink. If resourceLink is provided, then resourceType must be provided. Provide either the resourceId or resourceLink, but not both."
+          },
+          {
+            "in": "query",
+            "name": "resourceSubType",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "the case-sensitive string used to filter items by resourceSubType(s). For example '?resourceSubType=chart-monitoring,qix-df,qvd'. Will return a 400 error if used in conjuction with the square bracket syntax for resourceSubType filtering in the 'resourceType' query parameter."
+          },
+          {
+            "in": "query",
+            "name": "resourceType",
+            "schema": {
+              "$ref": "#/components/schemas/itemResourceTypeEnum"
+            },
+            "required": false,
+            "description": "The case-sensitive string used to filter items by resourceType(s). For example '?resourceType=app,qvapp'. Additionally, a optional resourceSubType filter can be added to each resourceType. For example '?resourceType=app[qvd,chart-monitoring],qvapp'. An trailing comma can be used to include the empty resourceSubType, e.g. '?resourceType=app[qvd,chart-monitoring,]', or, to include only empty resourceSubTypes, '?resourceType=app[]' This syntax replaces the 'resourceSubType' query param, and using both in the same query will result in a 400 error."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "+createdAt",
+                "-createdAt",
+                "+name",
+                "-name",
+                "+updatedAt",
+                "-updatedAt",
+                "+recentlyUsed",
+                "-recentlyUsed"
+              ],
+              "type": "string"
+            },
+            "required": false,
+            "description": "The property of a resource to sort on (default sort is +createdAt). The supported properties are createdAt, updatedAt, recentlyUsed and name. A property must be prefixed by + or   - to indicate ascending or descending sort order respectively."
+          },
+          {
+            "in": "query",
+            "name": "spaceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The space's unique identifier (supports \\'personal\\' as spaceId)."
+          },
+          {
+            "in": "query",
+            "name": "spaceType",
+            "schema": {
+              "$ref": "#/components/schemas/spaceTypeEnum"
+            },
+            "required": false,
+            "description": "The case-sensitive string used to filter items on space type(s). For example '?spaceType=shared,personal'."
+          },
+          {
+            "in": "query",
+            "name": "shared",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Whether or not to return items in a shared space.",
+            "x-qlik-deprecated": true
+          },
+          {
+            "$ref": "#/components/parameters/noActionParam"
+          }
+        ],
+        "description": "Lists items that the user has access to.\n",
+        "operationId": "items#listItems",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/items/{itemId}": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Get an item",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/itemResultResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "OK response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3 Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Bad Request response."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Unauthorized response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Not Found response."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Internal Server Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The item's unique identifier"
+          }
+        ],
+        "description": "Finds and returns an item.\n",
+        "operationId": "items#getItem",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Update an item",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/itemResultResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "OK response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3 Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Bad Request response."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Unauthorized response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Forbidden response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Not Found response."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Conflict response."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Internal Server Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The item's unique identifier."
+          }
+        ],
+        "description": "Updates an item. Omitted and unsupported fields are ignored. To unset a field, provide the field's zero value.\n",
+        "operationId": "items#updateItem",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemsUpdateItemRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Delete an item",
+        "responses": {
+          "204": {
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "No Content response."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Unauthorized response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Forbidden response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Not Found response."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Internal Server Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The item's unique identifier."
+          }
+        ],
+        "description": "Deletes an item and removes the item from all collections.\n",
+        "operationId": "items#deleteItem",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/items/{itemId}/collections": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "List collections of an item",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemsListItemCollectionsResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "OK response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3 Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Bad Request response."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Unauthorized response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Not found response"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Internal Server Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The item's unique identifier."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of resources to return for a request. The limit must be an integer between 1 and 100 (inclusive)."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The case-sensitive string used to search for a collection by name."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the next page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the previous page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The case-insensitive string used to search for a resource by name or description."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "+createdAt",
+                "-createdAt",
+                "+name",
+                "-name",
+                "+updatedAt",
+                "-updatedAt"
+              ],
+              "type": "string"
+            },
+            "required": false,
+            "description": "The property of a resource to sort on (default sort is +createdAt). The supported properties are createdAt, updatedAt, and name. A property must be prefixed by + or   - to indicate ascending or descending sort order respectively."
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "$ref": "#/components/schemas/CollectionTypes"
+            },
+            "required": false,
+            "description": "The case-sensitive string used to search for a collection by type."
+          }
+        ],
+        "description": "Finds and returns the collections (and tags) of an item. This endpoint does not return the user's favorites collection.\n",
+        "operationId": "items#listItemCollections",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/items/{itemId}/publisheditems": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "List published items",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemsListItemCollectionsResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "OK response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Bad Request response."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Unauthorized response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Not Found response."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Internal Server Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The item's unique identifier"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of resources to return for a request. The limit must be an integer between 1 and 100 (inclusive)."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the next page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the previous page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "resourceType",
+            "schema": {
+              "$ref": "#/components/schemas/itemResourceTypeEnum"
+            },
+            "required": false,
+            "description": "The case-sensitive string used to search for an item by resourceType."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "+createdAt",
+                "-createdAt",
+                "+name",
+                "-name",
+                "+updatedAt",
+                "-updatedAt"
+              ],
+              "type": "string"
+            },
+            "required": false,
+            "description": "The property of a resource to sort on (default sort is +createdAt). The supported properties are createdAt, updatedAt, and name. A property must be prefixed by + or   - to indicate ascending or descending sort order respectively."
+          }
+        ],
+        "description": "Finds and returns the published items for a given item. This endpoint is particularly useful for finding the published copies of an app or a qvapp when you want to replace the content of a published copy with new information from the source item.\n",
+        "operationId": "items#listPublishedItems",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/items/settings": {
+      "get": {
+        "tags": [
+          "items-settings"
+        ],
+        "summary": "Get items settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemsSettingsResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "OK response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Bad Request response."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Unauthorized response."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Internal Server Error response."
+          }
+        },
+        "description": "Finds and returns the items service settings for the current tenant. Currently used to enable or disable usage metrics in the tenant.\n",
+        "operationId": "items#GetSettings",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "items-settings"
+        ],
+        "summary": "Update items settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemsSettingsResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "OK response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Bad Request response."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Unauthorized response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Forbidden response."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseBody"
+                }
+              }
+            },
+            "headers": {
+              "X-B3-Traceid": {
+                "$ref": "#/components/headers/X-B3-Traceid"
+              }
+            },
+            "description": "Internal Server Error response."
+          }
+        },
+        "description": "Updates the settings provided in the patch body. Currently used to enable or disable usage metrics in the tenant.",
+        "operationId": "items#PatchSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemsSettingsPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "headers": {
+      "X-B3-Traceid": {
+        "schema": {
+          "type": "string"
+        },
+        "description": "The TraceId for the trace associated with the call stack. Every span in a trace shares this ID."
+      }
+    },
+    "parameters": {
+      "noActionParam": {
+        "in": "query",
+        "name": "noActions",
+        "schema": {
+          "type": "boolean",
+          "default": false
+        },
+        "required": false,
+        "description": "If set to true, the user's available actions for each item will not be evaluated meaning the actions-array will be omitted from the response (reduces response time).\n"
+      }
+    },
+    "schemas": {
+      "collectionLinksResponseBody": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "items": {
+            "$ref": "#/components/schemas/Link"
+          }
+        }
+      },
+      "collectionMetaResponseBody": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "$ref": "#/components/schemas/itemsResultResponseBody"
+          }
+        },
+        "description": "Collection metadata and computed fields."
+      },
+      "collectionResultResponseBody": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "createdAt",
+          "updatedAt",
+          "tenantId",
+          "links",
+          "itemCount"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The collection's unique identifier."
+          },
+          "full": {
+            "type": "boolean",
+            "description": "States if a collection has reached its items limit or not"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/collectionMetaResponseBody"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "enum": [
+              "private",
+              "public",
+              "favorite",
+              "publicgoverned"
+            ],
+            "type": "string"
+          },
+          "links": {
+            "$ref": "#/components/schemas/collectionLinksResponseBody"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "The ID of the tenant that owns the collection. This property is populated by using JWT."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the collection was created."
+          },
+          "creatorId": {
+            "type": "string",
+            "description": "The ID of the user who created the collection. This property is only populated if the JWT contains a userId."
+          },
+          "itemCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The number of items that have been added to the collection that the user has access to."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the collection was last updated."
+          },
+          "updaterId": {
+            "type": "string",
+            "description": "The ID of the user who last updated the collection. This property is only populated if the JWT contains a userId."
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "description": "A collection."
+      },
+      "collectionsLinksResponseBody": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "next": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          }
+        }
+      },
+      "CollectionTypes": {
+        "enum": [
+          "private",
+          "public",
+          "publicgoverned"
+        ],
+        "type": "string"
+      },
+      "ErrorResponseBody": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceError"
+            }
+          }
+        }
+      },
+      "itemLinksResponseBody": {
+        "type": "object",
+        "properties": {
+          "open": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "thumbnail": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "collections": {
+            "$ref": "#/components/schemas/Link"
+          }
+        }
+      },
+      "itemMetaResponseBody": {
+        "type": "object",
+        "required": [
+          "isFavorited",
+          "actions",
+          "tags",
+          "collections"
+        ],
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/itemTagResponseBody"
+            },
+            "description": "An array of tags that the item is part of."
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The actions that the user can perform on the item."
+          },
+          "collections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/itemTagResponseBody"
+            },
+            "description": "An array of collections that the item is part of."
+          },
+          "isFavorited": {
+            "type": "boolean",
+            "description": "The flag that indicates if item is in the user's favorites collection."
+          }
+        },
+        "description": "Item metadata and computed fields."
+      },
+      "itemResourceTypeEnum": {
+        "enum": [
+          "app",
+          "qlikview",
+          "qvapp",
+          "genericlink",
+          "sharingservicetask",
+          "note",
+          "dataasset",
+          "dataset",
+          "automation",
+          "automl-experiment",
+          "automl-deployment"
+        ],
+        "type": "string",
+        "description": "The case-sensitive string defining the item's type."
+      },
+      "itemResultResponseBody": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "tenantId",
+          "createdAt",
+          "updatedAt",
+          "isFavorited",
+          "links",
+          "resourceType",
+          "resourceCreatedAt",
+          "resourceUpdatedAt",
+          "actions",
+          "collectionIds",
+          "resourceAttributes",
+          "resourceCustomAttributes",
+          "meta"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The item's unique identifier."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/itemMetaResponseBody"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "links": {
+            "$ref": "#/components/schemas/itemLinksResponseBody"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The actions that the user can perform on the item."
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "The ID of the user who owns the item."
+          },
+          "spaceId": {
+            "type": "string",
+            "description": "The space's unique identifier."
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "The ID of the tenant that owns the item. This is populated using the JWT."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the item was created."
+          },
+          "creatorId": {
+            "type": "string",
+            "description": "The ID of the user who created the item. This is only populated if the JWT contains a userId."
+          },
+          "itemViews": {
+            "$ref": "#/components/schemas/itemViewsResponseBody"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the item was last updated."
+          },
+          "updaterId": {
+            "type": "string",
+            "description": "ID of the user who last updated the item. This is only populated if the JWT contains a userId."
+          },
+          "resourceId": {
+            "type": "string",
+            "description": "The case-sensitive string used to search for an item by resourceId. If resourceId is provided, then resourceType must be provided. Provide either the resourceId or resourceLink, but not both."
+          },
+          "description": {
+            "type": "string"
+          },
+          "isFavorited": {
+            "type": "boolean",
+            "description": "The flag that indicates if item is in the user's favorites collection."
+          },
+          "thumbnailId": {
+            "type": "string",
+            "description": "The item thumbnail's unique identifier. This is optional for internal resources."
+          },
+          "resourceLink": {
+            "type": "string",
+            "format": "uri",
+            "description": "The case-sensitive string used to search for an item by resourceLink. If resourceLink is provided, then resourceType must be provided. Provide either the resourceId or resourceLink, but not both."
+          },
+          "resourceSize": {
+            "$ref": "#/components/schemas/itemsResourceSizeResponseBody"
+          },
+          "resourceType": {
+            "$ref": "#/components/schemas/itemResourceTypeEnum"
+          },
+          "collectionIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The ID of the collections that the item has been added to."
+          },
+          "resourceSubType": {
+            "type": "string",
+            "description": "Optional field defining the item's subtype, if any."
+          },
+          "resourceCreatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the resource that the item references was created."
+          },
+          "resourceUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the resource that the item references was last updated."
+          },
+          "resourceAttributes": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "resourceReloadStatus": {
+            "type": "string",
+            "description": "If the resource last reload was successful or not."
+          },
+          "resourceReloadEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the resource last reload ended."
+          },
+          "resourceCustomAttributes": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "description": "An item."
+      },
+      "itemsLinksResponseBody": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "collection": {
+            "$ref": "#/components/schemas/Link"
+          }
+        }
+      },
+      "ItemsListItemCollectionsResponseBody": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/collectionResultResponseBody"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/collectionsLinksResponseBody"
+          }
+        },
+        "description": "ListItemCollectionsResponseBody result type"
+      },
+      "ItemsListItemsResponseBody": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/itemResultResponseBody"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/itemsLinksResponseBody"
+          }
+        },
+        "description": "ListItemsResponseBody result type"
+      },
+      "itemsResourceSizeResponseBody": {
+        "type": "object",
+        "properties": {
+          "appFile": {
+            "type": "number",
+            "description": "Size of the app on disk in bytes."
+          },
+          "appMemory": {
+            "type": "number",
+            "description": "Size of the app in memory in bytes."
+          }
+        }
+      },
+      "itemsResultResponseBody": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/itemResultResponseBody"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/itemsLinksResponseBody"
+          }
+        },
+        "description": "Multiple items."
+      },
+      "ItemsSettingsPatch": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "op",
+            "path",
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string",
+              "description": "The operation to be performed. Only \"replace\" is supported."
+            },
+            "path": {
+              "enum": [
+                "/usageMetricsEnabled"
+              ],
+              "type": "string",
+              "description": "Field of Settings to be patched (updated)."
+            },
+            "value": {
+              "type": "boolean",
+              "description": "The value to be used within the operations.\n"
+            }
+          },
+          "description": "A JSONPatch document as defined by RFC 6902."
+        }
+      },
+      "ItemsSettingsResponseBody": {
+        "type": "object",
+        "required": [
+          "usageMetricsEnabled"
+        ],
+        "properties": {
+          "usageMetricsEnabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "Decides if the usage metrics will be shown in the hub UI."
+          }
+        }
+      },
+      "ItemsUpdateItemRequestBody": {
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "spaceId": {
+            "type": "string",
+            "description": "The space's unique identifier."
+          },
+          "resourceId": {
+            "type": "string",
+            "description": "The case-sensitive string used to search for an item by resourceId. If resourceId is provided, then resourceType must be provided. Provide either the resourceId or resourceLink, but not both."
+          },
+          "description": {
+            "type": "string"
+          },
+          "thumbnailId": {
+            "type": "string",
+            "description": "The item thumbnail's unique identifier. This is optional for internal resources."
+          },
+          "resourceLink": {
+            "type": "string",
+            "format": "uri",
+            "description": "The case-sensitive string used to search for an item by resourceLink. If resourceLink is provided, then resourceType must be provided. Provide either the resourceId or resourceLink, but not both."
+          },
+          "resourceType": {
+            "$ref": "#/components/schemas/itemResourceTypeEnum"
+          },
+          "resourceSubType": {
+            "type": "string",
+            "description": "Optional field defining the item's subtype, if any."
+          },
+          "resourceUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime when the resource that the item references was last updated."
+          },
+          "resourceAttributes": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "resourceCustomAttributes": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "itemTagResponseBody": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the tag/collection."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the tag/collection."
+          }
+        },
+        "description": "Holds basic information about a tag or collection."
+      },
+      "itemViewsResponseBody": {
+        "type": "object",
+        "properties": {
+          "week": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/itemViewsWeeksResponseBody"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of views the resource got during the last 28 days."
+          },
+          "trend": {
+            "type": "number",
+            "example": -4.2,
+            "description": "Trend in views over the last 4 weeks. The trend value is a float number representing a linear regression slope (the x-coefficient) calculated from the weekly unique users views in the preceding 4 weeks."
+          },
+          "unique": {
+            "type": "integer",
+            "description": "Number of unique users who viewed the resource during the last 28 days."
+          },
+          "usedBy": {
+            "type": "integer",
+            "description": "Number of apps this dataset is used in (datasets only)."
+          }
+        }
+      },
+      "itemViewsWeeksResponseBody": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The RFC3339 datetime representing the start of the referenced week."
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of views the resource got during the referenced week."
+          },
+          "unique": {
+            "type": "integer",
+            "description": "Number of unique users who viewed the resource during the referenced week."
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "meta": {
+        "type": "object",
+        "properties": {
+          "fault": {
+            "type": "boolean",
+            "description": "Is the error a server-side fault?"
+          },
+          "explain": {
+            "type": "object",
+            "description": "Further explanation of the error"
+          },
+          "timeout": {
+            "type": "boolean",
+            "description": "Is the error a timeout?"
+          },
+          "temporary": {
+            "type": "boolean",
+            "description": "Is the error temporary?"
+          }
+        }
+      },
+      "ServiceError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code is a unique identifier for this error class."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/meta"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title is the name of this class of errors."
+          },
+          "detail": {
+            "type": "string",
+            "description": "Detail is a human-readable explanation specific to this occurrence of the problem."
+          }
+        }
+      },
+      "spaceTypeEnum": {
+        "enum": [
+          "shared",
+          "managed",
+          "personal",
+          "data"
+        ],
+        "type": "string",
+        "description": "The case-sensitive string defining the space type."
+      }
+    }
+  }
+}

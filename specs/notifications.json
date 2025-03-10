@@ -1,0 +1,217 @@
+{
+  "info": {
+    "title": "notifications",
+    "version": ""
+  },
+  "paths": {
+    "/v1/notifications": {
+      "get": {
+        "tags": [
+          "notifications"
+        ],
+        "summary": "List all supported notifications",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationsObject"
+                }
+              }
+            },
+            "description": "Request completed successfully. See Results for ResultDetail on each notification."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Request error. See Errors."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "locale",
+            "schema": {
+              "type": "string",
+              "default": "en"
+            },
+            "required": false,
+            "description": "If present, idenfies the language of the returned 'friendlyName' property."
+          },
+          {
+            "in": "query",
+            "name": "manageableInHub",
+            "schema": {
+              "enum": [
+                true,
+                false
+              ],
+              "type": "string",
+              "default": "if missing, no filtering is done"
+            },
+            "required": false,
+            "description": "If present, represents the 'manageableInHub' value to filter by."
+          },
+          {
+            "in": "query",
+            "name": "subscribable",
+            "schema": {
+              "enum": [
+                true,
+                false
+              ],
+              "type": "string",
+              "default": "if missing, no filtering is done"
+            },
+            "required": false,
+            "description": "If present, represents the 'subscribable' value to filter by."
+          }
+        ],
+        "operationId": "NotificationRequest",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          }
+        },
+        "description": "An error object."
+      },
+      "NotificationItem": {
+        "type": "object",
+        "required": [
+          "notificationNamePattern",
+          "transports",
+          "isSubscribable"
+        ],
+        "properties": {
+          "transports": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "transport names are stored and retrived based on action"
+            },
+            "description": "Type of Transport e.g. Email, Notification, Slack message etc..."
+          },
+          "isSubscribable": {
+            "type": "boolean",
+            "description": "Indicates if the notification can be subscribed to by users.  If true, the object will also contain 'subscriptionInfo' object"
+          },
+          "presentationInfo": {
+            "type": "object",
+            "properties": {
+              "scopes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "one of 'tenant', 'space' or 'resource'"
+                },
+                "description": "Information about the scopes to which this notification applies.  Helps determine the placement of the notification in the UI"
+              },
+              "friendlyName": {
+                "type": "string",
+                "description": "Localized, human-readable string representing the name of the notification suitable to use in a UI"
+              },
+              "scopeFriendlyNames": {
+                "type": "object",
+                "description": "Friendly name to be displayed for each scope.",
+                "additionalProperties": {
+                  "type": "string",
+                  "description": "Localized, human-readable string representing the name of the notification suitable to use in a UI."
+                }
+              }
+            },
+            "description": "Object containing information pertaining to the presentaion of a notification in the UI"
+          },
+          "subscriptionInfo": {
+            "type": "object",
+            "required": [
+              "resourceType",
+              "action"
+            ],
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              },
+              "resourceId": {
+                "type": "string"
+              },
+              "resourceType": {
+                "type": "string"
+              },
+              "resourceSubType": {
+                "type": "string"
+              }
+            },
+            "description": "Object indicating what properties to use to subscribe to this notification via the 'Subscriptions' service.  For info about its properties, refer to the Subscription sevice's API doc."
+          },
+          "isManageableInHub": {
+            "type": "boolean",
+            "description": "Indicates if the notification can be managed in the hub. If true, the object will also contain 'subscriptionInfo' object and a 'presentationInfo' object with a non-empty scopes array."
+          },
+          "notificationNamePattern": {
+            "type": "string",
+            "description": "Notification name pattern that will trigger this notification e.g resource.action"
+          }
+        },
+        "description": "Notification result item"
+      },
+      "NotificationsObject": {
+        "type": "object",
+        "required": [
+          "notifications"
+        ],
+        "properties": {
+          "notifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotificationItem"
+            },
+            "description": "list of notifications"
+          }
+        },
+        "description": "Object containing array representing list of supported notifications"
+      }
+    }
+  }
+}

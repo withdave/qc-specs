@@ -1,0 +1,2050 @@
+{
+  "info": {
+    "title": "data-files",
+    "version": ""
+  },
+  "paths": {
+    "/v1/data-files": {
+      "get": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Get descriptive info for the specified data files.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDataFileInfosResponse"
+                }
+              }
+            },
+            "description": "The file list was retrieved."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "allowInternalFiles",
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": false
+            },
+            "example": false,
+            "description": "If set to false, do not return data files with internal extensions else return all the data files."
+          },
+          {
+            "in": "query",
+            "name": "appId",
+            "schema": {
+              "type": "string",
+              "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
+              "nullable": true
+            },
+            "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
+            "description": "Only return files scoped to the specified app.  If this parameter is not specified, only files that are not\r\nscoped to any app are returned.  \"*\" implies all app-scoped files are returned."
+          },
+          {
+            "in": "query",
+            "name": "baseNameWildcard",
+            "schema": {
+              "type": "string",
+              "example": "*SomeFileName*",
+              "nullable": true
+            },
+            "example": "*SomeFileName*",
+            "description": "If present, return only items whose base name matches the given wildcard.  Wildcards include '*' and '?'\r\ncharacters to allow for multiple matches.  The base name is the actual file or folder name without any\r\nfolder pathing included."
+          },
+          {
+            "in": "query",
+            "name": "connectionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+              "nullable": true
+            },
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "description": "Return files and folders that reside in the space referenced by the specified DataFiles connection.  If this\r\nparameter is not specified, the user's personal space is implied."
+          },
+          {
+            "in": "query",
+            "name": "excludeFiles",
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": false
+            },
+            "example": false,
+            "description": "If set to true, exclude files in the returned list (IE, only return folders).  If false, include files."
+          },
+          {
+            "in": "query",
+            "name": "excludeSubFolders",
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": false
+            },
+            "example": false,
+            "description": "If set to true, exclude folders and files that reside in sub-folders of the root being searched.  If false,\r\ninclude all items in full folder hierarchy that recursively reside under the root.  That is, setting to\r\ntrue results in only the direct children of the root being returned."
+          },
+          {
+            "in": "query",
+            "name": "folderId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+              "nullable": true
+            },
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "description": "If present, return only items which reside under the folder specified by the given ID.  If not present,\r\nitems that live at the root of the space are returned.  This property is mutually exclusive with 'folderPath'."
+          },
+          {
+            "in": "query",
+            "name": "folderPath",
+            "schema": {
+              "type": "string",
+              "example": "some/folder",
+              "nullable": true
+            },
+            "example": "some/folder",
+            "description": "If present, return only items which reside under the specified folder path.  If not present, items that\r\nlive at the root of the space are returned.  This property is mutually exclusive with 'folderId'."
+          },
+          {
+            "in": "query",
+            "name": "includeAllSpaces",
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": false
+            },
+            "example": false,
+            "description": "If set to true, and connectionId is not specified, return files and folders from all spaces the given user\r\nhas access to (including the personal space).  If connectionId is specified, this parameter is ignored."
+          },
+          {
+            "in": "query",
+            "name": "includeFolders",
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": false
+            },
+            "example": false,
+            "description": "If set to true, include folders in the returned list.  If false, only return data files."
+          },
+          {
+            "in": "query",
+            "name": "includeFolderStats",
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": false
+            },
+            "example": false,
+            "description": "If set to true, include computed folder statistics for folders in the returned list.  If false, this information\r\nis not returned."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "example": 5,
+              "maximum": 1000,
+              "minimum": 1
+            },
+            "example": 5,
+            "description": "If present, the maximum number of data files to return."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string",
+              "example": "MyFile.csv",
+              "nullable": true
+            },
+            "example": "MyFile.csv",
+            "description": "Filter the list of files returned to the given file name."
+          },
+          {
+            "in": "query",
+            "name": "notOwnerId",
+            "schema": {
+              "type": "string",
+              "example": "lDL4DIINndhL_iJkcbqWyJenuwizP-2D",
+              "nullable": true
+            },
+            "example": "lDL4DIINndhL_iJkcbqWyJenuwizP-2D",
+            "description": "If present, fetch the data files whose owner is not the specified owner.  If a connectionId is specified in\r\nthis case, the returned list is constrained to the specified space.  If connectionId is not specified, then\r\nthe returned list is constrained to the calling user's personal space.  If includeAllSpaces is set to true,\r\nand connectionId is not specified, the returned list is from all spaces the given user\r\nhas access to (including the personal space)."
+          },
+          {
+            "in": "query",
+            "name": "ownerId",
+            "schema": {
+              "type": "string",
+              "example": "lDL4DIINndhL_iJkcbqWyJenuwizP-2D",
+              "nullable": true
+            },
+            "example": "lDL4DIINndhL_iJkcbqWyJenuwizP-2D",
+            "description": "If present, fetch the data files for the specified owner.  If a connectionId is specified in this case, the\r\nreturned list is constrained to the specified space.  If connectionId is not specified, then all files owned\r\nby the specified user are returned regardless of the personal space that a given file resides in."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string",
+              "example": "NzlmNzI5NWMtZGJlZC00Y2Y4LThkNDAtMzQ5ZDU3YzNjMzQ1",
+              "nullable": true
+            },
+            "example": "NzlmNzI5NWMtZGJlZC00Y2Y4LThkNDAtMzQ5ZDU3YzNjMzQ1",
+            "description": "If present, the cursor that starts the page of data that is returned."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "$ref": "#/components/schemas/GetDataFileInfosSortField"
+            },
+            "description": "The name of the field used to sort the result.  By default, the sort order is ascending.  Putting a '+' prefix on\r\nthe sort field name explicitly indicates ascending sort order.  A '-' prefix indicates a descending sort order."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Upload a new data file or create a new folder.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataFileUploadResponse"
+                }
+              }
+            },
+            "description": "New file or folder was created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "A file or folder with the same name already exists in the specified user or app scope."
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The file exceeds the user's quota for maximum file size to upload."
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The file is already locked for read or write by another client."
+          },
+          "501": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Implemented"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "Json.Name"
+                ],
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true,
+                    "description": "IFormFile form multipart/form-data"
+                  },
+                  "Json": {
+                    "type": "object",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "some/folder/MyFile.csv",
+                        "pattern": "^[^<>\":\\u0000|?*]+$",
+                        "description": "Name that will be given to the file or folder.  It should be noted that the '/' character\r\nin the name indicates a 'path' separator in a logical folder hierarchy for the name.  Names that\r\ncontain '/'s should be used with the assumption that a logical 'folder hierarchy' is being defined for the\r\nfull pathname of that file or folder.  IE, a '/' is a significant character in the name."
+                      },
+                      "appId": {
+                        "type": "string",
+                        "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
+                        "nullable": true,
+                        "description": "If this file should be bound to the lifecycle of a specific app, this is the ID of this app.  If this\r\nrequest is creating a folder, the specification of an app ID is not allowed."
+                      },
+                      "folder": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "If true, a folder will be created.  If false, a file is created."
+                      },
+                      "folderId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true,
+                        "description": "If the specified file or folder should be moved to become a a sub-item of an existing folder, this is the ID\r\nof this parent folder.  Any additional folder path that is present on the Name property will be created\r\nas a subfolder hierarchy of this folder.  If the FolderID is null, the file or folder specified in the\r\nName property (including any folder prefix on that name), will be created in the root of the space."
+                      },
+                      "sourceId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
+                        "nullable": true,
+                        "description": "If a SourceId is specified, this is the ID of the existing data file or folder whose content should be copied\r\ninto the specified data file or folder.  That is, for a file instead of the file content being specified in\r\nthe Data element, it is effectively copied from an existing, previously uploaded file.  For a folder, rather\r\nthan the new folder being empty, it's contents are copied from an existing, previously created folder."
+                      },
+                      "connectionId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+                        "nullable": true,
+                        "description": "If present, this is the DataFiles connection that the upload should occur in the context of.  If absent,\r\nthe default is that the upload will occur in the context of the Personal Space DataFiles connection.  If the\r\nDataFiles connection is different from the one specified when the file or folder was last POSTed or PUT, this\r\nwill result in a logical move of this file or folder into the new space."
+                      },
+                      "tempContentFileId": {
+                        "type": "string",
+                        "example": "624b0f54459f1c00018dade4",
+                        "nullable": true,
+                        "description": "If a TempContentFileId is specified, this is the ID of a previously uploaded temporary content file whose\r\ncontent should be copied into the specified data file.  That is, instead of the file content being specified\r\nin the Data element, it is effectively copied from an existing, previously uploaded file.  The expectation\r\nis that this file was previously uploaded to the temporary content service, and the ID specified here is\r\nthe one returned from the temp content upload request.  This option does not apply when POSTing a folder."
+                      }
+                    },
+                    "description": "See PostDataFileRequest schema which defines request structure.\n See  model.",
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "encoding": {
+                "File": {
+                  "style": "form"
+                },
+                "Json": {
+                  "contentType": "application/json"
+                }
+              }
+            }
+          }
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-files/{id}": {
+      "get": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Get descriptive info for the specified data file.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataFileUploadResponse"
+                }
+              }
+            },
+            "description": "The file was located."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "A data file with the specified ID was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "required": true,
+            "description": "The ID of the data file."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Re-upload an existing data file or update an existing folder.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataFileUploadResponse"
+                }
+              }
+            },
+            "description": "The file or folder was updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "A data file or folder with the specified ID was not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "If the file or folder was renamed during the update, a file or folder with the new name\r\n            already exists.  Also, if the space that the file or folder resides in was changed as part of the update,\r\n            a file or folder with the same name already resides in the new space."
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The file exceeds the user's quota for maximum file size to upload."
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The file is already locked for read or write by another client.  If a folder is being\r\n            updated, then if any file or folder in the subfolder hierarchy of this folder is already locked for write."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "required": true,
+            "description": "The ID of the data file to update."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true,
+                    "description": "IFormFile form multipart/form-data"
+                  },
+                  "Json": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "some/folder/MyFile.csv",
+                        "pattern": "^[^<>\":\\u0000|?*]+$",
+                        "nullable": true,
+                        "description": "Name that will be given to the file or folder.  If this name is different than the name used when the file\r\nor folder was last POSTed or PUT, this will result in a rename of the file or folder.  It should be noted\r\nthat the '/' character in a data file name indicates a 'path' separator in a logical folder hierarchy for\r\nthe name.  Names that contain '/'s should be used with the assumption that a logical 'folder hierarchy' is\r\nbeing defined for the full pathname of that file or folder..  '/' is a significant character in the data file\r\nor folder name."
+                      },
+                      "appId": {
+                        "type": "string",
+                        "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
+                        "nullable": true,
+                        "description": "If this file should be bound to the lifecycle of a specific app, this is the ID of this app.  If this\r\nrequest is creating a folder, the specification of an app ID is not allowed."
+                      },
+                      "folderId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+                        "nullable": true,
+                        "description": "If the specified file or folder should be created as a sub-item of an existing folder, this is the ID\r\nof this parent folder.  Any additional folder path that is present on the Name property will be created\r\nas a subfolder hierarchy of this folder.  If the FolderID is null, the file or folder specified in the\r\nName property (including any folder prefix on that name), will be created in the root of the space."
+                      },
+                      "sourceId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
+                        "nullable": true,
+                        "description": "If a SourceId is specified, this is the ID of the existing data file or folder whose content should be copied\r\ninto the specified data file or folder.  That is, for a file instead of the file content being specified in\r\nthe Data element, it is effectively copied from an existing, previously uploaded file.  For a folder, it's\r\ncontents are copied from an existing, previously created folder.  If there it existing content in the target\r\nfolder, then how the source and target folder contents are merged together is specified in the\r\nFolderMergeBehavior option."
+                      },
+                      "connectionId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+                        "nullable": true,
+                        "description": "If present, this is the DataFiles connection points to the space that the file or folder should reside in.\r\nIf absent, the default is that the file or folder will reside in the Personal SPce.  If the DataFiles\r\nconnection is different from the one specified when the file or folder was last POSTed or PUT, this will\r\nresult in a logical move of this file or folder into the new space."
+                      },
+                      "tempContentFileId": {
+                        "type": "string",
+                        "example": "624b0f54459f1c00018dade4",
+                        "nullable": true,
+                        "description": "If a TempContentFileId is specified, this is the ID of a previously uploaded temporary content file whose\r\ncontent should be copied into the specified data file.  That is, instead of the file content being specified\r\nin the Data element, it is effectively copied from an existing, previously uploaded file.  The expectation\r\nis that this file was previously uploaded to the temporary content service, and the ID specified here is\r\nthe one returned from the temp content upload request."
+                      },
+                      "folderMergeBehavior": {
+                        "$ref": "#/components/schemas/PutDataFileFolderMergeBehavior"
+                      }
+                    },
+                    "description": "See PutDataFileRequest schema which defines request structure.\n See  model.",
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "encoding": {
+                "File": {
+                  "style": "form"
+                },
+                "Json": {
+                  "contentType": "application/json"
+                }
+              }
+            }
+          }
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 800
+        }
+      },
+      "delete": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Delete the specified data file or folder.  Deleting a folder will also recursively delete all files and\r\nsubfolders that reside within the specified folder.",
+        "responses": {
+          "204": {
+            "description": "The file or folder was deleted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "A data file or folder with the specified ID was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "required": true,
+            "description": "The ID of the data file or folder to delete."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-files/{id}/actions/change-owner": {
+      "post": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Change the owner of an existing data file or folder.",
+        "responses": {
+          "204": {
+            "description": "The file or folder's owner was changed."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "An owner with the specified ID does not exist."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The user does not have permission to modify the specified data file or folder, or if the\r\n            item does not reside in the root of the space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "A data file or folder with the specified ID was not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "If the file or folder is in a personal space, and the personal space of the new owner\r\n            already has an item in the space with the same name as the item being moved."
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The file or folder is already locked for write by another client.  For folders, any\r\n            write lock on a subfolder or file underneath this folder implies a lock on the folder."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "required": true,
+            "description": "The ID of the data file or folder whose owner will be updated."
+          }
+        ],
+        "description": "This is primarily an admin type of operation.  In general, the owner of a data file or folder is implicitly\r\nset as part of a create or update operation.  For data files or folders that reside in a personal space,\r\nchanging the owner has the effect of moving the data file to the new owner's personal space.  Note that,\r\nIf a given file or folder is not in the root of a personal space, this operation will not succeed, since\r\nthe parent folder does not reside in the target owner's personal space.  If the owner of a folder in the\r\nroot of a personal space is changed, the owner of all subfolders and files within those subfolders will\r\nalso recursively change.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeDataFileOwnerRequest"
+              }
+            }
+          },
+          "description": "The request."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-files/{id}/actions/change-space": {
+      "post": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Change the space that an existing data file or folder resides in.",
+        "responses": {
+          "204": {
+            "description": "The file or folder's space was changed."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "A space with the specified ID does not exist."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The user does not have permission to modify the specified data file or folder, or if the\r\n            item does not reside in the root of the space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "A data file or folder with the specified ID was not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "If there is a file or folder in the target space with the same name as the item being\r\n            moved."
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The file is already locked for write by another client.  For folders, any write lock on\r\n            a subfolder or file underneath this folder implies a lock on the folder."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "required": true,
+            "description": "The ID of the data file or folder whose\r\n            space will be updated."
+          }
+        ],
+        "description": "This is to allow for a separate admin type of operation that is more global in terms of access in cases\r\nwhere admin users may not explicitly have been granted full access to a given space within the declared\r\nspace-level permissions.  If the space ID is set to null, then the datafile or folder will end up residing\r\nin the personal space of the user who is the owner of the item.  Note that, if a given file or folder is not\r\nin the root of a given space, this operation will not succeed, since the parent folder does not reside in\r\nthe target space.  If the space of a folder in the root of the source space is changed, all subfolders and\r\nfiles within those subfolders will also recursively be moved to the new space.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeDataFileSpaceRequest"
+              }
+            }
+          },
+          "description": "The request."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-files/actions/change-space": {
+      "post": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Change the spaces that a set of existing data files or folders reside in a a single batch.",
+        "responses": {
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultiStatusResponse"
+                }
+              }
+            },
+            "description": "The result status of the change space operations on each specified data file."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "description": "This is to allow for a separate admin type of operation that is more global in terms of access in cases\r\nwhere admin users may not explicitly have been granted full access to a given space within the declared\r\nspace-level permissions.  If the space ID is set to null, then the data file or folder will end up residing\r\nin the personal space of the user who is the owner of the item.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataFileBatchChangeSpaceRequest"
+              }
+            }
+          },
+          "description": "The batch of IDs for each data file in the batch whose space will be changed along with\r\n            the space IDs for each change."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-files/actions/delete": {
+      "post": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Delete the specified set of data files and/or folders as a single batch.",
+        "responses": {
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultiStatusResponse"
+                }
+              }
+            },
+            "description": "The result status of the delete operations on each specified data file or folder."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataFileBatchDeleteRequest"
+              }
+            }
+          },
+          "description": "The specification of the batch of data files and folders to delete."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-files/connections": {
+      "get": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Get the list of built-in connections used by the engine to load/write data files.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetConnectionsResponse"
+                }
+              }
+            },
+            "description": "Connection list was returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "appId",
+            "schema": {
+              "type": "string",
+              "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
+              "nullable": true
+            },
+            "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
+            "description": "If present, get connections with connection strings that are scoped to the given app ID."
+          },
+          {
+            "in": "query",
+            "name": "includeSpaceStats",
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": false
+            },
+            "example": false,
+            "description": "If set to true, include computed space-level statistics for the spaces represented by the connections in the\r\nreturned list.  If false, this information is not returned."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "example": 5,
+              "maximum": 1000,
+              "minimum": 1
+            },
+            "example": 5,
+            "description": "If present, the maximum number of data file connection records to return."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string",
+              "example": "MySenseApp",
+              "nullable": true
+            },
+            "example": "MySenseApp",
+            "description": "If present, only return connections with the given name."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string",
+              "example": "NzlmNzI5NWMtZGJlZC00Y2Y4LThkNDAtMzQ5ZDU3YzNjMzQ1",
+              "nullable": true
+            },
+            "example": "NzlmNzI5NWMtZGJlZC00Y2Y4LThkNDAtMzQ5ZDU3YzNjMzQ1",
+            "description": "If present, the cursor that starts the page of data that is returned."
+          },
+          {
+            "in": "query",
+            "name": "personal",
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": true
+            },
+            "example": true,
+            "description": "If true, only return the connections that access data in a personal space.  Default is false."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "$ref": "#/components/schemas/GetConnectionsSortField"
+            },
+            "description": "The name of the field used to sort the result.  By default, the sort is ascending.  Putting a '+' prefix on\r\nthe sort field name explicitly indicates ascending sort order.  A '-' prefix indicates a descending sort order."
+          },
+          {
+            "in": "query",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "example": "617979737a9f56e49dea2e6e",
+              "nullable": true
+            },
+            "example": "617979737a9f56e49dea2e6e",
+            "description": "If present, only return the connection that accesses data files in the specified space."
+          }
+        ],
+        "description": "The non-filtered list contains a set of hardcoded connections, along with one connection per team space that\r\nthe given user has access to.",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-files/connections/{id}": {
+      "get": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Get the built-in connection used by the engine to load/write data files given a connection ID.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionsResponse"
+                }
+              }
+            },
+            "description": "The connection was returned."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The space referenced by the specified connection was not found, or is not accessible to the current user."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "A connection with the specified ID was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "required": true,
+            "description": "The ID of the connection."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-files/quotas": {
+      "get": {
+        "tags": [
+          "datafiles"
+        ],
+        "summary": "Get quota information for the calling user.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuotaResponse"
+                }
+              }
+            },
+            "description": "The quota information was retrieved."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/build",
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "BatchChangeSpaceItem": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "description": "The ID of the data file whose space will be changed."
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "617979737a9f56e49dea2e6e",
+            "nullable": true,
+            "description": "The ID of the new space.  Passing in a null will result in the data file being moved to the user's\r\npersonal space."
+          }
+        },
+        "additionalProperties": false
+      },
+      "BatchDeleteAllBySpaceItem": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "617979737a9f56e49dea2e6e",
+            "minLength": 1,
+            "description": "The ID of the space whose data files will be deleted."
+          }
+        },
+        "additionalProperties": false
+      },
+      "BatchDeleteItem": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "description": "The ID of the data file to delete."
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangeDataFileOwnerRequest": {
+        "type": "object",
+        "required": [
+          "ownerId"
+        ],
+        "properties": {
+          "ownerId": {
+            "type": "string",
+            "example": "lDL4DIINndhL_iJkcbqWyJenuwizP-2D",
+            "description": "The ID of the new owner."
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangeDataFileSpaceRequest": {
+        "type": "object",
+        "properties": {
+          "spaceId": {
+            "type": "string",
+            "example": "617979737a9f56e49dea2e6e",
+            "nullable": true,
+            "description": "The ID of the space.  If null, this data file will be moved to the user's personal space."
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConnectionsResponse": {
+        "type": "object",
+        "required": [
+          "connectStatement",
+          "id",
+          "name",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "description": "The unique identifier of the connection."
+          },
+          "name": {
+            "type": "string",
+            "example": "DataFiles",
+            "description": "The name of the connection."
+          },
+          "type": {
+            "type": "string",
+            "example": "qix-datafiles.exe",
+            "description": "The type of the connection."
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "617979737a9f56e49dea2e6e",
+            "nullable": true,
+            "description": "The team space that the given connection is associated with.  If null, the connection is not associated\r\nwith any specific team space."
+          },
+          "spaceStats": {
+            "$ref": "#/components/schemas/SpaceStatsResponse"
+          },
+          "connectStatement": {
+            "type": "string",
+            "example": "CUSTOM CONNECT TO \\\"provider=qix-datafiles.exe;path=mydatafiles;\\\"",
+            "description": "The connect statement that will be passed to the connector when invoked."
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataFileBatchChangeSpaceRequest": {
+        "type": "object",
+        "required": [
+          "change-space"
+        ],
+        "properties": {
+          "change-space": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BatchChangeSpaceItem"
+            },
+            "description": "The list of data files to delete."
+          }
+        },
+        "description": "Specifies the list of data file change space operations in a single batch.",
+        "additionalProperties": false
+      },
+      "DataFileBatchDeleteRequest": {
+        "type": "object",
+        "required": [
+          "delete"
+        ],
+        "properties": {
+          "delete": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BatchDeleteItem"
+            },
+            "description": "If specified, the explicit list of data files to delete."
+          },
+          "deleteAllBySpace": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BatchDeleteAllBySpaceItem"
+            },
+            "nullable": true,
+            "description": "If specified, attempt to delete all of the data files from the specified shared spaces."
+          },
+          "deleteAllFromPersonalSpace": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "If specified, attempt to delete all of the datafiles from ther user's personal space."
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataFilePermission": {
+        "enum": [
+          "read",
+          "update",
+          "delete",
+          "list",
+          "change_owner",
+          "change_space"
+        ],
+        "type": "string",
+        "description": "<p>Members:</p><ul></ul>"
+      },
+      "DataFileUploadResponse": {
+        "type": "object",
+        "required": [
+          "actions",
+          "createdDate",
+          "folderStats",
+          "id",
+          "name",
+          "ownerId",
+          "size"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "description": "The ID for the file or folder."
+          },
+          "qri": {
+            "type": "string",
+            "example": "qri:qdf:space://ooSOGoLLaq7EMaSdSsCiGvLwcd_VAf1oU0mzwSfp_Qs#wME89c8gKu_Tpz8W_a0JKSbKC4hzbNu0NLVgqi2UFS0",
+            "nullable": true,
+            "description": "The QRI generated from the datafile or folder's metadata."
+          },
+          "name": {
+            "type": "string",
+            "example": "some/folder/MyFile.csv",
+            "description": "The full name of the file or folder, including any folder path prefix."
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1024,
+            "description": "The size of the uploaded file, in bytes.  0 if this item represents a folder"
+          },
+          "appId": {
+            "type": "string",
+            "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
+            "nullable": true,
+            "description": "If this file or folder is bound to the lifecycle of a specific app, this is the ID of this app."
+          },
+          "folder": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether or not this given item represents a folder or a file."
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataFilePermission"
+            },
+            "description": "The CRUD actions that are allowed on the given data file."
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "lDL4DIINndhL_iJkcbqWyJenuwizP-2D",
+            "description": "The 'owner' of a file or folder is the user who last uploaded the item's content."
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "617979737a9f56e49dea2e6e",
+            "nullable": true,
+            "description": "If the file or folder was created in a team space, this is the ID of that space."
+          },
+          "baseName": {
+            "type": "string",
+            "example": "MyFile.csv",
+            "nullable": true,
+            "description": "The name of the file or folder, not including any folder path prefix."
+          },
+          "folderId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "nullable": true,
+            "description": "If the file or folder resides in a parent folder, this is the parent folder ID.  If the file or folder\r\ndoes not reside in a parent folder, this value is null."
+          },
+          "folderPath": {
+            "type": "string",
+            "example": "some/folder",
+            "nullable": true,
+            "description": "If the file or folder resides in a parent folder, this is the parent folder path.  If the file or folder\r\ndoes not reside in a parent folder, this value is null."
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-07-07T20:52:40.8534780Z",
+            "description": "The date that the file or folder was created."
+          },
+          "folderStats": {
+            "$ref": "#/components/schemas/FolderStatsResponse"
+          },
+          "modifiedDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-07-07T20:52:40.8534780Z",
+            "nullable": true,
+            "description": "The date that the updated file or folder was last modified."
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorCode": {
+        "enum": [
+          "HTTP-200",
+          "HTTP-201",
+          "HTTP-204",
+          "HTTP-400",
+          "HTTP-403",
+          "HTTP-404",
+          "HTTP-409",
+          "HTTP-413",
+          "HTTP-423",
+          "HTTP-500",
+          "HTTP-501",
+          "HTTP-503",
+          "DF-001",
+          "DF-002",
+          "DF-003",
+          "DF-004",
+          "DF-005",
+          "DF-006",
+          "DF-007",
+          "DF-008",
+          "DF-009",
+          "DF-010",
+          "DF-011",
+          "DF-012",
+          "DF-013",
+          "DF-014",
+          "DF-015",
+          "DF-016",
+          "DF-017",
+          "DF-018",
+          "DF-019",
+          "DF-020",
+          "DF-021",
+          "DF-022",
+          "DF-023",
+          "DF-024",
+          "DF-025",
+          "DF-026"
+        ],
+        "type": "string",
+        "description": "Fine-grained error codes for data-files REST operations.  For operations which do not have a more fine-grained\r\nerror code, the error code is set to the HTTP status code.<p>Members:</p><ul><li><i>DF-001</i> - The page cursor passed as a parameter to the GET operation is invalid.</li><li><i>DF-002</i> - The sort specification passed as a parameter to the GET operation is invalid.</li><li><i>DF-003</i> - FolderPath and FolderId are mutually exclusive, they cannot both be passed as parameters.</li><li><i>DF-004</i> - The provided FolderPath must be in canonical form.</li><li><i>DF-005</i> - The specified parent folder cannot be found.</li><li><i>DF-006</i> - The specified owner cannot be found.</li><li><i>DF-007</i> - A connection corresponding to the specified space cannot be found.</li><li><i>DF-008</i> - THe specified ID must correspond to a folder, not a file.</li><li><i>DF-009</i> - The specified space cannot be found.</li><li><i>DF-010</i> - The specified file name contains an invalid file extension.</li><li><i>DF-011</i> - The specified file name is missing a file extension.</li><li><i>DF-012</i> - The specified temporary content file could not be found.</li><li><i>DF-013</i> - Access to the specified space is forbidden.</li><li><i>DF-014</i> - The specified connection cannot be found.</li><li><i>DF-015</i> - The provided filename must be in canonical form.</li><li><i>DF-016</i> - The datafile size quota for the given personal space has been exceeded.</li><li><i>DF-017</i> - The specified source file or folder could not be found.</li><li><i>DF-018</i> - The source and target of a datafile operation must either both be folders or both be files, but they are\n            not.</li><li><i>DF-019</i> - The specified target folder is a child of the specified source folder, which is not allowed.</li><li><i>DF-020</i> - The specified folder does not exist in the specified space.</li><li><i>DF-021</i> - The specified source file or folder is already locked.</li><li><i>DF-022</i> - The automatic creation of a missing parent folder failed.</li><li><i>DF-023</i> - An attempt to lock a parent folder of a given data file item failed.</li><li><i>DF-024</i> - The attempt to copy a source file or folder to a target failed.</li><li><i>DF-025</i> - The specified target file or folder is already locked.</li><li><i>DF-026</i> - The request results in the creation of a folder hierarchy which is beyond the max allowed folder\n            hierarchy depth.</li></ul>"
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseItem"
+            },
+            "description": "List of errors and their properties."
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponseItem": {
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/ErrorCode"
+          },
+          "title": {
+            "type": "string",
+            "example": "Cursor not formatted correctly.",
+            "nullable": true,
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "example": "Invalid encoding of cursor.",
+            "nullable": true,
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          }
+        },
+        "additionalProperties": false
+      },
+      "FolderStatsResponse": {
+        "type": "object",
+        "required": [
+          "aggregateAppScopedFileSize",
+          "aggregateFileSize",
+          "aggregateInternalFileSize",
+          "directAppScopedFileCount",
+          "directFileCount",
+          "directFolderCount",
+          "directInternalFileCount",
+          "totalAppScopedFileCount",
+          "totalFileCount",
+          "totalFolderCount",
+          "totalInternalFileCount"
+        ],
+        "properties": {
+          "totalFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of data files that reside as direct and indirect children of the given folder and it's sub-folder\r\nhierarchy."
+          },
+          "directFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of data files that reside as direct children of the given folder."
+          },
+          "totalFolderCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of folders that reside as direct and indirect children of the given folder and it's sub-folder\r\nhierarchy."
+          },
+          "aggregateFileSize": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10000,
+            "description": "The sum of the file sizes, in bytes, of all data files that reside as direct and indirect children of the given\r\nfolder and it's sub-folder hierarchy."
+          },
+          "directFolderCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of sub-folders that reside as direct children of the given folder."
+          },
+          "totalInternalFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\r\ndirect and indirect children of the given folder and it's sub-folder hierarchy."
+          },
+          "directInternalFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\r\ndirect children of the given folder."
+          },
+          "totalAppScopedFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of app-scoped data files that reside as direct and indirect children of the given folder and it's\r\nsub-folder hierarchy."
+          },
+          "directAppScopedFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of app-scoped data files that reside as direct children of the given folder."
+          },
+          "aggregateInternalFileSize": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10000,
+            "description": "The sum of the file sizes, in bytes, of all internal data files that reside as direct and indirect children of\r\nthe given folder and it's sub-folder hierarchy."
+          },
+          "aggregateAppScopedFileSize": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10000,
+            "description": "The sum of the file sizes, in bytes, of all app-scoped data files that reside as direct and indirect children of\r\nthe given folder and it's sub-folder hierarchy."
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetConnectionsResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectionsResponse"
+            },
+            "description": "Properties of the connections to the tenant spaces."
+          },
+          "links": {
+            "$ref": "#/components/schemas/LinksResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetConnectionsSortField": {
+        "enum": [
+          "spaceId",
+          "+spaceId",
+          "-spaceId"
+        ],
+        "type": "string",
+        "description": "<p>Members:</p><ul></ul>"
+      },
+      "GetDataFileInfosResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataFileUploadResponse"
+            },
+            "description": "Properties of the uploaded data files."
+          },
+          "links": {
+            "$ref": "#/components/schemas/LinksResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetDataFileInfosSortField": {
+        "enum": [
+          "name",
+          "+name",
+          "-name",
+          "size",
+          "+size",
+          "-size",
+          "modifiedDate",
+          "+modifiedDate",
+          "-modifiedDate",
+          "folder",
+          "+folder",
+          "-folder",
+          "baseName",
+          "+baseName",
+          "-baseName"
+        ],
+        "type": "string",
+        "description": "<p>Members:</p><ul></ul>"
+      },
+      "LinkResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true,
+            "description": "The URL for the link."
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinksResponse": {
+        "type": "object",
+        "required": [
+          "next",
+          "prev",
+          "self"
+        ],
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/LinkResponse"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/LinkResponse"
+          },
+          "self": {
+            "$ref": "#/components/schemas/LinkResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MultiStatusResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MultiStatusResponseItem"
+            },
+            "description": "List of individual results for the items in the specified batch."
+          }
+        },
+        "additionalProperties": false
+      },
+      "MultiStatusResponseItem": {
+        "type": "object",
+        "required": [
+          "code",
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
+            "description": "The unique identifier of the file."
+          },
+          "code": {
+            "$ref": "#/components/schemas/ErrorCode"
+          },
+          "title": {
+            "type": "string",
+            "example": "Cursor not formatted correctly.",
+            "nullable": true,
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "example": "Invalid encoding of cursor.",
+            "nullable": true,
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "example": 400,
+            "description": "The HTTP status code."
+          }
+        },
+        "additionalProperties": false
+      },
+      "PutDataFileFolderMergeBehavior": {
+        "enum": [
+          "merge",
+          "replace"
+        ],
+        "type": "string",
+        "description": "If a SourceId is specified, and a folder is being updated by this PUT operation, this specifies how the\r\nsource folder contents should be applied to the target folder, if the target folder is not empty.  'merge'\r\nimplies the contents of the source folder should be merged with the existing target contents.  That is, all\r\nexisting direct or indirect child items in the target folder are replaced by the same items in the source folder.\r\nAll existing items in the target folder that are not present in the source folder are left, as is, in the target.\r\n'replace' implies the contents of the source folder should replace the contents of the target folder.  That is,\r\nall direct or indirect items in the target folder are removed before the items from the source folder are copied\r\nover.  The resulting target folder only contains the items from the source folder.  If not specified, the default\r\nbehavior is 'merge'.<p>Members:</p><ul></ul>"
+      },
+      "QuotaResponse": {
+        "type": "object",
+        "required": [
+          "allowedExtensions",
+          "allowedInternalExtensions",
+          "maxFileSize",
+          "maxLargeFileSize",
+          "maxSize",
+          "size"
+        ],
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "example": 5000,
+            "description": "The current aggregate size of all files uploaded by a given user.  If the current aggregate size is greater\r\nthan the maximum aggregate size, this is a quota violation."
+          },
+          "maxSize": {
+            "type": "integer",
+            "format": "int64",
+            "example": 9223372036854776000,
+            "description": "The maximum aggregate size of all files uploaded by a given user."
+          },
+          "maxFileSize": {
+            "type": "integer",
+            "format": "int64",
+            "example": 524288000,
+            "description": "Maximum allowable size of an uploaded file."
+          },
+          "maxLargeFileSize": {
+            "type": "integer",
+            "format": "int64",
+            "example": 6442450944,
+            "description": "Maximum allowable size for a single uploaded large data file (in bytes).  This is a file that was indirectly\r\nuploaded using the temp content service chunked upload capability."
+          },
+          "allowedExtensions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The allowed file extensions on files that are uploaded."
+          },
+          "allowedInternalExtensions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The allowed file extensions for files that are only used internally by the system (and thus not typically\r\nshown to end users)."
+          }
+        },
+        "additionalProperties": false
+      },
+      "SpaceStatsResponse": {
+        "type": "object",
+        "required": [
+          "aggregateAppScopedFileSize",
+          "aggregateFileSize",
+          "aggregateInternalFileSize",
+          "directAppScopedFileCount",
+          "directFileCount",
+          "directFolderCount",
+          "directInternalFileCount",
+          "totalAppScopedFileCount",
+          "totalFileCount",
+          "totalFolderCount",
+          "totalInternalFileCount"
+        ],
+        "properties": {
+          "totalFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of data files that reside as direct and indirect children of the given folder and it's sub-folder\r\nhierarchy."
+          },
+          "directFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of data files that reside as direct children of the given folder."
+          },
+          "totalFolderCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of folders that reside as direct and indirect children of the given folder and it's sub-folder\r\nhierarchy."
+          },
+          "aggregateFileSize": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10000,
+            "description": "The sum of the file sizes, in bytes, of all data files that reside as direct and indirect children of the given\r\nfolder and it's sub-folder hierarchy."
+          },
+          "directFolderCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of sub-folders that reside as direct children of the given folder."
+          },
+          "totalInternalFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\r\ndirect and indirect children of the given folder and it's sub-folder hierarchy."
+          },
+          "directInternalFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\r\ndirect children of the given folder."
+          },
+          "totalAppScopedFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of app-scoped data files that reside as direct and indirect children of the given folder and it's\r\nsub-folder hierarchy."
+          },
+          "directAppScopedFileCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50,
+            "description": "The number of app-scoped data files that reside as direct children of the given folder."
+          },
+          "aggregateInternalFileSize": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10000,
+            "description": "The sum of the file sizes, in bytes, of all internal data files that reside as direct and indirect children of\r\nthe given folder and it's sub-folder hierarchy."
+          },
+          "aggregateAppScopedFileSize": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10000,
+            "description": "The sum of the file sizes, in bytes, of all app-scoped data files that reside as direct and indirect children of\r\nthe given folder and it's sub-folder hierarchy."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

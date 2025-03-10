@@ -1,0 +1,639 @@
+{
+  "info": {
+    "title": "data-sources",
+    "version": ""
+  },
+  "paths": {
+    "/v1/data-sources": {
+      "get": {
+        "tags": [
+          "data-sources"
+        ],
+        "summary": "Get data sources",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSourcesResponseNew"
+                }
+              }
+            },
+            "description": "An array of data source info"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Unauthorized request (Bad JWT token etc)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Datasource not found or it is not enabled"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Internal errors"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "dataSourceId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "rest",
+            "required": false,
+            "description": "Filtering on datasourceID, when multiple dataSourceId are set in query, last dataSourceId will be used"
+          },
+          {
+            "in": "query",
+            "name": "detail",
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true,
+            "required": false,
+            "description": "Determines if provider detail is returned"
+          },
+          {
+            "in": "query",
+            "name": "includeui",
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true,
+            "required": false,
+            "description": "Determines if UI info is returned"
+          }
+        ],
+        "description": "Gets the list of data sources available on the node.",
+        "operationId": "getDataSources",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-sources/{dataSourceId}/api-specs": {
+      "get": {
+        "tags": [
+          "data-sources"
+        ],
+        "summary": "Get 'connectionProperties' for a given datasource",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSpecResponse"
+                }
+              }
+            },
+            "description": "API spec returned"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Unauthorized request (Bad JWT token etc)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Datasource not found or it is not enabled"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Internal errors"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Service unavailable, happens when request to connector or down stream services fails"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataSourceId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "rest",
+            "required": true,
+            "description": "Datasource ID"
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-sources/{dataSourceId}/gateways": {
+      "get": {
+        "tags": [
+          "data-sources"
+        ],
+        "summary": "Get list available gateway ID's for a given datasource",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "gateways": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "051YTx0OGDlfQ_66H3NyXwK24HEEyyJI::a6CxFtkInvsJnrNXCOVWR8pQOwaphpU0",
+                            "description": "Gateway ID"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "MyGateway",
+                            "description": "Gateway name"
+                          },
+                          "default": {
+                            "type": "boolean",
+                            "example": true,
+                            "description": "Whether the gateway is default"
+                          }
+                        },
+                        "description": "Gateway data"
+                      },
+                      "description": "List of gateway ID's for given datasource ID"
+                    },
+                    "refreshedAt": {
+                      "type": "string",
+                      "example": "2024-01-18T02:25:59.521Z",
+                      "description": "Time stamp when the gateways data were refreshed"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Gateways list returned"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Unauthorized request (Bad JWT token etc)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Datasource not found (or not enabled), or no gateway is configured for the tenant"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "General internal errors"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataSourceId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "rest",
+            "required": true,
+            "description": "Datasource ID"
+          },
+          {
+            "in": "query",
+            "name": "forceRefresh",
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true,
+            "required": false,
+            "description": "Force to get a refreshed list from backend. Cached list will be returned if not set or set to false."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "ApiSpecResponse": {
+        "type": "object",
+        "required": [
+          "connectorProvider",
+          "connectorVersion",
+          "connectionProperties"
+        ],
+        "properties": {
+          "connectorVersion": {
+            "type": "string",
+            "example": "1.180.0",
+            "description": "Datasource provider (i.e. connector) version"
+          },
+          "connectorProvider": {
+            "type": "string",
+            "example": "QvRestConnector.exe",
+            "description": "Datasource provider"
+          },
+          "connectionProperties": {
+            "type": "object",
+            "example": "{\"property1\": \"value\", \"property2\": \"value2\"}",
+            "description": "List of properties required for the given datasource"
+          }
+        }
+      },
+      "ConnectorNodesInfo": {
+        "type": "object",
+        "required": [
+          "url",
+          "contractType",
+          "providerName",
+          "dataSourcesUpdated",
+          "state"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "localhost:50060",
+            "description": "URL of connector node"
+          },
+          "state": {
+            "type": "string",
+            "example": "READY",
+            "description": "State of the connector node"
+          },
+          "contractType": {
+            "type": "number",
+            "example": 2,
+            "description": "Contract type used to communicate with the connector (between 0 and 3)"
+          },
+          "providerName": {
+            "type": "string",
+            "example": "Qlik® REST Connector",
+            "description": "Connector provider name"
+          },
+          "cachedDataSources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "rest"
+            ],
+            "description": "List of datasource Ids provided by the provider"
+          },
+          "dataSourcesUpdated": {
+            "type": "boolean",
+            "example": "true",
+            "description": "Indicates if the datasources is up to date"
+          }
+        },
+        "description": "Datasource metadata"
+      },
+      "DataSourceNew": {
+        "type": "object",
+        "required": [
+          "dataSourceId",
+          "name",
+          "provider",
+          "providerName"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Qlik® REST Connector",
+            "description": "Datasource name"
+          },
+          "uiInfo": {
+            "$ref": "#/components/schemas/UiInfo"
+          },
+          "provider": {
+            "type": "string",
+            "example": "QvRestConnector.exe",
+            "description": "Connector provider"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "datasource-specific-capabity"
+            },
+            "description": "List of capabilities supported by the datasource"
+          },
+          "dataSourceId": {
+            "type": "string",
+            "example": "rest",
+            "description": "Unique identifier of datasource"
+          },
+          "providerName": {
+            "type": "string",
+            "example": "Qlik® REST Connector",
+            "description": "Provider name"
+          },
+          "qriDefinition": {
+            "$ref": "#/components/schemas/QriDefinition"
+          },
+          "dataLoadUrlOverride": {
+            "type": "string",
+            "example": "ml-endpoints:50055",
+            "description": "Override value of dataload URL (could be null)"
+          },
+          "dataSourcePropertyName": {
+            "type": "string",
+            "example": "sourceType",
+            "description": "Datasource property name (could be null)"
+          }
+        },
+        "description": "Datasource metadata"
+      },
+      "DataSourcesResponseNew": {
+        "type": "object",
+        "required": [
+          "dataSources",
+          "lastUpdated"
+        ],
+        "properties": {
+          "dataSources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSourceNew"
+            },
+            "description": "List of datasources metadata object"
+          },
+          "lastUpdated": {
+            "type": "string",
+            "example": "2023-11-03T15:45:14.195Z",
+            "description": "Time stamp of last updated"
+          },
+          "connectorNodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectorNodesInfo"
+            },
+            "description": "List of connector nodes (only present when query parameter 'detail' is set to true)"
+          }
+        }
+      },
+      "PublicApiError": {
+        "type": "object",
+        "required": [
+          "code",
+          "title",
+          "details"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "DCAAS-2001",
+            "description": "A service specific error code string"
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional metadata associated with the error"
+          },
+          "title": {
+            "type": "string",
+            "example": "Data source is not enabled.",
+            "description": "Summary of the error"
+          },
+          "detail": {
+            "type": "string",
+            "example": "This resource requires app read privileges.",
+            "description": "Concrete detail about the error"
+          }
+        }
+      },
+      "QriDefinition": {
+        "type": "object",
+        "required": [
+          "qriPrefix",
+          "connectionPart",
+          "pathPart"
+        ],
+        "properties": {
+          "itemPart": {
+            "allOf": [
+              {
+                "description": "Item part of QRI"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "example": "#",
+                    "description": "Prefix of the template"
+                  }
+                }
+              },
+              {
+                "$ref": "#/components/schemas/QriTemplate"
+              }
+            ]
+          },
+          "pathPart": {
+            "allOf": [
+              {
+                "description": "Path part of QRI"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "example": "#",
+                    "description": "Prefix of the template"
+                  }
+                }
+              },
+              {
+                "$ref": "#/components/schemas/QriTemplate"
+              }
+            ]
+          },
+          "qriPrefix": {
+            "type": "string",
+            "example": "qri:db:sap-sql://",
+            "description": "Qri prefix"
+          },
+          "connectionPart": {
+            "allOf": [
+              {
+                "description": "Connection part of Qri"
+              },
+              {
+                "$ref": "#/components/schemas/QriTemplate"
+              }
+            ]
+          }
+        },
+        "description": "Qri definition template"
+      },
+      "QriTemplate": {
+        "type": "object",
+        "required": [
+          "template",
+          "properties"
+        ],
+        "properties": {
+          "template": {
+            "type": "string",
+            "example": "{schema}.{table}",
+            "description": "Qri template"
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "schema",
+              "description": "List of string values in template"
+            },
+            "description": "List of properties used in template"
+          }
+        },
+        "description": "Connection part of Qri template"
+      },
+      "ResponseErrors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicApiError"
+            }
+          }
+        }
+      },
+      "UiInfo": {
+        "type": "object",
+        "properties": {
+          "iframe": {
+            "type": "boolean",
+            "example": true,
+            "description": "If support iframe"
+          },
+          "selectUrl": {
+            "type": "string",
+            "example": "/customdata/64/QvRestConnector/web/standalone/select-dialog.html",
+            "description": "Select URL"
+          },
+          "connectUrl": {
+            "type": "string",
+            "example": "/customdata/64/QvRestConnector/web/standalone/connect-dialog.html",
+            "description": "Connect URL"
+          },
+          "iconRectUrl": {
+            "type": "string",
+            "example": "/customdata/64/QvRestConnector/web/Icons/rest.png",
+            "description": "Icon URL"
+          },
+          "iconSquareUrl": {
+            "type": "string",
+            "example": "/customdata/64/QvRestConnector/web/Icons/rest-square.png",
+            "description": "Square icon URL"
+          },
+          "credentialsUrl": {
+            "type": "string",
+            "example": "/customdata/64/QvRestConnector/web/standalone/credentials-dialog.html",
+            "description": "Credentials URL"
+          },
+          "connectorMainUrl": {
+            "type": "string",
+            "example": "/customdata/64/QvRestConnector/web/connector-main-iframe.js",
+            "description": "Connector main URL"
+          },
+          "loadModelSupport": {
+            "type": "string",
+            "example": "false",
+            "description": "Indicate if the datasource supports load model"
+          }
+        },
+        "description": "UI related metadata (only present when 'includeui' is set to true in query)"
+      }
+    }
+  }
+}

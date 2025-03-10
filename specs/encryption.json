@@ -1,0 +1,1311 @@
+{
+  "info": {
+    "title": "encryption",
+    "version": ""
+  },
+  "paths": {
+    "/v1/encryption/keyproviders": {
+      "get": {
+        "tags": [
+          "tenant key provider management"
+        ],
+        "summary": "List AWS key providers registered for the tenant.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyProviders"
+                }
+              }
+            },
+            "description": "Successfully retrieved list of key providers"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "417": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to load list of key providers"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "Returns a list of AWS key providers in the tenant. Use /actions/list to return all key providers.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "tenant key provider management"
+        ],
+        "summary": "Register a new multi-region AWS-KMS key.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyProvider"
+                }
+              }
+            },
+            "description": "Successfully registered the provided AWS-KMS key"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Unauthorized, invalid JWT"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Unable to access the provided AWS-KMS key, access is forbidden. Check if AWS key policy allows access from Qlik Cloud."
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to register the provided AWS-KMS key"
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to return a response within the timeout window. The key provider (QlikVault, AWS-KMS) might be unavailable."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "The provided key is already registered"
+          },
+          "417": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to validate AWS-KMS ARN structure"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "The AWS-KMS key configuration must match the Qlik Cloud region configuration requirements. Most regions should have a key deployed to the same AWS region as the Qlik Cloud tenant, with a replica key in the relevant Qlik Cloud DR region. Consult the documentation for DR region mappings.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeyProvider"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/encryption/keyproviders/{arnFingerPrint}": {
+      "get": {
+        "tags": [
+          "tenant key provider operations"
+        ],
+        "summary": "Retrieve key for a given ARN fingerprint.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyProvider"
+                }
+              }
+            },
+            "description": "Successfully fetched key provider information"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "No entry match for the fingerprint was found"
+          },
+          "414": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Requested fingerprint length is too large"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "arnFingerPrint",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The fingerprint of the requested provider key."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "Retrieve key provider detail by passing the ARN fingerprint as parameter.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "tenant key provider operations"
+        ],
+        "summary": "Patches Name & Description of a given key provider.",
+        "responses": {
+          "204": {
+            "description": "Successfully patched key provider information"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to decode key provider patch request payload"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Unauthorized, invalid JWT"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "No entry match for the fingerprint was found"
+          },
+          "417": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to patch key provider information"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "arnFingerPrint",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ARN fingerprint of an existing key provider key."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "Update the name and/or description of a key provider.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeyProviderPatchSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "tenant key provider operations"
+        ],
+        "summary": "Deletes the given key from the tenant.",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyProvidersDeleteResponseBody"
+                }
+              }
+            },
+            "description": "Successfully deleted key"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "No entry match for the fingerprint was found"
+          },
+          "417": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to delete key provider information"
+          },
+          "424": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "The requested key is being used and cannot be deleted"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "arnFingerPrint",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The fingerprint of the key provider you wish to delete."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "Delete a key configuration from the tenant. Not supported for the default Qlik managed key provider. Key must not be in use.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/encryption/keyproviders/{arnFingerPrint}/actions/migrate": {
+      "post": {
+        "tags": [
+          "tenant key provider operations"
+        ],
+        "summary": "Migrate existing cipherkeys from current key provider to requested key provider.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MigrationInformation"
+                }
+              }
+            },
+            "description": "Successfully initiated cipherkeys migration"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Unauthorized, invalid JWT"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "No entry match for the fingerprint was found"
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to initiate migration"
+          },
+          "424": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to prepare migration"
+          },
+          "428": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "There is already an ongoing migration for the tenant"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "arnFingerPrint",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The fingerprint of an existing key provider key."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "Migrate the active key from one provider to another. The migration process may take some time to complete, however this process will not impact users, and the tenant will continue to function normally during the migration. Use the migration details endpoint to monitor migration progress.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/encryption/keyproviders/{arnFingerPrint}/actions/test": {
+      "post": {
+        "tags": [
+          "tenant key provider operations"
+        ],
+        "summary": "Validate AWS-KMS key access.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyProvider"
+                }
+              }
+            },
+            "description": "Successfully validated key"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Unauthorized, invalid JWT"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "No entry match for the fingerprint was found"
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to return a response within the timeout window. The key provider (QlikVault, AWS-KMS) might be unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "arnFingerPrint",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The fingerprint of an existing key provider key."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "Validate a key to check if Qlik Cloud has required access to your AWS account and key policy, and the key configuration. If the key policy or configuration are changed from the required configuration, this may impact your ability to access your tenant.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/encryption/keyproviders/actions/list": {
+      "get": {
+        "tags": [
+          "tenant key provider management"
+        ],
+        "summary": "Lists all key providers registered for the tenant.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListKeyProviders"
+                }
+              }
+            },
+            "description": "Successfully retrieved list of key providers"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "417": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to load list of key providers"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "Returns a list of all key providers in the tenant, including the default Qlik key provider.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/encryption/keyproviders/actions/reset-to-default-provider": {
+      "post": {
+        "tags": [
+          "tenant key provider management"
+        ],
+        "summary": "Reset tenant key provider to default Qlik managed provider.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetMigrationNotNeeded"
+                }
+              }
+            },
+            "description": "Tenant is already using Qlik Managed provider, no action taken"
+          },
+          "205": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MigrationInformation"
+                }
+              }
+            },
+            "description": "Successfully initiated key migration to Qlik managed provider"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Unauthorized, invalid JWT"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "There is already an ongoing migration in progress for this tenant, this must complete before a new migration can be started"
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to initiate migration to Qlik managed provider"
+          },
+          "424": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Tenant is already using Qlik Managed provider"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "Reset the encryption key back to the default Qlik managed provider. No action will be taken if tenant is already using the Qlik provider.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/encryption/keyproviders/migration/actions/details": {
+      "get": {
+        "tags": [
+          "tenant key migration information"
+        ],
+        "summary": "Retrieve most recent migration details.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MigrationInformation"
+                }
+              }
+            },
+            "description": "Successfully fetched migration information"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Unauthorized, invalid JWT"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "There is no ongoing migration for this tenant"
+          },
+          "417": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardError"
+                }
+              }
+            },
+            "description": "Failed to get ongoing migration information"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "Authorization": "Bearer jwt-token"
+              }
+            ],
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the request header using the Bearer schema."
+          }
+        ],
+        "description": "Retrieve details for the ongoing or last completed migration for the tenant.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "KeyProvider": {
+        "type": "object",
+        "example": {
+          "arn": "arn:aws:kms:eu-west-1:111222334455:key/mrk-1237c011a37erft67ei987c7612q456",
+          "name": "test name",
+          "current": false,
+          "description": "test description",
+          "drCompliant": true,
+          "keyprovider": "AWS-KMS",
+          "multiRegion": true,
+          "replicaKeys": [
+            {
+              "arn": "arn:aws:kms:eu-west-3:111222334455:key/mrk-1237c011a37erft67ei987c7612q456",
+              "region": "eu-west-3"
+            }
+          ],
+          "complianceError": [
+            {
+              "code": "",
+              "region": "",
+              "message": ""
+            }
+          ]
+        },
+        "required": [
+          "name",
+          "arn",
+          "keyprovider"
+        ],
+        "properties": {
+          "arn": {
+            "type": "string",
+            "description": "The provider resource notation for the key."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of key provider entry."
+          },
+          "current": {
+            "type": "boolean",
+            "readOnly": true,
+            "description": "Indicates whether the key is being used to encrypt/decrypt secrets."
+          },
+          "tenantId": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Tenant ID."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "When key entry was created."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of key provider entry."
+          },
+          "keyProvider": {
+            "enum": [
+              "AWS-KMS"
+            ],
+            "type": "string",
+            "description": "Key Provider type."
+          },
+          "multiRegion": {
+            "type": "boolean",
+            "readOnly": true,
+            "description": "Indicates whether the key has multi-region configurations and has replica key in qcs secondary region."
+          },
+          "replicaKeys": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "arn": {
+                  "type": "string",
+                  "description": "Replica key keeps list of backup keys from the supported qcs secondary region."
+                },
+                "region": {
+                  "type": "string",
+                  "description": "Region indicates the backup qcs-region link to the primary region."
+                }
+              }
+            },
+            "readOnly": true
+          },
+          "arnFingerPrint": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The ARN fingerprint."
+          },
+          "promotedToCurrentAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "When the key was promoted to being the current active one."
+          },
+          "demotedFromCurrentAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "When the key was demoted from being current to non active."
+          }
+        }
+      },
+      "KeyProviderPatchBase": {
+        "type": "object",
+        "example": {
+          "op": "replace",
+          "path": "/name",
+          "value": "New Encryption Key"
+        },
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "type": "string",
+            "description": "The property path."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902."
+      },
+      "KeyProviderPatchSchema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/KeyProviderPatchBase"
+        }
+      },
+      "KeyProviders": {
+        "type": "object",
+        "example": [
+          {
+            "arn": "arn:aws:kms:eu-west-1:111222334455:key/mrk-1237c011a37erft67ei987c7612q456",
+            "name": "test name",
+            "current": true,
+            "description": "test description",
+            "drCompliant": true,
+            "keyprovider": "AWS-KMS",
+            "multiRegion": true,
+            "replicaKeys": [
+              {
+                "arn": "arn:aws:kms:eu-west-3:111222334455:key/mrk-1237c011a37erft67ei987c7612q456",
+                "region": "eu-west-3"
+              }
+            ],
+            "complianceError": {
+              "code": "",
+              "region": "",
+              "message": ""
+            }
+          }
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyProvider"
+            }
+          }
+        }
+      },
+      "KeyProvidersDeleteResponseBody": {
+        "type": "object",
+        "example": {
+          "message": "Key provider metadata deleted successfully"
+        },
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "response": {
+            "type": "string",
+            "format": "text",
+            "description": "Successful response message."
+          }
+        }
+      },
+      "ListKeyProviders": {
+        "type": "object",
+        "example": [
+          {
+            "arn": "#QLIK_MANAGED_KEY_PROVIDER#",
+            "name": "Qlik Internal Kms",
+            "tenantId": "ImTRa-bkJTD-NZRYjNBa_rDhwSVA6Qo8",
+            "createdAt": "Qlik managed",
+            "description": "Default key management service",
+            "keyprovider": "Qlik",
+            "arnFingerPrint": "ImTRa-bkJTD-NZRYjNBa_rDhwSVA6Qo8",
+            "promotedToCurrentAt": "2023-06-21T18:45:57Z",
+            "demotedFromCurrentAt": "0001-01-01T00:00:00Z"
+          },
+          {
+            "arn": "arn:aws:kms:eu-west-1:111222334455:key/mrk-1237c011a37erft67ei987c7612q456",
+            "name": "CMK - 01",
+            "tenantId": "ImTRa-bkJTD-NZRYjNBa_rDhwSVA6Qo8",
+            "createdAt": "2023-06-21T18:43:49Z",
+            "drCompliant": true,
+            "keyprovider": "AWS-KMS",
+            "multiRegion": true,
+            "replicaKeys": [
+              {
+                "arn": "arn:aws:kms:eu-west-3:111222334455:key/mrk-1237c011a37erft67ei987c7612q456",
+                "region": "eu-west-3"
+              }
+            ],
+            "arnFingerPrint": "9f352c5a9c1618485051892cb57467e4",
+            "complianceError": {
+              "code": "",
+              "region": "",
+              "message": ""
+            },
+            "promotedToCurrentAt": "2023-06-21T18:43:54Z",
+            "demotedFromCurrentAt": "2023-06-21T18:45:57Z"
+          },
+          {
+            "arn": "arn:aws:kms:eu-west-1:111222334455:key/mrk-2678f8123w236c3123469387dc2ce561",
+            "name": "CMK - 02",
+            "current": true,
+            "tenantId": "ImTRa-bkJTD-NZRYjNBa_rDhwSVA6Qo8",
+            "createdAt": "2023-06-21T18:59:17Z",
+            "description": "CMK migration test",
+            "drCompliant": false,
+            "keyprovider": "AWS-KMS",
+            "multiRegion": true,
+            "replicaKeys": [
+              {
+                "arn": "arn:aws:kms:eu-west-3:111222334455:key/mrk-2678f8123w236c3123469387dc2ce561",
+                "region": "eu-west-3"
+              }
+            ],
+            "arnFingerPrint": "12342c83b25f9e36543bca28f69e4210",
+            "complianceError": {
+              "code": "Encryption-88",
+              "region": "eu-west-3",
+              "message": "The policy of the provided key does not allow the required action [eu-west-3] [GenerateDataKey]."
+            },
+            "promotedToCurrentAt": "2023-06-21T18:59:18Z",
+            "demotedFromCurrentAt": "0001-01-01T00:00:00Z"
+          }
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyProvider"
+            }
+          }
+        }
+      },
+      "MigrationInformation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "description": "Migration operation ID."
+          },
+          "state": {
+            "enum": [
+              "New",
+              "InProgress",
+              "Completed"
+            ],
+            "type": "string",
+            "description": "Migration operation state."
+          },
+          "progress": {
+            "type": "number",
+            "description": "Progress in percentage."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "description": "Tenant ID."
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "initiatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "migratingTo": {
+            "type": "string",
+            "description": "The new key ARN that keys should be migrated to."
+          },
+          "migratingFrom": {
+            "type": "string",
+            "description": "The key ARN being migrated from (in case of QlikVault, could be a short name only)."
+          },
+          "migratingToPrefix": {
+            "type": "string",
+            "description": "The new key prefix (to help services know which prefix should NOT be migrated)."
+          },
+          "migratingToFingerprint": {
+            "type": "string",
+            "description": "The new key ARN fingerprint."
+          }
+        }
+      },
+      "ResetMigrationNotNeeded": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Tenant is already using Qlik KMS, no migration is required.",
+            "description": "Tenant is already using Qlik KMS, no migration is required."
+          }
+        }
+      },
+      "StandardError": {
+        "type": "object",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StandardErrorItem"
+            }
+          }
+        }
+      },
+      "StandardErrorItem": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional error object metadata."
+          },
+          "title": {
+            "type": "string",
+            "description": "Description of the error."
+          },
+          "detail": {
+            "type": "string",
+            "description": "Extra information about the error."
+          }
+        }
+      }
+    }
+  }
+}

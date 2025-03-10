@@ -1,0 +1,706 @@
+{
+  "info": {
+    "title": "web-notifications",
+    "version": ""
+  },
+  "paths": {
+    "/v1/web-notifications": {
+      "get": {
+        "tags": [
+          "web-notifications"
+        ],
+        "summary": "Retrieve notifications matching the query.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notifications"
+                }
+              }
+            },
+            "description": "An array of notification objects"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request parameters for querying users."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized request."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 10,
+              "maximum": 100,
+              "minimum": 0
+            },
+            "required": false,
+            "description": "The number of notification entries to retrieved."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "number",
+              "default": 1
+            },
+            "required": false,
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "read",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Read status of the notification"
+          },
+          {
+            "in": "query",
+            "name": "resourceType",
+            "schema": {
+              "type": "string"
+            },
+            "example": "app,space",
+            "required": false,
+            "description": "Filter by resource types. If passing more than 1 resource type, use comma seperated string."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "+createdAt",
+                "-createdAt",
+                "+updatedAt",
+                "-updatedAt"
+              ],
+              "type": "string",
+              "default": "-createdAt"
+            },
+            "required": false,
+            "description": "The field to sort by, with +/- prefix indicating sort order"
+          }
+        ],
+        "operationId": "getNotifications",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/web-notifications/{notificationId}": {
+      "get": {
+        "tags": [
+          "web-notifications"
+        ],
+        "summary": "Retrieve a single notification by Id.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              }
+            },
+            "description": "Successfully got notification."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not found when user tries to get notification they do not own."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "notificationId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the notification to retrieve."
+          }
+        ],
+        "operationId": "getNotification",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "web-notifications"
+        ],
+        "summary": "Patch a notification.",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            },
+            "description": "Successfully patched marked notification."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unsupported patch request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Notification not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "notificationId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the notification to update."
+          }
+        ],
+        "operationId": "updateNotification",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationPatchSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "web-notifications"
+        ],
+        "summary": "Delete a notification.",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            },
+            "description": "Successfully deleted notification."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Notification not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "notificationId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the notification to delete."
+          }
+        ],
+        "operationId": "deleteNotification",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/web-notifications/all": {
+      "patch": {
+        "tags": [
+          "web-notifications"
+        ],
+        "summary": "Patch all notifications.",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            },
+            "description": "Successfully marked all notification."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unsupported patch request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized request."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "operationId": "updateNotifications",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationPatchSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "web-notifications"
+        ],
+        "summary": "Delete all notifications.",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            },
+            "description": "Successfully deleted notification."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized request."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "operationId": "deleteNotifications",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code."
+          },
+          "message": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          }
+        },
+        "description": "An error object."
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        },
+        "description": "A representation of the errors encountered from the HTTP request."
+      },
+      "Links": {
+        "properties": {
+          "next": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string"
+              }
+            }
+          },
+          "prev": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string"
+              }
+            }
+          },
+          "self": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "description": "Notifications links"
+      },
+      "Meta": {
+        "type": "object",
+        "properties": {
+          "unreadCount": {
+            "type": "number",
+            "maximum": 500,
+            "minimum": 0,
+            "description": "The total number of unread notification."
+          }
+        },
+        "description": "Notifications meta data"
+      },
+      "Notification": {
+        "type": "object",
+        "required": [
+          "id",
+          "userId",
+          "read",
+          "title",
+          "body",
+          "createdAt",
+          "updatedAt",
+          "meta"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "body": {
+            "type": "string",
+            "readOnly": true
+          },
+          "meta": {
+            "type": "object"
+          },
+          "read": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string",
+            "format": "string",
+            "readOnly": true
+          },
+          "userId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true
+          },
+          "spaceType": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true
+          },
+          "resourceId": {
+            "type": "string",
+            "format": "string",
+            "readOnly": true
+          },
+          "resourceType": {
+            "type": "string",
+            "format": "string"
+          },
+          "subResourceType": {
+            "type": "string",
+            "format": "string"
+          }
+        }
+      },
+      "NotificationPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "enum": [
+              "/read"
+            ],
+            "type": "string",
+            "description": "The path for the given resource field to patch."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "NotificationPatchSchema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/NotificationPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/read",
+            "value": true
+          }
+        ],
+        "description": "An array of JSON Patch documents"
+      },
+      "Notifications": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Notification"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      }
+    }
+  }
+}

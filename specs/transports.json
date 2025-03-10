@@ -1,0 +1,771 @@
+{
+  "info": {
+    "title": "transports",
+    "version": ""
+  },
+  "paths": {
+    "/v1/transports/email-config": {
+      "get": {
+        "tags": [
+          "email-config"
+        ],
+        "summary": "Returns the email configuration for a given tenant id (retrieved from JWT).",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getEmailConfig"
+                }
+              }
+            },
+            "description": "Email configuration. If configuration does not exist in database then { isValid false, passwordExists false} is returned."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantAdminError"
+                }
+              }
+            },
+            "description": "Must be a tenant admin."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsPublic"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "operationId": "getEmailConfig",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "email-config"
+        ],
+        "summary": "Patch the email configuration for a given tenant id (retrieved from JWT).",
+        "responses": {
+          "204": {
+            "description": "Success."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateEmailConfigError"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantAdminError"
+                }
+              }
+            },
+            "description": "Must be a tenant admin."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsPublic"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "operationId": "patchEmailConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/emailConfigPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "email-config"
+        ],
+        "summary": "Deletes email configuration for a given tenant id (retrieved from JWT).",
+        "responses": {
+          "204": {
+            "description": "Success."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantAdminError"
+                }
+              }
+            },
+            "description": "Must be a tenant admin."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteConfigNotFoundError"
+                }
+              }
+            },
+            "description": "Not found."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsPublic"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "operationId": "deleteEmailConfig",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/transports/email-config/actions/send-test-email": {
+      "post": {
+        "tags": [
+          "email-config-actions"
+        ],
+        "summary": "Send a test mail with the supplied email info (subject, body, recipient). Email config from database is used for the connection.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/smtpResult"
+                }
+              }
+            },
+            "description": "Attempted send request. Response body indicates success/failure"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantAdminError"
+                }
+              }
+            },
+            "description": "Must be a tenant admin."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendTestMailConfigNotFoundError"
+                }
+              }
+            },
+            "description": "No email config exists for tenant."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsPublic"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "operationId": "sendTestEmailAction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/email"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/transports/email-config/actions/validate": {
+      "post": {
+        "tags": [
+          "email-config-actions"
+        ],
+        "summary": "Returns the isValid value for the email configuration for the tenant. Will return false if no email configuration exists.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/smtpCheck"
+                }
+              }
+            },
+            "description": "Returns boolean isValid for the email config."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsPublic"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "operationId": "validateAction",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/transports/email-config/actions/verify-connection": {
+      "post": {
+        "tags": [
+          "email-config-actions"
+        ],
+        "summary": "Verifies connection to email server for tenant provided via JWT",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/smtpResult"
+                }
+              }
+            },
+            "description": "Performed email connection. Response body indicates success/failure"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyConnectionConfigNotFoundError"
+                }
+              }
+            },
+            "description": "No email config exists for tenant."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsPublic"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "operationId": "verifyConnectionAction",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "DeleteConfigNotFoundError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "title"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "DELETE-1",
+                  "description": "The error code."
+                },
+                "title": {
+                  "type": "string",
+                  "example": "No email config for tenant",
+                  "description": "Summary of the problem"
+                }
+              },
+              "description": "An error object"
+            }
+          }
+        }
+      },
+      "email": {
+        "properties": {
+          "body": {
+            "type": "string",
+            "description": "email body"
+          },
+          "subject": {
+            "type": "string",
+            "description": "email subject"
+          },
+          "recipient": {
+            "type": "string",
+            "description": "email recipient (email address)"
+          }
+        }
+      },
+      "emailConfigFieldPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace, remove, add"
+            ],
+            "type": "string",
+            "example": "add",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "enum": [
+              "/username",
+              "/serverAddress",
+              "/serverPort",
+              "/securityType",
+              "/emailAddress",
+              "/emailPassword"
+            ],
+            "type": "string",
+            "example": "/emailAddress",
+            "description": "The path for the given resource field to patch."
+          },
+          "value": {
+            "type": "string",
+            "example": "john.smith@company.com",
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902."
+      },
+      "emailConfigPatch": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/emailConfigFieldPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/username",
+            "value": "New name"
+          }
+        ]
+      },
+      "ErrorPublic": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          }
+        },
+        "description": "An error object."
+      },
+      "ErrorsPublic": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorPublic"
+            }
+          }
+        }
+      },
+      "getBasicAuthConfig": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "john.smith@company.com",
+            "description": "user name used for SMTP login"
+          },
+          "serverPort": {
+            "type": "number",
+            "example": 587,
+            "minimum": 1,
+            "description": "smtp server port"
+          },
+          "emailAddress": {
+            "type": "string",
+            "example": "abc@example.com",
+            "description": "The email address that should appear in From field when sending emails with this account"
+          },
+          "securityType": {
+            "type": "string",
+            "example": "StartTLS",
+            "description": "The selected SMTP security mechanism. Could be either 'none', 'StartTLS' or 'SSL/TLS'"
+          },
+          "serverAddress": {
+            "type": "string",
+            "example": "smtp.company.com",
+            "description": "domain name or IP address of SMTP server"
+          }
+        }
+      },
+      "getEmailConfig": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/smtpConfigStatus"
+          },
+          "isValid": {
+            "type": "boolean",
+            "example": true,
+            "description": "Is the configuration valid"
+          },
+          "tenantId": {
+            "type": "string",
+            "example": "mcdd-mkw_Ebo0fR2vLl8_YsQYFsYrTdP",
+            "description": "The tenant Id"
+          },
+          "username": {
+            "type": "string",
+            "example": "john.smith@company.com",
+            "description": "user name"
+          },
+          "errorCode": {
+            "type": "string",
+            "example": "INVALID_CREDENTIALS",
+            "description": "Indicates error with this email configuration. OK means that no error is indicated. Possible values are OK, CONFIG_NOT_SET, INCOMPLETE_CONFIG, INVALID_CREDENTIALS, PROVIDER_ERROR"
+          },
+          "serverPort": {
+            "type": "number",
+            "example": 587,
+            "minimum": 1,
+            "description": "smtp server listening port"
+          },
+          "lastUpdated": {
+            "type": "string"
+          },
+          "authFailures": {
+            "type": "number",
+            "example": 0,
+            "description": "Number of authentication failures"
+          },
+          "emailAddress": {
+            "type": "string",
+            "example": "john.smith@company.com",
+            "description": "used for SMTP authentication"
+          },
+          "securityType": {
+            "type": "string",
+            "example": "StartTLS",
+            "description": "one of none, StartTLS or SSL/TLS"
+          },
+          "serverAddress": {
+            "type": "string",
+            "example": "smtp.company.com",
+            "description": "domain name or IP address of SMTP server"
+          },
+          "passwordExists": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates if password is defined for this smtp config. The password itself is not returned!"
+          },
+          "providerConfig": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/getMicrosoft365Config"
+              },
+              {
+                "$ref": "#/components/schemas/getBasicAuthConfig"
+              }
+            ]
+          },
+          "serviceProvider": {
+            "enum": [
+              "Microsoft365",
+              "BasicAuth"
+            ],
+            "type": "string",
+            "example": "Microsoft365",
+            "description": "Name of the service provider for authentication"
+          },
+          "modificationTime": {
+            "type": "string",
+            "example": "2022-06-30T09:57:40.954Z",
+            "description": "Last modification time. Formatted as a ISO 8601 string."
+          }
+        }
+      },
+      "getMicrosoft365Config": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "example": "12345678-1234-1234-1234-123456789012",
+            "description": "Microsoft365 client identifier"
+          },
+          "emailAddress": {
+            "type": "string",
+            "example": "abc@example.com",
+            "description": "The email address that should appear in From field when sending emails with this account"
+          },
+          "providerTenantId": {
+            "type": "string",
+            "example": "12345678-1234-1234-1234-123456789012",
+            "description": "Microsoft365 tenant identifier"
+          }
+        }
+      },
+      "SendTestMailConfigNotFoundError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "title"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "SENDTESTEMAIL-1",
+                  "description": "The error code."
+                },
+                "title": {
+                  "type": "string",
+                  "example": "No email config for tenant",
+                  "description": "Summary of the problem"
+                }
+              },
+              "description": "An error object"
+            }
+          }
+        }
+      },
+      "smtpCheck": {
+        "type": "object",
+        "properties": {
+          "isValid": {
+            "type": "boolean",
+            "description": "true if smtp config is correct and complete. Will return false if smtp-config does not exist at all"
+          },
+          "errorCode": {
+            "type": "string",
+            "example": "INVALID_CREDENTIALS",
+            "description": "Indicates error with this email configuration. OK means that no error is indicated. Possible values are OK, CONFIG_NOT_SET, INCOMPLETE_CONFIG, INVALID_CREDENTIALS, PROVIDER_ERROR"
+          }
+        }
+      },
+      "smtpConfigStatus": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "example": 0,
+            "description": "Status code"
+          },
+          "statusReason": {
+            "type": "string",
+            "example": "OK",
+            "description": "Status reason"
+          }
+        },
+        "description": "Contains statusCode and statusReason"
+      },
+      "smtpResult": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "error message from SMTP middleware .. a bit technical but could be useful to administrator"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "was SMTP operation successful or not. Other fields herein provide more detail"
+          },
+          "connectionFailed": {
+            "type": "boolean",
+            "description": "could not resolve domain name, connection refused, connection timed out, SSL mismatch"
+          },
+          "smtpResponseCode": {
+            "type": "integer",
+            "description": "smtp result code string from the SMTP server. eg. \"250 2.6.0\""
+          }
+        }
+      },
+      "TenantAdminError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "title"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "ROLECHECK-1",
+                  "description": "The error code."
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Must be a tenant admin",
+                  "description": "Summary of the problem"
+                }
+              },
+              "description": "An error object"
+            }
+          }
+        }
+      },
+      "UpdateEmailConfigError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "title"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "INPUTCHECK-1",
+                  "description": "The error code."
+                },
+                "title": {
+                  "type": "string",
+                  "example": "serverAddress is not a string",
+                  "description": "Summary of the problem"
+                }
+              },
+              "description": "An error object"
+            }
+          }
+        }
+      },
+      "VerifyConnectionConfigNotFoundError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "title"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "VERIFYCONNECTION-1",
+                  "description": "The error code."
+                },
+                "title": {
+                  "type": "string",
+                  "example": "No email config for tenant",
+                  "description": "Summary of the problem"
+                }
+              },
+              "description": "An error object"
+            }
+          }
+        }
+      }
+    }
+  }
+}

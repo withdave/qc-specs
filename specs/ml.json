@@ -1,0 +1,5205 @@
+{
+  "info": {
+    "title": "ml",
+    "version": ""
+  },
+  "paths": {
+    "/v1/ml/deployments": {
+      "get": {
+        "tags": [
+          "deployments"
+        ],
+        "summary": "List deployments",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeploymentFindResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentsFilter"
+          },
+          {
+            "$ref": "#/components/parameters/deploymentsSort"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          }
+        ],
+        "operationId": "getDeployments",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "deployments"
+        ],
+        "summary": "Create a deployment",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeploymentPostResponse"
+                }
+              }
+            },
+            "description": "`Created`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "operationId": "postDeployment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeploymentInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}": {
+      "get": {
+        "tags": [
+          "deployments"
+        ],
+        "summary": "Get a deployment",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeploymentGetResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "operationId": "getDeployment",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "deployments"
+        ],
+        "summary": "Update a deployment",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "operationId": "patchDeployment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeploymentPatch"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "deployments"
+        ],
+        "summary": "Delete a deployment",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "operationId": "deleteDeployment",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/actions/activate-models": {
+      "post": {
+        "tags": [
+          "deployments"
+        ],
+        "summary": "Activate the model for this deployment",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "operationId": "activateDeploymentModels",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/actions/deactivate-models": {
+      "post": {
+        "tags": [
+          "deployments"
+        ],
+        "summary": "Deactivate the model for this deployment",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "operationId": "deactivateDeploymentModels",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/batch-predictions": {
+      "get": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "List batch prediction configurations",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPredictionFindResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionsFilter"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionsSort"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          }
+        ],
+        "operationId": "getBatchPredictions",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Create a prediction configuration",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPredictionPostResponse"
+                }
+              }
+            },
+            "description": "`Created`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "operationId": "postBatchPrediction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchPredictionInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}": {
+      "get": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Retrieve a batch prediction",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPredictionGetResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionId"
+          }
+        ],
+        "operationId": "getBatchPrediction",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Updates a batch prediction",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionId"
+          }
+        ],
+        "operationId": "patchBatchPrediction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchPredictionPatch"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Delete a batch prediction",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionId"
+          }
+        ],
+        "operationId": "deleteBatchPrediction",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/actions/predict": {
+      "post": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Run a batch prediction",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPredictionActionResponse"
+                }
+              }
+            },
+            "headers": {
+              "Content-Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "required": true,
+                "description": "URL to poll for the status of this resource"
+              }
+            },
+            "description": "`Accepted`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionId"
+          }
+        ],
+        "operationId": "predictBatchPrediction",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/schedule": {
+      "get": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Get a batch prediction schedule",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPredictionScheduleGetResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionId"
+          }
+        ],
+        "description": "Retrieves the schedule for a batch prediction.",
+        "operationId": "getBatchPredictionSchedule",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Update a batch prediction schedule",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionId"
+          }
+        ],
+        "description": "Updates the schedule for a batch prediction.",
+        "operationId": "patchBatchPredictionSchedule",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchPredictionSchedulePatch"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "put": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Add a batch prediction schedule",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPredictionSchedulePutResponse"
+                }
+              }
+            },
+            "description": "`Created`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionId"
+          }
+        ],
+        "description": "Adds a schedule to a batch prediction.",
+        "operationId": "putBatchPredictionSchedule",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchPredictionScheduleInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Delete a batch prediction schedule",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/batchPredictionId"
+          }
+        ],
+        "description": "Deletes the schedule from a batch prediction.",
+        "operationId": "deleteBatchPredictionSchedule",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/realtime-predictions/actions/run": {
+      "post": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Generate predictions in a synchronous request/response",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RealtimePrediction"
+                }
+              }
+            },
+            "description": "Stream of combined prediction output returned successfully."
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/409Conflict"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "includeNotPredictedReason",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, reason why a prediction was not produced included response\n"
+          },
+          {
+            "in": "query",
+            "name": "includeShap",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, shapley values included in response"
+          },
+          {
+            "in": "query",
+            "name": "includeSource",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, source data included in response"
+          },
+          {
+            "in": "query",
+            "name": "index",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The name of the feature in the source data to use as an index in the\nresponse data. The column will be included with its original name\nand values. This is intended to allow the caller to join results\nwith source data.\n"
+          },
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "operationId": "predictRealtime",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RealtimePredictionInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/experiments": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "List experiments",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentFindResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentsFilter"
+          },
+          {
+            "$ref": "#/components/parameters/experimentsSort"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          }
+        ],
+        "description": "Retrieves a list of experiments based on provided filter and sort\nparameters.\n",
+        "operationId": "getExperiments",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Create an experiment",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentPostResponse"
+                }
+              }
+            },
+            "description": "`Created`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "operationId": "postExperiment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperimentInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/experiments/{experimentId}": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Get an experiment",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentGetResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          }
+        ],
+        "operationId": "getExperiment",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Update an experiment",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          }
+        ],
+        "operationId": "patchExperiment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperimentPatch"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Delete an experiment",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          }
+        ],
+        "operationId": "deleteExperiment",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/experiments/{experimentId}/models": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "List models",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelFindResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          },
+          {
+            "$ref": "#/components/parameters/modelsFilter"
+          },
+          {
+            "$ref": "#/components/parameters/modelsSort"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          }
+        ],
+        "operationId": "getExperimentModels",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/ml/experiments/{experimentId}/models/{modelId}": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Get a model",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelGetResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          },
+          {
+            "$ref": "#/components/parameters/modelId"
+          }
+        ],
+        "operationId": "getExperimentModel",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/ml/experiments/{experimentId}/versions": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "List experiment versions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentVersionFindResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          },
+          {
+            "$ref": "#/components/parameters/experimentVersionsFilter"
+          },
+          {
+            "$ref": "#/components/parameters/experimentVersionsSort"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          }
+        ],
+        "operationId": "getExperimentVersions",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Create an experiment version",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentVersionPostResponse"
+                }
+              }
+            },
+            "description": "`Accepted`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          }
+        ],
+        "description": "Creates an experiment version.\nPoll this version and check its `status` field to determine when models\nare finished training.\n",
+        "operationId": "postExperimentVersion",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperimentVersionInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/experiments/{experimentId}/versions/{experimentVersionId}": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Get an experiment version",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentVersionGetResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          },
+          {
+            "$ref": "#/components/parameters/experimentVersionId"
+          }
+        ],
+        "operationId": "getExperimentVersion",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Update an experiment version",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          },
+          {
+            "$ref": "#/components/parameters/experimentVersionId"
+          }
+        ],
+        "operationId": "patchExperimentVersion",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperimentVersionPatch"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Delete an experiment version",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          },
+          {
+            "$ref": "#/components/parameters/experimentVersionId"
+          }
+        ],
+        "operationId": "deleteExperimentVersion",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/jobs/{corrType}/{corrId}/actions/cancel": {
+      "post": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Cancel jobs",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "405": {
+            "$ref": "#/components/responses/405MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/corrType"
+          },
+          {
+            "$ref": "#/components/parameters/corrId"
+          }
+        ],
+        "description": "Cancels jobs for an experiment version or batch prediction.",
+        "operationId": "cancelJobs",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/profile-insights": {
+      "post": {
+        "tags": [
+          "profile-insights"
+        ],
+        "summary": "Start profile insights creation\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileInsightsGetResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileInsightsGetResponse"
+                }
+              }
+            },
+            "headers": {
+              "Content-Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "required": true,
+                "description": "URL to poll for the status of this resource. When it's `ready`\nyou have everything you need.\n"
+              }
+            },
+            "description": "`Accepted`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "description": "Starts creating profile insights for an experiment dataset.\nThis is an asynchronous operation. A `202 Accepted` response indicates\nthat the process has started successfully. Use the link in the response\nto check the status.\n",
+        "operationId": "postProfileInsights",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileInsightsInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/profile-insights/{dataSetId}": {
+      "get": {
+        "tags": [
+          "profile-insights"
+        ],
+        "summary": "Get profile insights\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileInsightsGetResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/dataSetId"
+          }
+        ],
+        "description": "Retrieves profile insights for the specified dataset. If you received a\n`202 Accepted` response from `POST /ml/profile-insights`, poll this\nendpoint until a `200 OK` response with `ready` status is returned.\n",
+        "operationId": "getProfileInsights",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "parameters": {
+      "batchPredictionId": {
+        "in": "path",
+        "name": "batchPredictionId",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "ID of the batch prediction"
+      },
+      "batchPredictionsFilter": {
+        "in": "query",
+        "name": "filter",
+        "style": "deepObject",
+        "schema": {
+          "type": "string"
+        },
+        "example": "`filter=modelId eq \"UUID\"`",
+        "required": false,
+        "description": "Batch prediction fields by which you can filter responses.<br><br>\n- `modelId` UUID string - By model ID\n"
+      },
+      "batchPredictionsSort": {
+        "in": "query",
+        "name": "sort",
+        "style": "form",
+        "schema": {
+          "$ref": "#/components/schemas/EnumSortBatchPredictions"
+        },
+        "example": "sort=field1,+field2,-field3,...",
+        "required": false,
+        "description": "Field(s) by which to sort response\n"
+      },
+      "corrId": {
+        "in": "path",
+        "name": "corrId",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "The ID of a correlated resource of corrType"
+      },
+      "corrType": {
+        "in": "path",
+        "name": "corrType",
+        "schema": {
+          "$ref": "#/components/schemas/CorrType"
+        },
+        "required": true,
+        "description": "The type of a resource paired with a corrId"
+      },
+      "dataSetId": {
+        "in": "path",
+        "name": "dataSetId",
+        "schema": {
+          "$ref": "#/components/schemas/DataSetId"
+        },
+        "required": true,
+        "description": "The Qlik catalog dataset ID"
+      },
+      "deploymentId": {
+        "in": "path",
+        "name": "deploymentId",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "ID of the deployment"
+      },
+      "deploymentsFilter": {
+        "in": "query",
+        "name": "filter",
+        "style": "deepObject",
+        "schema": {
+          "type": "string"
+        },
+        "example": "`filter=spaceId eq \"UUID\" and modelState eq \"enabled\"`",
+        "required": false,
+        "description": "Deployment fields by which you can filter responses.<br><br>\n- `spaceId` ID string (or empty string for personal space) - ID of space in which deployment(s) exist\n- `modelId` UUID string - By model ID\n- `createdBy` ID string\n- `ownerId` ID string\n- `approverId` ID string - ID of user that approved a model in the deployment\n- `experimentId` UUID string - ID of experiment in which model(s) exist\n- `experimentVersionId` UUID string - ID of experiment version in which model(s) exist\n- `predictionEnabled` boolean - Are predictions enabled\n- `exactName` string - Deployments with exact name. Names may not be unique.\n- `nameContains` string - Deployments where name includes this. Names may not be unique\n- `modelName` string - Partial or exact, case-insensitive name of model in the deployment\n- `modelState` enum string - State by which to find models<br><br>\n  - Valid states: `pending, enabled, disabled, inactive`\n"
+      },
+      "deploymentsSort": {
+        "in": "query",
+        "name": "sort",
+        "style": "form",
+        "schema": {
+          "$ref": "#/components/schemas/EnumSortDeployments"
+        },
+        "example": "sort=field1,+field2,-field3,...",
+        "required": false,
+        "description": "Field(s) by which to sort response\n"
+      },
+      "experimentId": {
+        "in": "path",
+        "name": "experimentId",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "ID of the experiment"
+      },
+      "experimentsFilter": {
+        "in": "query",
+        "name": "filter",
+        "style": "deepObject",
+        "schema": {
+          "type": "string"
+        },
+        "example": "`filter=ownerId eq UUID and experimentVersionId eq UUID`",
+        "required": false,
+        "description": "Experiment fields by which you can filter responses within this tenant\n- `ownerId` ID string - ID of the owner/user that created the experiment\n- `spaceId` ID string (or empty string for personal space) - ID of the space where the experiment is saved.\n- `experimentVersionId` UUID string - ID of an experiment version in the experiment\n- `modelId` UUID string - ID of a model associated with the experiment\n- `deploymentId` UUID string - ID of a deployment of a model associated with the experiment\n"
+      },
+      "experimentsSort": {
+        "in": "query",
+        "name": "sort",
+        "style": "form",
+        "schema": {
+          "$ref": "#/components/schemas/EnumSortExperiments"
+        },
+        "example": "sort=field1,+field2,-field3,...",
+        "required": false,
+        "description": "Field(s) by which to sort response\n"
+      },
+      "experimentVersionId": {
+        "in": "path",
+        "name": "experimentVersionId",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "ID of the experiment version"
+      },
+      "experimentVersionsFilter": {
+        "in": "query",
+        "name": "filter",
+        "style": "deepObject",
+        "schema": {
+          "type": "string"
+        },
+        "example": "`filter=isRunning eq false and status eq \"finished\"`",
+        "required": false,
+        "description": "Experiment version filter options\n- `isRunning` boolean - Is the experiment version running (training models)?\n- `isSettled` boolean - Is the experiment version settled?\n- `status` enum string - Status to filter by. Omit to get models of any status.\n  - Valid statuses: pending, ready, error, cancelled\n- `modelId` UUID string - ID of a model associated with the experiment\n"
+      },
+      "experimentVersionsSort": {
+        "in": "query",
+        "name": "sort",
+        "style": "form",
+        "schema": {
+          "$ref": "#/components/schemas/EnumSortExperimentVersions"
+        },
+        "example": "sort=field1,+field2,-field3,...",
+        "required": false,
+        "description": "Field(s) by which to sort response\n"
+      },
+      "limit": {
+        "in": "query",
+        "name": "limit",
+        "schema": {
+          "type": "integer",
+          "default": 32,
+          "maximum": 100
+        },
+        "example": 10,
+        "required": false,
+        "description": "Number of results per page. Default is 32."
+      },
+      "modelId": {
+        "in": "path",
+        "name": "modelId",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "ID of the model"
+      },
+      "modelsFilter": {
+        "in": "query",
+        "name": "filter",
+        "style": "deepObject",
+        "schema": {
+          "type": "string"
+        },
+        "example": "`filter=\"id eq \"UUID1\" and experimentId eq \"UUID\" and hasDeployment eq true`",
+        "required": false,
+        "description": "Model fields you can filter by:<br><br>\n\n- `experimentVersionId` UUID string - Find by experiment version ID\n- `batchNum` UUID string - Search by batch number\n- `isHpo` boolean - Is hyperparameter optimization used?\n- `isMetrics` boolean - Are metrics for regression, binary, or multiclass are used?\n- `id` UUID string - Find by model ID\n- `algorithm` enum string - Find by algorithm<br><br>\n\n  - Valid algorithms: catboost_classifier, catboost_regression,\n    elasticnet_regression, gaussian_nb, kneighbors_classifier,\n    lasso_regression, lasso, lgbm_classifier, lgbm_regression,\n    linear_regression, logistic_regression, random_forest_classifier,\n    random_forest_regression, sgd_regression, xgb_classifier,\n    xgb_regression<br><br>\n\n- `status` enum string - find by status<br><br>\n  - Valid statuses: pending, training_requested, training_done, ready, error<br><br>\n- `hasDeployment` boolean - Models that are part of a deployment\n- `nameContains` string - Models with name includes this case-insensitive string\n- `exactName` string - Models with exact name. Model names may not be unique\n- `samplingRatio` number - Find models by sampling ratio\n- `modelState` enum string - State by which to find models<br><br>\n  - Valid states: `pending, enabled, disabled, inactive`\n"
+      },
+      "modelsSort": {
+        "in": "query",
+        "name": "sort",
+        "style": "form",
+        "schema": {
+          "$ref": "#/components/schemas/EnumSortModels"
+        },
+        "example": "sort=field1,+field2,-field3,...",
+        "required": false,
+        "description": "Field(s) by which to sort response\n"
+      },
+      "offset": {
+        "in": "query",
+        "name": "offset",
+        "schema": {
+          "type": "integer"
+        },
+        "example": 32,
+        "required": false,
+        "description": "Number of rows to skip before getting page[size]"
+      }
+    },
+    "responses": {
+      "204NoContent": {
+        "description": "`No Content`"
+      },
+      "400BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Bad Request`"
+      },
+      "401Unauthorized": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Unauthorized`"
+      },
+      "403Forbidden": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Forbidden`"
+      },
+      "404NotFound": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Not Found`"
+      },
+      "405MethodNotAllowed": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Method Not Allowed`"
+      },
+      "409Conflict": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Conflict`"
+      },
+      "500InternalError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Internal Error`"
+      },
+      "502BadGateway": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Bad Gateway`"
+      },
+      "503ServiceUnavailable": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Service Unavailable`"
+      },
+      "FailureDefault": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Failure"
+            }
+          }
+        },
+        "description": "`Unexpected Error`"
+      }
+    },
+    "schemas": {
+      "AnyType": {
+        "description": "Use for fields that can be `any` type (string, number, etc.)"
+      },
+      "APIError": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Qlik error code (not HTTP response status code)"
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "issue": {
+                "type": "string",
+                "description": "The issue code"
+              },
+              "details": {
+                "type": "string",
+                "description": "Extra details for what may have caused the error"
+              },
+              "errorId": {
+                "type": "string",
+                "description": "The unique id of the error instance"
+              },
+              "argument": {
+                "type": "string",
+                "description": "The argument"
+              },
+              "resource": {
+                "type": "string",
+                "description": "The resource type that the error occurred on"
+              },
+              "resourceId": {
+                "type": "string",
+                "description": "The resource id that the error occurred on"
+              }
+            },
+            "description": "Additional details about the error. These may vary by error.\n",
+            "additionalProperties": false
+          },
+          "title": {
+            "type": "string",
+            "description": "Short summary of error"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Description of the error"
+          }
+        },
+        "description": "An error object",
+        "additionalProperties": false
+      },
+      "BatchPrediction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "name": {
+            "$ref": "#/components/schemas/EntityName"
+          },
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BatchPredictionStatus"
+          },
+          "ownerId": {
+            "$ref": "#/components/schemas/OwnerId"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/BatchPredictionSchedule"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "ID of the owner/user that ran this prediction batch"
+          },
+          "dataSetId": {
+            "$ref": "#/components/schemas/DataSetId"
+          },
+          "datasetId": {
+            "type": "string",
+            "description": "ID of the dataset with the prediction results\n"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "writeback": {
+            "$ref": "#/components/schemas/BatchPredictionWriteback"
+          },
+          "indexColumn": {
+            "$ref": "#/components/schemas/IndexColumn"
+          },
+          "deploymentId": {
+            "$ref": "#/components/schemas/DeploymentId"
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorMessage"
+          },
+          "outputDataset": {
+            "type": "string",
+            "description": "Where to output dataset"
+          }
+        },
+        "description": "A batch prediction job configuration",
+        "additionalProperties": false
+      },
+      "BatchPredictionActionResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "job"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/PredictionJobResponse"
+              }
+            }
+          }
+        },
+        "description": "Response for batch prediction predict action that indicates job and status"
+      },
+      "BatchPredictionFindResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id",
+                "attributes"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/EntityId"
+                },
+                "type": {
+                  "enum": [
+                    "batch-prediction"
+                  ],
+                  "type": "string"
+                },
+                "attributes": {
+                  "$ref": "#/components/schemas/BatchPrediction"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/FindResponseMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ResponseLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BatchPredictionGetResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "batch-prediction"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/BatchPrediction"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "BatchPredictionInput": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "batch-prediction"
+                ],
+                "type": "string",
+                "default": "batch-prediction"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/EntityName"
+                  },
+                  "schedule": {
+                    "$ref": "#/components/schemas/BatchPredictionScheduleInputAttributes"
+                  },
+                  "dataSetId": {
+                    "$ref": "#/components/schemas/DataSetId"
+                  },
+                  "writeback": {
+                    "$ref": "#/components/schemas/BatchPredictionWriteback"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "indexColumn": {
+                    "$ref": "#/components/schemas/IndexColumn"
+                  },
+                  "deploymentId": {
+                    "$ref": "#/components/schemas/DeploymentId"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "description": "Input values for creating a batch prediction configuration",
+        "additionalProperties": false
+      },
+      "BatchPredictionPatch": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "example": {
+            "op": "replace",
+            "path": "/name",
+            "value": "New Name"
+          },
+          "required": [
+            "op",
+            "path",
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string",
+              "description": "All patch requests use the replace operation"
+            },
+            "path": {
+              "enum": [
+                "/name",
+                "/description",
+                "/dataSetId",
+                "/indexColumn",
+                "/applyDatasetChangeOnly",
+                "/ownerId",
+                "/writeback/spaceId",
+                "/writeback/format",
+                "/writeback/dstName",
+                "/writeback/dstShapName",
+                "/writeback/dstCoordShapName",
+                "/writeback/dstNotPredictedName",
+                "/writeback/dstSourceName"
+              ],
+              "type": "string",
+              "description": "Path for the property you want to update"
+            },
+            "value": {
+              "$ref": "#/components/schemas/AnyType"
+            }
+          },
+          "description": "Values that can be patched.\n- name: Name of this entity\n- description: Description of this entity\n- dataSetId\n- outputDataset\n- indexColumn: Column name upon which to create an index (empty string or undefined will default to automl-generated index)\n- applyDatasetChangeOnly\n- ownerId: ID of batch owner/user\n- writeback: Where to write prediction results\n",
+          "additionalProperties": false
+        }
+      },
+      "BatchPredictionPostResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "batch-prediction"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/BatchPrediction"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "BatchPredictionSchedule": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "pending",
+              "active",
+              "error",
+              "error_scheduler_unreachable",
+              "error_scheduler_callback_error",
+              "licence_advanced_features_required",
+              "failing_schedule_permission"
+            ],
+            "type": "string",
+            "description": "The status of the schedule"
+          },
+          "timezone": {
+            "type": "string",
+            "example": "America/Toronto",
+            "description": "Timezone used for the date-time fields"
+          },
+          "recurrence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "Daily at 11:10:00 AM [\"RRULE:FREQ=DAILY;BYHOUR=11;BYMINUTE=10;BYSECOND=0\"]",
+                "Weekly on Mondays at 11:10:00 AM [\"RRULE:FREQ=WEEKLY;INTERVAL:1;BYDAY=MO;BYHOUR=11;BYMINUTE=10;BYSECOND=0\"]"
+              ],
+              "description": "A recurrence rule"
+            },
+            "description": "Recurrence rules. Maximum is DAILY but you can specify the\nhour, minute, and second it runs each day.\nOne string per rule.\n"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "When the job finished"
+          },
+          "chronosJobId": {
+            "type": "string",
+            "description": "The ID of the chronos job"
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "When the job is scheduled to start"
+          },
+          "failureAttempts": {
+            "type": "number",
+            "description": "Number of times a scheduled prediction job has failed"
+          },
+          "applyDatasetChangeOnly": {
+            "type": "boolean",
+            "default": true,
+            "description": "If true, only run prediction if dataset has changed to avoid\nduplicates. If set to false, re-runs predictions on unchanged\ndatasets.\n"
+          },
+          "lastSuccessfulDateTime": {
+            "type": "string",
+            "description": "When the last successful job happened"
+          }
+        },
+        "description": "Batch prediction job schedule",
+        "additionalProperties": false
+      },
+      "BatchPredictionScheduleGetResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "batch-prediction-schedule"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/BatchPredictionSchedule"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "BatchPredictionScheduleInput": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "batch-prediction-schedule"
+                ],
+                "type": "string",
+                "default": "batch-prediction-schedule"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/BatchPredictionScheduleInputAttributes"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "description": "Input values for a batch prediction schedule",
+        "additionalProperties": false
+      },
+      "BatchPredictionScheduleInputAttributes": {
+        "type": "object",
+        "required": [
+          "startDateTime",
+          "timezone"
+        ],
+        "properties": {
+          "timezone": {
+            "type": "string",
+            "example": "America/Toronto",
+            "description": "Timezone used for the date-time fields"
+          },
+          "recurrence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "A recurrence rule"
+            },
+            "example": [
+              "RRULE:FREQ=DAILY;INTERVAL=1;BYHOUR=16;BYMINUTE=30;BYSECOND=0"
+            ],
+            "description": "Recurrence rules. Maximum is DAILY but you can specify the\nhour, minute, and second it runs each day.\nOne string per rule.\n"
+          },
+          "endDateTime": {
+            "type": "string",
+            "example": "2025-12-31T23:59:00",
+            "description": "When the job is scheduled to finish"
+          },
+          "startDateTime": {
+            "type": "string",
+            "example": "2025-12-25T00:00:00",
+            "description": "When the job is scheduled to start"
+          },
+          "applyDatasetChangeOnly": {
+            "type": "boolean",
+            "default": true,
+            "description": "If true, only run prediction if dataset has changed to avoid\nduplicates. If set to false, re-runs predictions on unchanged\ndatasets.\n"
+          }
+        },
+        "description": "Configuration to schedule a batch prediction",
+        "additionalProperties": false
+      },
+      "BatchPredictionSchedulePatch": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "example": {
+            "op": "replace",
+            "path": "/startDateTime",
+            "value": "2022-09-14T12:00:00"
+          },
+          "required": [
+            "op",
+            "path",
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string",
+              "description": "All patch requests use the replace operation"
+            },
+            "path": {
+              "enum": [
+                "/startDateTime",
+                "/endDateTime",
+                "/timezone",
+                "/recurrence",
+                "/applyDatasetChangeOnly"
+              ],
+              "type": "string",
+              "description": "Path for the property you want to update"
+            },
+            "value": {
+              "$ref": "#/components/schemas/AnyType"
+            }
+          },
+          "description": "Values that can be patched.\n- startDateTime: When the batch starts, if scheduled\n- endDateTime: When batch ends, if scheduled\n- timeZone: Timezone used for scheduling\n- recurrence: Array of strings to indicate when this batch recurs\n- applyDatasetChangeOnly: Only run prediction if dataset has changed?\n",
+          "additionalProperties": false
+        }
+      },
+      "BatchPredictionSchedulePutResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "batch-prediction-schedule"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/BatchPredictionSchedule"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "BatchPredictionStatus": {
+        "enum": [
+          "modified",
+          "ready",
+          "error",
+          "cancelled",
+          "pending"
+        ],
+        "type": "string",
+        "description": "Status of this batch prediction"
+      },
+      "BatchPredictionWriteback": {
+        "type": "object",
+        "required": [
+          "spaceId",
+          "format",
+          "dstName"
+        ],
+        "properties": {
+          "format": {
+            "enum": [
+              "qvd",
+              "parquet",
+              "csv"
+            ],
+            "type": "string",
+            "default": "parquet",
+            "description": "File format for write back files (this applies to all)"
+          },
+          "dstName": {
+            "type": "string"
+          },
+          "spaceId": {
+            "type": "string",
+            "description": "Space ID where you want to save batch prediction writebacks or\nempty string ('') save them to your personal space.\n"
+          },
+          "dstShapName": {
+            "type": "string"
+          },
+          "dstSourceName": {
+            "type": "string"
+          },
+          "dstCoordShapName": {
+            "type": "string"
+          },
+          "dstNotPredictedName": {
+            "type": "string"
+          }
+        },
+        "description": "Sets which files, file names, and spaces are used to write results of\nbatch predictions (output files) to the catalog.\n"
+      },
+      "BinaryImbalanceSampling": {
+        "type": "object",
+        "properties": {
+          "sampleClass": {
+            "type": "string"
+          },
+          "sampleRatio": {
+            "type": "number"
+          },
+          "sampleDirection": {
+            "enum": [
+              "up",
+              "down"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangeType": {
+        "enum": [
+          "categorical",
+          "numeric",
+          "date",
+          "freetext"
+        ],
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "description": "Indicates if you want to change the featureType for this\nfeature within the experiment version\n"
+      },
+      "CorrId": {
+        "type": "string",
+        "description": "The ID of a correlated resource of corrType"
+      },
+      "CorrType": {
+        "enum": [
+          "batch-prediction",
+          "experiment-version"
+        ],
+        "type": "string",
+        "description": "Types names of correlated resources (batch 'prediction' and\nexperiment_version)\n"
+      },
+      "CreatedAt": {
+        "type": "string",
+        "description": "Timestamp when this was created"
+      },
+      "CreatedBy": {
+        "type": "string",
+        "description": "ID of the owner/user that created this entity.",
+        "x-qlik-filterable": true
+      },
+      "DataSetId": {
+        "type": "string",
+        "example": "672e55cfcadfb8a18281523e",
+        "description": "The Qlik catalog dataset ID"
+      },
+      "DatasetOrigin": {
+        "enum": [
+          "new",
+          "changed",
+          "refreshed",
+          "same"
+        ],
+        "type": "string",
+        "default": "new",
+        "description": "Whether this is a new or other dataset"
+      },
+      "DataType": {
+        "enum": [
+          "DATE",
+          "TIME",
+          "DATETIME",
+          "TIMESTAMP",
+          "STRING",
+          "DOUBLE",
+          "DECIMAL",
+          "INTEGER",
+          "BOOLEAN",
+          "BINARY",
+          "CUSTOM",
+          "FLOAT",
+          "OBJECT"
+        ],
+        "type": "string",
+        "example": "STRING",
+        "description": "The data type of this feature in your dataset\n"
+      },
+      "DateIndexes": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "maxItems": 1,
+        "minItems": 0,
+        "description": "A optional date column name to index"
+      },
+      "DeletedAt": {
+        "type": "string",
+        "description": "Timestamp when this is deleted"
+      },
+      "Deployment": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "name",
+          "spaceId",
+          "description",
+          "modelId",
+          "enablePredictions",
+          "deprecated",
+          "createdBy",
+          "ownerId"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "name": {
+            "$ref": "#/components/schemas/EntityName"
+          },
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          },
+          "modelId": {
+            "$ref": "#/components/schemas/ModelId"
+          },
+          "ownerId": {
+            "$ref": "#/components/schemas/OwnerId"
+          },
+          "spaceId": {
+            "$ref": "#/components/schemas/SpaceId"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/CreatedBy"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "deprecated": {
+            "type": "boolean",
+            "description": "Whether this deployment is deprecated"
+          },
+          "description": {
+            "$ref": "#/components/schemas/EntityDescription"
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorMessage"
+          },
+          "enablePredictions": {
+            "type": "boolean",
+            "description": "Whether to allow predictions",
+            "x-qlik-filterable": true
+          }
+        },
+        "description": "A deployed model against which you can run predictions\n",
+        "additionalProperties": false
+      },
+      "DeploymentFindResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id",
+                "attributes"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/EntityId"
+                },
+                "type": {
+                  "enum": [
+                    "deployment"
+                  ],
+                  "type": "string"
+                },
+                "attributes": {
+                  "$ref": "#/components/schemas/Deployment"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/FindResponseMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ResponseLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeploymentGetResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "deployment"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/Deployment"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeploymentId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "ID of a model deployment",
+        "x-qlik-fiterable": true
+      },
+      "DeploymentInput": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "deployment"
+                ],
+                "type": "string",
+                "default": "deployment"
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "spaceId",
+                  "modelId"
+                ],
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/EntityName"
+                  },
+                  "modelId": {
+                    "$ref": "#/components/schemas/ModelId"
+                  },
+                  "spaceId": {
+                    "$ref": "#/components/schemas/SpaceId"
+                  },
+                  "deprecated": {
+                    "type": "boolean",
+                    "description": "Whether this deployment is deprecated"
+                  },
+                  "description": {
+                    "$ref": "#/components/schemas/EntityDescription"
+                  },
+                  "enablePredictions": {
+                    "type": "boolean",
+                    "description": "Whether to allow real-time predictions"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "description": "Input for creating a new deployment",
+        "additionalProperties": false
+      },
+      "DeploymentPatch": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "example": {
+            "op": "replace",
+            "path": "/name",
+            "value": "New Name"
+          },
+          "required": [
+            "op",
+            "path",
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string",
+              "description": "All patch requests use the replace operation"
+            },
+            "path": {
+              "enum": [
+                "/name",
+                "/description",
+                "/spaceId"
+              ],
+              "type": "string",
+              "description": "Path for the property you want to update"
+            },
+            "value": {
+              "$ref": "#/components/schemas/AnyType"
+            }
+          },
+          "description": "Values that can be patched.",
+          "additionalProperties": false
+        }
+      },
+      "DeploymentPostResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "deployment"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/Deployment"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "DroppedFeature": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of dropped feature in the dataset"
+          },
+          "reason": {
+            "enum": [
+              "highly_correlated",
+              "has_target_leakage",
+              "is_date_engineered",
+              "feature_with_low_importance"
+            ],
+            "type": "string",
+            "description": "Reason the feature was dropped"
+          }
+        },
+        "description": "Feature dropped during preprocessing",
+        "additionalProperties": false
+      },
+      "EntityDescription": {
+        "type": "string",
+        "description": "Description of this entity"
+      },
+      "EntityId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "ID of this entity",
+        "x-qlik-filterable": true
+      },
+      "EntityName": {
+        "type": "string",
+        "description": "Name of this entity",
+        "x-qlik-filterable": true
+      },
+      "EnumSortBatchPredictions": {
+        "enum": [
+          "createdAt",
+          "+createdAt",
+          "-createdAt",
+          "description",
+          "+description",
+          "-description",
+          "name",
+          "+name",
+          "-name",
+          "updatedAt",
+          "+updatedAt",
+          "-updatedAt"
+        ],
+        "type": "string"
+      },
+      "EnumSortDeployments": {
+        "enum": [
+          "createdAt",
+          "+createdAt",
+          "-createdAt",
+          "name",
+          "+name",
+          "-name",
+          "updatedAt",
+          "+updatedAt",
+          "-updatedAt"
+        ],
+        "type": "string"
+      },
+      "EnumSortExperiments": {
+        "enum": [
+          "createdAt",
+          "+createdAt",
+          "-createdAt",
+          "description",
+          "+description",
+          "-description",
+          "name",
+          "+name",
+          "-name",
+          "updatedAt",
+          "+updatedAt",
+          "-updatedAt"
+        ],
+        "type": "string"
+      },
+      "EnumSortExperimentVersions": {
+        "enum": [
+          "createdAt",
+          "+createdAt",
+          "-createdAt",
+          "description",
+          "+description",
+          "-description",
+          "experimentMode",
+          "+experimentMode",
+          "-experimentMode",
+          "experimentType",
+          "+experimentType",
+          "-experimentType",
+          "name",
+          "+name",
+          "-name",
+          "status",
+          "+status",
+          "-status",
+          "updatedAt",
+          "+updatedAt",
+          "-updatedAt",
+          "versionNumber",
+          "+versionNumber",
+          "-versionNumber"
+        ],
+        "type": "string"
+      },
+      "EnumSortModels": {
+        "enum": [
+          "createdAt",
+          "+createdAt",
+          "-createdAt",
+          "description",
+          "+description",
+          "-description",
+          "name",
+          "+name",
+          "-name",
+          "updatedAt",
+          "+updatedAt",
+          "-updatedAt"
+        ],
+        "type": "string"
+      },
+      "ErrorMessage": {
+        "type": "string",
+        "description": "JSON string of error object"
+      },
+      "Errors": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/APIError"
+        },
+        "example": "[{\"code\":\"AML-145\",\"title\":\"datasync dependent service error, service profile\",\"errorId\":\"c1546687-ad5d-4002-87f6-8c9711298db1\",\"meta\":{\"errorId\":\"c1546687-ad5d-4002-87f6-8c9711298db1\"}}]\n",
+        "description": "JSON string with list of error objects"
+      },
+      "Experiment": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "tenantId",
+          "ownerId",
+          "spaceId"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "name": {
+            "$ref": "#/components/schemas/EntityName"
+          },
+          "ownerId": {
+            "$ref": "#/components/schemas/OwnerId"
+          },
+          "spaceId": {
+            "$ref": "#/components/schemas/SpaceId"
+          },
+          "tenantId": {
+            "$ref": "#/components/schemas/TenantId"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "description": {
+            "$ref": "#/components/schemas/EntityDescription"
+          }
+        },
+        "description": "An AutoML experiment",
+        "additionalProperties": false
+      },
+      "ExperimentFindResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id",
+                "attributes"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/EntityId"
+                },
+                "type": {
+                  "enum": [
+                    "experiment"
+                  ],
+                  "type": "string"
+                },
+                "attributes": {
+                  "$ref": "#/components/schemas/Experiment"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/FindResponseMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ResponseLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExperimentGetResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "experiment"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/Experiment"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExperimentId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "ID of the experiment"
+      },
+      "ExperimentInput": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "experiment"
+                ],
+                "type": "string",
+                "default": "experiment"
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "spaceId"
+                ],
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/EntityName"
+                  },
+                  "spaceId": {
+                    "$ref": "#/components/schemas/SpaceId"
+                  },
+                  "description": {
+                    "$ref": "#/components/schemas/EntityDescription"
+                  }
+                },
+                "description": "Experiment input attributes",
+                "additionalProperties": false
+              }
+            },
+            "description": "Data container for ExperimentInput",
+            "additionalProperties": false
+          }
+        },
+        "description": "Input for creating this entity",
+        "additionalProperties": false
+      },
+      "ExperimentMode": {
+        "enum": [
+          "intelligent",
+          "manual",
+          "manual_hpo"
+        ],
+        "type": "string",
+        "default": "intelligent",
+        "description": "The model training mode for the experiment version"
+      },
+      "ExperimentPatch": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ExperimentPatchItem"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "New name"
+          },
+          {
+            "op": "replace",
+            "path": "/description",
+            "value": "New description"
+          },
+          {
+            "op": "replace",
+            "path": "/spaceId",
+            "value": "NEW_SPACE_ID"
+          }
+        ]
+      },
+      "ExperimentPatchItem": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "All patch requests use the replace operation"
+          },
+          "path": {
+            "enum": [
+              "/name",
+              "/description",
+              "/spaceId"
+            ],
+            "type": "string",
+            "description": "Path for the property you want to update"
+          },
+          "value": {
+            "$ref": "#/components/schemas/AnyType"
+          }
+        },
+        "description": "Experiment fields that can be patched. The following paths all require `value` to be a string: `/name`, `/spaceId`, and `/description`",
+        "additionalProperties": false
+      },
+      "ExperimentPostResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "experiment"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/Experiment"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExperimentType": {
+        "enum": [
+          "binary",
+          "multiclass",
+          "regression"
+        ],
+        "type": "string",
+        "description": "Experiment type"
+      },
+      "ExperimentVersion": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "createdByUserId",
+          "experimentId",
+          "status",
+          "target",
+          "dataSetId",
+          "experimentType"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "name": {
+            "$ref": "#/components/schemas/EntityName"
+          },
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          },
+          "status": {
+            "enum": [
+              "ready",
+              "error",
+              "cancelled"
+            ],
+            "type": "string",
+            "default": "pending",
+            "description": "Current status of this entity",
+            "x-qlik-filterable": true
+          },
+          "target": {
+            "type": "string",
+            "example": "TargetColumn",
+            "description": "The target field in the dataset"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "dataSetId": {
+            "$ref": "#/components/schemas/DataSetId"
+          },
+          "profileId": {
+            "type": "string",
+            "description": "ID of the dataset profile with metadata about source data"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "algorithms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModelAlgorithm"
+            },
+            "description": "List of algorithms selected for model training in this version\n"
+          },
+          "topModelId": {
+            "type": "string",
+            "description": "ID of the top model (based on training scores) in this experiment\nversion\n"
+          },
+          "dateIndexes": {
+            "$ref": "#/components/schemas/DateIndexes"
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorMessage"
+          },
+          "experimentId": {
+            "$ref": "#/components/schemas/ExperimentId"
+          },
+          "featuresList": {
+            "$ref": "#/components/schemas/FeaturesList"
+          },
+          "lastBatchNum": {
+            "type": "integer",
+            "description": "Number of the last batch"
+          },
+          "datasetOrigin": {
+            "$ref": "#/components/schemas/DatasetOrigin"
+          },
+          "versionNumber": {
+            "type": "integer",
+            "description": "1-based sequential version number within the experiment"
+          },
+          "experimentMode": {
+            "$ref": "#/components/schemas/ExperimentMode"
+          },
+          "experimentType": {
+            "$ref": "#/components/schemas/ExperimentType"
+          },
+          "createdByUserId": {
+            "$ref": "#/components/schemas/OwnerId"
+          },
+          "trainingDuration": {
+            "$ref": "#/components/schemas/TrainingDuration"
+          },
+          "preprocessedInsights": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreprocessedInsightColumn"
+            },
+            "description": "Preprocessed insights. Like feature insights but with fewer details.\n"
+          }
+        },
+        "description": "An AutoML experiment version. This is a configuration for training\nmodels within an experiment.\n",
+        "additionalProperties": false
+      },
+      "ExperimentVersionFindResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id",
+                "attributes"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/EntityId"
+                },
+                "type": {
+                  "enum": [
+                    "experiment-version"
+                  ],
+                  "type": "string"
+                },
+                "attributes": {
+                  "$ref": "#/components/schemas/ExperimentVersion"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/FindResponseMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ResponseLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExperimentVersionGetResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "experiment-version"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/ExperimentVersion"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExperimentVersionId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "ID of the experiment version",
+        "x-qlik-filterable": true
+      },
+      "ExperimentVersionInput": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "experiment-version"
+                ],
+                "type": "string",
+                "default": "experiment-version"
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "dataSetId",
+                  "experimentMode",
+                  "featuresList",
+                  "target",
+                  "experimentType"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "default": "Experiment version name. Defaults to current date.",
+                    "example": "1999-12-31T23:59:59.123Z"
+                  },
+                  "target": {
+                    "type": "string",
+                    "example": "TargetColumn",
+                    "description": "The target field in the dataset. Set in first experiment\nversion and can't be changed in subsequent versions.\n"
+                  },
+                  "dataSetId": {
+                    "$ref": "#/components/schemas/DataSetId"
+                  },
+                  "algorithms": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ModelAlgorithm"
+                    },
+                    "description": "Algorithms used for model training in this version. See\ndocumentation for valid algorithms for each\n`experimentType`.\n\nIf not provided, defaults to all valid algorithms for your\nexperimentType.\n"
+                  },
+                  "dateIndexes": {
+                    "$ref": "#/components/schemas/DateIndexes"
+                  },
+                  "featuresList": {
+                    "$ref": "#/components/schemas/FeaturesList"
+                  },
+                  "datasetOrigin": {
+                    "$ref": "#/components/schemas/DatasetOrigin"
+                  },
+                  "experimentMode": {
+                    "$ref": "#/components/schemas/ExperimentMode"
+                  },
+                  "experimentType": {
+                    "$ref": "#/components/schemas/ExperimentType"
+                  },
+                  "trainingDuration": {
+                    "$ref": "#/components/schemas/TrainingDuration"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "description": "Input for creating a new experiment version. Defaults provided in the\nProfileInsights response.\n",
+        "additionalProperties": false
+      },
+      "ExperimentVersionPatch": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "example": {
+            "op": "replace",
+            "path": "/name",
+            "value": "New name"
+          },
+          "required": [
+            "op",
+            "path",
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string",
+              "description": "All patch requests use the replace operation"
+            },
+            "path": {
+              "enum": [
+                "/name"
+              ],
+              "type": "string",
+              "description": "Path for the properties you can update.\n"
+            },
+            "value": {
+              "$ref": "#/components/schemas/AnyType"
+            }
+          },
+          "description": "Values that can be patched.\n",
+          "additionalProperties": false
+        }
+      },
+      "ExperimentVersionPostResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "experiment-version"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/ExperimentVersion"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "Failure": {
+        "type": "object",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/APIError"
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Feature": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "ColumnA",
+            "description": "Name of the feature column"
+          },
+          "include": {
+            "type": "boolean",
+            "description": "Include this feature in your experiment version? Default\nhere is based on insights for this feature\n(e.g. willBeDropped).\n"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataType"
+          },
+          "changeType": {
+            "$ref": "#/components/schemas/ChangeType"
+          },
+          "featureType": {
+            "$ref": "#/components/schemas/FeatureType"
+          },
+          "parentFeature": {
+            "type": "string",
+            "default": null,
+            "nullable": true,
+            "description": "The parent feature name for engineered features. e.g. `OrderDate` may be the parent of its engineered features (features extracted from parent) like `OrderDate.YEAR`, `OrderDate.MONTH`, etc."
+          }
+        },
+        "description": "A feature (column) from your dataset",
+        "additionalProperties": false
+      },
+      "FeatureInsights": {
+        "type": "object",
+        "required": [
+          "name",
+          "experimentTypes",
+          "willBeDropped",
+          "insights",
+          "cannotBeTarget"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the feature insight"
+          },
+          "insights": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Insights"
+            },
+            "description": "List of insights about this feature.\n"
+          },
+          "willBeDropped": {
+            "type": "boolean",
+            "description": "Whether this feature will be dropped. Traits like high cardinality\nmake some features less predictive or too costly to merit use.\n"
+          },
+          "cannotBeTarget": {
+            "type": "boolean",
+            "description": "Whether a feature cannot be the target field"
+          },
+          "experimentTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExperimentType"
+            },
+            "description": "Experiment types in this feature insight"
+          },
+          "engineeredFeatures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": "[\n  `${featureName}.YEAR`,\n  `${featureName}.MONTH`\n]\n",
+            "description": "Preliminary list of engineered features as strings. If subsequent\nprocessing validates them, they'll be converted to EngineeredFeature\nobjects within a NestedColumn, each of which may contain its own\nFeatureInsights.\n"
+          }
+        },
+        "description": "Metadata about the features in your dataset, generated when you create\nProfileInsights.\n",
+        "additionalProperties": false
+      },
+      "FeaturesList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Feature"
+        },
+        "description": "List of features from your dataset for creating Experiment\nVersions. This appears in from ProfileInsights response (in the\ndefaultVersionConfig). You can adjust the default settings before\nusing it as input to create or update Experiment Versions.\n"
+      },
+      "FeatureType": {
+        "enum": [
+          "categorical",
+          "numeric",
+          "date",
+          "freetext"
+        ],
+        "type": "string",
+        "description": "The type this feature is interpreted as within an experiment version.\nIf you want a value to be interpreted differently (e.g. see 0/1\nas categorical/boolean instead of numeric), use `changeType`.\n"
+      },
+      "FileType": {
+        "type": "string",
+        "example": "qvd, parquet, csv",
+        "description": "Dataset file type"
+      },
+      "FindResponseMeta": {
+        "type": "object",
+        "required": [
+          "count"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer"
+          }
+        },
+        "description": "Meta for FIND operations",
+        "additionalProperties": false
+      },
+      "IndexColumn": {
+        "type": "string",
+        "description": "A optional column name upon which to create an index. Must be unique for\nevery row. If not included, Qlik will create a unique index column.\n"
+      },
+      "Insights": {
+        "enum": [
+          "constant",
+          "high_cardinality",
+          "high_cardinality_integer",
+          "too_many_nulls",
+          "will_be_impact_encoded",
+          "will_be_one_hot_encoded",
+          "possible_free_text_encoded",
+          "valid_index",
+          "underrepresented_class",
+          "invalid_column_name",
+          "will_be_date_engineered"
+        ],
+        "type": "string",
+        "description": "Insights about a feature, such as why it's not included in a model\n"
+      },
+      "JobType": {
+        "enum": [
+          "prediction"
+        ],
+        "type": "string",
+        "description": "The type for this job"
+      },
+      "Model": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "name": {
+            "$ref": "#/components/schemas/EntityName"
+          },
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          },
+          "hpoNum": {
+            "type": "number",
+            "description": "Version number of the hyperparameter optimization"
+          },
+          "seqNum": {
+            "type": "number",
+            "description": "Model sequence number within the experiment version"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ModelStatus"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Dataset columns selected as features"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/ModelMetrics"
+          },
+          "batchNum": {
+            "type": "number",
+            "description": "Batch number indicates the index of the experiment version fold\n(most relevant when HPO is enabled)\n",
+            "x-qlik-filterable": true
+          },
+          "algoAbbrv": {
+            "$ref": "#/components/schemas/ModelAlgorithmAbbreviation"
+          },
+          "algorithm": {
+            "type": "string",
+            "description": "The algorithm used by this model",
+            "x-qlik-filterable": true
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "modelState": {
+            "$ref": "#/components/schemas/ModelState"
+          },
+          "description": {
+            "$ref": "#/components/schemas/EntityDescription"
+          },
+          "anomalyRatio": {
+            "type": "number",
+            "nullable": true
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorMessage"
+          },
+          "samplingRatio": {
+            "type": "number",
+            "description": "Ratio of sample data in relation to the dataset",
+            "x-qlik-filterable": true
+          },
+          "binningFeatures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "droppedFeatures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DroppedFeature"
+            },
+            "description": "Features dropped because they're unsuitable"
+          },
+          "experimentVersionId": {
+            "$ref": "#/components/schemas/ExperimentVersionId"
+          },
+          "powerTransformFeatures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "binaryImbalanceSampling": {
+            "$ref": "#/components/schemas/BinaryImbalanceSampling"
+          }
+        },
+        "description": "A model based on an algorithm within an experiment version.\n",
+        "additionalProperties": false
+      },
+      "ModelAlgorithm": {
+        "enum": [
+          "catboost_classifier",
+          "catboost_regression",
+          "elasticnet_regression",
+          "gaussian_nb",
+          "kneighbors_classifier",
+          "lasso_regression",
+          "lasso",
+          "lgbm_classifier",
+          "lgbm_regression",
+          "linear_regression",
+          "logistic_regression",
+          "random_forest_classifier",
+          "random_forest_regression",
+          "sgd_regression",
+          "xgb_classifier",
+          "xgb_regression"
+        ],
+        "type": "string",
+        "description": "Enumeration of model algorithms.\n\nA subset of these may be provided based on your ExperimentType. This is\nbased on your target's featureType. When you select a target feature\nfrom your ProfileInsights response (defaultVersionConfig.featuresList),\nit tells you which algorithms will be available if you choose it as your\ntarget.\n"
+      },
+      "ModelAlgorithmAbbreviation": {
+        "enum": [
+          "CATBC",
+          "CATBR",
+          "ELNC",
+          "GNBC",
+          "LGBMC",
+          "LGBMR",
+          "LINR",
+          "LOGC",
+          "LSOC",
+          "RAFC",
+          "RAFR",
+          "SGDR",
+          "XGBC",
+          "XGBR"
+        ],
+        "type": "string",
+        "description": "Model algorithm name abbreviation"
+      },
+      "ModelFindResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id",
+                "attributes"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/EntityId"
+                },
+                "type": {
+                  "enum": [
+                    "model"
+                  ],
+                  "type": "string"
+                },
+                "attributes": {
+                  "$ref": "#/components/schemas/Model"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/FindResponseMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ResponseLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModelGetResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "model"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/Model"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModelId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "ID of the model",
+        "x-qlik-filterable": true
+      },
+      "ModelMetrics": {
+        "type": "object",
+        "properties": {
+          "binary": {
+            "$ref": "#/components/schemas/ModelMetricsBinary"
+          },
+          "multiclass": {
+            "$ref": "#/components/schemas/ModelMetricsMulticlass"
+          },
+          "regression": {
+            "$ref": "#/components/schemas/ModelMetricsRegression"
+          }
+        },
+        "description": "Model metrics based on the type of model\n",
+        "additionalProperties": false
+      },
+      "ModelMetricsBinary": {
+        "type": "object",
+        "properties": {
+          "f1": {
+            "type": "number",
+            "description": "The harmonic mean of precision and recall for training data"
+          },
+          "auc": {
+            "type": "number",
+            "description": "Area under curve (training data)"
+          },
+          "mcc": {
+            "type": "number",
+            "description": "Matthews correlation coefficient (training data)"
+          },
+          "npv": {
+            "type": "number",
+            "description": "Negative predictive value (training data)"
+          },
+          "f1Test": {
+            "type": "number",
+            "description": "The harmonic mean of precision and recall for test data"
+          },
+          "recall": {
+            "type": "number",
+            "description": "The true positive rate (training data)"
+          },
+          "aucTest": {
+            "type": "number",
+            "description": "Area under curve (test data)"
+          },
+          "fallout": {
+            "type": "number",
+            "description": "The false positive rate (training data)"
+          },
+          "logLoss": {
+            "type": "number",
+            "description": "Measures accuracy in logistic regression (training data)"
+          },
+          "mccTest": {
+            "type": "number",
+            "description": "Matthews correlation coefficient (test data)"
+          },
+          "npvTest": {
+            "type": "number",
+            "description": "Negative predictive value (test data)"
+          },
+          "accuracy": {
+            "type": "number",
+            "description": "Average measure of how often the model made correct predictions\n(training data)\n"
+          },
+          "missRate": {
+            "type": "number",
+            "description": "The false negative rate (training data)"
+          },
+          "precision": {
+            "type": "number",
+            "description": "Positive predictive value. Probability that the model was correct\nwhen it predicted something was true. (training data)\n"
+          },
+          "threshold": {
+            "type": "number",
+            "description": "Probability that a prediction is true (training data)"
+          },
+          "recallTest": {
+            "type": "number",
+            "description": "The true positive rate (test data)"
+          },
+          "falloutTest": {
+            "type": "number",
+            "description": "The false positive rate (test data)"
+          },
+          "logLossTest": {
+            "type": "number",
+            "description": "Measures accuracy in logistic regression (test data)"
+          },
+          "specificity": {
+            "type": "number",
+            "description": "The true negative rate (training data)"
+          },
+          "accuracyTest": {
+            "type": "number",
+            "description": "Average measure of how often the model made correct predictions\n(test data)\n"
+          },
+          "missRateTest": {
+            "type": "number",
+            "description": "The false negative rate (test data)"
+          },
+          "trueNegative": {
+            "type": "number",
+            "description": "Actual false values correctly predicted as false (training data)\n"
+          },
+          "truePositive": {
+            "type": "number",
+            "description": "Actual true values correctly predicted as true (training data)\n"
+          },
+          "falseNegative": {
+            "type": "number",
+            "description": "Actual true values incorrectly predicted as false (training data)\n"
+          },
+          "falsePositive": {
+            "type": "number",
+            "description": "Actual false values incorrectly predicted as true (training data)\n"
+          },
+          "precisionTest": {
+            "type": "number",
+            "description": "Positive predictive value. Probability that the model was correct\nwhen it predicted something was true. (test data)\n"
+          },
+          "thresholdTest": {
+            "type": "number",
+            "description": "Probability that a prediction is true (test data)"
+          },
+          "specificityTest": {
+            "type": "number",
+            "description": "The true negative rate (test data)"
+          },
+          "trueNegativeTest": {
+            "type": "number",
+            "description": "Actual false values correctly predicted as false (test data)\n"
+          },
+          "truePositiveTest": {
+            "type": "number",
+            "description": "Actual true values correctly predicted as true (test data)\n"
+          },
+          "falseNegativeTest": {
+            "type": "number",
+            "description": "Actual true values incorrectly predicted as false (test data)\n"
+          },
+          "falsePositiveTest": {
+            "type": "number",
+            "description": "Actual false values incorrectly predicted as true (test data)\n"
+          }
+        },
+        "description": "Binary metrics for categorical values with two options. Details:\nhttps://help.qlik.com/en-US/cloud-services/Subsystems/Hub/Content/Sense_Hub/AutoML/scoring-binary-classification.htm\n",
+        "additionalProperties": false
+      },
+      "ModelMetricsMulticlass": {
+        "type": "object",
+        "properties": {
+          "f1Macro": {
+            "type": "number",
+            "description": "Macro F1 is the averaged F1 value for each class without weighting\n(training data)\n"
+          },
+          "f1Micro": {
+            "type": "number",
+            "description": "Micro F1 is the F1 value calculated across the entire confusion\nmatrix (training data)\n"
+          },
+          "accuracy": {
+            "type": "number",
+            "description": "Average of how often the model made a correct prediction (training\ndata)\n"
+          },
+          "f1Weighted": {
+            "type": "number",
+            "description": "Weighted F1 (training data)"
+          },
+          "f1MacroTest": {
+            "type": "number",
+            "description": "Macro F1 is the averaged F1 value for each class without weighting\n(test data)\n"
+          },
+          "f1MicroTest": {
+            "type": "number",
+            "description": "Micro F1 is the F1 value calculated across the entire confusion\nmatrix (test data)\n"
+          },
+          "accuracyTest": {
+            "type": "number",
+            "description": "Average of how often the model made a correct prediction (test data)\n"
+          },
+          "f1WeightedTest": {
+            "type": "number",
+            "description": "Weighted F1 (test data)"
+          },
+          "confusionMatrix": {
+            "type": "string",
+            "description": "A matrix summary of the accuracy of predictions in a classification\nmodel (training data)\n"
+          },
+          "confusionMatrixTest": {
+            "type": "string",
+            "description": "A matrix summary of the accuracy of predictions in a classification\nmodel (training data)\n"
+          }
+        },
+        "description": "Multiclass metrics for categorical values with 3+ options. Details:\nhttps://help.qlik.com/en-US/cloud-services/Subsystems/Hub/Content/Sense_Hub/AutoML/scoring-multiclass-classification.htm\n",
+        "additionalProperties": false
+      },
+      "ModelMetricsRegression": {
+        "type": "object",
+        "properties": {
+          "r2": {
+            "type": "number",
+            "description": "R squared (training data)"
+          },
+          "mae": {
+            "type": "number",
+            "description": "Mean absolute error (training data)"
+          },
+          "mse": {
+            "type": "number",
+            "description": "Mean squared error (training data)"
+          },
+          "rmse": {
+            "type": "number",
+            "description": "Root mean squared error (training data)"
+          },
+          "r2Test": {
+            "type": "number",
+            "description": "R squared (test data)"
+          },
+          "maeTest": {
+            "type": "number",
+            "description": "Mean absolute error (test data)"
+          },
+          "mseTest": {
+            "type": "number",
+            "description": "Mean squared error (test data)"
+          },
+          "rmseTest": {
+            "type": "number",
+            "description": "Root mean squared error (test data)"
+          }
+        },
+        "description": "Regression metrics for numeric values. Details:\nhttps://help.qlik.com/en-US/cloud-services/Subsystems/Hub/Content/Sense_Hub/AutoML/scoring-regression.htm\n",
+        "additionalProperties": false
+      },
+      "ModelState": {
+        "enum": [
+          "pending",
+          "enabled",
+          "disabled",
+          "inactive"
+        ],
+        "type": "string",
+        "description": "Model state. These are the state of the model in relation to\ndeployments.\n",
+        "x-qlik-filterable": true
+      },
+      "ModelStatus": {
+        "enum": [
+          "pending",
+          "training_requested",
+          "training_done",
+          "ready",
+          "error"
+        ],
+        "type": "string",
+        "description": "Model status. These are the status of the model in relation to\nexperiments (i.e. training status).\n"
+      },
+      "OutputFile": {
+        "type": "object",
+        "required": [
+          "key",
+          "fileName",
+          "fileType",
+          "spaceId",
+          "path"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "spaceId": {
+            "$ref": "#/components/schemas/SpaceId"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "fileType": {
+            "$ref": "#/components/schemas/FileType"
+          }
+        }
+      },
+      "OwnerId": {
+        "type": "string",
+        "description": "ID of owner/user for this entity",
+        "x-qlik-filterable": true
+      },
+      "ParentJobId": {
+        "type": "string",
+        "description": "ID of the current job's parent"
+      },
+      "PredictionJobResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "deletedAt",
+          "tenantId",
+          "createdBy",
+          "jobType",
+          "parentJobId",
+          "corrType",
+          "corrId",
+          "status",
+          "name",
+          "parentName",
+          "experimentVersionNumber",
+          "details",
+          "deploymentId",
+          "trigger",
+          "success",
+          "rowsPredicted",
+          "modelId"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "corrId": {
+            "$ref": "#/components/schemas/CorrId"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "completed",
+              "cancelled",
+              "error"
+            ],
+            "type": "string",
+            "description": "Status of this job"
+          },
+          "details": {
+            "type": "object",
+            "required": [
+              "lineageSchemaUpdated",
+              "outputFiles",
+              "isScheduled"
+            ],
+            "properties": {
+              "isScheduled": {
+                "type": "boolean"
+              },
+              "outputFiles": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputFile"
+                }
+              },
+              "lineageSchemaUpdated": {
+                "type": "boolean"
+              }
+            }
+          },
+          "jobType": {
+            "$ref": "#/components/schemas/JobType"
+          },
+          "modelId": {
+            "$ref": "#/components/schemas/ModelId"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "trigger": {
+            "type": "string"
+          },
+          "corrType": {
+            "$ref": "#/components/schemas/CorrType"
+          },
+          "tenantId": {
+            "$ref": "#/components/schemas/TenantId"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "ID of the owner/user that created this entity"
+          },
+          "deletedAt": {
+            "$ref": "#/components/schemas/DeletedAt"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "parentName": {
+            "type": "string"
+          },
+          "parentJobId": {
+            "$ref": "#/components/schemas/ParentJobId"
+          },
+          "deploymentId": {
+            "$ref": "#/components/schemas/DeploymentId"
+          },
+          "rowsPredicted": {
+            "type": "number"
+          },
+          "experimentVersionNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "PreprocessedInsightColumn": {
+        "type": "object",
+        "required": [
+          "name",
+          "insights",
+          "willBeDropped"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the preprocessed insight column"
+          },
+          "insights": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "is_free_text",
+                "cannot_be_processed_as_free_text",
+                "is_date_engineered",
+                "has_target_leakage",
+                "feature_type_change_invalid",
+                "feature_type_change_failed",
+                "feature_type_change_successful"
+              ],
+              "type": "string"
+            },
+            "default": [],
+            "description": "Preliminary list of column/feature insights available after\npreprocessing but before feature insights are available\n"
+          },
+          "willBeDropped": {
+            "type": "boolean",
+            "description": "Whether this feature insight will be dropped due to free text or\nhigh cardinality that makes it less useful\n"
+          }
+        },
+        "description": "Metadata about features/columns from dataset after preprocessing\n",
+        "additionalProperties": false
+      },
+      "ProfileInsights": {
+        "type": "object",
+        "required": [
+          "tenantId",
+          "ownerId",
+          "status",
+          "dataSetId"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "pending",
+              "error",
+              "ready"
+            ],
+            "type": "string",
+            "default": "pending",
+            "description": "Status of profile insights. Not available until `ready`.\n"
+          },
+          "ownerId": {
+            "$ref": "#/components/schemas/OwnerId"
+          },
+          "insights": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeatureInsights"
+            },
+            "description": "List of feature insights object, one per feature in the dataset\n"
+          },
+          "tenantId": {
+            "$ref": "#/components/schemas/TenantId"
+          },
+          "defaultVersionConfig": {
+            "type": "object",
+            "required": [
+              "name",
+              "datasetOrigin",
+              "dataSetId",
+              "experimentMode"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "Experiment version name. Defaults to current date/time.",
+                "example": "1999-12-31T23:59:59.123Z"
+              },
+              "dataSetId": {
+                "$ref": "#/components/schemas/DataSetId"
+              },
+              "featuresList": {
+                "$ref": "#/components/schemas/FeaturesList"
+              },
+              "datasetOrigin": {
+                "$ref": "#/components/schemas/DatasetOrigin"
+              },
+              "experimentMode": {
+                "$ref": "#/components/schemas/ExperimentMode"
+              }
+            }
+          }
+        },
+        "description": "Insights (metadata) about an experiment dataset",
+        "additionalProperties": false
+      },
+      "ProfileInsightsGetResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "profile-insights"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/ProfileInsights"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProfileInsightsInput": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "profile-insights"
+                ],
+                "type": "string",
+                "default": "profile-insights"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "dataSetId": {
+                    "$ref": "#/components/schemas/DataSetId"
+                  }
+                },
+                "description": "The request body for this resource",
+                "additionalProperties": false
+              }
+            },
+            "description": "Data wrapper for request input",
+            "additionalProperties": false
+          }
+        },
+        "description": "Input to get dataset and feature metadata needed to create\nexperiment versions\n",
+        "additionalProperties": false
+      },
+      "RealtimePrediction": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "realtime-prediction"
+                ],
+                "type": "string",
+                "default": "realtime-prediction"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "rows": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "description": "Rows of the dataset from which to produce predictions\n"
+                  },
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RealTimePredictionSchema"
+                    },
+                    "description": "List of features in the dataset"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "description": "Input values for creating realtime predictions",
+        "additionalProperties": false
+      },
+      "RealtimePredictionInput": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Rows of the dataset from which to produce predictions\n"
+          },
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RealTimePredictionInputSchema"
+            },
+            "description": "List of features in the dataset"
+          }
+        },
+        "description": "Input values for creating realtime predictions",
+        "additionalProperties": false
+      },
+      "RealTimePredictionInputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of a feature in the dataset"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RealTimePredictionSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of a feature in the dataset"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResponseLinks": {
+        "type": "object",
+        "required": [
+          "first",
+          "prev",
+          "self",
+          "next",
+          "last"
+        ],
+        "properties": {
+          "last": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string",
+                "format": "uri",
+                "description": "Link to the last set of responses from `limit` minus `offset` to\n`limit`\n"
+              }
+            }
+          },
+          "next": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string",
+                "format": "uri",
+                "description": "Link to the next set of responses\n"
+              }
+            }
+          },
+          "prev": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string",
+                "format": "uri",
+                "description": "Link to the previous set of responses\n"
+              }
+            }
+          },
+          "self": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string",
+                "format": "uri",
+                "description": "Link to the current set of responses\n"
+              }
+            }
+          },
+          "first": {
+            "type": "object",
+            "properties": {
+              "href": {
+                "type": "string",
+                "format": "uri",
+                "description": "Link to the first set of responses from `offset` 0 to count `limit``\n"
+              }
+            }
+          }
+        },
+        "description": "Resource links included in paginated responses",
+        "additionalProperties": false
+      },
+      "SpaceId": {
+        "type": "string",
+        "description": "Space ID for this entity (empty string for personal space)",
+        "x-qlik-filterable": true
+      },
+      "TenantId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Tenant ID for this entity",
+        "x-qlik-filterable": true
+      },
+      "TrainingDuration": {
+        "type": "integer",
+        "maximum": 21600,
+        "minimum": 900,
+        "description": "Training duration in seconds. If provided, minimum is 900 (15m) and\nmax is 21600 (6h).\n"
+      },
+      "UpdatedAt": {
+        "type": "string",
+        "description": "Timestamp when this was updated"
+      }
+    }
+  }
+}

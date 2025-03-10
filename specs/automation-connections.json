@@ -1,0 +1,993 @@
+{
+  "info": {
+    "title": "automation-connections",
+    "version": ""
+  },
+  "paths": {
+    "/v1/automation-connections": {
+      "get": {
+        "tags": [
+          "automation-connections"
+        ],
+        "summary": "Retrieves a list of automation connections",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectionsList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "name eq \"My Automation Connection\" and connectorId eq \"0d87347d-27c0-11ea-921c-022e6b5ea1e2\" and ownerId eq \"sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy\" and spaceId eq \"5f0f78b239ff4f0001234567\""
+            },
+            "required": false,
+            "description": "Filters the result based on the specified criteria: name, connectorId, ownerId, or spaceId."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "example": 50,
+              "maximum": 200,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The number of automation connections to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "listAll",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "description": "When true, list all connections. Restricted to tenant admins and analytics admins."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "id",
+                "name",
+                "createdAt",
+                "updatedAt",
+                "+id",
+                "+name",
+                "+createdAt",
+                "+updatedAt",
+                "-id",
+                "-name",
+                "-createdAt",
+                "-updatedAt"
+              ],
+              "type": "string",
+              "default": "id",
+              "example": "-name"
+            },
+            "required": false,
+            "description": "The field to sort by, with +- prefix indicating sort order. (?sort=-name => sort on the name field using descending order)"
+          }
+        ],
+        "operationId": "getAutomationConnections",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "automation-connections"
+        ],
+        "summary": "Create an automation connection",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectionDetailObject"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "description": "Creates a new connection object from an automation connector.",
+        "operationId": "createAutomationConnection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutomationConnectionCreationObject"
+              }
+            }
+          },
+          "required": true,
+          "description": "The automation object to create."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automation-connections/{id}": {
+      "get": {
+        "tags": [
+          "automation-connections"
+        ],
+        "summary": "Get automation connection",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectionDetailObject"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "d6321ebd-d9e8-48fe-9d86-97dbd473bf60"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation connection."
+          }
+        ],
+        "description": "Returns details about the specified automation connection.",
+        "operationId": "getAutomationConnection",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "automation-connections"
+        ],
+        "summary": "Update automation connection",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectionDetailObject"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation connection."
+          }
+        ],
+        "description": "Updates the specified properties of an automation connection.",
+        "operationId": "updateAutomationConnection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutomationConnectionPutRequestObject"
+              }
+            }
+          },
+          "required": true,
+          "description": "The automation connection object to update."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "automation-connections"
+        ],
+        "summary": "Delete automation connection",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation connection."
+          },
+          {
+            "in": "query",
+            "name": "forced",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "description": "When true, the automation connection will be deleted regardless of its usage by any automations."
+          }
+        ],
+        "description": "Deletes the specified automation connection.",
+        "operationId": "deleteAutomationConnection",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automation-connections/{id}/actions/change-owner": {
+      "post": {
+        "tags": [
+          "automation-connections"
+        ],
+        "summary": "Change automation connection owner",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation connection."
+          }
+        ],
+        "description": "Changes the owner of an automation connection by specifying a new owner.",
+        "operationId": "automationConnectionChangeOwner",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutomationConnectionChangeOwnerObject"
+              }
+            }
+          },
+          "required": true,
+          "description": "The new owner of the automation connection."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automation-connections/{id}/actions/change-space": {
+      "post": {
+        "tags": [
+          "automation-connections"
+        ],
+        "summary": "Change automation connection space",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation connection."
+          }
+        ],
+        "description": "Changes the space of an automation connection by specifying a new space.",
+        "operationId": "automationConnectionChangeSpace",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutomationConnectionChangeSpaceObject"
+              }
+            }
+          },
+          "required": true,
+          "description": "The new space of the automation connection."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automation-connections/{id}/actions/check": {
+      "post": {
+        "tags": [
+          "automation-connections"
+        ],
+        "summary": "Check automation connection",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectionCheckObject"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation connection."
+          }
+        ],
+        "description": "Tries to validate and checks the connection status of an automation connection.",
+        "operationId": "checkAutomationConnection",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage",
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/build",
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Bad Request"
+      },
+      "Forbidden": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Forbidden"
+      },
+      "InternalServerError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Internal Server Error"
+      },
+      "NotFound": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Not found"
+      },
+      "ServiceUnavailable": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Service Unavailable"
+      },
+      "Unauthorized": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      }
+    },
+    "schemas": {
+      "AutomationConnectionChangeOwnerObject": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy",
+            "description": "The unique identifier of the new owner."
+          }
+        }
+      },
+      "AutomationConnectionChangeSpaceObject": {
+        "type": "object",
+        "properties": {
+          "spaceId": {
+            "type": "string",
+            "example": "5f0f78b239ff4f0001234567",
+            "description": "The unique identifier of the new space."
+          }
+        }
+      },
+      "AutomationConnectionCheckObject": {
+        "type": "object",
+        "properties": {
+          "isConnected": {
+            "type": "boolean",
+            "description": "The connection status of the automation connection. When true, the automation connection is connected."
+          }
+        }
+      },
+      "AutomationConnectionCreationObject": {
+        "type": "object",
+        "required": [
+          "connectorId"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "connection",
+            "description": "The name of the created automation connection."
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectionParamCreateObject"
+            }
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "5f0f78b239ff4f0001234567",
+            "description": "The unique identifier of the space in which the automation connection is created."
+          },
+          "connectorId": {
+            "type": "string",
+            "example": "3004e850-1985-11ee-b6df-8d800b305320",
+            "description": "The unique identifier of the connector from which the automation connection is created."
+          }
+        }
+      },
+      "AutomationConnectionDetailObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "e0e720d0-4947-11ec-a1d2-9559fa35801d",
+            "description": "The unique identifier of the automation connection."
+          },
+          "name": {
+            "type": "string",
+            "example": "connection",
+            "description": "The name of the automation connection."
+          },
+          "error": {
+            "type": "object",
+            "description": "This contains the error message if a connection is being created with an issue."
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectionParamObject"
+            }
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy",
+            "description": "The unique identifier of the owner of the automation connection."
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "5f0f78b239ff4f0001234567",
+            "description": "The space ID of the automation connection."
+          },
+          "redirect": {
+            "type": "string",
+            "description": "The redirect of the OAuth account."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "description": "The timestamp when the automation connection was created."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "description": "The timestamp when the automation connection was updated."
+          },
+          "connectorId": {
+            "type": "string",
+            "example": "e0e720d0-4947-11ec-a1d2-9559fa35801d",
+            "description": "The unique identifier of the automation connector."
+          },
+          "isConnected": {
+            "type": "boolean",
+            "example": true,
+            "description": "The connection status of the automation connection. When true, the automation connection is connected."
+          },
+          "oauthAccountName": {
+            "type": "string",
+            "example": "oauth",
+            "description": "The name of the OAuth account associated with the automation connection."
+          }
+        }
+      },
+      "AutomationConnectionParamCreateObject": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "username",
+            "description": "The name of the automation connection parameter."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the automation connection parameter option."
+          }
+        }
+      },
+      "AutomationConnectionParamObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "39a90780-8874-11ee-b16c-89512345678",
+            "description": "The unique identifier of the automation connection parameter."
+          },
+          "meta": {
+            "type": "array",
+            "items": {},
+            "description": "The metadata of the automation connection parameter."
+          },
+          "name": {
+            "type": "string",
+            "example": "region",
+            "description": "The name of the automation connection parameter."
+          },
+          "order": {
+            "type": "integer",
+            "example": 1,
+            "description": "The order that the automation connection configuration fields should be displayed in."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the automation connection parameter."
+          },
+          "fieldType": {
+            "type": "string",
+            "example": "enum",
+            "description": "The field type of the automation connection parameter."
+          },
+          "isOptional": {
+            "type": "boolean",
+            "example": "false",
+            "description": "When true, the parameter is optional."
+          },
+          "exampleValue": {
+            "type": "string",
+            "description": "The example value of the automation connection parameter."
+          },
+          "paramOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectionParamOptionObject"
+            }
+          },
+          "documentation": {
+            "type": "string",
+            "description": "The documentation of the automation connection parameter."
+          }
+        }
+      },
+      "AutomationConnectionParamOptionObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "39a90780-8874-11ee-b16c-89512345678",
+            "description": "The unique identifier of the automation connection parameter option."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the automation connection parameter option."
+          }
+        }
+      },
+      "AutomationConnectionParamPutObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "39a90780-8874-11ee-b16c-89512345678",
+            "description": "The unique identifier of the automation connection parameter option."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the automation connection parameter option."
+          }
+        }
+      },
+      "AutomationConnectionPutRequestObject": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "connection",
+            "description": "The new name of the automation connection to be renamed to."
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectionParamPutObject"
+            }
+          }
+        }
+      },
+      "AutomationConnectionsList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectionsListObject"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "AutomationConnectionsListObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "e0e720d0-4947-11ec-a1d2-9559fa35801d",
+            "description": "The unique identifier of an automation connection."
+          },
+          "name": {
+            "type": "string",
+            "example": "auto conn",
+            "description": "The name of an automation connection.",
+            "x-qlik-filterable": true
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy",
+            "description": "The unique identifier of the owner of the automation connection.",
+            "x-qlik-filterable": true
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "5f0f78b239ff4f0001234567",
+            "description": "The space ID of the automation connection.",
+            "x-qlik-filterable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "description": "The timestamp when the automation connection is created."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-12-23T12:28:21.000000Z",
+            "description": "The timestamp when the automation connection is updated."
+          },
+          "connectorId": {
+            "type": "string",
+            "example": "e0e720d0-4947-11ec-a1d2-9559fa35801d",
+            "description": "The unique identifier of the connector the automation connection is created from.",
+            "x-qlik-filterable": true
+          },
+          "isConnected": {
+            "type": "boolean",
+            "example": true,
+            "description": "Returns true if the automtion connection is connected."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The unique code for the error"
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of what went wrong"
+          },
+          "detail": {
+            "type": "string",
+            "description": "May be used to provide additional details"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A way to trace the source of the error."
+          }
+        }
+      },
+      "Links": {
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/PaginationLink"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/PaginationLink"
+          }
+        }
+      },
+      "PaginationLink": {
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "The URL to a resource request"
+          }
+        }
+      }
+    }
+  }
+}
