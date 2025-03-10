@@ -1,0 +1,879 @@
+{
+  "info": {
+    "title": "report-templates",
+    "version": ""
+  },
+  "paths": {
+    "/v1/report-templates": {
+      "get": {
+        "tags": [
+          "report-templates"
+        ],
+        "summary": "Get descriptive info for the specified templates.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTemplatesResponse"
+                }
+              }
+            },
+            "description": "The templates list was retrieved."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "If present, restrict the number of returned items to this value."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Template name to search and filter for. Case-insensitive open search with wildcards both as prefix and suffix."
+          },
+          {
+            "in": "query",
+            "name": "ownerId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Return the templates for the specified owner."
+          },
+          {
+            "in": "query",
+            "name": "skip",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "maximum": 2147483647,
+              "minimum": 0
+            },
+            "description": "If present, skip this number of the returned values in the result set (facilitates paging)."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "name",
+                  "+name",
+                  "-name",
+                  "createdAt",
+                  "+createdAt",
+                  "-createdAt",
+                  "updatedAt",
+                  "+updatedAt",
+                  "-updatedAt",
+                  "type",
+                  "+type",
+                  "-type"
+                ],
+                "type": "string"
+              }
+            },
+            "description": "Field to sort by. Prefix with +/- to indicate ascending/descending. By default, the sort order is ascending."
+          },
+          {
+            "in": "query",
+            "name": "sourceAppId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Return the templates that are using the specified app as data source."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "report-templates"
+        ],
+        "summary": "Create a new report template.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateResponse"
+                }
+              }
+            },
+            "description": "New template was created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "The template file exceeds the user's quota for maximum file to upload."
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTemplateRequest"
+              }
+            }
+          },
+          "description": "The upload request."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/report-templates/{id}": {
+      "get": {
+        "tags": [
+          "report-templates"
+        ],
+        "summary": "Get descriptive info for the specified report template.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateResponse"
+                }
+              }
+            },
+            "description": "The template was located."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "A template with the specified ID was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The ID of the report template."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "report-templates"
+        ],
+        "summary": "Patch an existing report template.",
+        "responses": {
+          "204": {
+            "description": "Patch successfully applied to template."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "A template with the specified ID was not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "The template file exceeds the user's quota for maximum file to upload."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The ID of the report template to patch."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          },
+          "description": "A JSON patch request as defined by RFC 6902."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "put": {
+        "tags": [
+          "report-templates"
+        ],
+        "summary": "Update an existing report template.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateResponse"
+                }
+              }
+            },
+            "description": "The template was updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "A template with the specified ID was not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "The template file exceeds the user's quota for maximum file to upload."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The ID of the report template to update."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTemplateRequest"
+              }
+            }
+          },
+          "description": "The upload request."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "report-templates"
+        ],
+        "summary": "Delete the specified report template.",
+        "responses": {
+          "204": {
+            "description": "The template was deleted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The ID of the report template to delete."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/report-templates/{id}/actions/download": {
+      "post": {
+        "tags": [
+          "report-templates"
+        ],
+        "summary": "Download the template file of the specified report template",
+        "responses": {
+          "200": {
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "description": "The template file."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResult"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The ID of the report template."
+          }
+        ],
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/build"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "CreateTemplateRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "temporaryContentId"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "Template name"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Template description"
+          },
+          "sourceAppId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The ID of the app that this template is using as data source. The id stored in the template file metadata is used if no value is specified."
+          },
+          "sourceAppAction": {
+            "enum": [
+              "validate",
+              "replace"
+            ],
+            "type": "string",
+            "description": "Specifies the action to perform with the given source app id. Use \"validate\" to verify that the template source app matches the provided value. Use \"replace\" to migrate the template to a different app by replacing the source app id."
+          },
+          "temporaryContentId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The ID of a previously uploaded temporary content file"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponseItem": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "REPTPL-400001",
+            "nullable": true,
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "example": "Cursor not formatted correctly.",
+            "nullable": true,
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "example": "Invalid encoding of cursor.",
+            "nullable": true,
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResult": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseItem"
+            },
+            "nullable": true,
+            "description": "List of errors and their properties."
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetTemplatesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReportTemplateResponse"
+            },
+            "nullable": true,
+            "description": "The current page data."
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Operation": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "nullable": true
+          },
+          "from": {
+            "type": "string",
+            "nullable": true
+          },
+          "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaginationLink": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true,
+            "description": "The URL for the pagination link."
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/PaginationLink"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/PaginationLink"
+          },
+          "self": {
+            "$ref": "#/components/schemas/PaginationLink"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReportTemplateResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "c35f4b70-3ce4-4a30-b62b-2aef16943bc4",
+            "nullable": true,
+            "description": "The template ID"
+          },
+          "name": {
+            "type": "string",
+            "example": "Qlik report",
+            "nullable": true,
+            "description": "Template name"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "0rTsxGg_rtsZAs19Zib_421n6haydjIh",
+            "nullable": true,
+            "description": "The user that this template is scoped to."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "The date and time when the template was created."
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "0rTsxGg_rtsZAs19Zib_421n6htydjIh",
+            "nullable": true,
+            "description": "The id of the user who created the template."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "The date and time when the template was last updated."
+          },
+          "updatedBy": {
+            "type": "string",
+            "example": "0rTsxGg_rtsZAs19Zib_421n6htydjIh",
+            "nullable": true,
+            "description": "The id of the user who last updated the template."
+          },
+          "description": {
+            "type": "string",
+            "example": "A daily report of interesting data",
+            "nullable": true,
+            "description": "Template description"
+          },
+          "sourceAppId": {
+            "type": "string",
+            "example": "c4c70012-29c7-47c2-820d-4ff74cb164a9",
+            "nullable": true,
+            "description": "The id of the app that this template is using as data source."
+          },
+          "sourceAppName": {
+            "type": "string",
+            "example": "Qlik app",
+            "nullable": true,
+            "description": "The name of the app that this template is using as data source."
+          },
+          "metadataVersion": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1,
+            "description": "The template metadata version"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateTemplateRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "temporaryContentId"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "Template name"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Template description"
+          },
+          "sourceAppAction": {
+            "enum": [
+              "validate",
+              "replace"
+            ],
+            "type": "string",
+            "description": "Specifies the action to perform with the new source app. Use \"validate\" to verify that the source app of the uploaded template matches the target app. Use \"replace\" to migrate the uploaded template to the target app by replacing the source app id."
+          },
+          "temporaryContentId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The ID of a previously uploaded temporary content file"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

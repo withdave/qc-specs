@@ -1,0 +1,1649 @@
+{
+  "info": {
+    "title": "reports",
+    "version": ""
+  },
+  "paths": {
+    "/v1/reports": {
+      "post": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Queue a new report request generation.",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {}
+            },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri",
+                  "example": "https://qlikcloud.com:443/api/v1/reports/0c5c08d3-c211-415a-8f47-1f3e2d2c4476/status"
+                },
+                "description": "The uri to get the processing status of the requested report."
+              }
+            },
+            "description": "Report request accepted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-400000",
+                      "title": "bad or malformed http request",
+                      "detail": "invalid outputType"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax, errors in params or the report request is not valid."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-401000",
+                      "title": "forbidden",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-403000",
+                      "title": "forbidden",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Forbidden, the user does not have access rights."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-404000",
+                      "title": "Not found",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-409000",
+                      "title": "Conflict",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Conflicted request. Report aborted."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "HTTP-429",
+                      "title": "Too Many Requests",
+                      "detail": "The user has sent too frequent requests which resulted in an undesired response code (\"error rate limiting\")"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Too many request. Indicates the user has sent too many requests in a given amount of time, aka \"rate limiting\"."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-500000",
+                      "title": "Internal server error",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "operationId": "postReports",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "Definition of the report request.\nPlease note that sense-html-template-1.0, sense-story-x.0 and qv-data-x.0 types are only for internal use.\n\nEach report request type requires a specific template to be provided:\n - composition-1.0 requires compositionTemplates to be set\n - sense-excel-template-1.0 requires senseExcelTemplate to be set\n - sense-image-1.0 requires senseImageTemplate to be set\n - sense-sheet-1.0 requires senseSheetTemplate to be set\n - sense-data-1.0 requires senseDataTemplate to be set\n - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n\nEach template type supports specific output types:\n - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n - sense-excel-template-1.0 supports excel and pdf output type\n - sense-image-1.0 supports pdf, pptx and image output types\n - sense-sheet-1.0 supports pdf and pptx output type\n - sense-data-1.0 supports xlsx output type\n - sense-pixel-perfect-template-1.0 supports pdf output types\n\nEach output type requires a specific output to be provided:\n - pdfcomposition requires pdfCompositionOutput to be set\n - pptxcomposition requires pptxCompositionOutput to be set\n - pdf requires pdfOutput to be set\n - pptx requires pptxOutput to be set\n - image requires imageOutput to be set\n - xlsx requires xlsxOutput to be set\n"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 10
+        }
+      }
+    },
+    "/v1/reports/{id}/status": {
+      "get": {
+        "tags": [
+          "status"
+        ],
+        "summary": "Get report request processing status.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportStatus"
+                }
+              }
+            },
+            "description": "Returns the request processing status."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-400000",
+                      "title": "Bad or malformed request",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Bad request. Malformed syntax, errors in params."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-401000",
+                      "title": "Forbidden",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-403000",
+                      "title": "Forbidden",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Forbidden, user did not authenticate."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-404000",
+                      "title": "url path not found",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-409000",
+                      "title": "Conflict",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Conflicted request. Report aborted."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "HTTP-429",
+                      "title": "Too Many Requests",
+                      "detail": "The user has sent too frequent requests which resulted in an undesired response code (\"error rate limiting\")"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Too many request. Indicates the user has sent too many requests in a given amount of time, aka \"rate limiting\"."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-500000",
+                      "title": "Internal server error",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "01562a37-23e3-4b43-865d-84c26122276c"
+            },
+            "required": true,
+            "description": "Identifier of the request."
+          }
+        ],
+        "operationId": "getStatus",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/build"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "AppError": {
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "11ecf638-0be4-4b94-a9e6-91218f34e175",
+            "description": "app id"
+          },
+          "method": {
+            "type": "string",
+            "example": "GetObject",
+            "description": "The method that is failing."
+          },
+          "parameters": {
+            "type": "object",
+            "description": "Parameters of method that fails.",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Error in resource handling"
+      },
+      "AppErrors": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AppError"
+        },
+        "description": "Errors occurring when dealing with the app."
+      },
+      "CallBackAction": {
+        "properties": {
+          "httpRequest": {
+            "$ref": "#/components/schemas/HttpRequest"
+          }
+        },
+        "description": "The callback to be performed once the report is done."
+      },
+      "ChainableSelection": {
+        "required": [
+          "selectionType"
+        ],
+        "properties": {
+          "selectionType": {
+            "$ref": "#/components/schemas/ChainableSelectionType"
+          },
+          "selectionFilter": {
+            "$ref": "#/components/schemas/SelectionFilter"
+          },
+          "persistentBookmark": {
+            "$ref": "#/components/schemas/SensePersistentBookmark"
+          },
+          "temporaryBookmarkV2": {
+            "$ref": "#/components/schemas/SenseTemporaryBookmarkV2"
+          }
+        }
+      },
+      "ChainableSelectionType": {
+        "enum": [
+          "selectionFilter",
+          "persistentBookmark",
+          "temporaryBookmarkV2"
+        ],
+        "type": "string",
+        "default": "selectionFilter"
+      },
+      "ComposableTemplate": {
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "sense-image-1.0",
+              "sense-sheet-1.0"
+            ],
+            "type": "string",
+            "description": "Template type and version using semantic versioning. It must have the following name convention, dashed-separated-template-name-MAJOR.MINOR"
+          },
+          "senseImageTemplate": {
+            "$ref": "#/components/schemas/SenseImageTemplate"
+          },
+          "senseSheetTemplate": {
+            "$ref": "#/components/schemas/SenseSheetTemplate"
+          }
+        }
+      },
+      "CycleOutput": {
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "excel",
+              "pdf",
+              "html"
+            ],
+            "type": "string"
+          },
+          "pdfOutput": {
+            "$ref": "#/components/schemas/PdfOutput"
+          },
+          "excelOutput": {
+            "$ref": "#/components/schemas/ExcelOutput"
+          },
+          "namingPattern": {
+            "enum": [
+              "fieldValueWithUnderscore"
+            ],
+            "type": "string",
+            "default": "fieldValueWithUnderscore",
+            "description": "not needed at initial phase"
+          }
+        }
+      },
+      "Definitions": {
+        "properties": {
+          "selectionsByState": {
+            "type": "object",
+            "description": "It maps an ID to a selectionsByState object.",
+            "additionalProperties": {
+              "type": "object",
+              "description": "A selectionsByState definition that can be shared between templates in a composition.",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/QSelection"
+                }
+              }
+            }
+          }
+        },
+        "description": "Definitions of common properties that are shared between templates, e.g. selectionsByState can be the same for all templates within a composition of templates."
+      },
+      "DocProperties": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "author": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 10000
+          }
+        },
+        "description": "Properties of the document. In case of multiple composition, only properties specified in the composition output are taken and the ones specified in each output item are ignored."
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "$ref": "#/components/schemas/ExportErrors"
+          }
+        }
+      },
+      "ExcelOutput": {
+        "properties": {
+          "outFormat": {
+            "enum": [
+              "xlsx"
+            ],
+            "type": "string",
+            "default": "xlsx",
+            "description": "The output format of the report to be produced."
+          }
+        },
+        "description": "Output to be used to export an excel template."
+      },
+      "ExportDataOptions": {
+        "type": "object",
+        "properties": {
+          "showTitles": {
+            "type": "boolean",
+            "description": "Show Visualization Title, SubTitle, Footnote in the artifact produced"
+          },
+          "showTotals": {
+            "type": "boolean",
+            "description": "Show Visualization Totals in the artifact produced"
+          },
+          "showSelections": {
+            "type": "boolean",
+            "description": "Show the Selections Applied to the Visualization in the artifact produced"
+          }
+        }
+      },
+      "ExportError": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The unique code for the error\n\n- \"REP-400000\" Bad request. The server could not understand the request due to invalid syntax.\n- \"REP-400008\" Selections error.\n- \"REP-400009\" Maximum 16384 columns limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of columns you can download.\n- \"REP-400010\" Maximum 1048566 rows limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of rows you can download.\n- \"REP-400011\" The size of the downloaded Excel file exceed 100 MB limit. Download data in a visualization can't generate an .xlsx file due to limitations to the amount of data you can download.\n- \"REP-400015\" Bad request in enigma request. The patch value has invalid JSON format.\n- \"REP-401000\" Unauthorized. The client must authenticate itself to get the requested response.\n- \"REP-401001\" Unauthorized, bad JWT.\n- \"REP-403000\" Forbidden. The client does not have access rights to the content.\n- \"REP-403001\" App forbidden, the user does not have read permission on the app.\n- \"REP-403002\" Chart type not supported.\n- \"REP-404000\" Not found. The server can not find the requested resource.\n- \"REP-404001\" App not found, the app does not exist or it has been deleted.\n- \"REP-404002\" Chart not found, the chart does not exist or it has been deleted.\n- \"REP-404003\" Sheet not found, the sheet does not exist or it has been deleted or it is unavailable.\n- \"REP-404004\" Story not found, the story does not exist or it has been deleted or it is unavailable.\n- \"REP-429000\" Too many request. The user has sent too many requests in a given amount of time (\"rate limiting\").\n- \"REP-429012\" Exceeded max session tenant quota. A tenant has opened too many different sessions at the same time.\n- \"REP-429014\" The export could not be completed within the requested deadline.\n- \"REP-429016\" Exceeded max session tenant quota per day.\n- \"REP-500000\" Fail to resolve resource.\n- \"REP-500006\" Fail to get report session parameters.\n- \"REP-503005\" Engine unavailable, qix-sessions error no engines available.\n- \"REP-503013\" Session unavailable. The engine session used to create the report is unavailable.\n- \"REP-500100\" Image rendering generic error on Sense client.\n- \"REP-500101\" Image rendering could not set cookies error on Sense client.\n- \"REP-400102\" Image rendering invalid strategy error on Sense client.\n- \"REP-500103\" Image rendering JS timeout error on Sense client.\n- \"REP-500104\" Image rendering load URL timeout error on Sense client.\n- \"REP-500105\" Image rendering max paint attempts exceeded error on Sense client.\n- \"REP-500106\" Image rendering max JS attempts exceeded error on Sense client.\n- \"REP-500107\" Image rendering render timeout error on Sense client.\n- \"REP-500108\" Image rendering JS failure due to timeout error on Sense client.\n- \"REP-500109\" Image rendering generic JS failure error on Sense client.\n- \"REP-400029\" Reload Entitlement Limit Reached.\n- \"REP-409046\" Report aborted due to app reload.\n- \"REP-500047\" Error setting GroupState.\n- \"REP-403048\" Forbidden. User does not have permission to export the report (access control usePermission)\n- \"REP-422051\" There is no report to produce due to empty dataset or missing fields (the measure/dimension was removed or omitted in Section Access)\n- \"REP-500014\" The app did not open within 10 minutes.\n- \"REP-400017\" Static App size exceeded.\n- \"REP-400018\" Excel string length exceeded.\n- \"REP-403019\" Export is not available for app with enabled directQuery feature.\n- \"REP-409001\" App conflict.\n- \"REP-503001\" Rest Engine Error.\n- \"REP-400020\" Invalid Issuer.\n- \"REP-400028\" Invalid Tags.\n- \"REP-409021\" Reload timestamp constraint not met.\n- \"REP-429022\" Enigma generic abort.\n- \"REP-500023\" Validate Report Request Tags failure.\n- \"REP-400024\" Cannot extract claims from JWT.\n- \"REP-403025\" No entitlement to perform the operation.\n- \"REP-403026\" No entitlement to perform the operation. Export capability is off.\n- \"REP-403027\" Object without Hypercube or unsupported object type.\n- \"REP-422030\" Apply variables error.\n- \"REP-500200\" Report Generator error.\n- \"REP-400035\" Multiple selections detected in a field having OneAndOnlyone attribute.\n- \"REP-400036\" No selection detected in a field having OneAndOnlyone attribute.\n- \"REP-400037\" Max number of images exceeded in a report.\n- \"REP-400038\" Max number of nested levels exceeded in report.\n- \"REP-400039\" Max number of objects exceeded in a report.\n- \"REP-400040\" Max number of templates exceeded in a report.\n- \"REP-400041\" Unsupported dimension type for level tag.\n- \"REP-500240\" Engine Global generic closure error.\n- \"REP-500260\" Engine Websocket generic closure error.\n- \"REP-500280\" Engine proxy generic closure error.\n- \"REP-400240\" Engine Client Global generic closure error\n- \"REP-400260\" Engine Client generic closure error.\n- \"REP-400280\" Engine Client proxy generic closure error.\n- \"REP-500045\" Failure setting Bookmark timestamp.\n- \"REP-400050\" Error retrieving outputs.\n- \"REP-400052\" Report Request Aborted from internal error.\n- \"REP-500053\" Unexpected number of generated cycle reports.\n- \"REP-400054\" The number of generated cycle reports exceeds the maximum allowed.\n- \"REP-400055\" Export options not allowed for this object.\n"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/MetaExportError"
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary in english explaining what went wrong."
+          },
+          "detail": {
+            "type": "string",
+            "description": "Optional. MAY be used to provide more concrete details."
+          }
+        },
+        "description": "Error occured during report generation."
+      },
+      "ExportErrors": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ExportError"
+        },
+        "description": "Errors occured during report generation."
+      },
+      "Float64": {
+        "type": "number",
+        "format": "float64",
+        "x-go-type": {
+          "type": "Float64",
+          "import": {
+            "alias": "cModels",
+            "package": "github.com/qlik-trial/reporting-service/v10/pkg/models"
+          }
+        }
+      },
+      "HttpRequest": {
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "URI of the request."
+          }
+        },
+        "description": "Http callback. The provided uri will be called once the report is done."
+      },
+      "ImageOutput": {
+        "properties": {
+          "outDpi": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 1000,
+            "description": "Image resolution in DPI (default 96 DPI)."
+          },
+          "outZoom": {
+            "type": "number",
+            "format": "float",
+            "description": "The scale factor to be applied in image scaling. A zoom greater than 5 will not be applied to the device pixel ratio which will remain fixed at 5."
+          },
+          "outFormat": {
+            "enum": [
+              "png",
+              "jsondata"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "The image format of the report to be produced."
+          }
+        },
+        "description": "Output to be used to export a single visualization as image."
+      },
+      "Meta": {
+        "properties": {
+          "outputTtl": {
+            "type": "string",
+            "format": "iso8601",
+            "example": "PT1H",
+            "description": "Time to live of the final result artifacts in ISO8601 duration format. After that duration the request and underlying output files will not be guaranteed to be available. Default is 1 hour."
+          },
+          "exportDeadline": {
+            "type": "string",
+            "format": "iso8601",
+            "example": "P0Y0M0DT0H2M0S",
+            "description": "The maximum interval, starting from the time the API request is received, within which a report must be produced, past this interval the report generation fails. The default value is 10 minutes, the maximum allowed value is 4 hours."
+          }
+        },
+        "description": "Define the request metadata. It includes priority, deadline and future settings on execution policy of the request."
+      },
+      "MetaExportError": {
+        "properties": {
+          "appErrors": {
+            "$ref": "#/components/schemas/AppErrors"
+          },
+          "selectionErrors": {
+            "$ref": "#/components/schemas/SelectionErrors"
+          }
+        },
+        "description": "Define the export error metadata. Each property is filled if it is related to the export error type."
+      },
+      "NxPatch": {
+        "required": [
+          "qOp",
+          "qPath"
+        ],
+        "properties": {
+          "qOp": {
+            "enum": [
+              "add",
+              "remove",
+              "replace"
+            ],
+            "type": "string",
+            "example": "add"
+          },
+          "qPath": {
+            "type": "string",
+            "description": "Path to the property to add, remove or replace."
+          },
+          "qValue": {
+            "type": "string",
+            "description": "Corresponds to the value of the property to add or to the new value of the property to update."
+          }
+        },
+        "description": "Patches to apply to sense charts. Patches are soft properties meaning that are not persistent and they live within a session."
+      },
+      "OutputItem": {
+        "example": {
+          "type": "pdf",
+          "outputId": "output1",
+          "pdfOutput": {
+            "size": "A4",
+            "align": {
+              "vertical": "middle",
+              "horizontal": "center"
+            },
+            "resizeData": {
+              "fit": "210mmx287mm"
+            },
+            "resizeType": "fit",
+            "orientation": "P",
+            "imageRenderingDpi": 300
+          }
+        },
+        "required": [
+          "outputId",
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "image",
+              "pdf",
+              "xlsx",
+              "jsondata",
+              "pdfcomposition",
+              "excel",
+              "pptx",
+              "pptxcomposition",
+              "csv",
+              "cycle",
+              "html"
+            ],
+            "type": "string",
+            "description": "The generated report type.\n\nEach template type supports specific output types:\n   - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n   - sense-excel-template-1.0 supports only excel and pdf output type\n   - sense-image-1.0 supports pdf, pptx and image output types\n   - sense-sheet-1.0 supports pdf and pptx output type\n   - sense-data-1.0 supports xlsx output type\n\nEach output type requires a specific output to be provided:\n   - excel requires excelOutput to be set\n   - pdfcomposition requires pdfCompositionOutput to be set\n   - pptxcomposition requires pptxCompositionOutput to be set\n   - pdf requires pdfOutput to be set\n   - pptx requires pptxOutput to be set\n   - image requires imageOutput to be set\n   - csv doesn't have csv output\n   - xlsx requires xlsxOutput to be set\n"
+          },
+          "outputId": {
+            "type": "string",
+            "example": "output1",
+            "maxLength": 1000,
+            "description": "The output identifier which uniquely identifies an output (PDF, image etc.) within the same request. It does not need to be a GUID. No spaces and colons are allowed in the outputId string."
+          },
+          "pdfOutput": {
+            "$ref": "#/components/schemas/PdfOutput"
+          },
+          "pptxOutput": {
+            "$ref": "#/components/schemas/PptxOutput"
+          },
+          "cycleOutput": {
+            "$ref": "#/components/schemas/CycleOutput"
+          },
+          "excelOutput": {
+            "$ref": "#/components/schemas/ExcelOutput"
+          },
+          "imageOutput": {
+            "$ref": "#/components/schemas/ImageOutput"
+          },
+          "callBackAction": {
+            "$ref": "#/components/schemas/CallBackAction"
+          },
+          "pdfCompositionOutput": {
+            "$ref": "#/components/schemas/PdfCompositionOutput"
+          },
+          "pptxCompositionOutput": {
+            "$ref": "#/components/schemas/PptxCompositionOutput"
+          }
+        }
+      },
+      "PdfCompositionOutput": {
+        "properties": {
+          "pdfOutputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdfOutput"
+            },
+            "description": "The ordered list of PDF outputs, the number must match the composable templates."
+          },
+          "properties": {
+            "$ref": "#/components/schemas/DocProperties"
+          }
+        },
+        "description": "Output to be used to export a composition of templates as pdf."
+      },
+      "PdfOutput": {
+        "properties": {
+          "size": {
+            "enum": [
+              "A1",
+              "A2",
+              "A3",
+              "A4",
+              "A5",
+              "A6",
+              "Letter",
+              "Legal",
+              "Tabloid"
+            ],
+            "type": "string",
+            "default": "A4",
+            "description": "Size of the pdf page."
+          },
+          "align": {
+            "type": "object",
+            "properties": {
+              "vertical": {
+                "enum": [
+                  "top",
+                  "middle",
+                  "bottom"
+                ],
+                "type": "string",
+                "default": "top"
+              },
+              "horizontal": {
+                "enum": [
+                  "left",
+                  "center",
+                  "right"
+                ],
+                "type": "string",
+                "default": "left"
+              }
+            },
+            "description": "Content alignment."
+          },
+          "properties": {
+            "$ref": "#/components/schemas/DocProperties"
+          },
+          "resizeData": {
+            "type": "object",
+            "properties": {
+              "fit": {
+                "type": "string",
+                "example": "297mmx210mm",
+                "description": "The size of the area in the following format \"{width}{cm|mm}x{height}{cm|mm}\" (e.g. \"297mmx210mm\"). Please remember that PDF page orientation (landscape or portrait) should match the width and height set for this field (eg. A4 landscape is \"297mmx210mm\", A4 portrait is \"210mmx287mm\"). Note that the minimum printable area is 1.5cmx1.5cm (corresponding to 0.6x0.6 inches at 96 DPI)."
+              }
+            },
+            "description": "The area where the object (eg. sheet, chart) is printed. Required in case of \"fit\" resizeType."
+          },
+          "resizeType": {
+            "enum": [
+              "none",
+              "autofit",
+              "fit"
+            ],
+            "type": "string",
+            "default": "none",
+            "description": "The type of resize to be performed:\n  - none is used to export a visualization, sheet or story as is (e.g. normal size), regardless of its size. This may result in cropping.\n  - autofit automatically fits the visualization, sheet or story into the output size (i.e. A4, A3 etc.). Any provided resizeData parameter will be ignored for this configuration.\n  - fit fits the visualization, sheet or story into the area specified in resizeData. The content will be rescaled to fit in that area.\n"
+          },
+          "orientation": {
+            "enum": [
+              "P",
+              "L",
+              "A"
+            ],
+            "type": "string",
+            "default": "P",
+            "description": "P for portrait, L for landscape and A for auto-detect. Auto-detect sets the orientation depending on the content width and height proportions: if content width > height the orientation is automatically set to landscape, portrait otherwise."
+          },
+          "imageRenderingDpi": {
+            "type": "number",
+            "format": "int32",
+            "default": 300,
+            "maximum": 1000,
+            "x-nullable": true,
+            "description": "This value is used for rendered images only, set to a default of 300 dpi."
+          }
+        },
+        "description": "Output to be used to export a single visualization, a sheet, Sense Excel template as pdf. For Sense Excel template (sense-excel-template-1.0) no properties are needed, any property specified has no effect."
+      },
+      "PptxCompositionOutput": {
+        "properties": {
+          "pptxOutput": {
+            "$ref": "#/components/schemas/PptxOutput"
+          }
+        },
+        "description": "Output to be used to export a composition of templates as pptx."
+      },
+      "PptxOutput": {
+        "properties": {
+          "size": {
+            "enum": [
+              "Widescreen",
+              "OnScreen",
+              "OnScreen16x9",
+              "OnScreen16x10"
+            ],
+            "type": "string",
+            "default": "Widescreen",
+            "description": "Size of the PowerPoint slide:\n  - Widescreen: 960x540\n  - OnScreen: 720x540\n  - OnScreen16x9: 720x405\n  - OnScreen16x10: 720x450\n"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/DocProperties"
+          },
+          "resizeType": {
+            "enum": [
+              "autofit"
+            ],
+            "type": "string",
+            "default": "autofit",
+            "description": "The type of resize to be performed. Autofit automatically fits the visualization, sheet or story into the output size (i.e. Widescreen, OnScreen etc.).\n"
+          },
+          "orientation": {
+            "enum": [
+              "L",
+              "P",
+              "A"
+            ],
+            "type": "string",
+            "default": "L",
+            "description": "L for landscape, P for portrait and A for auto-detect. Auto-detect sets landscape, the default PowerPoint orientation."
+          },
+          "imageRenderingDpi": {
+            "type": "number",
+            "format": "int32",
+            "default": 300,
+            "maximum": 1000,
+            "x-nullable": true,
+            "description": "This value is used for rendered images only, set to a default of 300 dpi."
+          }
+        },
+        "description": "Output to be used to export a single visualization or a sheet as PowerPoint presentation."
+      },
+      "QFieldValue": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "2021",
+            "description": "String value of the field value."
+          },
+          "number": {
+            "$ref": "#/components/schemas/Float64"
+          },
+          "isNumeric": {
+            "type": "boolean",
+            "example": true,
+            "x-nullable": true,
+            "description": "IsNumeric tells whether the field value is text or number. Default value is equal to defaultIsNumeric property in QSelection."
+          }
+        },
+        "description": "In order to apply a selection just one of text/number needs to be set, this must be associated with the correct isNumeric bool. In some scenarios both text and number may be set."
+      },
+      "QSelection": {
+        "required": [
+          "fieldName",
+          "values",
+          "defaultIsNumeric"
+        ],
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QFieldValue"
+            },
+            "maxItems": 150000,
+            "description": "The values of the field to be selected."
+          },
+          "fieldName": {
+            "type": "string",
+            "example": "Year",
+            "description": "The name of the field to be selected."
+          },
+          "defaultIsNumeric": {
+            "type": "boolean",
+            "example": true,
+            "description": "Default value that QFieldValue isNumeric property takes if missing."
+          }
+        }
+      },
+      "Reason": {
+        "properties": {
+          "traceId": {
+            "type": "string",
+            "example": "00000000000000000000000000000000"
+          },
+          "outputId": {
+            "type": "string",
+            "example": "output1",
+            "description": "The output identifier which uniquely identifies an output (PDF, image etc.) within the same request."
+          },
+          "exportErrors": {
+            "$ref": "#/components/schemas/ExportErrors"
+          }
+        }
+      },
+      "reloadTimestampMatchType": {
+        "enum": [
+          "noCheck",
+          "requestTimeExact"
+        ],
+        "type": "string",
+        "default": "noCheck",
+        "example": "noCheck",
+        "description": "Choose the reloadTimestamp constraint to apply. An empty value leads to the default noCheck."
+      },
+      "ReportRequest": {
+        "example": {
+          "type": "composition-1.0",
+          "output": {
+            "type": "pdfcomposition",
+            "outputId": "composition1",
+            "pdfCompositionOutput": {
+              "pdfOutputs": [
+                {
+                  "size": "A4",
+                  "align": {
+                    "vertical": "middle",
+                    "horizontal": "center"
+                  },
+                  "resizeType": "autofit",
+                  "orientation": "A"
+                },
+                {
+                  "size": "A4",
+                  "align": {
+                    "vertical": "middle",
+                    "horizontal": "center"
+                  },
+                  "resizeType": "autofit",
+                  "orientation": "A"
+                }
+              ]
+            }
+          },
+          "definitions": {
+            "selectionsByState": {
+              "sel1": {
+                "$": [
+                  {
+                    "values": [
+                      {
+                        "text": "Arizona",
+                        "isNumeric": false
+                      }
+                    ],
+                    "fieldName": "Region",
+                    "defaultIsNumeric": false
+                  }
+                ]
+              }
+            }
+          },
+          "compositionTemplates": [
+            {
+              "type": "sense-sheet-1.0",
+              "senseSheetTemplate": {
+                "appId": "2451e58e-a1b9-4047-abf6-315e91d8a610",
+                "sheet": {
+                  "id": "5ffe3801-1b6d-439d-a849-84d0748358f1"
+                },
+                "selectionsByStateDef": "sel1"
+              }
+            },
+            {
+              "type": "sense-sheet-1.0",
+              "senseSheetTemplate": {
+                "appId": "2451e58e-a1b9-4047-abf6-315e91d8a610",
+                "sheet": {
+                  "id": "ffrxJyA"
+                },
+                "selectionsByStateDef": "sel1"
+              }
+            }
+          ]
+        },
+        "required": [
+          "type",
+          "output"
+        ],
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "type": {
+            "enum": [
+              "composition-1.0",
+              "sense-image-1.0",
+              "sense-data-1.0",
+              "sense-sheet-1.0",
+              "sense-story-1.0",
+              "qv-data-1.0",
+              "qv-data-2.0",
+              "sense-excel-template-1.0",
+              "sense-pixel-perfect-template-1.0",
+              "sense-html-template-1.0"
+            ],
+            "type": "string",
+            "description": "Template type and version using semantic versioning. It must have the following name convention: dashed-separated-template-name-MAJOR.MINOR.\nPlease note that sense-html-template-1.0, sense-story-x.0 and qv-data-x.0 are only for internal use.\n\nEach type requires a specific template to be provided:\n  - composition-1.0 requires compositionTemplates to be set\n  - sense-excel-template-1.0 requires senseExcelTemplate to be set\n  - sense-image-1.0 requires senseImageTemplate to be set\n  - sense-sheet-1.0 requires senseSheetTemplate to be set\n  - sense-data-1.0 requires senseDataTemplate to be set\n  - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n\nEach template type supports specific output types:\n  - composition-1.0 supports pdfcomposition and pptxcomposition output type\n  - sense-excel-template-1.0 supports excel and pdf output type\n  - sense-image-1.0 supports pdf, pptx and png output types\n  - sense-sheet-1.0 supports pdf, pptx output type\n  - sense-data-1.0 supports xlsx output type\n  - sense-pixel-perfect-template-1.0 supports pdf output types\n\nEach output type requires a specific output to be provided:\n  - pdfcomposition requires pdfCompositionOutput to be set\n  - pptxcomposition requires pptxCompositionOutput to be set\n  - pdf requires pdfOutput to be set\n  - pptx requires pptxOutput to be set\n  - image requires imageOutput to be set\n  - xlsx requires xlsxOutput to be set\n"
+          },
+          "output": {
+            "$ref": "#/components/schemas/OutputItem"
+          },
+          "definitions": {
+            "$ref": "#/components/schemas/Definitions"
+          },
+          "senseDataTemplate": {
+            "$ref": "#/components/schemas/SenseDataTemplate"
+          },
+          "senseHtmlTemplate": {
+            "$ref": "#/components/schemas/SenseFileTemplate"
+          },
+          "senseExcelTemplate": {
+            "$ref": "#/components/schemas/SenseFileTemplate"
+          },
+          "senseImageTemplate": {
+            "$ref": "#/components/schemas/SenseImageTemplate"
+          },
+          "senseSheetTemplate": {
+            "$ref": "#/components/schemas/SenseSheetTemplate"
+          },
+          "compositionTemplates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ComposableTemplate"
+            },
+            "minItems": 1,
+            "description": "Composition of senseSheetTemplate and/or senseImageTemplate templates."
+          },
+          "requestCallBackAction": {
+            "$ref": "#/components/schemas/CallBackAction"
+          },
+          "sensePixelPerfectTemplate": {
+            "$ref": "#/components/schemas/SenseFileTemplate"
+          }
+        }
+      },
+      "ReportStatus": {
+        "type": "object",
+        "example": {
+          "status": "done",
+          "results": [
+            {
+              "location": "https://qlikcloud.com:443/api/v1/temp-contents/619baab68023910001efcb86?inline=1",
+              "outputId": "output1"
+            }
+          ],
+          "statusLocation": "/reports/01562a37-23e3-4b43-865d-84c26122276c/status",
+          "resolutionAttempts": 1
+        },
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "queued",
+              "processing",
+              "done",
+              "failed",
+              "aborted",
+              "visiting",
+              "aborting"
+            ],
+            "type": "string",
+            "example": "processing",
+            "description": "Status of the requested report."
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reason"
+            },
+            "deprecated": true,
+            "description": "Present when status is failed. Deprecated. Use /reports/{id}/outputs instead.",
+            "x-qlik-deprecated": true
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Result"
+            },
+            "deprecated": true,
+            "description": "Present when the status is \"done\". Deprecated. Use /reports/{id}/outputs instead.",
+            "x-qlik-deprecated": true
+          },
+          "requestErrors": {
+            "$ref": "#/components/schemas/ExportErrors"
+          },
+          "statusLocation": {
+            "type": "string",
+            "format": "uri",
+            "example": "/reports/c86132d2-109e-47c5-bccc-83c5d3a40185/status",
+            "description": "Relative path to status location."
+          },
+          "resolutionAttempts": {
+            "type": "integer",
+            "format": "int32",
+            "example": 2,
+            "description": "Count how many times the resolution of this report was attempted."
+          }
+        }
+      },
+      "Result": {
+        "type": "object",
+        "required": [
+          "outputId",
+          "location"
+        ],
+        "properties": {
+          "location": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://t.eu.qlikcloud.com:443/api/v1/temp-contents/619b77be498fea00018de0e1?inline=1",
+            "description": "Location to download the generated report."
+          },
+          "outputId": {
+            "type": "string",
+            "example": "output1",
+            "description": "The output identifier which uniquely identifies an output (PDF, image etc.) within the same request."
+          },
+          "exportErrors": {
+            "$ref": "#/components/schemas/ExportErrors"
+          }
+        },
+        "description": "Result and info about the generated report."
+      },
+      "SelectionChain": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ChainableSelection"
+        },
+        "maxItems": 50,
+        "minItems": 1,
+        "description": "Array of ChainableSelection"
+      },
+      "SelectionError": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "description": "Details about the field selection error."
+          },
+          "errorType": {
+            "enum": [
+              "fieldMissing",
+              "fieldValuesMissing",
+              "stateMissing",
+              "groupStateGroupMissing",
+              "groupStateGroupNotApplicable",
+              "groupStateFieldDefMissing"
+            ],
+            "type": "string"
+          },
+          "fieldName": {
+            "type": "string",
+            "example": "Year",
+            "description": "The field name that is missing."
+          },
+          "stateName": {
+            "type": "string",
+            "description": "The state name that is missing."
+          },
+          "missingValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QFieldValue"
+            }
+          },
+          "isFieldNameMissing": {
+            "type": "boolean",
+            "example": false,
+            "description": "Deprecated, use errorType instead. True if the fieldName is missing. The missingValues array is empty in this case",
+            "x-qlik-deprecated": true
+          }
+        },
+        "description": "Selection error related to a fieldName. The field name is missing or some of his selection values are missing or a state is missing"
+      },
+      "SelectionErrors": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SelectionError"
+        },
+        "description": "Errors occurring in selections."
+      },
+      "SelectionFilter": {
+        "properties": {
+          "variables": {
+            "type": "array",
+            "maxItems": 1100
+          },
+          "patchesById": {
+            "type": "object",
+            "description": "A map for applying soft properties, aka patches, to specific visualization IDs within the sheet.",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/NxPatch"
+              },
+              "maxItems": 100
+            }
+          },
+          "selectionsByState": {
+            "type": "object",
+            "description": "Map of selections to apply by state. Maximum number of states allowed is 125. Maximum number of fields allowed is 125 and Maximum number of overall field values allowed is 150000.",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QSelection"
+              },
+              "maxItems": 125
+            }
+          }
+        }
+      },
+      "SelectionStrategy": {
+        "enum": [
+          "failOnErrors",
+          "ignoreErrorsReturnDetails",
+          "ignoreErrorsNoDetails"
+        ],
+        "type": "string",
+        "default": "ignoreErrorsNoDetails"
+      },
+      "SenseDataTemplate": {
+        "required": [
+          "appId",
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "QbtwdFg",
+            "description": "Sense visualization id. Visualizations created \"on the fly\" are not supported."
+          },
+          "appId": {
+            "type": "string"
+          },
+          "patches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NxPatch"
+            },
+            "maxItems": 100
+          },
+          "variables": {
+            "type": "array",
+            "maxItems": 1100
+          },
+          "exportOptions": {
+            "$ref": "#/components/schemas/ExportDataOptions"
+          },
+          "selectionType": {
+            "$ref": "#/components/schemas/SenseSelectionType"
+          },
+          "selectionStrategy": {
+            "$ref": "#/components/schemas/SelectionStrategy"
+          },
+          "selectionsByState": {
+            "type": "object",
+            "description": "Map of selections to apply by state. Maximum number of states allowed is 125. Maximum number of fields allowed is 125 and maximum number of overall field values allowed is 150000.",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QSelection"
+              },
+              "maxItems": 125
+            }
+          },
+          "persistentBookmark": {
+            "$ref": "#/components/schemas/SensePersistentBookmark"
+          },
+          "temporaryBookmarkV2": {
+            "$ref": "#/components/schemas/SenseTemporaryBookmarkV2"
+          },
+          "reloadTimestampMatchType": {
+            "$ref": "#/components/schemas/reloadTimestampMatchType"
+          }
+        }
+      },
+      "SenseFileTemplate": {
+        "required": [
+          "templateLocation"
+        ],
+        "properties": {
+          "jsOpts": {
+            "type": "object",
+            "description": "A JSON object that is passed as-is to the mashup page while rendering, this will be applied to all charts within the sheet. It includes properties of the whole sheet such as theme, gradient etc. Currently only the \"theme\" and \"language\" properties are supported."
+          },
+          "cycleFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 3,
+            "description": "The values of the field to be selected."
+          },
+          "selectionChain": {
+            "$ref": "#/components/schemas/SelectionChain"
+          },
+          "templateLocation": {
+            "$ref": "#/components/schemas/TemplateLocation"
+          },
+          "reloadTimestampMatchType": {
+            "$ref": "#/components/schemas/reloadTimestampMatchType"
+          }
+        },
+        "description": "Used to produce reports from a template file."
+      },
+      "SenseImageTemplate": {
+        "required": [
+          "appId",
+          "visualization"
+        ],
+        "properties": {
+          "appId": {
+            "type": "string"
+          },
+          "selectionType": {
+            "$ref": "#/components/schemas/SenseSelectionType"
+          },
+          "visualization": {
+            "$ref": "#/components/schemas/Visualization"
+          },
+          "selectionStrategy": {
+            "$ref": "#/components/schemas/SelectionStrategy"
+          },
+          "selectionsByState": {
+            "type": "object",
+            "description": "Map of selections to apply by state. Maximum number of states allowed is 125. Maximum number of fields allowed is 125 and maximum number of overall field values allowed is 150000.",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QSelection"
+              },
+              "maxItems": 125
+            }
+          },
+          "persistentBookmark": {
+            "$ref": "#/components/schemas/SensePersistentBookmark"
+          },
+          "temporaryBookmarkV2": {
+            "$ref": "#/components/schemas/SenseTemporaryBookmarkV2"
+          },
+          "selectionsByStateDef": {
+            "type": "string",
+            "x-nullable": true,
+            "description": "The definition ID referring to a selectionsByState definition declared in definitions."
+          },
+          "reloadTimestampMatchType": {
+            "$ref": "#/components/schemas/reloadTimestampMatchType"
+          }
+        },
+        "description": "Used to export a single visualization as pdf, pptx or png."
+      },
+      "SensePersistentBookmark": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "21edf789-0be4-4b94-a9e6-31456kl4e175",
+            "description": "Sense Persistence Bookmark id."
+          }
+        }
+      },
+      "SenseSelectionType": {
+        "enum": [
+          "selectionsByState",
+          "temporaryBookmark",
+          "persistentBookmark",
+          "temporaryBookmarkV2"
+        ],
+        "type": "string",
+        "default": "selectionsByState"
+      },
+      "SenseSheetTemplate": {
+        "required": [
+          "appId",
+          "sheet"
+        ],
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "11ecf638-0be4-4b94-a9e6-91218f34e175"
+          },
+          "sheet": {
+            "$ref": "#/components/schemas/Sheet"
+          },
+          "selectionType": {
+            "$ref": "#/components/schemas/SenseSelectionType"
+          },
+          "selectionStrategy": {
+            "$ref": "#/components/schemas/SelectionStrategy"
+          },
+          "selectionsByState": {
+            "type": "object",
+            "description": "Map of selections to apply by state. Maximum number of states allowed is 125. Maximum number of fields allowed is 125 and maximum number of overall field values allowed is 150000.",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QSelection"
+              },
+              "maxItems": 125
+            }
+          },
+          "persistentBookmark": {
+            "$ref": "#/components/schemas/SensePersistentBookmark"
+          },
+          "temporaryBookmarkV2": {
+            "$ref": "#/components/schemas/SenseTemporaryBookmarkV2"
+          },
+          "selectionsByStateDef": {
+            "type": "string",
+            "x-nullable": true,
+            "description": "The definition ID referring to a selectionsByState definition declared in definitions."
+          },
+          "reloadTimestampMatchType": {
+            "$ref": "#/components/schemas/reloadTimestampMatchType"
+          }
+        },
+        "description": "Used to export a sheet as pdf or pptx."
+      },
+      "SenseTemporaryBookmarkV2": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "21edf789-0be4-4b94-a9e6-31456kl4e175",
+            "description": "Sense Temporary Bookmark id."
+          }
+        },
+        "description": "The temporary bookmark to apply. Patches and Variables are ignored if passed to the API, because they already are applied in the backend."
+      },
+      "Sheet": {
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "75a5cf3c-18fb-405d-b03e-2d7912260872",
+            "description": "The id of the sheet."
+          },
+          "jsOpts": {
+            "type": "object",
+            "description": "A JSON object that is passed as-is to the mashup page while rendering, this will be applied to all charts within the sheet. It includes properties of the whole sheet such as theme, gradient etc."
+          },
+          "widthPx": {
+            "type": "number",
+            "format": "float",
+            "example": 800,
+            "maximum": 4000,
+            "minimum": 20,
+            "x-nullable": true,
+            "description": "The width of the sheet in pixels. Default value is: - 1680 pixels for responsive sheet - 1120 pixels for extended sheet - same width set in sheet properties for custom sheet"
+          },
+          "heightPx": {
+            "type": "number",
+            "format": "float",
+            "example": 1000,
+            "maximum": 4000,
+            "minimum": 20,
+            "x-nullable": true,
+            "description": "The height of the sheet in pixels. Default value is: - 1120 pixels for responsive sheet - 1680 pixels for extended sheet - same height set in sheet properties for custom sheet"
+          },
+          "jsOptsById": {
+            "type": "object",
+            "description": "A map for applying jsOpts to specific visualization IDs within the sheet.",
+            "additionalProperties": {
+              "type": "object",
+              "description": "A JSON object that is passed as-is to the mashup page while rendering."
+            }
+          },
+          "patchesById": {
+            "type": "object",
+            "description": "A map for applying soft properties, aka patches, to specific visualization IDs within the sheet.",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/NxPatch"
+              },
+              "maxItems": 100
+            }
+          }
+        },
+        "description": "It refers to the Sense Sheet to be exported. Note that if widthPx and heightPx are not specified, default values will be applied depending on the actual size and layout properties of the Sense Sheet object."
+      },
+      "TemplateLocation": {
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "example": "https://qlikcloud.com:443/api/v1/report-templates/223940f7-3170-46b7-91ea-e0c81230adf7",
+            "description": "The report template location path."
+          },
+          "format": {
+            "enum": [
+              "url"
+            ],
+            "type": "string",
+            "default": "url"
+          }
+        },
+        "description": "The location of the report template. Currently it can be an absolute or relative URL to a persisted report template, or to a template file saved as temporary content, as in the following examples: - https://qlikcloud.com:443/api/v1/report-templates/223940f7-3170-46b7-91ea-e0c81230adf7 - https://qlikcloud.com:443/api/v1/temp-contents/653bb4acae966r0730da15fc"
+      },
+      "Visualization": {
+        "required": [
+          "id",
+          "widthPx",
+          "heightPx"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "QbtwdFg",
+            "description": "The sense visualization id or json definition."
+          },
+          "type": {
+            "enum": [
+              "visualization",
+              "sessionobject"
+            ],
+            "type": "string",
+            "example": "visualization",
+            "description": "Choose visualization to export an image of a sense chart, sessionobject for a visualization to be created on-the-fly. An empty value leads to the type being inferred by its id."
+          },
+          "jsOpts": {
+            "type": "object",
+            "description": "A JSON object that is passed as-is to the mashup page while rendering."
+          },
+          "patches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NxPatch"
+            },
+            "maxItems": 100,
+            "description": "Soft properties, aka patches, to be applied to the visualization."
+          },
+          "widthPx": {
+            "type": "number",
+            "format": "float",
+            "example": 400,
+            "maximum": 4000,
+            "minimum": 5,
+            "description": "Width in pixels."
+          },
+          "heightPx": {
+            "type": "number",
+            "format": "float",
+            "example": 500,
+            "maximum": 4000,
+            "minimum": 5,
+            "description": "Height in pixels."
+          }
+        }
+      }
+    }
+  }
+}

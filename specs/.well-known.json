@@ -1,0 +1,89 @@
+{
+  "info": {
+    "title": ".well-known",
+    "version": ""
+  },
+  "paths": {
+    "/.well-known/oauth-authorization-server": {
+      "get": {
+        "tags": [
+          "metadata"
+        ],
+        "summary": "Get authorization server metadata",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oauth-metadata"
+                }
+              }
+            },
+            "description": "Returns authorization server metadata."
+          }
+        },
+        "description": "Returns authorization server metadata.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/authenticate"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "oauth-metadata": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "example": "https://your-tenant.us.qlikcloud.com",
+            "description": "The issuer of the tokens."
+          },
+          "jwks_uri": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://your-tenant.us.qlikcloud.com/.well-known/jwks.json",
+            "description": "The public keys endpoint."
+          },
+          "token_endpoint": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://your-tenant.us.qlikcloud.com/oauth/token",
+            "description": "The token endpoint."
+          },
+          "revocation_endpoint": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://your-tenant.us.qlikcloud.com/oauth/revoke",
+            "description": "The token endpoint."
+          },
+          "grant_types_supported": {
+            "type": "array",
+            "description": "List of supported grant types."
+          },
+          "authorization_endpoint": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://your-tenant.us.qlikcloud.com/oauth/authorize",
+            "description": "The authorization endpoint."
+          },
+          "response_types_supported": {
+            "type": "array",
+            "description": "List of supported authorization code responses."
+          }
+        }
+      }
+    }
+  }
+}

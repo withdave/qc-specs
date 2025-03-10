@@ -1,0 +1,130 @@
+{
+  "info": {
+    "title": "csrf-token",
+    "version": ""
+  },
+  "paths": {
+    "/v1/csrf-token": {
+      "get": {
+        "tags": [
+          "csrf"
+        ],
+        "summary": "Get CSRF token",
+        "responses": {
+          "204": {
+            "headers": {
+              "qlik-csrf-token": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "CSRF token."
+              }
+            },
+            "description": "Successfully returned token in qlik-csrf-token header"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Errors"
+                    },
+                    {
+                      "example": {
+                        "code": "CSRF-TOKEN-4",
+                        "title": "CSRF token not supported for given authentication type"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Token is not supported for the auth mechanism being used."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Errors"
+                    },
+                    {
+                      "example": {
+                        "code": "CSRF-TOKEN-3",
+                        "title": "No token found"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Token not found"
+          }
+        },
+        "description": "Returns CSRF token via the qlik-csrf-token header.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/embed"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/embed"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Non-standard information about the error"
+          },
+          "title": {
+            "type": "string",
+            "description": "The error title."
+          },
+          "detail": {
+            "type": "string",
+            "description": "The detailed error message"
+          },
+          "status": {
+            "type": "string",
+            "description": "The http status code."
+          }
+        },
+        "description": "An error object."
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        },
+        "description": "A representation of the errors encountered from the HTTP request."
+      }
+    }
+  }
+}

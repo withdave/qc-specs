@@ -1,0 +1,608 @@
+{
+  "info": {
+    "title": "ui-config",
+    "version": ""
+  },
+  "paths": {
+    "/v1/ui-config/pinned-links": {
+      "get": {
+        "tags": [
+          "Pinned Links"
+        ],
+        "summary": "List pinned links",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PinnedLink"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Pinned links retrieval was successful."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Retrieves a list of all pinned links. All users can list pinned links. This endpoint does not support pagination as a tenant can have a maximum of 50 pinned links at one time.",
+        "operationId": "getPinnedLinks",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "Pinned Links"
+        ],
+        "summary": "Create pinned link",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PinnedLink"
+                }
+              }
+            },
+            "description": "Successfully created pinned link"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse403"
+                }
+              }
+            },
+            "description": "Forbidden error response."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Creates a pinned link, which will appear below any existing pinned links in the tenant. Requires calling user to be assigned the `TenantAdmin` role. A tenant can have a maximum of 50 pinned links.",
+        "operationId": "createPinnedLink",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreatePinnedLinkPayload"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreatePinnedLinkConfigPayload"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ui-config/pinned-links/{id}": {
+      "get": {
+        "tags": [
+          "Pinned Links"
+        ],
+        "summary": "Get pinned link",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PinnedLink"
+                }
+              }
+            },
+            "description": "Pinned link retrieval was successful."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse403"
+                }
+              }
+            },
+            "description": "Forbidden error response."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The pinned link identifier."
+          }
+        ],
+        "description": "Retrieves a specific pinned link.",
+        "operationId": "getPinnedLink",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "Pinned Links"
+        ],
+        "summary": "Update pinned link",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PinnedLink"
+                }
+              }
+            },
+            "description": "Successfully updated pinned link"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse403"
+                }
+              }
+            },
+            "description": "Forbidden error response."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The pinned link identifier."
+          }
+        ],
+        "description": "Updates a specific pinned link with an array of JSON patches. Requires calling user to be assigned the `TenantAdmin` role.",
+        "operationId": "patchPinnedLink",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JSONPatchPinnedLinkPayload"
+              }
+            }
+          }
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pinned Links"
+        ],
+        "summary": "Delete pinned link",
+        "responses": {
+          "204": {
+            "description": "Successfully deleted pinned links"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse403"
+                }
+              }
+            },
+            "description": "Forbidden error response."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The pinned link identifier."
+          }
+        ],
+        "description": "Deletes a specific pinned link. Requires calling user to be assigned the `TenantAdmin` role.",
+        "operationId": "deletePinnedLink",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ui-config/pinned-links/actions/bulk-create-pinned-links": {
+      "post": {
+        "tags": [
+          "Pinned Links"
+        ],
+        "summary": "Create multiple pinned links",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PinnedLink"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Successfully created pinned links"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse403"
+                }
+              }
+            },
+            "description": "Forbidden error response."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Creates one or more pinned links for navigation, an alternative method to multiple calls to `/ui-config/pinned-links`. Links are displayed below any existing pinned links, and will be added in the order sent in the request. Requires calling user to be assigned the `TenantAdmin` role. A tenant can have a maximum of 50 pinned links.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkCreatePinnedLinkItemPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ui-config/pinned-links/actions/delete-all-pinned-links": {
+      "post": {
+        "tags": [
+          "Pinned Links"
+        ],
+        "summary": "Delete all pinned links",
+        "responses": {
+          "204": {
+            "description": "Successfully deleted all pinned links"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse403"
+                }
+              }
+            },
+            "description": "Forbidden error response."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Deletes all pinned links in the tenant. Requires calling user to be assigned the `TenantAdmin` role.",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "BulkCreatePinnedLinkItemPayload": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreatePinnedLinkConfigPayload"
+          },
+          {
+            "type": "object",
+            "required": [
+              "links"
+            ],
+            "properties": {
+              "links": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CreatePinnedLinkPayload"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CreatePinnedLinkConfigPayload": {
+        "type": "object",
+        "required": [
+          "scope",
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "custom-link"
+            ],
+            "type": "string",
+            "description": "Specifies the type of the link. Only supports `custom-link`."
+          },
+          "scope": {
+            "enum": [
+              "tenant"
+            ],
+            "type": "string",
+            "description": "Specifies the scope of the link. Only supports `tenant`."
+          }
+        }
+      },
+      "CreatePinnedLinkPayload": {
+        "type": "object",
+        "required": [
+          "name",
+          "link"
+        ],
+        "properties": {
+          "link": {
+            "type": "string",
+            "description": "The URL the user will be taken to when they click on the custom link. Must be https."
+          },
+          "name": {
+            "type": "string",
+            "description": "The title of the link, which will be shown in the navigation bar. Max length 50 characters."
+          }
+        }
+      },
+      "Error": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "Error code."
+          },
+          "message": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      },
+      "ErrorResponse403": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-403"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Forbidden"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "You don't have sufficient permissions to access this resource."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "JSONPatchPinnedLinkPayload": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "op",
+            "path",
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string"
+            },
+            "path": {
+              "enum": [
+                "/name",
+                "/link"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "type": "string",
+              "example": "https://updatedlink.com",
+              "description": "The value to be used for this operation."
+            }
+          }
+        }
+      },
+      "PinnedLink": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "tenantId",
+          "createdAt",
+          "createdBy",
+          "scope",
+          "link",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "custom-link"
+            ],
+            "type": "string"
+          },
+          "scope": {
+            "enum": [
+              "user",
+              "tenant"
+            ],
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

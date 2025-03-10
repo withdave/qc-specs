@@ -1,0 +1,913 @@
+{
+  "info": {
+    "title": "reload-tasks",
+    "version": ""
+  },
+  "paths": {
+    "/v1/reload-tasks": {
+      "get": {
+        "tags": [
+          "reload-tasks"
+        ],
+        "summary": "Find and return tasks\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tasks"
+                }
+              }
+            },
+            "description": "Expected response to a valid request."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow for retrieval of this task."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Too Many Requests."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Service Unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "appId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The case sensitive string used to search for a task by app ID."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of resources to return for a request. The limit must be an integer between 1 and 100 (inclusive)."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the next page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "query",
+            "name": "partial",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "The boolean value used to search for a task is partial or not"
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the previous page of resources. Provide either the next or prev cursor, but not both."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Finds and returns the tasks that the user has access to.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "reload-tasks"
+        ],
+        "summary": "Create a task \n",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            },
+            "description": "Expected response to a valid request."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow for retrieval of this task."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Service Unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Creates a task for a specified app.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostTaskBody"
+              }
+            }
+          },
+          "required": true,
+          "description": "Request body specifying the task parameters."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/reload-tasks/{taskId}": {
+      "get": {
+        "tags": [
+          "reload-tasks"
+        ],
+        "summary": "Find a task\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            },
+            "description": "Expected response to a valid request."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow for creation or retrieval of this engine session."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Too Many Requests."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Service Unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier of the task."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Finds and returns a task.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "reload-tasks"
+        ],
+        "summary": "Update an existing task\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            },
+            "description": "Expected response to a valid request."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow for creation or retrieval of this engine session."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Service Unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier of the task."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Updates an existing task",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutTaskBody"
+              }
+            }
+          },
+          "required": true,
+          "description": "Request body specifying the task parameters."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "reload-tasks"
+        ],
+        "summary": "Delete a task\n",
+        "responses": {
+          "204": {
+            "description": "Task deleted successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow for creation or retrieval of this engine session."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier of the task."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Deletes a task",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "TASKS-123",
+              "title": "short error message",
+              "details": "detailed error message"
+            }
+          ],
+          "traceId": "7975401f3954aa47"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "Href": {
+        "type": "object",
+        "example": {
+          "href": "http://example.com"
+        },
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://example.com"
+          }
+        }
+      },
+      "PaginationLinks": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SelfLink"
+          },
+          {
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Href"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Href"
+              }
+            }
+          }
+        ]
+      },
+      "PostTaskBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TaskBase"
+          },
+          {
+            "required": [
+              "appId",
+              "timeZone"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "scheduled_reload"
+                ],
+                "type": "string",
+                "example": "scheduled_reload",
+                "description": "Type of task being created - only contains the \"scheduled_reload\" value. Type value is not used for creating a schedule reload. It has been deprecated since 2022-04-05.",
+                "x-qlik-deprecated": true
+              }
+            }
+          }
+        ]
+      },
+      "PutTaskBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TaskBase"
+          },
+          {
+            "properties": {
+              "state": {
+                "enum": [
+                  "Enabled",
+                  "Disabled",
+                  "Completed"
+                ],
+                "type": "string",
+                "example": "Disabled",
+                "description": "Toggle for enabling and disabling the reload task"
+              }
+            }
+          }
+        ]
+      },
+      "SelfLink": {
+        "type": "object",
+        "required": [
+          "self"
+        ],
+        "properties": {
+          "self": {
+            "$ref": "#/components/schemas/Href"
+          }
+        }
+      },
+      "Task": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TaskBase"
+          },
+          {
+            "required": [
+              "id",
+              "appId",
+              "jobId",
+              "userId",
+              "tenantId",
+              "timeZone",
+              "state",
+              "links"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "5be59decca62aa00097268a4",
+                "description": "The ID of the task."
+              },
+              "log": {
+                "type": "string",
+                "example": "Scheduled reload has been disabled since exceeded limit of 5 consecutive reload failures. Please fix error and re-enable schedule.",
+                "description": "The reason why the task was disabled.",
+                "x-qlik-deprecated": true
+              },
+              "links": {
+                "$ref": "#/components/schemas/SelfLink"
+              },
+              "state": {
+                "enum": [
+                  "Enabled",
+                  "Disabled",
+                  "Completed"
+                ],
+                "type": "string",
+                "example": "Enabled",
+                "description": "Toggle for enabling and disabling the reload task"
+              },
+              "userId": {
+                "type": "string",
+                "example": "FyPG6xWp6prDU6BXQ3g7LY9gWR_YRkkx",
+                "description": "The ID of the user who owns the task."
+              },
+              "spaceId": {
+                "type": "string",
+                "example": "602c2c2be2be220002a22a22",
+                "description": "The space ID of the application"
+              },
+              "migrated": {
+                "type": "boolean",
+                "default": false,
+                "description": "A flag indicating whether the task has been migrated to the new scheduling service."
+              },
+              "tenantId": {
+                "type": "string",
+                "example": "efSCcpNYuayTysONkUcE3F80zYQ_LV9w",
+                "description": "The ID of the tenant who owns the task."
+              },
+              "fortressId": {
+                "type": "string",
+                "example": "5c5b097116d25a0001a48b06",
+                "description": "The fortress ID of the application",
+                "x-qlik-deprecated": true
+              },
+              "disabledCode": {
+                "enum": [
+                  "MANUALLY",
+                  "CONSECUTIVE-FAILURES",
+                  "OWNER-DELETED",
+                  "OWNER-DISABLED"
+                ],
+                "type": "string",
+                "example": "CONSECUTIVE-FAILURES",
+                "description": "The reason why the task was disabled."
+              },
+              "lastExecutionTime": {
+                "type": "string",
+                "example": "2022-09-20T17:17:00Z",
+                "description": "The last time the task executed."
+              },
+              "nextExecutionTime": {
+                "type": "string",
+                "example": "2022-09-20T17:17:00Z",
+                "description": "The next time the task will execute."
+              }
+            }
+          }
+        ]
+      },
+      "TaskBase": {
+        "type": "object",
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "116dbfae-7fb9-4983-8e23-5ccd8c508722",
+            "description": "The ID of the app."
+          },
+          "partial": {
+            "type": "boolean",
+            "default": false,
+            "description": "The task is partial reload or not"
+          },
+          "timeZone": {
+            "type": "string",
+            "example": "America/Toronto",
+            "description": "The time zone in which the time is specified. (Formatted as an IANA Time Zone Database name, e.g. Europe/Zurich.) This field specifies the time zone in which the event start/end are expanded. If missing the start/end fields must specify a UTC offset in RFC3339 format."
+          },
+          "autoReload": {
+            "type": "boolean",
+            "default": false,
+            "description": "A flag that indicates whether a reload is triggered when data of the app is changed"
+          },
+          "recurrence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "RRULE:FREQ=DAILY;INTERVAL=1;BYHOUR=11;BYMINUTE=18;BYSECOND=0",
+              "RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TU;BYHOUR=13;BYMINUTE=17;BYSECOND=0"
+            ],
+            "description": "List of RECUR lines for a recurring event, as specified in RFC5545. Note that DTSTART and DTEND lines are not allowed in this field; event start and end times are specified in the start and end fields. This field is omitted for single events or instances of recurring events"
+          },
+          "endDateTime": {
+            "type": "string",
+            "example": "2022-10-12T23:59:00",
+            "description": "The time that the task will stop recurring. If the time zone is missing, this is a combined date-time value expressing a time with a fixed UTC offset (formatted according to RFC3339). If a time zone is given, the zone offset must be omitted."
+          },
+          "startDateTime": {
+            "type": "string",
+            "example": "2022-09-19T11:18:00",
+            "description": "The time that the task execution start recurring. If the time zone is missing, this is a combined date-time value expressing a time with a fixed UTC offset (formatted according to RFC3339). If a time zone is given, the zone offset must be omitted. Field startDateTime should not be before the Unix epoch 00:00:00 UTC on 1 January 1970. Note that the empty string value with the empty recurrence array indicates the scheduled job is not set."
+          },
+          "autoReloadPartial": {
+            "type": "boolean",
+            "default": false,
+            "description": "A flag that indicates whether it is a partial reload or not for the auto reload"
+          }
+        }
+      },
+      "Tasks": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          }
+        }
+      }
+    }
+  }
+}

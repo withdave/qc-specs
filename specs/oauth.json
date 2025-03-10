@@ -1,0 +1,623 @@
+{
+  "info": {
+    "title": "oauth",
+    "version": ""
+  },
+  "paths": {
+    "/oauth/authorize": {
+      "get": {
+        "tags": [
+          "oauth"
+        ],
+        "summary": "Authorize a client application",
+        "responses": {
+          "302": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Redirect to the identity provider or back to the redirect_uri if an error occurs. On error the redirect will follow the OAuth2 RFC section 4.1.2.1 (https://tools.ietf.org/html/rfc6749#section-4.1.2.1) with an additional error_code parameter with the internal error code. When a detail is known for the error it will be included as error_detail."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid client_id or redirect_uri."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "client_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The client identifier."
+          },
+          {
+            "in": "query",
+            "name": "code_challenge_method",
+            "schema": {
+              "enum": [
+                "S256"
+              ],
+              "type": "string"
+            },
+            "required": true,
+            "description": "The algorithm that client used for generating code_challenge, only S256 is supported for now."
+          },
+          {
+            "in": "query",
+            "name": "redirect_uri",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Relative or full URL to redirect to after successful login."
+          },
+          {
+            "in": "query",
+            "name": "response_type",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Describes the grant flow to use."
+          },
+          {
+            "in": "query",
+            "name": "scope",
+            "style": "spaceDelimited",
+            "schema": {
+              "enum": [
+                "user_default",
+                "offline_access"
+              ],
+              "type": "array",
+              "example": "user_default"
+            },
+            "explode": false,
+            "required": true,
+            "description": "The scope of access that is being requested."
+          },
+          {
+            "in": "query",
+            "name": "state",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "State parameter to roundtrip to client in final redirect."
+          },
+          {
+            "in": "query",
+            "name": "code_challenge",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The code challenge created by the client."
+          },
+          {
+            "in": "query",
+            "name": "max_age",
+            "schema": {
+              "type": "number"
+            },
+            "required": false,
+            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider."
+          },
+          {
+            "in": "query",
+            "name": "prompt",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication and consent."
+          }
+        ],
+        "description": "Allows a client application to use an OAuth flow to request user authorization.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/oauth/revoke": {
+      "post": {
+        "tags": [
+          "oauth"
+        ],
+        "summary": "Revoke OAuth token provided by client",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Token was revoked."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request."
+          }
+        },
+        "description": "Allows a client to revoke their token.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/oauth-revoke-request"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/oauth-revoke-request"
+              }
+            }
+          },
+          "required": true,
+          "description": "Properties of the token that the client wants to revoke."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/oauth/token": {
+      "post": {
+        "tags": [
+          "oauth"
+        ],
+        "summary": "Retrieve OAuth token",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oauth-token-response"
+                }
+              }
+            },
+            "description": "Token set created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid login or tokens, indicates that code or token used can be deleted by the client. Also could be invalid client credentials provided in Authorization header."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden because user is disabled or has reached the maximum number of tokens."
+          }
+        },
+        "description": "Allows a client to perform an OAuth flow to obtain a token set.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/oauth-client-credentials-request"
+                  },
+                  {
+                    "$ref": "#/components/schemas/oauth-refresh-request"
+                  },
+                  {
+                    "$ref": "#/components/schemas/oauth-authorization-code-request"
+                  },
+                  {
+                    "$ref": "#/components/schemas/oauth-token-exchange"
+                  },
+                  {
+                    "$ref": "#/components/schemas/oauth-user-impersonation-request"
+                  }
+                ]
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/oauth-client-credentials-request"
+                  },
+                  {
+                    "$ref": "#/components/schemas/oauth-refresh-request"
+                  },
+                  {
+                    "$ref": "#/components/schemas/oauth-authorization-code-request"
+                  },
+                  {
+                    "$ref": "#/components/schemas/oauth-token-exchange"
+                  },
+                  {
+                    "$ref": "#/components/schemas/oauth-user-impersonation-request"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/authenticate"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Non-standard information about the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "The error title."
+          },
+          "detail": {
+            "type": "string",
+            "description": "The detailed error message."
+          },
+          "status": {
+            "type": "string",
+            "description": "The http status code."
+          }
+        },
+        "description": "An error object."
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "List of errors and their properties."
+          }
+        },
+        "description": "A representation of the errors encountered from the HTTP request."
+      },
+      "oauth-authorization-code-request": {
+        "required": [
+          "grant_type",
+          "code",
+          "code_verifier",
+          "redirect_uri",
+          "client_id"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The authorization code created by the server."
+          },
+          "client_id": {
+            "type": "string",
+            "description": "The client identifier."
+          },
+          "deviceType": {
+            "type": "string",
+            "description": "The type of the user device the authorization token is generated for (Tablet, Phone etc.)."
+          },
+          "grant_type": {
+            "enum": [
+              "authorization_code"
+            ],
+            "type": "string",
+            "description": "The grant type used to exchange an authorization code for an access token."
+          },
+          "description": {
+            "type": "string",
+            "description": "A user-friendly description to distinguish between multiple tokens."
+          },
+          "redirect_uri": {
+            "type": "string",
+            "description": "The original redirect URI provided during authorization. For verification purposes only."
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "The client secret."
+          },
+          "code_verifier": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 43,
+            "description": "Required when grant_type is \"authorization_code\". The code verifier to verify original code challenge created by the client. It must be between 43 and 128 characters long and consists of [A-Z] / [a-z] / [0-9] / \"-\" / \".\" / \"_\" / \"~\""
+          }
+        }
+      },
+      "oauth-client-credentials-request": {
+        "required": [
+          "client_id",
+          "client_secret",
+          "grant_type"
+        ],
+        "properties": {
+          "scope": {
+            "type": "string",
+            "example": "user_default offline_access",
+            "description": "The scope of access that is being requested. The scope should already be assigned to the OAuth client. For a list of available scopes, visit: https://qlik.dev/authenticate/oauth/scopes/#available-scopes"
+          },
+          "client_id": {
+            "type": "string",
+            "description": "The client identifier."
+          },
+          "grant_type": {
+            "enum": [
+              "client_credentials"
+            ],
+            "type": "string",
+            "example": "client_credentials",
+            "description": "The grant type used to obtain an access token outside of the context of a user."
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "The client secret."
+          }
+        }
+      },
+      "oauth-refresh-request": {
+        "required": [
+          "grant_type",
+          "refresh_token"
+        ],
+        "properties": {
+          "grant_type": {
+            "enum": [
+              "refresh_token"
+            ],
+            "type": "string",
+            "example": "refresh_token",
+            "description": "The grant type used to exchange a refresh token for an access token."
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "The client secret."
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "The refresh token to use."
+          }
+        }
+      },
+      "oauth-revoke-request": {
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "The token to revoke."
+          },
+          "token_type_hint": {
+            "enum": [
+              "access_token",
+              "refresh_token"
+            ],
+            "type": "string",
+            "description": "Type of the provided token."
+          }
+        }
+      },
+      "oauth-token-exchange": {
+        "required": [
+          "grant_type",
+          "client_id",
+          "subject_token_type",
+          "subject_token",
+          "purpose"
+        ],
+        "properties": {
+          "purpose": {
+            "enum": [
+              "websocket",
+              "webresource"
+            ],
+            "type": "string",
+            "description": "The intended use for the requested token."
+          },
+          "client_id": {
+            "type": "string",
+            "description": "The client identifier."
+          },
+          "grant_type": {
+            "enum": [
+              "urn:ietf:params:oauth:grant-type:token-exchange"
+            ],
+            "type": "string",
+            "description": "Specifies the method in which the token will be granted."
+          },
+          "subject_token": {
+            "type": "string",
+            "description": "The token that represents the identity of the party on behalf of whom the request is being made."
+          },
+          "subject_token_type": {
+            "enum": [
+              "urn:ietf:params:oauth:token-type:access_token"
+            ],
+            "type": "string",
+            "example": "urn:ietf:params:oauth:token-type:access_token",
+            "description": "The type of the subject token."
+          }
+        },
+        "description": "Exchanges one token for another. Implementation is based on this spec: https://datatracker.ietf.org/doc/html/rfc8693."
+      },
+      "oauth-token-response": {
+        "type": "object",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "properties": {
+          "scope": {
+            "type": "string",
+            "example": "offline_access user_default",
+            "description": "The scope of access that is being granted, delimited by space."
+          },
+          "auth_time": {
+            "type": "number",
+            "example": 1628524367,
+            "description": "Unix time of when the last authentication occurred."
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "1970-01-18T13:17:10.931Z",
+            "description": "The date and time in ISO format for when the access token will expire."
+          },
+          "token_type": {
+            "enum": [
+              "bearer"
+            ],
+            "type": "string",
+            "description": "The type of the token issued."
+          },
+          "access_token": {
+            "type": "string",
+            "description": "The access token granted."
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "Refresh token to be used to obtain a new access token without user intervention."
+          },
+          "issued_token_type": {
+            "enum": [
+              "urn:ietf:params:oauth:token-type:access_token"
+            ],
+            "type": "string",
+            "description": "The type of the token issued for a token exchange. See https://datatracker.ietf.org/doc/html/rfc8693#section-2.2.1 for more details."
+          }
+        }
+      },
+      "oauth-user-impersonation-request": {
+        "required": [
+          "client_id",
+          "client_secret",
+          "grant_type",
+          "user_lookup"
+        ],
+        "properties": {
+          "scope": {
+            "type": "string",
+            "example": "user_default offline_usage",
+            "description": "The scope of access that is being requested. The scope should already be assigned to the OAuth client. For a list of available scopes, visit: https://qlik.dev/authenticate/oauth/scopes/#available-scopes"
+          },
+          "client_id": {
+            "type": "string",
+            "description": "The client identifier."
+          },
+          "grant_type": {
+            "enum": [
+              "urn:qlik:oauth:user-impersonation"
+            ],
+            "type": "string",
+            "description": "The grant type used to obtain an access token on behalf of an existing user."
+          },
+          "user_lookup": {
+            "type": "object",
+            "required": [
+              "field",
+              "value"
+            ],
+            "properties": {
+              "field": {
+                "enum": [
+                  "subject",
+                  "userId"
+                ],
+                "type": "string",
+                "description": "The identifier to impersonate the user by."
+              },
+              "value": {
+                "type": "string",
+                "description": "The value of the identifier to impersonate the user by."
+              }
+            }
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "The client secret."
+          }
+        }
+      }
+    }
+  }
+}

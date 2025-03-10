@@ -1,0 +1,4235 @@
+{
+  "info": {
+    "title": "assistants",
+    "version": ""
+  },
+  "paths": {
+    "/v1/assistants": {
+      "get": {
+        "tags": [
+          "assistants"
+        ],
+        "summary": "List assistants",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/assistantsResult"
+                }
+              }
+            },
+            "description": "Successful operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of assistants to get."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the next page."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the previous page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "NAME",
+                "-NAME",
+                "DESCRIPTION",
+                "-DESCRIPTION",
+                "CREATED",
+                "-CREATED",
+                "UPDATED",
+                "-UPDATED"
+              ],
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, case insensitive, e.g. `name`. Can be prefixed with `-` to set descending order; defaults to ascending."
+          },
+          {
+            "in": "query",
+            "name": "countTotal",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Optional parameter to request total count for query.",
+            "x-qlik-deprecated": true
+          }
+        ],
+        "description": "Retrieves the list of assistants. The result can be filtered, sorted, and paginated.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "assistants"
+        ],
+        "summary": "Create an assistant",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Assistant version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the assistant."
+              }
+            },
+            "description": "Successfully created an assistant."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          }
+        },
+        "description": "Creates a new assistant.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createAssistant"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/createAssistantWithAvatar"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/feedback": {
+      "get": {
+        "tags": [
+          "assistants"
+        ],
+        "summary": "Get feedback",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/feedbackSummary"
+                }
+              }
+            },
+            "description": "Successfully retrieved the feedback summary for the assistant."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant from which to retrieve feedback summary."
+          }
+        ],
+        "description": "Retrieves feedback summary for the assistant.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/sources/plaintexts": {
+      "post": {
+        "tags": [
+          "assistants"
+        ],
+        "summary": "Bulk search source chunks",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sourcesPlaintext"
+                }
+              }
+            },
+            "description": "Successfully retrieved plaintext of the chunks."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant in which to search for source chunks."
+          }
+        ],
+        "description": "Perform a bulk search for the plaintext of source chunks for the assistant.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChunksRefs"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/starters": {
+      "get": {
+        "tags": [
+          "starters"
+        ],
+        "summary": "List starters",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/startersResult"
+                }
+              }
+            },
+            "description": "Successfully retrieved the assistant's starters."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant from which to retrieve starters."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of starters to get."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the next page."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the previous page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "QUESTION",
+                "-QUESTION",
+                "CREATED",
+                "-CREATED",
+                "UPDATED",
+                "-UPDATED"
+              ],
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, case insensitive, e.g. `name`. Can be prefixed with `-` to set descending order; defaults to ascending."
+          }
+        ],
+        "description": "Retrieves the list of starters for the assistant.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "starters"
+        ],
+        "summary": "Create a starter",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Starter"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Assistant starter version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the assistant starter."
+              }
+            },
+            "description": "Successfully created a new assistant starter."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format or starter limit exceeded."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant in which to create the starter."
+          }
+        ],
+        "description": "Creates a new starter for the assistant.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createStarter"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/starters/{starterId}": {
+      "get": {
+        "tags": [
+          "starters"
+        ],
+        "summary": "Get a starter",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Starter"
+                }
+              }
+            },
+            "description": "Successfully retrieved the starter."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The starter was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant containing the requested starter."
+          },
+          {
+            "in": "path",
+            "name": "starterId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the starter to retrieve."
+          }
+        ],
+        "description": "Retrieves the specified starter.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "starters"
+        ],
+        "summary": "Update a starter",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Starter"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Assistant version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the assistant."
+              }
+            },
+            "description": "Successfully updated the starter."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The record was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant containing the requested starter."
+          },
+          {
+            "in": "path",
+            "name": "starterId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the starter to retrieve."
+          }
+        ],
+        "description": "Updates the specified starter.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Starter"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "starters"
+        ],
+        "summary": "Delete a starter",
+        "responses": {
+          "204": {
+            "description": "Successful operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant containing the requested starter."
+          },
+          {
+            "in": "path",
+            "name": "starterId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the starter to delete."
+          }
+        ],
+        "description": "Deletes the starter and all of its resources.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/starters/{starterId}/followups/{followupId}": {
+      "put": {
+        "tags": [
+          "starters"
+        ],
+        "summary": "Update a Followup",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Starter"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Assistant version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the Followup."
+              }
+            },
+            "description": "Successfully updated the Followup."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The record was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant containing the requested Followup."
+          },
+          {
+            "in": "path",
+            "name": "followupId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the Followup to update."
+          },
+          {
+            "in": "path",
+            "name": "starterId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the starter containing the requested Followup."
+          }
+        ],
+        "description": "Updates the specified Followup.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/followup"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "starters"
+        ],
+        "summary": "Delete a Followup",
+        "responses": {
+          "204": {
+            "description": "Successful operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The Followup was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant containing the requested Followup."
+          },
+          {
+            "in": "path",
+            "name": "followupId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the Followup to delete."
+          },
+          {
+            "in": "path",
+            "name": "starterId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the starter containing the requested Followup."
+          }
+        ],
+        "description": "Deletes the specified Followup.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/threads": {
+      "get": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "List threads",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/threadsResult"
+                }
+              }
+            },
+            "description": "Successfully retrieved the threads for the assistant."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant from which to retrieve threads."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "favorite": {
+                "value": "favorite eq \"true\""
+              },
+              "hasLikes": {
+                "value": "summaryStats.likes gt \"0\""
+              },
+              "hasReview": {
+                "value": "summaryStats.reviews gt \"0\""
+              },
+              "hasDislikes": {
+                "value": "summaryStats.dislikes gt \"0\""
+              },
+              "hasFeedback": {
+                "value": "hasFeedback eq \"true\""
+              },
+              "filterOwnerAndHideDeleted": {
+                "value": "ownerId co \"669603a035eb5fedab45987f\" and not(deletedAt pr)"
+              }
+            },
+            "description": "Optional parameter to filter threads."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of assistants to get."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the next page."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the previous page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "NAME",
+                "-NAME",
+                "CREATED",
+                "-CREATED",
+                "UPDATED",
+                "-UPDATED"
+              ],
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, case insensitive, e.g. `name`. Can be prefixed with `-` to set descending order; defaults to ascending."
+          }
+        ],
+        "description": "Retrieves the list of threads for the assistant.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Create a thread",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Assistant thread version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the assistant thread."
+              }
+            },
+            "description": "Successfully created a new assistant thread."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant in which to create the thread."
+          }
+        ],
+        "description": "Creates a new thread for the assistant.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createThread"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantid}/threads/{threadid}": {
+      "get": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Get a thread",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadWithMessages"
+                }
+              }
+            },
+            "description": "Successfully retrieved the thread."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The thread was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantid",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant containing the requested thread."
+          },
+          {
+            "in": "path",
+            "name": "threadid",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the thread to retrieve."
+          }
+        ],
+        "description": "Retrieves a thread for the assistant.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Update thread properties",
+        "responses": {
+          "204": {
+            "description": "Thread updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Bad request. Payload could not be parsed to a JSON Patch or Patch operations are invalid."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The term to patch was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "The request has been rate-limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantid",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant containing the requested thread."
+          },
+          {
+            "in": "path",
+            "name": "threadid",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the thread to retrieve."
+          }
+        ],
+        "description": "Updates the properties of an existing thread with JSON Patch-formatted data.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/threadPatchArray"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Delete a thread",
+        "responses": {
+          "204": {
+            "description": "Successful operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantid",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant containing the requested thread."
+          },
+          {
+            "in": "path",
+            "name": "threadid",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the thread to retrieve."
+          }
+        ],
+        "description": "Deletes the specified thread and all of its resources.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/threads/{threadId}/actions/invoke": {
+      "post": {
+        "tags": [
+          "chat"
+        ],
+        "summary": "Execute synchronous prompt",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/promptOutputInvoke"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Assistant version"
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the Assistant"
+              }
+            },
+            "description": "Prompt is successfully executed."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The request is in incorrect format"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Assistant is not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Prompt processing error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The id of the Assistant containing requested Thread"
+          },
+          {
+            "in": "path",
+            "name": "threadId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The id of the Thread to retrieve"
+          }
+        ],
+        "description": "Execute prompt in synchronous non-streaming mode.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/promptInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/threads/{threadId}/actions/stream": {
+      "post": {
+        "tags": [
+          "chat"
+        ],
+        "summary": "Execute asynchronous prompt",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/promptOutput"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Assistant version"
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the Assistant"
+              }
+            },
+            "description": "Prompt is successfully executed."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The request is in incorrect format"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Method is not allowed."
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Assistant is not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Prompt processing error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The id of the Assistant containing requested Thread"
+          },
+          {
+            "in": "path",
+            "name": "threadId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The id of the Thread to retrieve"
+          }
+        ],
+        "description": "Execute prompt in asynchronous streaming mode.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/promptInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/threads/{threadId}/interactions": {
+      "get": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "List interactions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/interactionsResult"
+                }
+              }
+            },
+            "description": "Successfully retrieved the thread interactions."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The feedback was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant from which to retrieve the interactions."
+          },
+          {
+            "in": "path",
+            "name": "threadId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860bb"
+            },
+            "required": true,
+            "description": "The ID of the thread from which to retrieve the interactions."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of feedback to get."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the next page."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional parameter to request the previous page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "CREATED",
+                "-CREATED",
+                "UPDATED",
+                "-UPDATED"
+              ],
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, case insensitive, e.g. `created`. Can be prefixed with `-` to set descending order; defaults to ascending."
+          }
+        ],
+        "description": "Retrieves the list of interactions for the thread.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Create an interaction",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Interaction"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Thread feedback version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the thread interaction."
+              }
+            },
+            "description": "Successfully created a new thread interaction."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant or the thread was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant in which to create the interaction."
+          },
+          {
+            "in": "path",
+            "name": "threadId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the thread in which to create the interaction."
+          }
+        ],
+        "description": "Creates a new interaction for the thread.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createInteraction"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/threads/{threadId}/interactions/{interactionId}": {
+      "get": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Get an interaction",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Interaction"
+                }
+              }
+            },
+            "description": "Successfully retrieved the interaction."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The interaction was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant in which to retrieve the interaction."
+          },
+          {
+            "in": "path",
+            "name": "interactionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the interaction to retrieve."
+          },
+          {
+            "in": "path",
+            "name": "threadId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the thread in which to retrieve the interaction."
+          }
+        ],
+        "description": "Retrieves an interaction for the thread.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "delete": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Delete an interaction",
+        "responses": {
+          "204": {
+            "description": "Successful operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant in which to delete the interaction."
+          },
+          {
+            "in": "path",
+            "name": "interactionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the interaction to delete."
+          },
+          {
+            "in": "path",
+            "name": "threadId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the thread in which to delete the interaction."
+          }
+        ],
+        "description": "Deletes the specified interaction and all of its resources.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/threads/{threadId}/interactions/{interactionId}/feedback": {
+      "post": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Create feedback",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Interaction"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Thread feedback version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the thread feedback."
+              }
+            },
+            "description": "Successfully created a new thread feedback."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant in which to create the feedback."
+          },
+          {
+            "in": "path",
+            "name": "interactionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the interaction in which to create the feedback."
+          },
+          {
+            "in": "path",
+            "name": "threadId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the thread in which to create the feedback."
+          }
+        ],
+        "description": "Creates feedback for the thread.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createFeedback"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/threads/{threadId}/interactions/{interactionId}/feedback/{feedbackId}": {
+      "patch": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Update feedback",
+        "responses": {
+          "204": {
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Feedback version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the feedback."
+              }
+            },
+            "description": "Successfully updated the feedback."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The resource was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant containing the requested feedback."
+          },
+          {
+            "in": "path",
+            "name": "feedbackId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the feedback to update."
+          },
+          {
+            "in": "path",
+            "name": "interactionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the interaction containing the requested Feedback."
+          },
+          {
+            "in": "path",
+            "name": "threadId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the thread containing the requested feedback."
+          }
+        ],
+        "description": "Updates feedback for the thread.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/feedbackPatchArray"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{assistantId}/threads/{threadId}/interactions/{interactionId}/reviews": {
+      "post": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Create feedback review",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Interaction"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Thread feedback version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the thread feedback."
+              }
+            },
+            "description": "Successfully created a new thread feedback."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "A resource was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant in which to create the feedback review."
+          },
+          {
+            "in": "path",
+            "name": "interactionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the interaction in which to create the feedback review."
+          },
+          {
+            "in": "path",
+            "name": "threadId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the thread in which to create the feedback review."
+          }
+        ],
+        "description": "Creates feedback review for the thread.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createReview"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/assistants/{id}": {
+      "get": {
+        "tags": [
+          "assistants"
+        ],
+        "summary": "Get an assistant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            },
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Assistant version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the assistant."
+              }
+            },
+            "description": "Successfully retrieved the assistant."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant to retrieve."
+          }
+        ],
+        "description": "Retrieves the specified assistant.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "assistants"
+        ],
+        "summary": "Update assistant properties",
+        "responses": {
+          "204": {
+            "headers": {
+              "Etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Assistant version."
+              },
+              "Last-Modified": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Last modified date and time of the assistant."
+              }
+            },
+            "description": "Assistant updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Bad request. Payload could not be parsed to a JSON Patch or Patch operations are invalid."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The term to patch was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "The request has been rate-limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The assistant ID."
+          },
+          {
+            "in": "header",
+            "name": "if-match",
+            "schema": {
+              "type": "string",
+              "example": "if-match: B323333"
+            },
+            "description": "Optional header to do conditional updates. Using the Etag value that was returned the last time the assistant was fetched."
+          }
+        ],
+        "description": "Updates the properties of an existing assistant with JSON Patch-formatted data.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JSONPatchArray"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "assistants"
+        ],
+        "summary": "Delete an assistant",
+        "responses": {
+          "204": {
+            "description": "Successful operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            },
+            "description": "The assistant was not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the assistant to delete."
+          }
+        ],
+        "description": "Deletes the assistant and all of its resources.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Assistant": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "tags",
+          "ownerId",
+          "createdBy",
+          "createdAt",
+          "updatedBy",
+          "updatedAt",
+          "tenantId",
+          "spaceId",
+          "knowledgeBases",
+          "welcomeMessage",
+          "customProperties"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the assistant."
+          },
+          "name": {
+            "type": "string",
+            "example": "Organization-wide Assistant",
+            "description": "The name of the assistant."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Red",
+              "Sales"
+            ],
+            "description": "The list of tags associated with the assistant."
+          },
+          "title": {
+            "type": "string",
+            "example": "Assistant for Sales activities",
+            "description": "The title of the assistant."
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the assistant owner."
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the space containing the assistant."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the assistant tenant."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the assistant was created."
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "description": "Unique identifier of the user who created the assistant."
+          },
+          "hasAvatar": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates if the assistant has an avatar."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the assistant was updated."
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "description": "Unique identifier of the user who last updated the assistant."
+          },
+          "description": {
+            "type": "string",
+            "example": "This assistant is used for...",
+            "description": "The description of the assistant."
+          },
+          "systemMessage": {
+            "type": "string",
+            "example": "You are helpful Sales assistant. Provide concise and actionable insights.",
+            "description": "System prompt setting up conversation context.",
+            "x-qlik-deprecated": true
+          },
+          "knowledgeBases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": [
+              "507f191e810c19729de860ea"
+            ],
+            "description": "List of knowledgebases the assistant is using."
+          },
+          "welcomeMessage": {
+            "type": "string",
+            "example": "Welcome to Sales process support Assistant.",
+            "description": "Initial message in the chat conversation."
+          },
+          "customProperties": {
+            "type": "object",
+            "example": {
+              "customErrors": {
+                "outsideScopeError": "Outside of scope error",
+                "complexQuestionError": "Complex question error",
+                "promptInjectionError": "Prompt injection error"
+              }
+            },
+            "description": "freeform JSON to allow custom customization options."
+          },
+          "defaultPromptType": {
+            "enum": [
+              "thread",
+              "oneshot"
+            ],
+            "type": "string",
+            "example": "thread",
+            "description": "Default prompt type for the assistant."
+          },
+          "orderedStarterIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": [
+              "507f191e810c19729de860ea",
+              "787f191e810c19729de860er"
+            ],
+            "description": "List of starter IDs in the order they will be sorted."
+          }
+        }
+      },
+      "assistantsResult": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Assistant"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/resultMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/pageLinks"
+          }
+        }
+      },
+      "ChunksRefs": {
+        "type": "object",
+        "example": {
+          "chunkIds": [
+            "c2ef42d9-7164-4fb0-bdbb-6534ae37263e",
+            "486ada2c-f895-4961-8ba5-7995f1026d26"
+          ]
+        },
+        "required": [
+          "chunkIds"
+        ],
+        "properties": {
+          "chunkIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Unique identifier of the Chunk."
+            }
+          }
+        }
+      },
+      "createAssistant": {
+        "type": "object",
+        "required": [
+          "name",
+          "title",
+          "description",
+          "tags",
+          "spaceId",
+          "knowledgeBases",
+          "welcomeMessage",
+          "customProperties"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Organization-wide assistant",
+            "description": "The name of the assistant."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Red",
+              "Sales"
+            ],
+            "description": "The list of tags for the assistant."
+          },
+          "title": {
+            "type": "string",
+            "example": "Assistant for Sales activities",
+            "description": "The title of the assistant."
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the space to contain the assistant."
+          },
+          "description": {
+            "type": "string",
+            "example": "This assistant is used for...",
+            "description": "The description of the assistant."
+          },
+          "systemMessage": {
+            "type": "string",
+            "example": "You are helpful Sales assistant. Provide concise and actionable insights.",
+            "description": "System prompt setting up conversation context.",
+            "x-qlik-deprecated": true
+          },
+          "knowledgeBases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": [
+              "507f191e810c19729de860ea"
+            ],
+            "description": "List of knowledgebases the assistant is using."
+          },
+          "welcomeMessage": {
+            "type": "string",
+            "example": "Welcome to Sales process support Assistant.",
+            "description": "Initial message in the chat conversation."
+          },
+          "customProperties": {
+            "type": "object",
+            "example": {
+              "customErrors": {
+                "outsideScopeError": "Outside of scope error",
+                "complexQuestionError": "Complex question error",
+                "promptInjectionError": "Prompt injection error"
+              }
+            },
+            "description": "freeform JSON to allow custom customization options."
+          },
+          "defaultPromptType": {
+            "enum": [
+              "thread",
+              "oneshot"
+            ],
+            "type": "string",
+            "example": "thread",
+            "description": "Default prompt type for the assistant."
+          },
+          "orderedStarterIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": [
+              "507f191e810c19729de860ea",
+              "787f191e810c19729de860er"
+            ],
+            "description": "List of starter IDs in the order they will be sorted."
+          }
+        }
+      },
+      "createAssistantWithAvatar": {
+        "type": "object",
+        "required": [
+          "name",
+          "title",
+          "description",
+          "tags",
+          "spaceId",
+          "knowledgeBases",
+          "welcomeMessage",
+          "customProperties"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Organization-wide assistant",
+            "description": "The name of the assistant."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Red",
+              "Sales"
+            ],
+            "description": "The list of tags for the assistant."
+          },
+          "title": {
+            "type": "string",
+            "example": "Assistant for Sales activities",
+            "description": "The title of the assistant."
+          },
+          "avatar": {
+            "type": "string",
+            "format": "file",
+            "description": "user uploaded avatar, filetype must be png"
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the space to contain the assistant."
+          },
+          "description": {
+            "type": "string",
+            "example": "This assistant is used for...",
+            "description": "The description of the assistant."
+          },
+          "systemMessage": {
+            "type": "string",
+            "example": "You are helpful Sales assistant. Provide concise and actionable insights.",
+            "description": "System prompt setting up conversation context.",
+            "x-qlik-deprecated": true
+          },
+          "knowledgeBases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": [
+              "507f191e810c19729de860ea"
+            ],
+            "description": "List of knowledgebases the assistant is using."
+          },
+          "welcomeMessage": {
+            "type": "string",
+            "example": "Welcome to Sales process support Assistant.",
+            "description": "Initial message in the chat conversation."
+          },
+          "customProperties": {
+            "type": "object",
+            "example": {
+              "customErrors": {
+                "outsideScopeError": "Outside of scope error",
+                "complexQuestionError": "Complex question error",
+                "promptInjectionError": "Prompt injection error"
+              }
+            },
+            "description": "freeform JSON to allow custom customization options."
+          },
+          "defaultPromptType": {
+            "enum": [
+              "thread",
+              "oneshot"
+            ],
+            "type": "string",
+            "example": "thread",
+            "description": "Default prompt type for the assistant."
+          }
+        }
+      },
+      "createFeedback": {
+        "type": "object",
+        "required": [
+          "vote",
+          "reason"
+        ],
+        "properties": {
+          "vote": {
+            "type": "integer",
+            "example": 1,
+            "description": "Integer representation of feedback given (-1 = negative, 1 = positive)."
+          },
+          "reason": {
+            "type": "string",
+            "example": "inaccurate | irrelevant | repetitive | unhelpful | other",
+            "description": "Reason for feedback."
+          },
+          "comment": {
+            "type": "string",
+            "description": "Optional comment for feedback."
+          }
+        }
+      },
+      "createInteraction": {
+        "type": "object",
+        "required": [
+          "request",
+          "response",
+          "sources"
+        ],
+        "properties": {
+          "request": {
+            "type": "string",
+            "example": "Where was Genghis Khan buried?",
+            "description": "Interaction request content."
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageSource"
+            },
+            "description": "List of sources used to generate AI messages (interactions)."
+          },
+          "rejected": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicator the system marked request as suspicious."
+          },
+          "response": {
+            "type": "string",
+            "example": "Somewhere in an unmarked grave",
+            "description": "Interaction response content."
+          },
+          "rejectionReason": {
+            "$ref": "#/components/schemas/rejectionReason"
+          }
+        }
+      },
+      "createReview": {
+        "type": "object",
+        "required": [
+          "reviewStatus"
+        ],
+        "properties": {
+          "reviewStatus": {
+            "type": "string",
+            "example": "reviewed | unreviewed",
+            "description": "Review status."
+          }
+        }
+      },
+      "createStarter": {
+        "type": "object",
+        "required": [
+          "question"
+        ],
+        "properties": {
+          "question": {
+            "type": "string",
+            "example": "Where was Genghis Khan buried?",
+            "description": "Starter sample question."
+          },
+          "followups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/followup"
+            },
+            "maxItems": 5,
+            "description": "List of followups."
+          },
+          "additionalContext": {
+            "type": "string",
+            "description": "Optional context collected from curated meant to be leveraged by LLM-based question recommendation system."
+          },
+          "recommendedAnswer": {
+            "$ref": "#/components/schemas/recommendedAnswer"
+          }
+        }
+      },
+      "createThread": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Initial conversation",
+            "description": "The name of the thread."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the thread was created."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the thread was updated."
+          }
+        }
+      },
+      "errorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/errorResponseCode"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "example": "507f191e810c19729de860ea"
+          }
+        }
+      },
+      "errorResponseCode": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      },
+      "errorResponseCodeCopy": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Custom error codes\n* AE-1 - Internal processing error\n* AE-2 - Incorrect request\n* AE-3 - Authentication issue\n* AE-4 - Prompt is rejected\n* AE-5 - Resource is not found\n* AE-6 - API usage rate limit is exceeded\n* AE-7 - Method is not allowed\n"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      },
+      "errorResponseCopy": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/errorResponseCodeCopy",
+              "x-qlik-merge-conflict": true
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "example": "507f191e810c19729de860ea"
+          }
+        }
+      },
+      "Feedback": {
+        "type": "object",
+        "required": [
+          "id",
+          "vote",
+          "createdAt",
+          "sources",
+          "reviewStatus",
+          "reason",
+          "reviewerId",
+          "comment"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique feedback identifier."
+          },
+          "vote": {
+            "type": "integer",
+            "example": 1,
+            "description": "Integer representation of feedback given (-1 = negative, 1 = positive)."
+          },
+          "reason": {
+            "type": "string",
+            "example": "inaccurate | irrelevant | repetitive | unhelpful | other",
+            "description": "Reason for feedback."
+          },
+          "comment": {
+            "type": "string",
+            "description": "Optional comment for feedback."
+          },
+          "reviewedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "description": "Datetime when the feedback was reviewed."
+          },
+          "reviewerId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique feedback reviewer identifier."
+          },
+          "reviewStatus": {
+            "type": "string",
+            "example": "reviewed | unreviewed",
+            "description": "Feedback review status."
+          }
+        }
+      },
+      "feedbackPatchArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/JSONPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/reason",
+            "value": "irrelevant"
+          }
+        ],
+        "description": "An array of JSON Patch documents."
+      },
+      "feedbackSummary": {
+        "type": "object",
+        "required": [
+          "likes",
+          "dislikes",
+          "interactions",
+          "reviews"
+        ],
+        "properties": {
+          "likes": {
+            "type": "integer",
+            "description": "Amount of likes for a thread or an assistant."
+          },
+          "other": {
+            "type": "integer",
+            "description": "Count of answers which users disliked and gave \"other\" as reason."
+          },
+          "reviews": {
+            "type": "integer",
+            "description": "Amount of reviews for a thread or an assistant."
+          },
+          "dislikes": {
+            "type": "integer",
+            "description": "Amount of dislikes for a thread or an assistant."
+          },
+          "unhelpful": {
+            "type": "integer",
+            "description": "Count of answers which users marked as \"unhelpful\"."
+          },
+          "inaccurate": {
+            "type": "integer",
+            "description": "Count of answers which users marked as \"inaccurate\"."
+          },
+          "irrelevant": {
+            "type": "integer",
+            "description": "Count of answers which users marked as \"irrelevant\"."
+          },
+          "repetitive": {
+            "type": "integer",
+            "description": "Count of answers which users marked as \"repetitive\"."
+          },
+          "unanswered": {
+            "type": "integer",
+            "description": "Count of questions for which the assistant provided no answer."
+          },
+          "interactions": {
+            "type": "integer",
+            "description": "Amount of interactions for a thread or an assistant."
+          }
+        }
+      },
+      "followup": {
+        "type": "object",
+        "required": [
+          "question",
+          "followups",
+          "id",
+          "recommendedAnswer",
+          "additionalContext"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the Followup."
+          },
+          "question": {
+            "type": "string",
+            "example": "Where was Genghis Khan buried?",
+            "description": "Starter sample question."
+          },
+          "additionalContext": {
+            "type": "string",
+            "description": "Optional context collected from curated meant to be leveraged by LLM-based question recommendation system."
+          },
+          "recommendedAnswer": {
+            "$ref": "#/components/schemas/recommendedAnswer"
+          }
+        }
+      },
+      "Interaction": {
+        "type": "object",
+        "required": [
+          "id",
+          "request",
+          "response",
+          "createdAt",
+          "updatedAt",
+          "sources",
+          "ownerId",
+          "threadId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "65e310c43fb1cf46654e0878",
+            "description": "Unique identifier of user which created the interaction."
+          },
+          "request": {
+            "type": "string",
+            "example": "Where was Genghis Khan buried?",
+            "description": "Interaction request content."
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageSource"
+            },
+            "description": "List of sources used to generate AI messages (interactions)."
+          },
+          "feedback": {
+            "$ref": "#/components/schemas/Feedback"
+          },
+          "rejected": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicator the system marked request as suspicious."
+          },
+          "response": {
+            "type": "string",
+            "example": "Somewhere in an unmarked grave",
+            "description": "Interaction response content."
+          },
+          "threadId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "125c24c4-668c-4c97-bef8-30d910169913",
+            "description": "ID of the thread to which the interaction belongs."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the interaction was created."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:55.52Z",
+            "readOnly": true,
+            "description": "Datetime when the interaction was updated."
+          }
+        }
+      },
+      "interactionsResult": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Interaction"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/resultMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/pageLinks"
+          }
+        }
+      },
+      "JSONPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON Pointer."
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "JSONPatchArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/JSONPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "new name"
+          },
+          {
+            "op": "replace",
+            "path": "/description",
+            "value": "new description"
+          },
+          {
+            "op": "add",
+            "path": "/defaultPromptType",
+            "value": "thread"
+          },
+          {
+            "op": "remove",
+            "path": "/avatar"
+          },
+          {
+            "op": "add",
+            "path": "/avatar",
+            "value": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAlAQAAAAAsYlcCAAAACklEQVR4AWMYBQABAwABRUEDtQAAAABJRU5ErkJggg=="
+          },
+          {
+            "op": "replace",
+            "path": "/avatar",
+            "value": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAlAQAAAAAsYlcCAAAACklEQVR4AWMYBQABAwABRUEDtQAAAABJRU5ErkJggg=="
+          }
+        ],
+        "description": "An array of JSON Patch documents."
+      },
+      "Message": {
+        "type": "object",
+        "required": [
+          "id",
+          "role",
+          "content",
+          "createdAt",
+          "sources"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303"
+          },
+          "role": {
+            "type": "string",
+            "example": "ai",
+            "description": "human or ai role."
+          },
+          "content": {
+            "type": "string",
+            "example": "Somewhere in an unmarked grave",
+            "description": "Message content."
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageSource"
+            },
+            "description": "List of sources used to generate AI messages (interactions)."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the interaction was created."
+          }
+        }
+      },
+      "MessageSource": {
+        "type": "object",
+        "required": [
+          "knowledgebaseId",
+          "datasourceId",
+          "documentId",
+          "source",
+          "chunks"
+        ],
+        "properties": {
+          "chunks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageSourceChunk"
+            },
+            "description": "List of Chunks used for \"AI\" generated messages."
+          },
+          "source": {
+            "type": "string",
+            "example": "Reference.md",
+            "description": "Path to the document used."
+          },
+          "documentId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303",
+            "description": "Reference to Document used for \"AI\" generated messages."
+          },
+          "datasourceId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303",
+            "description": "Reference to DataSource used for \"AI\" generated messages."
+          },
+          "lastIndexedAt": {
+            "type": "string",
+            "example": "2021-10-02T14:20:50.52Z",
+            "description": "Datetime when the knowledgebase was last indexed."
+          },
+          "knowledgebaseId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303",
+            "description": "Reference to KnowledgeBase used for \"AI\" generated messages."
+          }
+        }
+      },
+      "MessageSourceChunk": {
+        "type": "object",
+        "required": [
+          "chunkId"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Chunk text for \"AI\" generated message source."
+          },
+          "chunkId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303",
+            "description": "Chunk unique identifier for \"AI\" generated message source."
+          }
+        }
+      },
+      "pageLink": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          }
+        }
+      },
+      "pageLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/pageLink"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/pageLink"
+          },
+          "self": {
+            "$ref": "#/components/schemas/pageLink"
+          }
+        }
+      },
+      "promptInput": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "object",
+            "properties": {
+              "prompt": {
+                "type": "string",
+                "example": "What is a LLM?",
+                "description": "Input prompt string for the Assistant to respond to."
+              },
+              "promptType": {
+                "enum": [
+                  "thread"
+                ],
+                "type": "string",
+                "example": "thread",
+                "description": "Sets the prompt type to thread."
+              },
+              "includeText": {
+                "type": "boolean",
+                "example": true,
+                "description": "Returns text from chunks in sources output. Default value is false."
+              }
+            }
+          }
+        }
+      },
+      "promptOutput": {
+        "type": "object",
+        "properties": {
+          "output": {
+            "type": "string",
+            "example": "LLM stands for Large Language Model",
+            "description": "Assistant's response to the prompt"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/source"
+            },
+            "description": "List of sources used to generate AI messages"
+          }
+        }
+      },
+      "promptOutputInvoke": {
+        "type": "object",
+        "properties": {
+          "output": {
+            "type": "string",
+            "example": "LLM stands for Large Language Model",
+            "description": "Assistant's response to the prompt"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/source"
+            },
+            "description": "List of sources used to generate AI messages"
+          },
+          "question": {
+            "type": "string",
+            "example": "What was the primary goal of the Apollo program?",
+            "description": "Question asked by the user for assistant to answer"
+          }
+        }
+      },
+      "recommendedAnswer": {
+        "type": "object",
+        "required": [
+          "content",
+          "contentType"
+        ],
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Starter answer content."
+          },
+          "contentType": {
+            "type": "string",
+            "example": "text | markdown | html",
+            "description": "Answer type of content."
+          }
+        }
+      },
+      "rejectionReason": {
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "example": 1,
+        "description": "Rejection reason for a question:\n  * 1 - PROMPT_INJECTION\n  * 2 - OUT_OF_CONTEXT\n  * 3 - TOO_COMPLEX\n"
+      },
+      "resultMeta": {
+        "type": "object",
+        "properties": {
+          "countTotal": {
+            "type": "integer"
+          }
+        }
+      },
+      "source": {
+        "type": "object",
+        "properties": {
+          "chunks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "example": {
+                "text": "LLM stands for Large Language Model",
+                "chunkId": "10d347c4-f28a-4faf-93f0-48e781aaf303"
+              }
+            },
+            "description": "List of Chunks used for \"AI\" generated messages"
+          },
+          "source": {
+            "type": "string",
+            "example": "Reference.md",
+            "description": "path to the document used"
+          },
+          "documentId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303",
+            "description": "reference to Document used for \"AI\" generated messages"
+          },
+          "datasourceId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303",
+            "description": "reference to DataSource used for \"AI\" generated messages"
+          },
+          "knowledgebaseId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303",
+            "description": "reference to KnowledgeBase used for \"AI\" generated messages"
+          }
+        }
+      },
+      "sourcesPlaintext": {
+        "type": "object",
+        "properties": {
+          "textByChunkId": {
+            "type": "object",
+            "example": {
+              "chunk1_id": "chunk1_text",
+              "chunk2_id": "chunk2_text"
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "Starter": {
+        "type": "object",
+        "required": [
+          "id",
+          "question",
+          "createdAt",
+          "updatedAt",
+          "additionalContext",
+          "recommendedAnswer"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the starter."
+          },
+          "question": {
+            "type": "string",
+            "example": "Where was Genghis Khan buried?",
+            "description": "Starter sample question."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the starter was created."
+          },
+          "followups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/followup"
+            },
+            "description": "List of followups."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the starter was updated."
+          },
+          "additionalContext": {
+            "type": "string",
+            "description": "Optional context collected from curated meant to be leveraged by LLM-based question recommendation system."
+          },
+          "recommendedAnswer": {
+            "$ref": "#/components/schemas/recommendedAnswer"
+          }
+        }
+      },
+      "startersResult": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Starter"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/resultMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/pageLinks"
+          }
+        }
+      },
+      "Thread": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "ownerId",
+          "createdAt",
+          "updatedAt",
+          "hasFeedback",
+          "favorite",
+          "summaryStats"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the thread."
+          },
+          "name": {
+            "type": "string",
+            "example": "Initial conversation",
+            "description": "The name of the thread."
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "10d347c4-f28a-4faf-93f0-48e781aaf303"
+          },
+          "favorite": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "If thread is marked as favorite."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the thread was created."
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the thread was deleted."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the thread was updated."
+          },
+          "hasFeedback": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "If feedback was provided for a thread interaction."
+          },
+          "summaryStats": {
+            "$ref": "#/components/schemas/feedbackSummary"
+          }
+        }
+      },
+      "threadPatchArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/JSONPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "new name"
+          }
+        ],
+        "description": "An array of JSON Patch documents."
+      },
+      "threadsResult": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Thread"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/resultMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/pageLinks"
+          }
+        }
+      },
+      "ThreadWithMessages": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "updatedAt",
+          "ownerId",
+          "hasFeedback",
+          "favorite",
+          "messages",
+          "summaryStats"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the thread."
+          },
+          "name": {
+            "type": "string",
+            "example": "Initial conversation",
+            "description": "The name of the thread."
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "507f191e810c19729de860ea",
+            "description": "Unique identifier of the thread owner."
+          },
+          "favorite": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "If thread is marked as favorite."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the thread was created."
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the thread was deleted."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "readOnly": true,
+            "description": "Datetime when the thread was updated."
+          },
+          "hasFeedback": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "If feedback was provided for a thread interaction."
+          },
+          "summaryStats": {
+            "$ref": "#/components/schemas/feedbackSummary"
+          }
+        }
+      }
+    }
+  }
+}

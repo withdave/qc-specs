@@ -1,0 +1,939 @@
+{
+  "info": {
+    "title": "roles",
+    "version": ""
+  },
+  "paths": {
+    "/v1/roles": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "List roles",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListRolesResult"
+                }
+              }
+            },
+            "description": "An array of roles, and pagination links."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request parameters for querying roles."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT is invalid or not provided."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://datatracker.ietf.org/doc/rfc7644/) for the syntax. All conditional statements within this query parameter are case insensitive."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of roles to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "description": "The next page cursor."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "507f191e810c19729de86gea"
+            },
+            "description": "The previous page cursor."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, eg. name. Can be prefixed with +/- to determine order, defaults to (+) ascending."
+          },
+          {
+            "in": "query",
+            "name": "totalResults",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Determines wether to return a count of the total records matched in the query. Defaults to false."
+          }
+        ],
+        "description": "Returns a list of roles using cursor-based pagination.",
+        "operationId": "getRoles",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Create role",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized to create role."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from creating role."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Creates a custom role. Role names must be unique, and there is a maximum of 500 custom roles per tenant. Requestor must be assigned the `TenantAdmin` role.",
+        "operationId": "createRole",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRole"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/roles/{id}": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Get role by ID",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            },
+            "description": "Request successfully completed."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Role ID not found or Invalid format."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "$ref": "#/components/schemas/Role/properties/id"
+            },
+            "required": true,
+            "description": "The unique identifier for the role."
+          }
+        ],
+        "description": "Returns the requested role.",
+        "operationId": "getRoleById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Update role by ID",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Updated"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized to update role."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from updating role."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Role ID not found or Invalid format."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "$ref": "#/components/schemas/Role/properties/id"
+            },
+            "required": true,
+            "description": "The unique identifier for the role."
+          }
+        ],
+        "description": "Updates the requested role. Only applicable to roles of type `custom`. Requestor must be assigned the `TenantAdmin` role.",
+        "operationId": "updateRoleById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchRoles"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Delete role by ID",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Deleted successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized to delete role."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from deleting role."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "$ref": "#/components/schemas/Role/properties/id"
+            },
+            "required": true,
+            "description": "The unique identifier for the role."
+          }
+        ],
+        "description": "Deletes the requested role. Role can only be deleted if it has been unassigned from all users and groups. Only applicable to roles of type `custom`. Requestor must be assigned the `TenantAdmin` role.",
+        "operationId": "deleteRoleById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "CreateRole": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Role name, needs to be unique"
+          },
+          "description": {
+            "type": "string",
+            "description": "Role description"
+          },
+          "assignedScopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Selection of scopes to assign to role"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON Pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          }
+        },
+        "description": "An error object describing the error."
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "IDENTITIES-10402",
+              "title": "Not Found"
+            }
+          ],
+          "traceId": "0000000000000000200ba0714061b982"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "An array of errors related to the operation."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique identifier for tracing the error."
+          }
+        },
+        "description": "The error response object describing the error from the handling of an HTTP request."
+      },
+      "Links": {
+        "type": "object",
+        "required": [
+          "self"
+        ],
+        "properties": {
+          "next": {
+            "type": "object",
+            "required": [
+              "href"
+            ],
+            "properties": {
+              "href": {
+                "type": "string",
+                "format": "uri",
+                "example": "http://mytenant.us.qlikcloud.com/api/v1/roles?next=QaFdFYW6pImZvRgFaDyB1UffNgfs4mRd"
+              }
+            },
+            "description": "Link to the next page of items"
+          },
+          "prev": {
+            "type": "object",
+            "required": [
+              "href"
+            ],
+            "properties": {
+              "href": {
+                "type": "string",
+                "format": "uri",
+                "example": "http://mytenant.us.qlikcloud.com/api/v1/roles?prev=QaFdFYW6pImZvRgFaDyB1UffNgfs4mRd"
+              }
+            },
+            "description": "Link to the previous page of items"
+          },
+          "self": {
+            "type": "object",
+            "required": [
+              "href"
+            ],
+            "properties": {
+              "href": {
+                "type": "string",
+                "format": "uri",
+                "example": "http://mytenant.us.qlikcloud.com/api/v1/roles"
+              }
+            },
+            "description": "Link to the current page of items"
+          }
+        },
+        "description": "Contains pagination links"
+      },
+      "ListRolesResult": {
+        "type": "object",
+        "required": [
+          "links",
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Role"
+            },
+            "description": "An array of roles."
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "totalResults": {
+            "type": "integer",
+            "description": "Indicates the total number of matching documents. Will only be returned if the query parameter \"totalResults\" is true."
+          }
+        }
+      },
+      "PatchRole": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace",
+              "add",
+              "remove-value"
+            ],
+            "type": "string",
+            "example": "replace"
+          },
+          "path": {
+            "enum": [
+              "/name",
+              "/description",
+              "/assignedScopes",
+              "/assignedScopes/-"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "PatchRoles": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PatchRole"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "Role1"
+          },
+          {
+            "op": "replace",
+            "path": "/assignedScopes",
+            "value": [
+              "knowledgebase"
+            ]
+          },
+          {
+            "op": "add",
+            "path": "/assignedScopes/-",
+            "value": "knowledgebase"
+          },
+          {
+            "op": "remove-value",
+            "path": "/assignedScopes",
+            "value": "knowledgebase"
+          },
+          {
+            "op": "replace",
+            "path": "/description",
+            "value": "My custom role description"
+          }
+        ],
+        "description": "An array of JSON Patch documents"
+      },
+      "Role": {
+        "type": "object",
+        "required": [
+          "id",
+          "tenantId",
+          "name",
+          "type",
+          "description",
+          "createdAt",
+          "lastUpdatedAt",
+          "links"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "description": "The unique identifier for the role.",
+            "x-qlik-filterable": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Developer",
+            "description": "The name of the role.",
+            "x-qlik-filterable": true
+          },
+          "type": {
+            "enum": [
+              "default",
+              "custom"
+            ],
+            "type": "string",
+            "example": "default",
+            "description": "The type of role.",
+            "x-qlik-filterable": true
+          },
+          "level": {
+            "enum": [
+              "admin",
+              "user"
+            ],
+            "type": "string",
+            "example": "admin",
+            "description": "The level of access associated to the role.",
+            "x-qlik-filterable": true
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "self": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://mytenant.us.qlikcloud.com/api/v1/roles/507f191e810c19729de860ea",
+                    "description": "Link to the role."
+                  }
+                }
+              }
+            },
+            "description": "Contains links for the role."
+          },
+          "canEdit": {
+            "type": "boolean",
+            "default": false,
+            "readOnly": true,
+            "description": "Indicate if role can be edited by tenant (Shown as Profile in MC)"
+          },
+          "fullUser": {
+            "type": "boolean",
+            "readOnly": true,
+            "description": "DEPRECATED. Use userEntitlementType instead for impact of roles on user entitlements with a capacity-based subscription.",
+            "x-qlik-deprecated": true
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "q3VRZ4YMixRaLKEPhkZWM-XMIDN7cO8f",
+            "description": "The tenant unique identifier associated with the given Role.",
+            "x-qlik-filterable": true
+          },
+          "canDelete": {
+            "type": "boolean",
+            "default": false,
+            "readOnly": true,
+            "description": "Indicate if role can be deleted"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-03-21T17:32:28Z",
+            "description": "The timestamp for when the role was created.",
+            "x-qlik-filterable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Id of user that created role"
+          },
+          "updatedBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Id of user that last updated this role"
+          },
+          "description": {
+            "type": "string",
+            "example": "Grants permission to generate API keys",
+            "description": "Descriptive text for the role.",
+            "x-qlik-filterable": true
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "edit_foo"
+            ],
+            "description": "An array of permissions associated with the role.",
+            "x-qlik-filterable": true
+          },
+          "lastUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-03-22T10:01:02Z",
+            "description": "The timestamp for when the role was last updated.",
+            "x-qlik-filterable": true
+          },
+          "assignedScopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Selection of scopes added to this Role"
+          },
+          "userEntitlementType": {
+            "type": "string",
+            "example": "fullUser",
+            "readOnly": true,
+            "description": "Indicate whether this role will trigger promotion of a user from a basic to a full user on tenants with a capacity-based subscription. Does not apply to tenants with a user-based subscription. Returns fullUser if it will trigger promotion."
+          }
+        }
+      }
+    }
+  }
+}

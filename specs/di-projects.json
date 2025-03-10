@@ -1,0 +1,1747 @@
+{
+  "info": {
+    "title": "di-projects",
+    "version": ""
+  },
+  "paths": {
+    "/v1/di-projects": {
+      "get": {
+        "tags": [
+          "data project"
+        ],
+        "summary": "List projects",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListDiProjectsRsp"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "spaceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by space id"
+          }
+        ],
+        "description": "List data integration projects.",
+        "operationId": "list_projects",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "data project"
+        ],
+        "summary": "Create a new project",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiProjectItemRsp"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Creates a new data integration project in the specified space.",
+        "operationId": "create_project",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDiProjectReq"
+              }
+            }
+          },
+          "required": true,
+          "description": "The details of the project to create"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}": {
+      "get": {
+        "tags": [
+          "data project"
+        ],
+        "summary": "Get a project",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiProjectItemRsp"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true
+          }
+        ],
+        "description": "Get a specific data integration project.",
+        "operationId": "get_project",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/actions/export": {
+      "post": {
+        "tags": [
+          "data project deployment"
+        ],
+        "summary": "Export a project",
+        "responses": {
+          "200": {
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project ID"
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "schema": {
+              "enum": [
+                "application/octet-stream"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Exports the specified data integration project.",
+        "operationId": "export_project",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportDiProjectReq"
+              }
+            }
+          },
+          "description": "Options for the export process"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/actions/import": {
+      "post": {
+        "tags": [
+          "data project deployment"
+        ],
+        "summary": "Import a project",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportDiProjectRsp"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project ID"
+          }
+        ],
+        "description": "Imports a data integration project from a `.zip` file.",
+        "operationId": "import_project",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "zip": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true,
+          "description": "The ZIP file containing the project to import"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/actions/prepare": {
+      "post": {
+        "tags": [
+          "data project actions"
+        ],
+        "summary": "Prepare a project",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncActionRsp"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/AsyncActionLocation"
+              }
+            },
+            "description": "Preparation started"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Project not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project ID"
+          }
+        ],
+        "description": "Prepares the data integration project and its tasks for execution.",
+        "operationId": "prepare_project",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrepareProjectReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/actions/validate": {
+      "post": {
+        "tags": [
+          "data project actions"
+        ],
+        "summary": "Validate project",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncActionRsp"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/AsyncActionLocation"
+              }
+            },
+            "description": "Validation started"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Project not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project ID"
+          }
+        ],
+        "description": "Validates the data integration project and its tasks.",
+        "operationId": "validate_project",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateProjectReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/bindings": {
+      "get": {
+        "tags": [
+          "data project deployment"
+        ],
+        "summary": "Get project export variables",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDiExportProjectVariablesRsp"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project ID"
+          }
+        ],
+        "description": "Retrieves the export variables for a specific data integration project.",
+        "operationId": "get_project_export_variables",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "data project deployment"
+        ],
+        "summary": "Update project export variables",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateDiExportProjectVariablesRsp"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project ID"
+          }
+        ],
+        "description": "Updates the export variables for a specific data integration project.",
+        "operationId": "update_project_export_variables",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDiExportProjectVariablesReq"
+              }
+            }
+          },
+          "required": true,
+          "description": "The details of the export variables to update"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/di-tasks": {
+      "get": {
+        "tags": [
+          "data task"
+        ],
+        "summary": "List project tasks",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListDataTasksRsp"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project id"
+          }
+        ],
+        "description": "Lists data tasks within a given data integration project.",
+        "operationId": "list_project_tasks",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}": {
+      "get": {
+        "tags": [
+          "data task"
+        ],
+        "summary": "Get a project task",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataTaskItemRsp"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "task-cYSY",
+            "required": true,
+            "description": "Data task id"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project id"
+          }
+        ],
+        "description": "Get a specific data task within a project.",
+        "operationId": "get_data_task",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/prepare": {
+      "post": {
+        "tags": [
+          "data task actions"
+        ],
+        "summary": "Prepare a project task",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncActionRsp"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/AsyncActionLocation"
+              }
+            },
+            "description": "Preparation started"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "task-cYSY",
+            "required": true,
+            "description": "Data task ID"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project ID"
+          }
+        ],
+        "description": "Prepares the specified data task for execution.",
+        "operationId": "prepare_task",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrepareTaskReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/validate": {
+      "post": {
+        "tags": [
+          "data task actions"
+        ],
+        "summary": "Validate a project task",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncActionRsp"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/AsyncActionLocation"
+              }
+            },
+            "description": "Validation started"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "task-cYSY",
+            "required": true,
+            "description": "Data task ID"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project ID"
+          }
+        ],
+        "description": "Validates the specified data task.",
+        "operationId": "validate_task",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateTaskReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/start": {
+      "post": {
+        "tags": [
+          "data task runtime"
+        ],
+        "summary": "Start a project task",
+        "responses": {
+          "204": {
+            "description": "NO CONTENT"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "task-cYSY",
+            "required": true,
+            "description": "Data task id"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true,
+            "description": "Data project id"
+          }
+        ],
+        "description": "Start a data task on a data integration project.",
+        "operationId": "start_data_task",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/stop": {
+      "post": {
+        "tags": [
+          "data task runtime"
+        ],
+        "summary": "Stop a project task",
+        "responses": {
+          "204": {
+            "description": "NO CONTENT"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "task-cYSY",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true
+          }
+        ],
+        "description": "Stop a data task on a data integration project.",
+        "operationId": "stop_data_task",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/state": {
+      "get": {
+        "tags": [
+          "data task runtime"
+        ],
+        "summary": "Get project task runtime state",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "lastRun": {
+                      "$ref": "#/components/schemas/DataTaskInstanceState"
+                    },
+                    "runReadiness": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "READY_TO_RUN",
+                            "ALREADY_RUNNING",
+                            "NOT_RUNNABLE"
+                          ],
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "task-cYSY",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "65424a71c11367914c1e659b",
+            "required": true
+          }
+        ],
+        "description": "Get data task runtime state within a data integration project.",
+        "operationId": "get_data_task_runtime_state",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/di-projects/actions/{actionId}": {
+      "get": {
+        "tags": [
+          "async actions"
+        ],
+        "summary": "Get Action status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncActionDetails"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Action not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "actionId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "action-123456",
+            "required": true,
+            "description": "Action ID"
+          },
+          {
+            "in": "query",
+            "name": "detailed",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "description": "Specifies whether to include detailed status information in the response. Set to `true` to return detailed information."
+          }
+        ],
+        "description": "Retrieves the status of an asynchronous operation.",
+        "operationId": "get_async_action_status",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "headers": {
+      "AsyncActionLocation": {
+        "schema": {
+          "type": "string"
+        },
+        "example": "/api/v1/di-projects/actions/action-123456",
+        "description": "URL to check the status of the async action"
+      }
+    },
+    "schemas": {
+      "AsyncActionDetails": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Prepare project myspace.demoproject",
+            "description": "Name of the async operation"
+          },
+          "type": {
+            "$ref": "#/components/schemas/AsyncActionType"
+          },
+          "error": {
+            "$ref": "#/components/schemas/AsyncActionError"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AsyncCallStatus"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "taskDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "info": {
+                  "type": "string",
+                  "description": "Additional details about task state"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "error": {
+                  "$ref": "#/components/schemas/AsyncActionError"
+                },
+                "state": {
+                  "$ref": "#/components/schemas/AsyncCallStatus"
+                },
+                "taskId": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "taskProgress": {
+            "$ref": "#/components/schemas/AsyncActionTaskProgress"
+          }
+        }
+      },
+      "AsyncActionError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional error details"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      },
+      "AsyncActionRsp": {
+        "type": "object",
+        "required": [
+          "actionId"
+        ],
+        "properties": {
+          "actionId": {
+            "type": "string",
+            "example": "action-123456",
+            "description": "Identifier for tracking the action"
+          }
+        }
+      },
+      "AsyncActionTaskProgress": {
+        "type": "object",
+        "properties": {
+          "failed": {
+            "type": "integer",
+            "description": "Number of tasks that failed"
+          },
+          "pending": {
+            "type": "integer",
+            "description": "Number of tasks pending execution"
+          },
+          "skipped": {
+            "type": "integer",
+            "description": "Number of tasks skipped due to conflicts"
+          },
+          "canceled": {
+            "type": "integer",
+            "description": "Number of tasks canceled"
+          },
+          "completed": {
+            "type": "integer",
+            "description": "Number of tasks completed successfully"
+          },
+          "executing": {
+            "type": "integer",
+            "description": "Number of tasks currently executing"
+          }
+        }
+      },
+      "AsyncActionType": {
+        "enum": [
+          "PROJECT_PREPARE",
+          "PROJECT_VALIDATE",
+          "TASK_PREPARE",
+          "TASK_VALIDATE"
+        ],
+        "type": "string",
+        "description": "Type of action being performed"
+      },
+      "AsyncCallStatus": {
+        "enum": [
+          "PENDING",
+          "EXECUTING",
+          "COMPLETED",
+          "FAILED",
+          "CANCELED",
+          "SKIPPED"
+        ],
+        "type": "string",
+        "description": "State of the action"
+      },
+      "CreateDiProjectReq": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "New Project",
+            "description": "The name of the project"
+          },
+          "type": {
+            "enum": [
+              "DATA_PIPELINE",
+              "DATA_MOVEMENT"
+            ],
+            "type": "string",
+            "example": "DATA_PIPELINE",
+            "description": "The type of the project"
+          },
+          "space": {
+            "type": "string",
+            "example": "space-456",
+            "description": "The ID of the space where the project will be created"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is a new data integration project.",
+            "description": "A description of the project"
+          },
+          "platformType": {
+            "enum": [
+              "SNOWFLAKE",
+              "BIGQUERY",
+              "SYNAPSE",
+              "DATABRICKS",
+              "REDSHIFT",
+              "MSSQL",
+              "FABRIC"
+            ],
+            "type": "string",
+            "example": "SNOWFLAKE",
+            "description": "The platform type of the project"
+          },
+          "platformConnection": {
+            "type": "string",
+            "example": "connection-string",
+            "description": "The platform connection string"
+          },
+          "cloudStagingConnection": {
+            "type": "string",
+            "example": "storage-connection-string",
+            "description": "The cloud staging connection string"
+          }
+        }
+      },
+      "DataTaskInstanceState": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "enum": [
+              "STARTING",
+              "RUNNING",
+              "COMPLETED",
+              "FAILED",
+              "CANCELED"
+            ],
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "DataTaskItemRsp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DataTaskType"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "spaceId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "DataTaskType": {
+        "enum": [
+          "LANDING",
+          "STORAGE",
+          "QVD_STORAGE",
+          "TRANSFORM",
+          "DATAMART",
+          "REGISTERED_DATA",
+          "REPLICATION",
+          "DISTRIBUTION",
+          "LAKE_LANDING"
+        ],
+        "type": "string",
+        "x-enum-varnames": [
+          "LANDING",
+          "STORAGE",
+          "QVD_STORAGE",
+          "TRANSFORM",
+          "DATAMART",
+          "REGISTERED_DATA",
+          "REPLICATION",
+          "DISTRIBUTION",
+          "LAKE_LANDING"
+        ]
+      },
+      "DiProjectItemRsp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "spaceId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "DiProjectOperationSelectedTask": {
+        "type": "object",
+        "required": [
+          "taskId"
+        ],
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "description": "Task identifier"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/ErrorSource"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorSource": {
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "type": "string"
+          },
+          "parameter": {
+            "type": "string"
+          }
+        }
+      },
+      "ExportDiProjectReq": {
+        "type": "object",
+        "properties": {
+          "includeBindings": {
+            "type": "boolean",
+            "example": false,
+            "description": "Include bindings in the exported zip file (optional, default is false)"
+          }
+        }
+      },
+      "GetDiExportProjectVariablesRsp": {
+        "type": "object",
+        "properties": {
+          "variables": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "variable1",
+                  "description": "The name of the variable"
+                },
+                "value": {
+                  "type": "string",
+                  "example": "value1",
+                  "description": "The value of the variable"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ImportDiProjectRsp": {
+        "type": "object"
+      },
+      "ListDataTasksRsp": {
+        "type": "object",
+        "properties": {
+          "dataTasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataTaskItemRsp"
+            }
+          }
+        }
+      },
+      "ListDiProjectsRsp": {
+        "type": "object",
+        "properties": {
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiProjectItemRsp"
+            }
+          }
+        }
+      },
+      "PrepareProjectReq": {
+        "type": "object",
+        "properties": {
+          "allowRecreate": {
+            "type": "boolean",
+            "default": false
+          },
+          "selectedTasks": {
+            "$ref": "#/components/schemas/TaskSelectionList"
+          }
+        }
+      },
+      "PrepareTaskReq": {
+        "type": "object",
+        "required": [
+          "allowRecreate"
+        ],
+        "properties": {
+          "allowRecreate": {
+            "type": "boolean",
+            "default": false,
+            "description": "Allow recreation of existing artifacts"
+          }
+        }
+      },
+      "TaskSelectionList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/DiProjectOperationSelectedTask"
+        }
+      },
+      "UpdateDiExportProjectVariablesReq": {
+        "type": "object",
+        "properties": {
+          "variables": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "variable1",
+                  "description": "The name of the variable"
+                },
+                "value": {
+                  "type": "string",
+                  "example": "value1",
+                  "description": "The value of the variable"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateDiExportProjectVariablesRsp": {
+        "type": "object"
+      },
+      "ValidateProjectReq": {
+        "type": "object",
+        "properties": {
+          "selectedTasks": {
+            "$ref": "#/components/schemas/TaskSelectionList"
+          }
+        }
+      },
+      "ValidateTaskReq": {
+        "type": "object",
+        "description": "Request body for task validation"
+      }
+    }
+  }
+}

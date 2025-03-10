@@ -1,0 +1,699 @@
+{
+  "info": {
+    "title": "temp-contents",
+    "version": ""
+  },
+  "paths": {
+    "/v1/temp-contents": {
+      "post": {
+        "tags": [
+          "Temporary contents"
+        ],
+        "summary": "Upload a file",
+        "responses": {
+          "201": {
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/Location"
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filename",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the file to upload."
+          },
+          {
+            "in": "query",
+            "name": "ttl",
+            "schema": {
+              "type": "integer",
+              "maximum": 259200,
+              "minimum": 1
+            },
+            "description": "The TTL parameter is used to define the time-to-live for the content resource in seconds.\nIt defaults to one hour (3600) if no input is provided. Max TTL is 259200 (3 days).'\n"
+          }
+        ],
+        "description": "Upload a file as a temporary content resource. It returns a `201 Created` with a location header that contains the location of the created resource. If filename or TTL is not properly set, a `400 Bad request` is returned. For internal issues, a `500 Internal Server Error` is returned.",
+        "operationId": "TempContentsPost",
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "required": true,
+          "description": "The file content (binary) to upload."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/temp-contents/{id}": {
+      "get": {
+        "tags": [
+          "Temporary contents"
+        ],
+        "summary": "Download a file",
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "headers": {
+              "Content-Length": {
+                "$ref": "#/components/headers/ContentLength"
+              },
+              "Content-Disposition": {
+                "$ref": "#/components/headers/ContentDisposition"
+              }
+            },
+            "description": "Success"
+          },
+          "204": {
+            "description": "No Content, resource is incomplete."
+          },
+          "206": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "headers": {
+              "Accept-Ranges": {
+                "$ref": "#/components/headers/AcceptRanges"
+              },
+              "Content-Length": {
+                "$ref": "#/components/headers/ContentLength"
+              },
+              "Content-Ranges": {
+                "$ref": "#/components/headers/ContentRange"
+              },
+              "Content-Disposition": {
+                "$ref": "#/components/headers/ContentDisposition"
+              }
+            },
+            "description": "Success"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Gone"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The temporary contents ID."
+          },
+          {
+            "in": "query",
+            "name": "inline",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Set to \"1\" to download the file in inline mode. Useful for displaying a preview of the file in a browser."
+          },
+          {
+            "in": "header",
+            "name": "Range",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Set to `unit=start-end` (for example, `bytes=0-100`) where `unit` = `bytes` (only supported unit), and start/end is a positive integer, where start <= end. Will also handle `start-` and `-end` as described in https://tools.ietf.org/html/rfc7233."
+          }
+        ],
+        "description": "This endpoint is used to retrieve a temporary content file. It returns a valid (`200 OK`) in case the file exists and the user is authorized to view the contents. It returns a `410 Gone` if the file has expired and `404 Not Found` if the criteria is not met.",
+        "operationId": "TempContentsGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/temp-contents/{id}/details": {
+      "get": {
+        "tags": [
+          "Temporary contents"
+        ],
+        "summary": "Retrieve file details",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/detailResponse"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "204": {
+            "description": "No Content, resource is incomplete."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Gone"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The temporary contents ID."
+          }
+        ],
+        "description": "Retrieve a summary of the metadata associated with a temporary content resource. It returns a `200 OK` with a model if the temporary resource is valid. It returns a `410 Gone` if the file has expired and `404 Not Found` if the criteria is not met.",
+        "operationId": "TempContentsDetails",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/temp-contents/files": {
+      "post": {
+        "tags": [
+          "Temporary contents"
+        ],
+        "summary": "Create a new upload resource (tus)",
+        "responses": {
+          "201": {
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/Location"
+              },
+              "Tus-Resumable": {
+                "$ref": "#/components/headers/TusResumable"
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "Tus-Version": {
+                "$ref": "#/components/headers/TusVersion"
+              }
+            },
+            "description": "Precondition Failed. tus protocol version not supported by the server."
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Tus-Resumable",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The version of the tus protocol used."
+          },
+          {
+            "in": "header",
+            "name": "Upload-Length",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            },
+            "required": true,
+            "description": "The size of the entire upload in bytes."
+          },
+          {
+            "in": "header",
+            "name": "Upload-Metadata",
+            "schema": {
+              "type": "string"
+            },
+            "description": "One or more comma-separated key-value pairs. The key and value must be separated by a space.\nThe key should be ASCII encoded, and the value must be Base64 encoded. All keys must be unique.\nSee [tus.io](http://tus.io) for details.\n\nThe following keys are used; any other keys are ignored.\n- `filename` - the name of the file.\n- `ttl` - the time-to-live for the uploaded file in seconds. Note that the time is counted from the _start_ of\n  the upload creation, not when the upload has finished. The server will keep the file available for access for\n  this period of time. The server may then delete it. The time defaults to one hour (3600) if not provided.\n  The maximum value is 259200 (3 days).'\n"
+          }
+        ],
+        "description": "Create a new upload resource (tus protocol `creation` extension POST request). See [tus.io](http://tus.io) for details.",
+        "operationId": "postTus",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 800
+        }
+      }
+    },
+    "/v1/temp-contents/files/{id}": {
+      "patch": {
+        "tags": [
+          "Temporary contents"
+        ],
+        "summary": "Apply bytes at a given offset (tus)",
+        "responses": {
+          "204": {
+            "description": "No Content. Patch successfully applied to upload."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found. Non-existent upload resource."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Conflict. Upload offsets do not match."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Gone. The upload resource no longer exists (could have expired)."
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "Tus-Version": {
+                "$ref": "#/components/headers/TusVersion"
+              }
+            },
+            "description": "Precondition Failed. tus protocol version not supported by the server."
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Locked. Concurrent access is not allowed."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID used to uniquely identify the upload."
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Standard HTTP `Content-Type` header."
+          },
+          {
+            "in": "header",
+            "name": "Tus-Resumable",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The version of the tus protocol used."
+          },
+          {
+            "in": "header",
+            "name": "Upload-Offset",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            },
+            "required": true,
+            "description": "The byte offset within the upload."
+          },
+          {
+            "in": "header",
+            "name": "Content-Length",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            },
+            "required": false,
+            "description": "Standard HTTP `Content-Length` header."
+          }
+        ],
+        "description": "Apply bytes contained in the message at a given offset (tus protocol PATCH request). Note that the tus server only\naccepts that the Content-Type response header is set to `application/offset+octet-stream`.\nSee [tus.io](http://tus.io) for details.\n\nNote that the server may return `423 Locked` on this request. This happens if the client attempts to perform\nconcurrent access to the resource, for example, if attempting to do a `HEAD` request during an ongoing `PATCH` request.\nIt can also occur in situations where the connection is unexpectedly dropped between the client and the server\nand the client attempts to make a new request when the server is still busy processing the upload. When this\nhappens, the client shall, after some period of time, try to resume the upload again.\n",
+        "operationId": "patchTus",
+        "requestBody": {
+          "content": {
+            "application/offset+octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "required": true,
+          "description": "The patch content (binary, either a complete or a partial file) to upload."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 800
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "headers": {
+      "AcceptRanges": {
+        "schema": {
+          "type": "string"
+        },
+        "description": "Standard HTTP `Accept-Ranges` header."
+      },
+      "ContentDisposition": {
+        "schema": {
+          "type": "string"
+        },
+        "description": "Standard HTTP `Content-Disposition` header."
+      },
+      "ContentLength": {
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 0
+        },
+        "description": "Standard HTTP `Content-Length` header."
+      },
+      "ContentRange": {
+        "schema": {
+          "type": "string"
+        },
+        "description": "Standard HTTP `Content-Range` header."
+      },
+      "Location": {
+        "schema": {
+          "type": "string"
+        },
+        "description": "Standard HTTP `Location` header.\nWhen used with tus POST (`creation`) requests, the server uses this to indicate location at which you can\ndo HEAD and PATCH requests.\n"
+      },
+      "TusResumable": {
+        "schema": {
+          "type": "string"
+        },
+        "description": "The version of the tus protocol used."
+      },
+      "TusVersion": {
+        "schema": {
+          "type": "string"
+        },
+        "description": "A comma-separated list of tus protocol versions supported by the server."
+      }
+    },
+    "schemas": {
+      "detailResponse": {
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "description": "Identifier"
+          },
+          "Name": {
+            "type": "string",
+            "description": "File name of the file uploaded by the user."
+          },
+          "Size": {
+            "type": "string",
+            "description": "Size of resource (in bytes)."
+          },
+          "Expires": {
+            "type": "string",
+            "description": "Datetime-stamp when the resource expired (in UTC)."
+          },
+          "CreatedAt": {
+            "type": "string",
+            "description": "Datetime-stamp when the resource was created (in UTC)."
+          },
+          "CreatorID": {
+            "type": "string",
+            "description": "Identifier for the subject / resource creator."
+          },
+          "UpdatedAt": {
+            "type": "string",
+            "description": "Datetime-stamp when the resource was updated (in UTC)."
+          },
+          "TTLSeconds": {
+            "type": "integer",
+            "description": "Time-to-live in seconds."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The API error code."
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "locale": {
+                "type": "string",
+                "description": "Locale"
+              },
+              "errorType": {
+                "type": "string",
+                "description": "The error type."
+              },
+              "sourceErrors": {
+                "type": "string",
+                "description": "The source errors (stack trace)."
+              }
+            },
+            "description": "Additional properties and information regarding the issue."
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the type of API Error."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable problem description of the issue."
+          }
+        },
+        "description": "An Error object."
+      },
+      "Errors": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A way to trace the source of the error."
+          }
+        },
+        "description": "An array of Error objects."
+      }
+    }
+  }
+}

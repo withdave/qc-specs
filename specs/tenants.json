@@ -1,0 +1,977 @@
+{
+  "info": {
+    "title": "tenants",
+    "version": ""
+  },
+  "paths": {
+    "/v1/tenants": {
+      "post": {
+        "tags": [
+          "tenants"
+        ],
+        "summary": "Create a tenant",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                },
+                "examples": {
+                  "Tenant": {
+                    "$ref": "#/components/examples/PostTenant201Response"
+                  }
+                }
+              }
+            },
+            "description": "Tenant created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                },
+                "examples": {
+                  "MissingLicenseKeyProperty": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "TENANTS-21",
+                          "title": "Missing licenseKey property",
+                          "status": "400"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                },
+                "examples": {
+                  "InvalidLicense": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "TENANTS-23",
+                          "title": "Invalid license error",
+                          "status": "403"
+                        }
+                      ]
+                    }
+                  },
+                  "LicenseQuotaLimitReached": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "TENANTS-22",
+                          "title": "License quota limit reached",
+                          "status": "403"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                },
+                "examples": {
+                  "InternalServerError": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "TENANTS-24",
+                          "title": "Internal server error",
+                          "status": "500"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Internal server error"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "description": "Creates a tenant in the requested region, linked to the provided license key. You must use a regional OAuth client generated via the [My Qlik portal](https://account.myqlik.qlik.com/account) to call this endpoint. Tenant creation, deactivation, and reactivation requests must be sent to the register endpoint in the relevant Qlik Cloud region, e.g. `https://register.us.qlikcloud.com/api/v1/tenants` if interacting with tenants in the `us` region.",
+        "operationId": "createTenant",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantCreationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/tenants/{tenantId}": {
+      "get": {
+        "tags": [
+          "tenants"
+        ],
+        "summary": "Get a tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            },
+            "description": "Tenant found."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Tenant not found."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenantId",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69"
+            },
+            "required": true,
+            "description": "The ID of the tenant to retrieve"
+          }
+        ],
+        "description": "Retrieves a specific tenant by ID.",
+        "operationId": "getTenantById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "tenants"
+        ],
+        "summary": "Update a tenant",
+        "responses": {
+          "204": {
+            "description": "Tenant updated successfully"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantPatchErrors"
+                }
+              }
+            },
+            "description": "Invalid PATCH request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Tenant not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenantId",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69"
+            },
+            "required": true,
+            "description": "The ID of the tenant to update"
+          }
+        ],
+        "description": "Updates properties of a specific tenant by ID.",
+        "operationId": "updateTenantById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantPatchSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/tenants/{tenantId}/actions/deactivate": {
+      "post": {
+        "tags": [
+          "tenants"
+        ],
+        "summary": "Deactivate a tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantDeactivateResponse"
+                }
+              }
+            },
+            "description": "Tenant deactivated successfully"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Tenant Not Found"
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Precondition Failed (invalid qlik-confirm-hostname value)"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenantId",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69"
+            },
+            "required": true,
+            "description": "The id of the tenant to deactivate"
+          },
+          {
+            "in": "header",
+            "name": "qlik-confirm-hostname",
+            "schema": {
+              "type": "string",
+              "format": "hostname",
+              "example": "unicorn.eu.qlikcloud.com"
+            },
+            "required": true,
+            "description": "A confirmation string that should match the hostname associated with the tenant resource to be deactivated. Example: unicorn.eu.qlikcloud.com"
+          }
+        ],
+        "description": "Deactivates a specific tenant. Once deactivated, tenant will be deleted on or after `estimatedPurgeDate`. Tenant can be reactivated using `/v1/tenants/{tenantId}/actions/reactivate` until this date. You must use a regional OAuth client generated via the [My Qlik portal](https://account.myqlik.qlik.com/account) to call this endpoint. Tenant creation, deactivation, and reactivation requests must be sent to the register endpoint in the relevant Qlik Cloud region, e.g. `https://register.us.qlikcloud.com/api/v1/tenants/{tenantId}/actions/deactivate` if interacting with tenants in the `us` region.",
+        "operationId": "deactivateTenantById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantDeactivateRequest"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/tenants/{tenantId}/actions/reactivate": {
+      "post": {
+        "tags": [
+          "tenants"
+        ],
+        "summary": "Reactivate a tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Tenant reactivated successfully"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Precondition Failed (invalid qlik-confirm-hostname value)"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenantId",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69"
+            },
+            "required": true,
+            "description": "The id of the tenant to reactivate"
+          },
+          {
+            "in": "header",
+            "name": "qlik-confirm-hostname",
+            "schema": {
+              "type": "string",
+              "example": "unicorn.us.qlikcloud.com"
+            },
+            "required": true,
+            "description": "A confirmation string that should match one of the hostnames of the tenant resource to be reactivated. Example: unicorn.eu.qlikcloud.com"
+          }
+        ],
+        "description": "Reactivates a deactivated tenant. Tenants can be reactivated until the `estimatedPurgeDate` provided at time of deactivation. You must use a regional OAuth client generated via the [My Qlik portal](https://account.myqlik.qlik.com/account) to call this endpoint. Tenant creation, deactivation, and reactivation requests must be sent to the register endpoint in the relevant Qlik Cloud region, e.g. `https://register.us.qlikcloud.com/api/v1/tenants/{tenantId}/actions/reactivate` if interacting with tenants in the `us` region.",
+        "operationId": "reactivateTenantById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/tenants/me": {
+      "get": {
+        "tags": [
+          "tenants"
+        ],
+        "summary": "Redirect to current tenant",
+        "responses": {
+          "302": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful redirect."
+          }
+        },
+        "description": "Redirects to current tenant.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "examples": {
+      "PostTenant201Response": {
+        "value": {
+          "id": "kg1knZuzosd7LR-CfvV7ZZnyEI--XYZZ",
+          "name": "bk1672h181jm1b1",
+          "links": {
+            "self": {
+              "href": "https://bk1672h181jm1b1.us.qlikcloud.com/api/v1/tenants/kg1knZuzosd7LR-CfvV7ZZnyEI--XYZZ"
+            }
+          },
+          "status": "active",
+          "created": "2022-06-24T18:28:31.301Z",
+          "hostnames": [
+            "bk1672h181jm1b1.us.qlikcloud.com"
+          ],
+          "datacenter": "us-east-1",
+          "lastUpdated": "2022-06-24T18:28:31.301Z",
+          "createdByUser": "dyk0nG9WvXZmupfFtULqgVAp1l3kbmTY",
+          "enableAnalyticCreation": true,
+          "autoAssignCreateSharedSpacesRoleToProfessionals": false,
+          "autoAssignDataServicesContributorRoleToProfessionals": false,
+          "autoAssignPrivateAnalyticsContentCreatorRoleToProfessionals": false
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "status",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the error."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON Pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          },
+          "status": {
+            "type": "string",
+            "description": "The HTTP status code."
+          }
+        },
+        "description": "An error object describing the error."
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "TENANTS-8",
+              "title": "Not found",
+              "status": 404
+            }
+          ],
+          "traceId": "000000000000000079cf1ebeae103de1"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "An array of errors related to the operation."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique identifier for tracing the error."
+          }
+        },
+        "description": "The error response object describing the error from the handling of an HTTP request."
+      },
+      "Tenant": {
+        "type": "object",
+        "required": [
+          "name",
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "example": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69",
+            "readOnly": true,
+            "description": "The unique tenant identifier.",
+            "x-qlik-visibility": "public"
+          },
+          "name": {
+            "type": "string",
+            "example": "QlikTenant",
+            "description": "The display name of the tenant."
+          },
+          "links": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "self": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "http://foo.example/api/v1/tenants/TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69",
+                    "description": "URL that defines the resource."
+                  }
+                },
+                "description": "A link to this tenant."
+              }
+            }
+          },
+          "status": {
+            "enum": [
+              "active",
+              "disabled",
+              "deleted"
+            ],
+            "type": "string",
+            "description": "The status of the tenant."
+          },
+          "created": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true,
+            "description": "The timestamp for when the tenant record was created (1970-01-01T00:00:00.001Z for static tenants)."
+          },
+          "hostnames": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "foo.example"
+            },
+            "description": "List of case insensitive hostnames that are mapped to the tenant. The first record maps to the display name and the subsequent entries are aliases."
+          },
+          "datacenter": {
+            "type": "string",
+            "example": "us-east-1",
+            "description": "The datacenter where the tenant is located."
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true,
+            "description": "The timestamp for when the tenant record was last updated (1970-01-01T00:00:00.001Z for static tenants)."
+          },
+          "createdByUser": {
+            "type": "string",
+            "example": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy7A",
+            "description": "The user ID who created the tenant."
+          },
+          "enableAnalyticCreation": {
+            "type": "boolean",
+            "default": false
+          },
+          "autoAssignCreateSharedSpacesRoleToProfessionals": {
+            "type": "boolean",
+            "default": true
+          },
+          "autoAssignDataServicesContributorRoleToProfessionals": {
+            "type": "boolean",
+            "default": true
+          },
+          "autoAssignPrivateAnalyticsContentCreatorRoleToProfessionals": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "TenantCreationRequest": {
+        "type": "object",
+        "properties": {
+          "datacenter": {
+            "type": "string",
+            "example": "us-east-1",
+            "description": "The datacenter where the tenant is located.\n\nSupported locations for commercial licenses:\n- `ap-northeast-1`: Japan (jp)\n- `ap-southeast-1`: Australia (ap)\n- `ap-southeast-2`: Singapore (sg)\n- `eu-central-1`: Germany (de)\n- `eu-west-1`: Ireland (eu)\n- `eu-west-2`: United Kingdom (uk)\n- `us-east-1`: United States of America (us)\n"
+          },
+          "licenseKey": {
+            "type": "string",
+            "example": 1234567890,
+            "description": "The signed license key of the license that will be associated with the created tenant."
+          }
+        }
+      },
+      "TenantDeactivateRequest": {
+        "type": "object",
+        "properties": {
+          "purgeAfterDays": {
+            "type": "integer",
+            "default": 30,
+            "maximum": 90,
+            "minimum": 10,
+            "description": "Sets the number of days to purge the tenant after deactivation. Only available to OEMs."
+          }
+        },
+        "description": "A request to deactivate a tenant."
+      },
+      "TenantDeactivateResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "example": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69",
+            "readOnly": true,
+            "description": "The unique tenant identifier."
+          },
+          "status": {
+            "enum": [
+              "disabled"
+            ],
+            "type": "string",
+            "description": "The status of the tenant."
+          },
+          "estimatedPurgeDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-18T00:00:00.000Z",
+            "description": "The estimated date time of when tenant will be purged."
+          }
+        },
+        "description": "The result of tenant deactivation."
+      },
+      "TenantPatchErrors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "title"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "TENANTS-10",
+                  "description": "The error code."
+                },
+                "meta": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "example": "TENANTS-11",
+                      "description": "The error code."
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "The specified hostname is unavailable for use",
+                      "description": "Summary of the problem."
+                    }
+                  },
+                  "description": "Additional properties relating to the error."
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Invalid PATCH request",
+                  "description": "Summary of the problem."
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "pointer": {
+                      "type": "string",
+                      "example": "/hostnames/1",
+                      "description": "A JSON Pointer to the property that caused the error."
+                    },
+                    "parameter": {
+                      "type": "string",
+                      "description": "The URI query parameter that caused the error."
+                    }
+                  },
+                  "description": "References to the source of the error."
+                }
+              },
+              "description": "An error object."
+            }
+          }
+        }
+      },
+      "TenantPatchSchema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "op",
+            "path",
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string",
+              "description": "The operation to be performed."
+            },
+            "path": {
+              "enum": [
+                "/name",
+                "/hostnames/1",
+                "/autoAssignCreateSharedSpacesRoleToProfessionals",
+                "/autoAssignPrivateAnalyticsContentCreatorRoleToProfessionals",
+                "/autoAssignDataServicesContributorRoleToProfessionals",
+                "/enableAnalyticCreation"
+              ],
+              "type": "string",
+              "description": "A JSON Pointer value that references a location within the target document where the operation is performed."
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ],
+              "description": "The value to be used for this operation."
+            }
+          },
+          "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "Corp"
+          },
+          {
+            "op": "replace",
+            "path": "/hostnames/1",
+            "value": "example-tenant.us.qlikcloud.com"
+          },
+          {
+            "op": "replace",
+            "path": "/autoAssignCreateSharedSpacesRoleToProfessionals",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/autoAssignPrivateAnalyticsContentCreatorRoleToProfessionals",
+            "value": false
+          },
+          {
+            "op": "replace",
+            "path": "/autoAssignDataServicesContributorRoleToProfessionals",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/enableAnalyticCreation",
+            "value": false
+          }
+        ]
+      }
+    }
+  }
+}

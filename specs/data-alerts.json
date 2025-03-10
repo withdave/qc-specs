@@ -1,0 +1,3096 @@
+{
+  "info": {
+    "title": "data-alerts",
+    "version": ""
+  },
+  "paths": {
+    "/v1/data-alerts": {
+      "get": {
+        "tags": [
+          "alerting tasks"
+        ],
+        "summary": "Get a list of alerting tasks.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingTaskListResponse"
+                }
+              }
+            },
+            "description": "The alerting tasks list has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "appID",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The app ID you would like to filter by"
+          },
+          {
+            "in": "query",
+            "name": "conditionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The conditionId you would like to filter by"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "Limit the returned result set"
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the next page of data. Only one of next or previous may be specified."
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            },
+            "required": false,
+            "description": "Offset for finding a list of entities - used for pagination"
+          },
+          {
+            "in": "query",
+            "name": "ownerId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The id of the owner you would like to filter by"
+          },
+          {
+            "in": "query",
+            "name": "ownerName",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The name of the owner you would like to filter by"
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the previous page of data. Only one of next or previous may be specified."
+          },
+          {
+            "in": "query",
+            "name": "role",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "owner",
+                  "recipient",
+                  "notowner"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "The role you would like to filter by"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "-datecreated",
+                  "datecreated",
+                  "+datecreated",
+                  "-ownername",
+                  "ownername",
+                  "+ownername",
+                  "lasttrigger",
+                  "-lasttrigger",
+                  "+lasttrigger",
+                  "lastscan",
+                  "-lastscan",
+                  "+lastscan",
+                  "name",
+                  "-name",
+                  "+name",
+                  "enabled",
+                  "-enabled",
+                  "+enabled",
+                  "status",
+                  "-status",
+                  "+status",
+                  "nextexecutiontime",
+                  "-nextexecutiontime",
+                  "+nextexecutiontime"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Sort the returned result set by the specified field"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "INVALID_RECIPIENT",
+                  "INVALID_OWNER",
+                  "DISABLED",
+                  "VALID"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "The status you would like to filter by"
+          }
+        ],
+        "operationId": "alertingTasksList",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "alerting tasks"
+        ],
+        "summary": "Creates a new alerting task.",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingTaskResponse"
+                }
+              }
+            },
+            "description": "Alert creation has been accepted. The alerting task will have status creating, until status is set to either valid or invalid."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "alertingTasksCreate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertingTaskCreateRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "The alerting task create request definition."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-alerts/{alertId}": {
+      "get": {
+        "tags": [
+          "alerting tasks"
+        ],
+        "summary": "Get an alerting task by its id",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingTaskResponse"
+                }
+              }
+            },
+            "description": "Alert has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task or execution not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alertId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          }
+        ],
+        "operationId": "alertingTasksIDGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "alerting tasks"
+        ],
+        "summary": "Updates an existing alerting task",
+        "responses": {
+          "204": {
+            "description": "The alerting task has been successfully updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The specified alerting task ID or body is invalid (e.g. not a number)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "An alerting task with the specified ID was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alertId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          }
+        ],
+        "operationId": "alertingTasksUpdate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertingTaskPatchRequestCompliantList"
+              }
+            }
+          },
+          "required": true,
+          "description": "Patch request definition for an alerting task."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "alerting tasks"
+        ],
+        "summary": "Deletes an alerting task.",
+        "responses": {
+          "204": {
+            "description": "The alerting task has been successfully deleted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The specified alerting task ID is invalid (e.g. not a number)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "An alerting task with the specified ID was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alertId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          }
+        ],
+        "operationId": "alertingTasksDelete",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-alerts/{alertId}/condition": {
+      "get": {
+        "tags": [
+          "alerting tasks"
+        ],
+        "summary": "Get the condition associated with an alerting task",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingConditionResponse"
+                }
+              }
+            },
+            "description": "Condition associated with the alerting task has been successfully returned. See ConditionResponse in condition-manager api docs"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task or condition not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alertId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          }
+        ],
+        "operationId": "alertingConditionGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-alerts/{alertId}/executions/{executionId}": {
+      "get": {
+        "tags": [
+          "alerting tasks executions"
+        ],
+        "summary": "Gets a specified alerting execution.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingExecutionResponse"
+                }
+              }
+            },
+            "description": "The execution has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The specified task or execution ID is invalid (e.g. not a number)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task or execution not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alertId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          },
+          {
+            "in": "path",
+            "name": "executionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The execution identifier. If value is \"latest\", the latest execution will be returned"
+          }
+        ],
+        "operationId": "alertingExecutionsIDGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "delete": {
+        "tags": [
+          "alerting tasks executions"
+        ],
+        "summary": "Deletes an execution.",
+        "responses": {
+          "204": {
+            "description": "The execution has been successfully deleted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The specified task or execution ID is invalid (e.g. not a number)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task or execution not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alertId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          },
+          {
+            "in": "path",
+            "name": "executionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The execution identifier."
+          }
+        ],
+        "operationId": "alertingExecutionsDelete",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-alerts/{alertId}/recipient-stats": {
+      "get": {
+        "tags": [
+          "alerting tasks"
+        ],
+        "summary": "Get the recipient stats for an alerting task",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingRecipientStatsResponse"
+                }
+              }
+            },
+            "description": "Alert recipient stats have been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task or execution not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alertId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          },
+          {
+            "in": "query",
+            "name": "groups",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "The name of the groups you would like to filter by"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "+userID",
+                  "-userID",
+                  "subscribed",
+                  "+subscribed"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Sort the returned result set by the specified field"
+          },
+          {
+            "in": "query",
+            "name": "subscribed",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Subscribed property you would like to filter by"
+          },
+          {
+            "in": "query",
+            "name": "userID",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The recipients ID you would like to filter by"
+          }
+        ],
+        "operationId": "alertingRecipientStatsGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-alerts/{taskId}/executions": {
+      "get": {
+        "tags": [
+          "alerting tasks executions"
+        ],
+        "summary": "Lists all alerting-executions linked to a user and a tenant.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingExecutionListResponse"
+                }
+              }
+            },
+            "description": "The alerting-executions list has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task or execution not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          },
+          {
+            "in": "query",
+            "name": "conditionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by condition id related to the executions."
+          },
+          {
+            "in": "query",
+            "name": "conditionStatus",
+            "schema": {
+              "enum": [
+                "FINISHED",
+                "FAILED",
+                "ALL"
+              ],
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by whether the alerting task execution status is FINISHED or FAILED."
+          },
+          {
+            "in": "query",
+            "name": "daysOfMonth",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "maximum": 31,
+                "minimum": 1
+              }
+            },
+            "required": false,
+            "description": "Specifies required days of the month that the execution was created in"
+          },
+          {
+            "in": "query",
+            "name": "daysOfWeek",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "MONDAY",
+                  "TUESDAY",
+                  "WEDNESDAY",
+                  "THURSDAY",
+                  "FRIDAY",
+                  "SATURDAY",
+                  "SUNDAY"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Specifies a filter for custom handled periods of time in which the executions were handled"
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "evaluationId",
+                  "triggerTime",
+                  "conditionStatus",
+                  "executionEvaluationStatus",
+                  "evaluation",
+                  "evaluation.endTime",
+                  "evaluation.resultData",
+                  "evaluation.resultData.count",
+                  "evaluation.resultData.headers",
+                  "evaluation.resultData.positive",
+                  "evaluation.resultData.negative",
+                  "evaluation.resultData.dimensions",
+                  "evaluation.resultData.measures"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Specifies specific properties to be populated"
+          },
+          {
+            "in": "query",
+            "name": "includeEvaluation",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Specifies whether to include evaluation details"
+          },
+          {
+            "in": "query",
+            "name": "lastEachDay",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Specifies whether to only show the last execution in each day"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "Limit the returned result set"
+          },
+          {
+            "in": "query",
+            "name": "minimumGapDays",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Specifies the number of days required between each entry. This should require a sort by triggertime"
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the next page of data. Only one of next or previous may be specified."
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            },
+            "required": false,
+            "description": "Offset for pagination - how many elements to skip"
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the previous page of data. Only one of next or previous may be specified."
+          },
+          {
+            "in": "query",
+            "name": "searchResultsLimit",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Specifies a limit number for the search query, affects total count and is not related to pagination"
+          },
+          {
+            "in": "query",
+            "name": "since",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Specifies a date that executions should have been created after. Date in RFC3339Nano format, such as 2020-01-01T00:00:00.000Z"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "triggertime",
+                  "-triggertime",
+                  "+triggertime"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Sort the returned result set by the specified field"
+          },
+          {
+            "in": "query",
+            "name": "timezone",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Specifies a timezone the other time-based filters in this query should consider. Expecting a momentjs format, such as America/Los_Angeles"
+          },
+          {
+            "in": "query",
+            "name": "triggered",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Filter by whether the alerting task is triggered."
+          },
+          {
+            "in": "query",
+            "name": "until",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Specifies a date that executions should have been created before. Date in RFC3339Nano format, such as 2020-01-01T00:00:00.000Z"
+          }
+        ],
+        "operationId": "alertingExecutionsList",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-alerts/{taskId}/executions/{executionId}/evaluations": {
+      "get": {
+        "tags": [
+          "alerting tasks executions"
+        ],
+        "summary": "Gets the content of an evaluation from an execution",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationGetResponse"
+                }
+              }
+            },
+            "description": "Evaluation successfully returned."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "A task or execution with the specified ID was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "executionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The execution identifier."
+          },
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          }
+        ],
+        "operationId": "alertingExecutionsEvaluationGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-alerts/{taskId}/executions/stats": {
+      "get": {
+        "tags": [
+          "alerting tasks executions"
+        ],
+        "summary": "Gets the stats for alerting task executions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingTaskExecutionStats"
+                }
+              }
+            },
+            "description": "Evaluation successfully returned."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "A task or execution with the specified ID was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The alerting task identifier."
+          },
+          {
+            "in": "query",
+            "name": "period",
+            "schema": {
+              "enum": [
+                "month"
+              ],
+              "type": "string"
+            },
+            "required": true,
+            "description": "The period by which the stats aggregation needs to be performed."
+          }
+        ],
+        "operationId": "alertingExecutionsEvaluationStats",
+        "x-qlik-deprecated": true,
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-alerts/actions/trigger": {
+      "post": {
+        "tags": [
+          "alerting actions"
+        ],
+        "summary": "Creates a new alerting trigger action.",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingActionsTriggerCreateResponse"
+                }
+              }
+            },
+            "description": "Action has been successfully done. Request to eventing was successfully triggered."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "alertingActionsTriggerCreate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertingActionsTriggerCreateRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "The alerting trigger action create request definition."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-alerts/actions/validate": {
+      "post": {
+        "tags": [
+          "alerting actions"
+        ],
+        "summary": "Validates a new alerting task. Current support includes validation for recipients only.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingTaskValidationResponse"
+                }
+              }
+            },
+            "description": "Alerting task has been validated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "alertingTaskActionsValidate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertingTaskCreateRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "The alerting validate action validates a new alerting task."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-alerts/settings": {
+      "get": {
+        "tags": [
+          "alerting settings"
+        ],
+        "summary": "Lists alerting settings.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertingSettings"
+                }
+              }
+            },
+            "description": "The alerting settings have been successfully returned"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "alertingSettingsGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "alerting settings"
+        ],
+        "summary": "Updates Alerting configuration. Accessible only by tenant admins.",
+        "responses": {
+          "204": {
+            "description": "Alerting settings have been successfully updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request body"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Request was denied at this time. This could happen when requesting to disable/enable the feature while there is an ongoing operation to enable/disable the feature"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "alertingSettingsUpload",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertingSettingsUpload"
+              }
+            }
+          },
+          "required": true,
+          "description": "Request for updating the alerting settings"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "AlertingActionsTriggerCreateRequest": {
+        "type": "object",
+        "required": [
+          "alertingTaskID"
+        ],
+        "properties": {
+          "alertingTaskID": {
+            "type": "string",
+            "example": "a1b2c3d4f5"
+          }
+        }
+      },
+      "AlertingActionsTriggerCreateResponse": {
+        "type": "object",
+        "properties": {
+          "workflowID": {
+            "type": "string",
+            "example": "a1b2c3d4f5",
+            "description": "the workflow id created for the manual triggering of alert"
+          }
+        }
+      },
+      "AlertingConditionResponse": {
+        "type": "object",
+        "properties": {
+          "hideSelections": {
+            "type": "boolean"
+          },
+          "conditionResponse": {
+            "type": "object",
+            "properties": {},
+            "description": "Should reference ConditionResponse type in condition-manager api docs"
+          }
+        }
+      },
+      "AlertingExecutionError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to sharing service."
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "detail": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      },
+      "AlertingExecutionErrors": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AlertingExecutionError"
+        }
+      },
+      "AlertingExecutionListResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StandardListResponseProps"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "links": {
+                "$ref": "#/components/schemas/ListLinks"
+              },
+              "executions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AlertingExecutionResponse"
+                },
+                "description": "Gets a list of alerting-executions."
+              }
+            }
+          }
+        ]
+      },
+      "AlertingExecutionPersist": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Gets the execution identifier.",
+            "x-go-custom-tag": "bson:\"_id\""
+          },
+          "errors": {
+            "$ref": "#/components/schemas/AlertingExecutionErrors"
+          },
+          "result": {
+            "$ref": "#/components/schemas/AlertingExecutionResult"
+          },
+          "alertId": {
+            "type": "string",
+            "description": "ID for the alerting task that this execution references"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "The owner that this execution belongs to"
+          },
+          "measures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Measures applied in the condition"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "The tenant that this execution belongs to"
+          },
+          "accessMode": {
+            "enum": [
+              "SOURCE_ACCESS",
+              "TARGET_ACCESS"
+            ],
+            "type": "string"
+          },
+          "bookmarkId": {
+            "type": "string",
+            "description": "Id of the bookmark associated with an alert"
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Dimensions applied in the condition"
+          },
+          "workflowId": {
+            "type": "string",
+            "description": "ID for the workflow, coming from eventing service"
+          },
+          "conditionId": {
+            "type": "string",
+            "description": "Id of the condition the alert is associated with"
+          },
+          "triggerTime": {
+            "type": "string",
+            "description": "Timestamp of execution start"
+          },
+          "evaluationId": {
+            "type": "string",
+            "description": "Id of the evaluation for the condition"
+          },
+          "executionType": {
+            "enum": [
+              "INDIVIDUAL",
+              "SHARED"
+            ],
+            "type": "string"
+          },
+          "conditionStatus": {
+            "enum": [
+              "FINISHED",
+              "FAILED"
+            ],
+            "type": "string"
+          },
+          "executionEvaluationStatus": {
+            "enum": [
+              "CONDITION_MET",
+              "CONDITION_NOT_MET",
+              "FAILED"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "AlertingExecutionResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlertingExecutionPersist"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "links": {
+                "$ref": "#/components/schemas/Links"
+              },
+              "evaluation": {
+                "$ref": "#/components/schemas/Evaluation"
+              }
+            }
+          }
+        ]
+      },
+      "AlertingExecutionResult": {
+        "type": "object",
+        "properties": {
+          "alertTriggerStatus": {
+            "type": "string",
+            "example": "alertSent"
+          },
+          "throttlerTokensLeft": {
+            "type": "integer",
+            "example": 5
+          }
+        }
+      },
+      "AlertingRecipientStats": {
+        "type": "object",
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "userid"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "errors": {
+            "$ref": "#/components/schemas/AlertingRecipientStatsErrors"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "addedIndividually",
+              "group1",
+              "group2"
+            ],
+            "description": "A list of associated groups. If a user is added individually the \"addedIndividually\" pseudo group is included"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the recipient is enabled."
+          },
+          "lastScan": {
+            "type": "string",
+            "description": "last time a trigger was detected, but not sure if executed"
+          },
+          "subscribed": {
+            "type": "boolean",
+            "description": "Whether the recipient is subscribed."
+          },
+          "lastTrigger": {
+            "type": "string",
+            "description": "last time an execution had been created"
+          },
+          "conditionStatus": {
+            "enum": [
+              "OK",
+              "FAILED"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "AlertingRecipientStatsError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to sharing service."
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "detail": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      },
+      "AlertingRecipientStatsErrors": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AlertingRecipientStatsError"
+        }
+      },
+      "AlertingRecipientStatsResponse": {
+        "type": "object",
+        "properties": {
+          "recipientStats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlertingRecipientStats"
+            }
+          }
+        }
+      },
+      "AlertingSettings": {
+        "type": "object",
+        "required": [
+          "enable-data-alerting"
+        ],
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "example": "cgdsAumGmQ6l0Bi7CUKt9V8P_Y9GL0sC",
+            "readOnly": true,
+            "description": "These persisted alerting settings are only available for this tenant. Extracted from request JWT."
+          },
+          "dataAlertsLimits": {
+            "type": "number",
+            "example": 50,
+            "readOnly": true,
+            "description": "Represents the number of data alerts limit to be consumed by the user either as an owner or recipient"
+          },
+          "dataAlertsConsumed": {
+            "type": "number",
+            "example": 40,
+            "readOnly": true,
+            "description": "Represents the number of data alerts consumed by the user either as an owner or recipient"
+          },
+          "enable-data-alerting": {
+            "type": "boolean",
+            "example": true,
+            "description": "true if data-alerting feature is enabled for this tenant. Enabling this feature also requires that the license has this feature enabled."
+          },
+          "data-alerting-license-status": {
+            "enum": [
+              "enabled",
+              "disabled"
+            ],
+            "type": "string",
+            "description": "Whether the license for the tenant has the data alerting feature enabled."
+          },
+          "max-recipients-in-target-access": {
+            "type": "integer",
+            "example": 100,
+            "readOnly": true,
+            "description": "The maximum number of recipients that can be present in an alerting task in TARGET_ACCESS mode. New recipients cannot be added when this limit is exceeded"
+          },
+          "data-alerting-feature-operation-status": {
+            "enum": [
+              "none",
+              "enabling",
+              "disabling"
+            ],
+            "type": "string",
+            "example": "disabling",
+            "readOnly": true,
+            "description": "This indicates that there is an ongoing operation to either disable or enable the data alerting feature. none means that no such operation is ongoing. enabling/disabling means that system is currently enabling/disabling the feature"
+          },
+          "data-alerting-feature-operation-status-change": {
+            "type": "string",
+            "example": "2020-09-02T13:44:33Z",
+            "readOnly": true,
+            "description": "UTC timestamp of the most recent change of data-alerting-feature-operation-status. If there has not been any such change, this is the timestamp of the initial creation of the record."
+          }
+        }
+      },
+      "AlertingSettingsUpload": {
+        "type": "object",
+        "required": [
+          "enable-data-alerting"
+        ],
+        "properties": {
+          "enable-data-alerting": {
+            "type": "boolean",
+            "example": true,
+            "description": "true if data-alerting feature is enabled. A status change could potentially result in a considerable amount of API operations to enable/disable triggers. Enabling this feature also requires that the license has this feature enabled."
+          }
+        }
+      },
+      "AlertingTaskCreateRequest": {
+        "type": "object",
+        "required": [
+          "appId",
+          "conditionId",
+          "name",
+          "recipients",
+          "triggerType"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 78,
+            "description": "name associated to alerting task"
+          },
+          "appId": {
+            "type": "string",
+            "description": "appId associated to this alert definition"
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "if the alerting task is enabled"
+          },
+          "sheetId": {
+            "type": "string",
+            "description": "sheetId associated to this alert definition"
+          },
+          "bookmarkId": {
+            "type": "string",
+            "description": "bookmarkId associated to this alert definition"
+          },
+          "recipients": {
+            "$ref": "#/components/schemas/Recipients"
+          },
+          "throttling": {
+            "$ref": "#/components/schemas/ThrottlingResource"
+          },
+          "conditionId": {
+            "type": "string",
+            "description": "the id of the condition that determines if this data alert should be triggered"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "description associated to alerting task"
+          },
+          "triggerType": {
+            "enum": [
+              "RELOAD",
+              "SCHEDULED"
+            ],
+            "type": "string",
+            "description": "Type of job that triggered the task"
+          },
+          "scheduleOptions": {
+            "$ref": "#/components/schemas/ScheduleOptions"
+          }
+        },
+        "description": "a alerting task (a definition on an alert)"
+      },
+      "AlertingTaskError": {
+        "type": "object",
+        "properties": {
+          "added": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          },
+          "value": {
+            "enum": [
+              "OWNER_DISABLED",
+              "OWNER_ACCESS",
+              "OWNER_LICENSE",
+              "APP_DELETED",
+              "NO_RECIPIENTS",
+              "PARTIAL_ACCESS",
+              "EVAL_ERROR",
+              "ORPHAN",
+              "CONVERSION_DENIED",
+              "EXPIRED",
+              "PARTIAL_SENT",
+              "QUOTA_REACHED",
+              "OWNER_HAS_NO_VALID_USER_ENTITLEMENT"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on alerting task"
+          }
+        }
+      },
+      "AlertingTaskExecutionStats": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StandardListResponseProps"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "links": {
+                "$ref": "#/components/schemas/ListLinks"
+              },
+              "executionsStats": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ExecutionStats"
+                }
+              }
+            }
+          }
+        ],
+        "x-qlik-deprecated": true
+      },
+      "AlertingTaskGroupRecipientError": {
+        "type": "object",
+        "properties": {
+          "added": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          },
+          "value": {
+            "enum": [
+              "GROUP_IS_DISABLED",
+              "MAX_ALERTS_LIMIT_REACHED",
+              "GROUP_WITH_NO_APP_ACCESS",
+              "GROUP_IS_DELETED"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on alerting task"
+          }
+        }
+      },
+      "AlertingTaskListResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StandardListResponseProps"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "links": {
+                "$ref": "#/components/schemas/ListLinks"
+              },
+              "tasks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AlertingTaskResponse"
+                },
+                "description": "Gets a list of alerting tasks."
+              }
+            }
+          }
+        ]
+      },
+      "AlertingTaskPatchRequestCompliant": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed"
+          },
+          "path": {
+            "enum": [
+              "/ownerName",
+              "/ownerId",
+              "/conditionId",
+              "/enabledAction",
+              "/bookmarkId",
+              "/name",
+              "/description",
+              "/throttling",
+              "/triggerType",
+              "/scheduleOptions"
+            ],
+            "type": "string",
+            "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902"
+          },
+          "value": {
+            "type": "object",
+            "properties": {},
+            "description": "The value to be used for this operation."
+          }
+        }
+      },
+      "AlertingTaskPatchRequestCompliantList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AlertingTaskPatchRequestCompliant"
+        }
+      },
+      "AlertingTaskRecipientError": {
+        "type": "object",
+        "properties": {
+          "added": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          },
+          "value": {
+            "enum": [
+              "USER_IS_DELETED",
+              "USER_DISABLED_IN_QCS",
+              "NO_ACCESS_TO_APP",
+              "UNSUBSCRIBED_FROM_ALERT",
+              "CONDITION_EVAL_ERROR",
+              "USER_DISABLED_IN_ALERT_BY_OWNER",
+              "MAX_ALERTS_LIMIT_REACHED"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on alerting task"
+          }
+        }
+      },
+      "AlertingTaskRecipientPatch": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AlertingTaskRecipientPatch_inner"
+        },
+        "example": [
+          {
+            "op": "add",
+            "value": {
+              "value": "recipient-1",
+              "enabled": true
+            },
+            "recipientType": "userid"
+          },
+          {
+            "op": "remove",
+            "value": "I6mWVd60wRWIbOXZr1ZKV8QTnxhnitb",
+            "recipientType": "userid"
+          },
+          {
+            "op": "enable",
+            "value": "I6mWVd60wRWIbOXZr1ZKV8QTnxhnitb",
+            "recipientType": "userid"
+          },
+          {
+            "op": "disable",
+            "value": "I6mWVd60wRWIbOXZr1ZKV8QTnxhnitb",
+            "recipientType": "userid"
+          },
+          {
+            "op": "replace",
+            "value": [
+              {
+                "value": "recipient-1",
+                "enabled": true
+              },
+              {
+                "value": "recipient-2",
+                "enabled": false
+              }
+            ],
+            "recipientType": "userid"
+          }
+        ],
+        "description": "A custom custom JSON Patch document, as an array of objects with operation, recipient type and value. Original defined in https://datatracker.ietf.org/doc/html/rfc6902."
+      },
+      "AlertingTaskRecipientPatch_inner": {
+        "type": "object",
+        "required": [
+          "op",
+          "recipientType",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "remove",
+              "add",
+              "replace",
+              "enable",
+              "disable",
+              "subscribe",
+              "unsubscribe"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "value": {
+            "type": "object",
+            "properties": {},
+            "description": "The value to be used for this operation."
+          },
+          "recipientType": {
+            "enum": [
+              "userid",
+              "groupid"
+            ],
+            "type": "string",
+            "description": "Defines the path for the given resource field to patch."
+          }
+        }
+      },
+      "AlertingTaskResponse": {
+        "type": "object",
+        "required": [
+          "triggerStats"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "5da5825325dc9a0dd0260af9",
+            "description": "data alerting identifier (this is the alertID)",
+            "x-go-custom-tag": "bson:\"_id\""
+          },
+          "name": {
+            "type": "string",
+            "description": "name associated to alerting task"
+          },
+          "appId": {
+            "type": "string",
+            "description": "appId associated to this alert definition"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "status": {
+            "enum": [
+              "creating",
+              "deleting"
+            ],
+            "type": "string",
+            "description": "particular status of the alerting task"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "true if the alerting task is enabled"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "the owner of this alert"
+          },
+          "sheetId": {
+            "type": "string",
+            "description": "sheetId associated to this alert definition"
+          },
+          "lastScan": {
+            "type": "string",
+            "description": "last time a trigger was detected, but not sure if executed for requesting user"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "the tenant of this alert"
+          },
+          "ownerName": {
+            "type": "string",
+            "description": "the owner name of this alert"
+          },
+          "accessMode": {
+            "enum": [
+              "SOURCE_ACCESS",
+              "TARGET_ACCESS"
+            ],
+            "type": "string"
+          },
+          "bookmarkId": {
+            "type": "string",
+            "description": "bookmarkId associated to this alert definition"
+          },
+          "recipients": {
+            "$ref": "#/components/schemas/Recipients"
+          },
+          "throttling": {
+            "$ref": "#/components/schemas/ThrottlingResource"
+          },
+          "conditionId": {
+            "type": "string",
+            "description": "the id of the condition that determines if this data alert should be triggered"
+          },
+          "dateCreated": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the task (rfc3339 format)"
+          },
+          "description": {
+            "type": "string",
+            "description": "description associated to alerting task"
+          },
+          "errorStatus": {
+            "enum": [
+              "OK",
+              "FATAL-ERROR",
+              "PARTIAL-TRIGGER"
+            ],
+            "type": "string",
+            "description": "error labels from the latest workflow that happened within the task"
+          },
+          "lastTrigger": {
+            "type": "string",
+            "description": "last time an execution had been created for requesting user"
+          },
+          "lastUpdated": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp of the most recent update."
+          },
+          "triggerType": {
+            "enum": [
+              "RELOAD",
+              "SCHEDULED",
+              "MANUAL"
+            ],
+            "type": "string",
+            "description": "Type of job that triggered the task"
+          },
+          "triggerStats": {
+            "$ref": "#/components/schemas/AlertingTaskTriggerStats"
+          },
+          "hideSelections": {
+            "type": "boolean",
+            "description": "Whether the selection needs to be hidden."
+          },
+          "evaluationCount": {
+            "type": "integer",
+            "description": "the number of actual evaluations with engine this task has consumed in the current month"
+          },
+          "scheduleOptions": {
+            "$ref": "#/components/schemas/ScheduleOptions"
+          },
+          "subscriptionIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "list of subscriptions related to this alerting task"
+          },
+          "absoluteLastScan": {
+            "type": "string",
+            "description": "last time a trigger was detected, but not sure if executed"
+          },
+          "conditionResponse": {
+            "type": "object",
+            "properties": {},
+            "description": "Should reference ConditionResponse type in condition-manager api docs"
+          },
+          "alertingTaskErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlertingTaskError"
+            },
+            "x-omitempty": true
+          },
+          "absoluteLastTrigger": {
+            "type": "string",
+            "description": "last time an execution had been created"
+          },
+          "hasHistoryCondition": {
+            "type": "boolean",
+            "description": "true if the alert has history condition enabled"
+          },
+          "lastExecutionStatus": {
+            "enum": [
+              "OK",
+              "FAILED"
+            ],
+            "type": "string"
+          },
+          "recipientsChangeHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecipientsChange"
+            }
+          },
+          "lastEvaluationCountUpdate": {
+            "type": "string",
+            "description": "the date when the evaluation count was updated"
+          }
+        }
+      },
+      "AlertingTaskTriggerStats": {
+        "type": "object",
+        "required": [
+          "last100Scans",
+          "last10Scans",
+          "totalScans"
+        ],
+        "properties": {
+          "totalScans": {
+            "type": "integer",
+            "maximum": 100,
+            "description": "The number of scans for the current condition."
+          },
+          "last10Scans": {
+            "type": "integer",
+            "maximum": 10,
+            "description": "The number of triggers out of the last 10 scans for the current condition."
+          },
+          "last100Scans": {
+            "type": "integer",
+            "maximum": 100,
+            "description": "The number of triggers out of the last 100 scans for the current condition."
+          }
+        }
+      },
+      "AlertingTaskValidation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifies for user id or condition id"
+          },
+          "type": {
+            "enum": [
+              "RECIPIENT",
+              "CONDITION",
+              "RECIPIENT_GROUP"
+            ],
+            "type": "string",
+            "description": "Identifier for type of a validation error occurring on alerting task"
+          },
+          "error": {
+            "enum": [
+              "NO_ACCESS",
+              "USER_IS_DISABLED",
+              "INVALID_CONDITION",
+              "GROUP_IS_DISABLED",
+              "GROUP_SIZE_EXCEEDED"
+            ],
+            "type": "string",
+            "description": "Identifier for a validation error occurring on alerting task",
+            "x-qlik-deprecated": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the error"
+          },
+          "validationErrors": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "NO_ACCESS",
+                "USER_IS_DISABLED",
+                "INVALID_CONDITION",
+                "MAX_ALERTS_LIMIT_REACHED",
+                "MAX_ALERT_RECIPIENTS_LIMIT_REACHED",
+                "GROUP_IS_DISABLED",
+                "GROUP_SIZE_EXCEEDED"
+              ],
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AlertingTaskValidationResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "FAILURE",
+              "SUCCESS"
+            ],
+            "type": "string"
+          },
+          "validations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlertingTaskValidation"
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to sharing service."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Error_meta"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "detail": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      },
+      "Error_meta": {
+        "type": "object",
+        "properties": {
+          "httpCode": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "HTTP error code."
+          }
+        }
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "HTTP-123",
+              "title": "short error message",
+              "details": "detailed error message"
+            }
+          ],
+          "traceId": "7975401f3954aa47"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "Evaluation": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique id for the resource"
+          },
+          "result": {
+            "enum": [
+              "success",
+              "failure",
+              "error"
+            ],
+            "type": "string",
+            "readOnly": true,
+            "description": "The final result of the evalution"
+          },
+          "status": {
+            "enum": [
+              "RUNNING",
+              "FAILED",
+              "FINISHED"
+            ],
+            "type": "string",
+            "readOnly": true,
+            "description": "The status of the evaluation execution"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "string",
+            "readOnly": true,
+            "description": "The time the evaluation ended"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "userId of user being impersonated to evaluate the condition"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The tenant id"
+          },
+          "contextId": {
+            "type": "string",
+            "description": "Extra context information to carry through to the result if one was included on when the evaluation was triggered"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "string",
+            "readOnly": true,
+            "description": "The time the evaluation started"
+          },
+          "resultData": {
+            "type": "object",
+            "properties": {},
+            "description": "Condition type specific result, one of dataResult or compoundResult"
+          },
+          "causalEvent": {
+            "type": "object",
+            "properties": {},
+            "description": "Representation of the event that caused the condition to be evaluated if one was included on when the evaluation was triggered"
+          },
+          "conditionId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique id of the associated condition"
+          },
+          "dataConditionEvaluatorId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique id for the resource given from Data Condition Evaluator"
+          }
+        }
+      },
+      "EvaluationGetResponse": {
+        "type": "object",
+        "properties": {
+          "condition": {
+            "type": "object",
+            "properties": {}
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/Evaluation"
+          },
+          "hideSelections": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ExecutionStats": {
+        "type": "object",
+        "properties": {
+          "endTime": {
+            "type": "string"
+          },
+          "periodKey": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "totalExecutions": {
+            "type": "string"
+          },
+          "triggeredExecutions": {
+            "type": "string"
+          }
+        }
+      },
+      "GroupIDRecipient": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "group1",
+            "description": "Group ID of recipient."
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient can receive alerts."
+          },
+          "taskGroupRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskGroupRecipientError"
+            },
+            "nullable": true
+          },
+          "alertingTaskGroupRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlertingTaskGroupRecipientError"
+            }
+          }
+        },
+        "description": "an internal recipient based on its group id."
+      },
+      "Links": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "$ref": "#/components/schemas/Self"
+          }
+        }
+      },
+      "ListLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Self"
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items?limit=12",
+            "description": "URL to particular set of elements"
+          },
+          "type": {
+            "enum": [
+              "prev",
+              "next"
+            ],
+            "type": "string",
+            "example": "next",
+            "description": "Page type, can be next or prev"
+          },
+          "token": {
+            "type": "string",
+            "example": "JwAAAAJfaWQAGQAAADVjZjUwM2NjMjVkYzlhMTM1MzYwZTVjZAAA",
+            "description": "Page unique token"
+          }
+        }
+      },
+      "Recipients": {
+        "type": "object",
+        "required": [
+          "userIds"
+        ],
+        "properties": {
+          "DLUsers": {
+            "type": "array"
+          },
+          "userIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserIDRecipient"
+            }
+          },
+          "DLGroups": {
+            "type": "array"
+          },
+          "DLListId": {
+            "type": "string"
+          },
+          "groupIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupIDRecipient"
+            }
+          }
+        },
+        "description": "List of recipients. An internal recipient is represented by either their user id or group id."
+      },
+      "RecipientsChange": {
+        "type": "object",
+        "properties": {
+          "dateTime": {
+            "type": "string",
+            "description": "time of recipient state change"
+          },
+          "patchAction": {
+            "$ref": "#/components/schemas/AlertingTaskRecipientPatch"
+          }
+        },
+        "description": "Change in a recipient for an alerting task"
+      },
+      "ScheduleOptions": {
+        "type": "object",
+        "properties": {
+          "timezone": {
+            "type": "string",
+            "example": "Canada/Pacific",
+            "nullable": true,
+            "description": "The timezone for time calculations in SCHEDULED triggers, optional."
+          },
+          "recurrence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "RRULE:FREQ=HOURLY;INTERVAL=2"
+            ],
+            "description": "List of RRULEs for SCHEDULED triggers, as specified in RFC5545. Note that DTSTART and DTEND, UNTIL lines are not allowed in this field; start and end times are specified in the start and end fields. RDATE and EXDATE lines are not currently supported. EXRULE is not supported since it is deprecated by RFC5545. It is mandatory if the trigger type is SCHEDULED. At least 1 rule must be set and maximum 5 rules are allowed."
+          },
+          "endDateTime": {
+            "type": "string",
+            "default": "",
+            "example": "2026-01-02T16:04:05",
+            "nullable": true,
+            "description": "EndDateTime is a local date time with respect to the above timezone parameter. If the timezone parameter is missing, then the timezone used is the one retrieved from user infos. Therefore ISO8601 time offsets are not allowed (e.g. \"2026-01-02T16:04:05Z\" or \"2026-01-02T16:04:05+01\"), if passed an error will be returned. EndDateTime is an optional parameter, when not set or when it's an empty string, the recurrence is intended to be never ending."
+          },
+          "chronosJobID": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The chronos job identifier. It is set once the related chronos job is created."
+          },
+          "startDateTime": {
+            "type": "string",
+            "example": "2006-01-02T16:04:05",
+            "nullable": true,
+            "description": "StartDateTime is a local date time with respect to the above timezone parameter. If the timezone parameter is missing, then the timezone used is the one retrieved from user infos. Therefore ISO8601 time offsets are not allowed (e.g. \"2026-01-02T16:04:05Z\" or \"2026-01-02T16:04:05+01\"), if passed an error will be returned. StartDateTime should not be older than 1 year from current date. StartDateTime is an optional parameter, when not set or when it's an empty string, its value is set to the current local date time."
+          },
+          "lastExecutionTime": {
+            "type": "string",
+            "example": "2020-11-20T12:00:55.000Z",
+            "nullable": true,
+            "readOnly": true,
+            "description": "lastExecutionTime is the time of the chronos job last execution in RFC3339 format (a time with a fixed UTC offset). Could be empty if job has not run yet."
+          },
+          "nextExecutionTime": {
+            "type": "string",
+            "example": "2020-11-20T12:00:55.000Z",
+            "nullable": true,
+            "readOnly": true,
+            "description": "nextExecutionTime is the time of the chronos job next execution in RFC3339 format (a time with a fixed UTC offset). Could be empty if the job is completed."
+          }
+        }
+      },
+      "Self": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items/5da5825325dc9a0dd0260af9"
+          }
+        },
+        "description": "Object with Href to a particular element or set of elements"
+      },
+      "StandardListResponseProps": {
+        "type": "object",
+        "required": [
+          "currentPageCount",
+          "totalCount"
+        ],
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "description": "total count of entries in the collection as a whole"
+          },
+          "currentPageCount": {
+            "type": "integer",
+            "description": "count of entries on the currently shown page"
+          }
+        },
+        "description": "properties that should be added to every list response"
+      },
+      "TaskGroupRecipientError": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "enum": [
+              "GROUP_IS_DISABLED",
+              "MAX_ALERTS_LIMIT_REACHED",
+              "GROUP_WITH_NO_APP_ACCESS",
+              "GROUP_IS_DELETED",
+              "GROUP_NOT_FOUND_DL",
+              "GROUP_DISABLED_IN_DL"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on sharing task specific for group recipient"
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          }
+        }
+      },
+      "TaskRecipientError": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "enum": [
+              "USER_IS_DELETED",
+              "USER_DISABLED_IN_QCS",
+              "NO_ACCESS_TO_APP",
+              "UNSUBSCRIBED_FROM_SHARING",
+              "USER_DISABLED_IN_SHARING_BY_OWNER",
+              "CHART_NOT_FOUND",
+              "APP_NOT_FOUND",
+              "SHEET_NOT_FOUND",
+              "ENGINE_POD_NOT_AVAILABLE",
+              "CHART_TYPE_NOT_ALLOWED",
+              "GENERIC_EXECUTION_FAILURE",
+              "USER_NOT_FOUND_DL",
+              "USER_DISABLED_IN_DL",
+              "FILTER_NOT_FOUND",
+              "BOOKMARK_NOT_FOUND"
+            ],
+            "type": "string",
+            "description": "Identifier for type of error occurring on sharing task specific for recipient"
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp for the creation of the error"
+          }
+        }
+      },
+      "ThrottlingResource": {
+        "type": "object",
+        "properties": {
+          "capacity": {
+            "type": "integer",
+            "description": "the maximum number of tokens that the bucket can contain"
+          },
+          "timezone": {
+            "type": "string",
+            "default": "Etc/UTC",
+            "description": "the timezone for time calculations in this throttlingresource, for current time and time reference."
+          },
+          "replenishRate": {
+            "type": "integer",
+            "description": "the amount of tokens to insert into the bucket on the specified interval. (tokens exceeding capacity are discarded)"
+          },
+          "recurrenceRule": {
+            "type": "string",
+            "description": "A string that supports a subset of RFC5545 recurrence rule directives."
+          },
+          "initialTokenCount": {
+            "type": "integer",
+            "description": "the initial amount of tokens in the bucket upon creation. cannot exceed capacity."
+          },
+          "referenceTimestamp": {
+            "type": "string",
+            "description": "a date and time reference specified in RFC3339 format"
+          }
+        },
+        "description": "The rules and setup for throttling"
+      },
+      "UserIDRecipient": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "1b263bs8m0mm_s21s3f",
+            "description": "User ID of recipient (internal user)."
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "addedIndividually",
+              "group1",
+              "group2"
+            ],
+            "description": "A list of associated groups. If a user is added individually the \"addedIndividually\" pseudo group is included"
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient can receive alerts."
+          },
+          "subscribed": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this recipient is subscribed to alerts of a task"
+          },
+          "taskRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskRecipientError"
+            },
+            "nullable": true
+          },
+          "alertingTaskRecipientErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlertingTaskRecipientError"
+            }
+          }
+        },
+        "description": "an internal recipient based on its user id."
+      }
+    }
+  }
+}

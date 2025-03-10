@@ -1,0 +1,2537 @@
+{
+  "info": {
+    "title": "spaces",
+    "version": ""
+  },
+  "paths": {
+    "/v1/spaces": {
+      "get": {
+        "tags": [
+          "spaces"
+        ],
+        "summary": "List spaces",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Spaces"
+                }
+              }
+            },
+            "description": "Spaces retrieved."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "action",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Action on space. Supports only \"?action=publish\"."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Exact match filtering on space name using SCIM. Case insensitive on attribute name. For example ?filter=name eq \"MySpace\" and ?filter=NAME eq \"MySpace\" is both valid.",
+            "x-qlik-stability": "experimental"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            },
+            "required": false,
+            "description": "Maximum number of spaces to return."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Space name to search and filter for. Case-insensitive open search with wildcards both as prefix and suffix. For example, \"?name=fin\" will get \"finance\", \"Final\" and \"Griffin\"."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The next page cursor. Next links make use of this."
+          },
+          {
+            "in": "query",
+            "name": "ownerId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Space ownerId to filter by. For example, \"?ownerId=123\"."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The previous page cursor. Previous links make use of this."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Field to sort by. Prefix with +/- to indicate asc/desc. For example, \"?sort=+name\" to sort ascending on Name. Supported fields are \"type\", \"name\" and \"createdAt\"."
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Type(s) of space to filter. For example, \"?type=managed,shared\"."
+          }
+        ],
+        "description": "Retrieves spaces that the current user has access to and match the query.",
+        "operationId": "getSpaces",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "spaces"
+        ],
+        "summary": "Create a space",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Space"
+                }
+              }
+            },
+            "description": "Space created."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space create operation denied."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space already exists. `name` must be unique."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Creates a space. Spaces names must be unique. Spaces of type `data` should only be used for Qlik Talend Data Integration projects.",
+        "operationId": "createSpace",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpaceCreate"
+              }
+            }
+          },
+          "required": true,
+          "description": "Attributes that the user wants to set for a new space."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/spaces/{spaceId}": {
+      "get": {
+        "tags": [
+          "spaces"
+        ],
+        "summary": "Retrieve a space",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Space"
+                }
+              }
+            },
+            "description": "Space retrieved."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Too many repetetive requests."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space to retrieve."
+          }
+        ],
+        "description": "Retrieves a single space by ID.",
+        "operationId": "getSpaceById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "spaces"
+        ],
+        "summary": "Update a space's properties",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Space"
+                }
+              }
+            },
+            "description": "Space patched (updated)."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space patch (update) operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space to update."
+          }
+        ],
+        "description": "Updates one or more properties of a space. To update all properties at once, use `PUT /spaces/{spaceId}`.",
+        "operationId": "patchSpaceById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpacePatch"
+              }
+            }
+          },
+          "required": true,
+          "description": "Attribute that the user wants to patch (update) for the specified space."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "put": {
+        "tags": [
+          "spaces"
+        ],
+        "summary": "Update a space",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Space"
+                }
+              }
+            },
+            "description": "Space updated."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space update operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space to update."
+          }
+        ],
+        "description": "Updates a space. To update specific properties, use `PATCH /spaces/{spaceId}`.",
+        "operationId": "updateSpaceById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpaceUpdate"
+              }
+            }
+          },
+          "required": true,
+          "description": "Attributes that the user wants to update for the specified space."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "spaces"
+        ],
+        "summary": "Delete a space",
+        "responses": {
+          "204": {
+            "description": "Space deleted."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space delete operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied."
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space delete precondition (space not empty) failed."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space to delete."
+          }
+        ],
+        "description": "Deletes a space. Ensure that you first delete all resources from the space to avoid orphaning content.",
+        "operationId": "deleteSpaceById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/spaces/{spaceId}/assignments": {
+      "get": {
+        "tags": [
+          "assignments"
+        ],
+        "summary": "List assignments for a space",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignments"
+                }
+              }
+            },
+            "description": "Assignments retrieved."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Assignments retrieve operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space of the assignment."
+          },
+          {
+            "in": "query",
+            "name": "assigneeId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filters assignment for a specific assigneeid."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            },
+            "required": false,
+            "description": "Maximum number of assignments to return."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The next page cursor. Next links make use of this."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The previous page cursor. Previous links make use of this."
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "$ref": "#/components/schemas/AssignmentType"
+            },
+            "required": false,
+            "description": "The type of assignment. Supported values are user or group."
+          }
+        ],
+        "description": "Retrieves the assignments of the space matching the query. Each assignment represents one user or group and their corresponding roles in the space. Assignments are not shown for the owner of a space, who receive all `assignableRoles` by default.",
+        "operationId": "getSpaceAssignments",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "assignments"
+        ],
+        "summary": "Assign a user or group to a space",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            },
+            "description": "Assignment created."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Assignment create operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Assignment already exists. `assigneeId` must be unique."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space of the assignment."
+          }
+        ],
+        "description": "Creates an assignment for a user or group (assignee) to a space with the specified roles. Assignments are not required for space owners, who receive all `assignableRoles` by default. Only one assignment can exist per space, per user or group.",
+        "operationId": "createSpaceAssignment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentCreate"
+              }
+            }
+          },
+          "required": true,
+          "description": "Attributes that the user wants to set for the assignment for the space."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/spaces/{spaceId}/assignments/{assignmentId}": {
+      "get": {
+        "tags": [
+          "assignments"
+        ],
+        "summary": "Retrieve an assignment for a space",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            },
+            "description": "Assignment retrieved."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Assignment retrieve operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied or assignment not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assignmentId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the assignment to retrieve."
+          },
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space of the assignment."
+          }
+        ],
+        "description": "Retrieves a single assignment by assignment ID. Use `GET /spaces/{spaceId}/assignments` to list all users and groups assigned to the space and their assignment ID.",
+        "operationId": "getSpaceAssignmentById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "assignments"
+        ],
+        "summary": "Update an assignment for a space",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            },
+            "description": "Assignment updated."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Assignment update operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assignmentId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the assignment to update."
+          },
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space of the assignment."
+          }
+        ],
+        "description": "Updates a single assignment by assignment ID. Use `GET /spaces/{spaceId}/assignments` to list all users and groups assigned to the space and their assignment ID. The complete list of roles must be provided.",
+        "operationId": "updateSpaceAssignmentById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentUpdate"
+              }
+            }
+          },
+          "required": true,
+          "description": "Attributes that the user wants to update for the specified assignment."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "assignments"
+        ],
+        "summary": "Delete an assignment",
+        "responses": {
+          "204": {
+            "description": "Assignment deleted."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Assignment delete operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied or assignment not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assignmentId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the assignment to delete."
+          },
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space of the assignment."
+          }
+        ],
+        "description": "Deletes an assignment.",
+        "operationId": "deleteSpaceAssignmentById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/spaces/{spaceId}/shares": {
+      "get": {
+        "tags": [
+          "shares"
+        ],
+        "summary": "List space shares",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shares"
+                }
+              }
+            },
+            "description": "Shares retrieved."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Shares retrieve operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space containing the shares."
+          },
+          {
+            "in": "query",
+            "name": "groupId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the group to which the resource is shared."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            },
+            "required": false,
+            "description": "Maximum number of shares to return."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the shared resource."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The next page cursor. Next links make use of this."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The previous page cursor. Previous links make use of this."
+          },
+          {
+            "in": "query",
+            "name": "resourceId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the shared resource."
+          },
+          {
+            "in": "query",
+            "name": "resourceType",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The type of the shared resource."
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "$ref": "#/components/schemas/ShareType"
+            },
+            "required": false,
+            "description": "The type of share. `user` shares assign to a specific user, `group` shares assign to a specific group, and `link` shares provide anonymous access to a resource."
+          },
+          {
+            "in": "query",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user to which the resource is shared."
+          }
+        ],
+        "description": "Retrieves the shares of the space matching the query.",
+        "operationId": "getSpaceShares",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "shares"
+        ],
+        "summary": "Create a space share",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Share"
+                }
+              }
+            },
+            "description": "Share created."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Share create operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Share already exists. `assigneeId` must be unique."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space of the share."
+          }
+        ],
+        "description": "Creates a share.",
+        "operationId": "createSpaceShare",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShareCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/spaces/{spaceId}/shares/{shareId}": {
+      "get": {
+        "tags": [
+          "shares"
+        ],
+        "summary": "Retrieve a space share",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Share"
+                }
+              }
+            },
+            "description": "Share retrieved."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Share retrieve operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied or share not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "shareId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the share to retrieve."
+          },
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space to which the share belongs."
+          }
+        ],
+        "description": "Retrieves a single space share by ID.",
+        "operationId": "getSpaceShareById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "shares"
+        ],
+        "summary": "Update a space share",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Share"
+                }
+              }
+            },
+            "description": "Share patched (updated)."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Share patch (update) operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Share not found or access denied."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "shareId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the share to update."
+          },
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space to which the share belongs."
+          }
+        ],
+        "description": "Updates properties of a space share (roles, and disabled state for link shares).",
+        "operationId": "patchShareById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharePatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "shares"
+        ],
+        "summary": "Delete a space share",
+        "responses": {
+          "204": {
+            "description": "Share deleted."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "share delete operation denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space not found or access denied or share not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "shareId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the share to delete."
+          },
+          {
+            "in": "path",
+            "name": "spaceId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the space to which the share belongs."
+          }
+        ],
+        "description": "Deletes a space share.",
+        "operationId": "deleteSpaceShareById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/spaces/types": {
+      "get": {
+        "tags": [
+          "spaces"
+        ],
+        "summary": "List space types",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceTypes"
+                }
+              }
+            },
+            "description": "Space types retrieved."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Gets a list of distinct space types available for use in the tenant.",
+        "operationId": "getTypes",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "ActionName": {
+        "enum": [
+          "change_owner",
+          "create",
+          "read",
+          "update",
+          "delete",
+          "publish",
+          "link_environment"
+        ],
+        "type": "string",
+        "description": "The supported actions for user-created spaces."
+      },
+      "Assignment": {
+        "required": [
+          "id",
+          "type",
+          "assigneeId",
+          "roles",
+          "spaceId",
+          "tenantId",
+          "links"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/AssignmentType"
+          },
+          "links": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "space": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleType"
+            },
+            "description": "The roles assigned to a user or group. Must not be empty."
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique identifier for the space."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique identifier for the tenant."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The date and time when the space was created."
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The ID of the user who created the assignment."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The date and time when the space was updated."
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The ID of the user who updated the assignment."
+          },
+          "assigneeId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The userId or groupId based on the type."
+          }
+        }
+      },
+      "AssignmentCreate": {
+        "required": [
+          "type",
+          "assigneeId",
+          "roles"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/AssignmentType"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleType"
+            },
+            "description": "The roles assigned to the assigneeId. For the full list of roles assignable in this space type, call `GET /spaces/{spaceId}` and inspect the `meta.assignableRoles` object."
+          },
+          "assigneeId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The userId or groupId based on the type."
+          }
+        }
+      },
+      "Assignments": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Assignment"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "count"
+            ],
+            "properties": {
+              "count": {
+                "type": "integer",
+                "description": "The total number of assignments matching the current filter."
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        }
+      },
+      "AssignmentType": {
+        "enum": [
+          "user",
+          "group"
+        ],
+        "type": "string",
+        "description": "The type of assignment such as user or group"
+      },
+      "AssignmentUpdate": {
+        "properties": {
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleType"
+            },
+            "description": "The roles assigned to the assigneeId. For the full list of roles assignable in this space type, call `GET /spaces/{spaceId}` and inspect the `meta.assignableRoles` object."
+          }
+        }
+      },
+      "Error": {
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "object",
+                "properties": {
+                  "pointer": {
+                    "type": "string",
+                    "description": "A JSON pointer to the property that caused the error."
+                  },
+                  "parameter": {
+                    "type": "string",
+                    "description": "The URI query parameter that caused the error."
+                  }
+                },
+                "description": "References to the source of the error."
+              }
+            },
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to the occurrence of this problem."
+          }
+        },
+        "description": "An error object."
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code.",
+            "x-qlik-deprecated": true
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error.",
+            "x-qlik-deprecated": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem.",
+            "x-qlik-deprecated": true
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to the occurrence of this problem.",
+            "x-qlik-deprecated": true
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error.",
+            "x-qlik-deprecated": true
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "Link": {
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "URL that defines the resource."
+          }
+        }
+      },
+      "RoleType": {
+        "enum": [
+          "consumer",
+          "contributor",
+          "dataconsumer",
+          "datapreview",
+          "facilitator",
+          "operator",
+          "producer",
+          "publisher",
+          "basicconsumer",
+          "codeveloper"
+        ],
+        "type": "string",
+        "description": "Supported roles by space type:\n- Shared: codeveloper, consumer, dataconsumer, facilitator, producer\n- Managed: consumer, contributor, dataconsumer, facilitator, publisher, basicconsumer\n- Data: consumer, dataconsumer, datapreview, facilitator, operator, producer, publisher\n"
+      },
+      "Share": {
+        "required": [
+          "id",
+          "type",
+          "assigneeId",
+          "role",
+          "spaceId",
+          "tenantId",
+          "resourceType",
+          "resourceId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/ShareType"
+          },
+          "links": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "space": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShareRoleType"
+            },
+            "description": "The roles assigned to the assigneeId."
+          },
+          "spaceId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "If the share is disabled (effective ONLY for link shares)."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The ID of the user who created the share."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The ID of the user who updated the share."
+          },
+          "assigneeId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The userId or groupId based on the type."
+          },
+          "resourceId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The ID of the shared resource."
+          },
+          "resourceName": {
+            "type": "string",
+            "maxLength": 256,
+            "description": "The name of the shared resource."
+          },
+          "resourceType": {
+            "enum": [
+              "app"
+            ],
+            "description": "The type of the shared resource."
+          }
+        }
+      },
+      "ShareCreate": {
+        "required": [
+          "type",
+          "assigneeId",
+          "roles",
+          "resourceType",
+          "resourceId"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ShareType"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShareRoleType"
+            },
+            "description": "The roles assigned to the assigneeId."
+          },
+          "assigneeId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The userId or groupId based on the type."
+          },
+          "resourceId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The resource id for the shared item."
+          },
+          "resourceType": {
+            "type": "string",
+            "format": "uid",
+            "description": "The resource type for the shared item."
+          }
+        }
+      },
+      "SharedSpaceRoleType": {
+        "enum": [
+          "facilitator",
+          "consumer",
+          "producer",
+          "dataconsumer",
+          "codeveloper"
+        ],
+        "type": "string",
+        "description": "The supported roles for Shared spaces."
+      },
+      "SharePatch": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "op",
+            "path",
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string",
+              "description": "The operation to be performed."
+            },
+            "path": {
+              "enum": [
+                "/roles",
+                "/disabled"
+              ],
+              "type": "string",
+              "description": "Field of Share to be patched (updated)."
+            },
+            "value": {
+              "type": "string",
+              "description": "The value to be used within the operations.\n- roles: The roles assigned to the assigneeId.\n- disabled: To disable the share (effective ONLY for link shares).\n"
+            }
+          },
+          "description": "A JSONPatch document as defined by RFC 6902"
+        }
+      },
+      "ShareRoleType": {
+        "description": "Supported roles by space type:\n- Shared: consumer\n- Managed: consumer, contributor\n"
+      },
+      "Shares": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Share"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "count"
+            ],
+            "properties": {
+              "count": {
+                "type": "integer",
+                "description": "The total number of Shares matching the current filter."
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        }
+      },
+      "ShareType": {
+        "enum": [
+          "user",
+          "group",
+          "link"
+        ],
+        "type": "string"
+      },
+      "Space": {
+        "required": [
+          "id",
+          "name",
+          "tenantId",
+          "links"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "A unique identifier for the space, for example, 62716f4b39b865ece543cd45."
+          },
+          "meta": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "actions",
+              "roles",
+              "assignableRoles"
+            ],
+            "properties": {
+              "roles": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RoleType"
+                },
+                "description": "The list of roles assigned to the current user in this space."
+              },
+              "actions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ActionName"
+                },
+                "description": "The list of actions allowed by the current user in this space."
+              },
+              "assignableRoles": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RoleType"
+                },
+                "example": {
+                  "$ref": "#/components/schemas/SharedSpaceRoleType"
+                },
+                "description": "The list of roles that could be assigned in this space."
+              }
+            },
+            "description": "Information about the space settings."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the space. Personal spaces do not have a name."
+          },
+          "type": {
+            "enum": [
+              "shared",
+              "managed",
+              "data"
+            ],
+            "type": "string",
+            "readOnly": true,
+            "description": "The type of space such as shared, managed, and so on."
+          },
+          "links": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "self",
+              "assignments"
+            ],
+            "properties": {
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "assignments": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The ID for the space owner."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The ID for the tenant, for example, xqGQ0k66vSR8f9G7J-vYtHZQkiYrCpct."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The date and time when the space was created."
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The ID of the user who created the space."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The date and time when the space was updated."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the space. Personal spaces do not have a description."
+          }
+        },
+        "description": "A space is a security context simplifying the management of access control by allowing users to control it on the containers instead of on the resources themselves."
+      },
+      "SpaceCreate": {
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Finance (dev)",
+            "pattern": "^[^\\\"\\*\\?\\<\\>\\/\\|\\\\\\:]+$",
+            "maxLength": 256,
+            "description": "The name of the space. Personal spaces do not have a name."
+          },
+          "type": {
+            "enum": [
+              "shared",
+              "managed",
+              "data"
+            ],
+            "type": "string",
+            "example": "shared",
+            "description": "The type of space such as shared, managed, and so on."
+          },
+          "description": {
+            "type": "string",
+            "example": "Development space for users building apps for the Finance team.",
+            "description": "The description of the space. Personal spaces do not have a description."
+          }
+        }
+      },
+      "SpacePatch": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "op",
+            "path",
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string",
+              "description": "The operation to be performed."
+            },
+            "path": {
+              "enum": [
+                "/name",
+                "/ownerId",
+                "/description"
+              ],
+              "type": "string",
+              "description": "Field of space to be patched (updated)."
+            },
+            "value": {
+              "type": "string",
+              "description": "The value to be used within the operations.\n- name: The name (string) of space of maxLength 256 of pattern: ^[^\\\"\\*\\?\\<\\>\\/\\|\\\\\\:]+$\n- description: The description (string) of the space. Personal spaces do not have a description.\n- ownerId: The user ID in uid format (string) of the space owner.\n"
+            }
+          },
+          "description": "A JSONPatch document as defined by RFC 6902."
+        }
+      },
+      "Spaces": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Space"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "count"
+            ],
+            "properties": {
+              "count": {
+                "type": "integer",
+                "description": "The total number of spaces matching the current filter."
+              },
+              "personalSpace": {
+                "type": "object",
+                "readOnly": true,
+                "required": [
+                  "resourceType",
+                  "actions"
+                ],
+                "properties": {
+                  "actions": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ActionName"
+                    },
+                    "description": "The list of actions allowed by the current user in this space."
+                  },
+                  "resourceType": {
+                    "type": "string",
+                    "description": "resource type"
+                  }
+                },
+                "description": "The meta related to personal space when applicable."
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "readOnly": true,
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        }
+      },
+      "SpaceType": {
+        "enum": [
+          "shared",
+          "managed",
+          "data"
+        ],
+        "type": "string",
+        "readOnly": true,
+        "description": "The name of the type."
+      },
+      "SpaceTypes": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpaceType"
+            },
+            "example": [
+              "data",
+              "shared",
+              "managed"
+            ],
+            "readOnly": true
+          }
+        },
+        "description": "The distinct types of spaces (shared, managed, and so on)."
+      },
+      "SpaceUpdate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[^\\\"\\*\\?\\<\\>\\/\\|\\\\\\:]+$",
+            "maxLength": 256,
+            "description": "The name of the space."
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The user ID of the space owner."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the space. Personal spaces do not have a description."
+          }
+        }
+      }
+    }
+  }
+}

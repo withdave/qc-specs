@@ -1,0 +1,780 @@
+{
+  "info": {
+    "title": "web-integrations",
+    "version": ""
+  },
+  "paths": {
+    "/v1/web-integrations": {
+      "get": {
+        "tags": [
+          "web-integrations"
+        ],
+        "summary": "List web integrations",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebIntegrations"
+                }
+              }
+            },
+            "description": "An array of web integration objects."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "endingBefore",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The target web integration ID to start looking before for web integrations. Cannot be used in conjunction with startingAfter."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 10,
+              "maximum": 100,
+              "minimum": 0
+            },
+            "required": false,
+            "description": "The number of web integration entries to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "name",
+                "+name",
+                "-name"
+              ],
+              "type": "string",
+              "default": "+name"
+            },
+            "required": false,
+            "description": "The field to sort by. Prefix with +/- to indicate ascending/descending order."
+          },
+          {
+            "in": "query",
+            "name": "startingAfter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The target web integration ID to start looking after for web integrations. Cannot be used in conjunction with endingBefore."
+          },
+          {
+            "in": "query",
+            "name": "tenantId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The tenant ID to filter by."
+          }
+        ],
+        "description": "Retrieves web integrations matching the query.",
+        "operationId": "getWebIntegrations",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "web-integrations"
+        ],
+        "summary": "Create web integration",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebIntegrationPost"
+                }
+              }
+            },
+            "description": "Web integration created successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                },
+                "examples": {
+                  "BadRequest": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "BAD_REQUEST",
+                          "title": "Bad Request",
+                          "detail": "Error parsing request body",
+                          "status": "400"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidProperty": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "WEBINTEGRATIONS-6",
+                          "title": "Invalid property value",
+                          "source": {
+                            "pointer": "/path"
+                          },
+                          "status": "400"
+                        }
+                      ]
+                    }
+                  },
+                  "MissingRequiredFields": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "WEBINTEGRATIONS-5",
+                          "meta": {
+                            "requiredFields": [
+                              "tenantId",
+                              "name",
+                              "createdBy"
+                            ]
+                          },
+                          "title": "Missing required fields",
+                          "status": "400"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "WEBINTEGRATIONS_FORBIDDEN",
+                      "title": "Forbidden",
+                      "status": "403"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Requestor not allowed to create a web integration."
+          }
+        },
+        "description": "Creates a web integration.",
+        "operationId": "createWebIntegration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebIntegrationPostSchema"
+              }
+            }
+          },
+          "required": true,
+          "description": "Properties that the user wants to set for the web integration."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/web-integrations/{id}": {
+      "get": {
+        "tags": [
+          "web-integrations"
+        ],
+        "summary": "Get web integration by ID",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebIntegration"
+                }
+              }
+            },
+            "description": "Web integration found."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "WEBINTEGRATIONS_NOT_FOUND",
+                      "title": "Not found",
+                      "status": "404"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Web integration not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the web integration to retrieve."
+          }
+        ],
+        "description": "Retrieves a single web integration by ID.",
+        "operationId": "getWebIntegrationById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "web-integrations"
+        ],
+        "summary": "Update web integration by ID",
+        "responses": {
+          "204": {
+            "description": "Web integration updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                },
+                "examples": {
+                  "BadRequest": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "BAD_REQUEST",
+                          "title": "Bad Request",
+                          "detail": "Error parsing request body",
+                          "status": "400"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidProperty": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "WEBINTEGRATIONS-6",
+                          "title": "Invalid property value",
+                          "source": {
+                            "pointer": "/path"
+                          },
+                          "status": "400"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidPatchRequest": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "WEBINTEGRATIONS-4",
+                          "title": "Invalid PATCH request",
+                          "status": "400"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "WEBINTEGRATIONS_NOT_FOUND",
+                      "title": "Not found",
+                      "status": "404"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Web integration not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the web integration to update."
+          }
+        ],
+        "description": "Updates a single web integration by ID.",
+        "operationId": "updateWebIntegrationById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebIntegrationPatchSchema"
+              }
+            }
+          },
+          "required": true,
+          "description": "Properties that the user wants to update for the web integration."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "web-integrations"
+        ],
+        "summary": "Delete web integration by ID",
+        "responses": {
+          "204": {
+            "description": "Web integration deleted successfully."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "WEBINTEGRATIONS_NOT_FOUND",
+                      "title": "Not found",
+                      "status": "404"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Web integration not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the web integration to delete."
+          }
+        ],
+        "description": "Deletes a single web integration by ID.",
+        "operationId": "deleteWebIntegrationById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/authenticate"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "status",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the error."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON Pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          },
+          "status": {
+            "type": "string",
+            "description": "The HTTP status code."
+          }
+        },
+        "description": "An error object describing the error."
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "TENANTS-8",
+              "title": "Not found",
+              "status": 404
+            }
+          ],
+          "traceId": "000000000000000079cf1ebeae103de1"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "An array of errors related to the operation."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique identifier for tracing the error."
+          }
+        },
+        "description": "The error response object describing the error from the handling of an HTTP request."
+      },
+      "WebIntegration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique web integration identifier."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the web integration."
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The time the web integration was created."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The tenant that the web integration belongs to."
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The user that created the web integration."
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The time the web integration was last updated."
+          },
+          "validOrigins": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "The origins that are allowed to make requests to the tenant."
+          }
+        },
+        "description": "A web integration object."
+      },
+      "WebIntegrationPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "enum": [
+              "/name",
+              "/validOrigins"
+            ],
+            "type": "string",
+            "description": "A JSON Pointer."
+          },
+          "value": {
+            "type": "string",
+            "description": "New value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "WebIntegrationPatchSchema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/WebIntegrationPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "New name"
+          }
+        ]
+      },
+      "WebIntegrationPost": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique web integration identifier."
+          },
+          "name": {
+            "type": "string",
+            "example": "My Web Integration",
+            "description": "The name of the newly created web integration."
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "self": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "http://mytenant.region.domain/api/v1/web-integrations/id",
+                    "description": "URL to the current page of records."
+                  }
+                },
+                "description": "Link information for current page."
+              }
+            },
+            "description": "Pagination links"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The time the web integration was created."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The tenant that the web integration belongs to."
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The user that created the web integration."
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The time the web integration was last updated."
+          },
+          "validOrigins": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://thirdPartyApp.com"
+            ],
+            "description": "The origins that are allowed to make requests to the tenant."
+          }
+        },
+        "description": "The creation of a web integration response."
+      },
+      "WebIntegrationPostSchema": {
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "My Web Integration",
+            "description": "The name of the web integration to create."
+          },
+          "validOrigins": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://thirdPartyApp.com"
+            ],
+            "description": "The origins that are allowed to make requests to the tenant."
+          }
+        }
+      },
+      "WebIntegrations": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebIntegration"
+            },
+            "description": "Properties of web integrations in a given tenant."
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "next": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "URL to the next page of records."
+                  }
+                },
+                "description": "Link information for next page."
+              },
+              "prev": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "URL to the previous page of records."
+                  }
+                },
+                "description": "Link information for previous page."
+              },
+              "self": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "URL to the current page of records."
+                  }
+                },
+                "description": "Link information for current page."
+              }
+            },
+            "description": "Pagination links"
+          }
+        },
+        "description": "An array of web integration objects."
+      }
+    }
+  }
+}

@@ -1,0 +1,1528 @@
+{
+  "info": {
+    "title": "groups",
+    "version": ""
+  },
+  "paths": {
+    "/v1/groups": {
+      "get": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "List groups",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Groups"
+                }
+              }
+            },
+            "description": "An array of groups, and pagination links."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request parameters for querying groups."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT is invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "All operations failed due to insufficient permissions."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://datatracker.ietf.org/doc/rfc7644/) for the syntax. Cannot be combined with any of the fields marked as deprecated. All conditional statements within this query parameter are case insensitive."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of groups to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "description": "The next page cursor."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "507f191e810c19729de860ga"
+            },
+            "description": "The previous page cursor."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, eg. name. Can be prefixed with +/- to determine order, defaults to (+) ascending."
+          },
+          {
+            "in": "query",
+            "name": "systemGroups",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Return system groups (e.g. Everyone) instead of regular groups. Cannot be combined with any other query parameters."
+          },
+          {
+            "in": "query",
+            "name": "totalResults",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Whether to return a total match count in the result. Defaults to false."
+          }
+        ],
+        "description": "Returns a list of groups with cursor-based pagination.",
+        "operationId": "getGroups",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Create group",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Group"
+                }
+              }
+            },
+            "description": "Group was successfully created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized to create a group."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from creating a group."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Name conflict when attempting to create a new group."
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Payload was too large."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Creates a new group. The maximum number of groups a tenant can have is 10,000. Group names are case-sensitive, and must be unique.",
+        "operationId": "postGroups",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroupPostSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/groups/{groupId}": {
+      "get": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Get group by ID",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Group"
+                }
+              }
+            },
+            "description": "Request successfully completed."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Group ID not found or Invalid format."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "groupId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The group's unique identifier"
+          }
+        ],
+        "description": "Returns the requested group.",
+        "operationId": "getGroupById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Update group by ID",
+        "responses": {
+          "204": {
+            "description": "Group updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request for patching a user."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized to patch a group."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden from patching a group."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Group was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "groupId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the group to update."
+          }
+        ],
+        "description": "Updates the requested group.",
+        "operationId": "updateGroupById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroupPatchSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Delete group by ID",
+        "responses": {
+          "204": {
+            "description": "Group deleted successfully."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Group ID not found or Invalid format."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "groupId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the group to delete."
+          }
+        ],
+        "description": "Deletes the requested group.",
+        "operationId": "deleteGroupById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/groups/actions/filter": {
+      "post": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Filter groups",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Groups"
+                }
+              }
+            },
+            "description": "Groups retrieved."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Advanced query filter syntax error or query params format error or filter too complex."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The number of user entries to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Get users with IDs that are higher than the target user ID. Cannot be used in conjunction with prev."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Get users with IDs that are lower than the target user ID. Cannot be used in conjunction with next."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "name",
+                "+name",
+                "-name"
+              ],
+              "type": "string",
+              "default": "+name"
+            },
+            "required": false,
+            "description": "The field to sort by, with +/- prefix indicating sort order"
+          }
+        ],
+        "description": "Retrieves a list of groups matching the filter using advanced query string.",
+        "operationId": "groups_api_actions_filter",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Filter"
+              }
+            }
+          },
+          "required": false,
+          "description": "Will contain the query filter to apply. It shall not contain more than 100 ids."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 200
+        }
+      }
+    },
+    "/v1/groups/settings": {
+      "get": {
+        "tags": [
+          "groups-settings"
+        ],
+        "summary": "Get group settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupSettings"
+                }
+              }
+            },
+            "description": "The requested tenant's group settings."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Returns the tenant's group settings, such as whether automatic group creation and IdP group synchronization are enabled or disabled, and roles assigned to system groups.",
+        "operationId": "groups_api_get_settings",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "groups-settings"
+        ],
+        "summary": "Update group settings",
+        "responses": {
+          "204": {
+            "description": "Config updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request. Payload could not be parsed to a JSON Patch or Patch operations are invalid."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The operation failed due to insufficient permissions."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Updates the tenant's group settings, such as whether automatic group creation and IdP group synchronization are enabled or disabled, and roles assigned to system groups.",
+        "operationId": "patchSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsPatchSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "AssignedRoles": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "type",
+            "level"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uid",
+              "example": "507f191e810c19729de860ea",
+              "description": "The unique role identitier"
+            },
+            "name": {
+              "type": "string",
+              "example": "Developer",
+              "readOnly": true,
+              "description": "The role name"
+            },
+            "type": {
+              "enum": [
+                "default",
+                "custom"
+              ],
+              "type": "string",
+              "example": "default",
+              "readOnly": true,
+              "description": "The type of role"
+            },
+            "level": {
+              "enum": [
+                "admin",
+                "user"
+              ],
+              "type": "string",
+              "example": "admin",
+              "readOnly": true,
+              "description": "The role level"
+            }
+          },
+          "description": "represents a role entity stored in the database"
+        },
+        "description": "An array of role references. Visibility dependant on access level. Must have access to roles to view other users' assigned roles."
+      },
+      "AssignedRolesRefIDs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uid",
+              "example": "507f191e810c19729de860ea",
+              "description": "The unique role identitier"
+            }
+          },
+          "description": "represents a role entity stored in the database"
+        },
+        "example": [
+          {
+            "id": "507f191e810c19729de860ea"
+          }
+        ],
+        "description": "An array of role reference identifiers."
+      },
+      "AssignedRolesRefNames": {
+        "type": "array",
+        "items": {
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "TenantAdmin",
+              "description": "The name of the role"
+            }
+          }
+        },
+        "example": [
+          {
+            "name": "TenantAdmin"
+          }
+        ],
+        "description": "An array of role reference names."
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON Pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code."
+          }
+        },
+        "description": "An error object describing the error."
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "GROUPS-7",
+              "title": "Not found",
+              "status": 404
+            }
+          ],
+          "traceId": "00000000000000000137b213cf12a77b"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "An array of errors related to the operation."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique identifier for tracing the error."
+          }
+        },
+        "description": "The error response object describing the error from the handling of an HTTP request."
+      },
+      "Filter": {
+        "properties": {
+          "filter": {
+            "type": "string",
+            "example": "(id eq \"626949b9017b657805080bbd\" or id eq \"626949bf017b657805080bbe\") and (status eq \"active\" or status eq \"deleted\")",
+            "description": "The advanced filtering to be applied the query. All conditional statements within this query parameter are case insensitive."
+          }
+        },
+        "description": "An advanced query filter to be used for complex user querying in the tenant."
+      },
+      "Group": {
+        "type": "object",
+        "required": [
+          "id",
+          "tenantId",
+          "name",
+          "status",
+          "createdAt",
+          "lastUpdatedAt",
+          "links"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "description": "The unique identifier for the group",
+            "x-qlik-filterable": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Development",
+            "maxLength": 256,
+            "minLength": 1,
+            "description": "The name of the group.",
+            "x-qlik-filterable": true
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "self": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://mytenant.us.qlikcloud.com/api/v1/groups/507f191e810c19729de860ea",
+                    "description": "Link to the current group document"
+                  }
+                }
+              }
+            },
+            "description": "Contains Links for current document"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "disabled"
+            ],
+            "type": "string",
+            "example": "active",
+            "description": "The state of the group.",
+            "x-qlik-filterable": true
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "q3VRZ4YMixRaLKEPhkZWM-XMIDN7cO8f",
+            "description": "The tenant identifier associated with the given group"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-03-21T17:32:28Z",
+            "description": "The timestamp for when the group record was created.",
+            "x-qlik-filterable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Id of user that created role."
+          },
+          "updatedBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Id of user that last updated this role."
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of a custom group."
+          },
+          "providerType": {
+            "enum": [
+              "idp",
+              "custom"
+            ],
+            "type": "string",
+            "example": "idp",
+            "description": "The type of provider for the group.",
+            "x-qlik-filterable": true
+          },
+          "assignedRoles": {
+            "$ref": "#/components/schemas/AssignedRoles"
+          },
+          "lastUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-03-22T10:01:02Z",
+            "description": "The timestamp for when the group record was last updated.",
+            "x-qlik-filterable": true
+          }
+        },
+        "description": "represents a Group document"
+      },
+      "GroupPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "example": "replace",
+            "description": "The operation to be performed. Currently \"replace\" is the only supported operation."
+          },
+          "path": {
+            "enum": [
+              "assignedRoles",
+              "name",
+              "description"
+            ],
+            "type": "string",
+            "example": "assignedRoles",
+            "description": "Attribute name of a field of the Groups entity. \"Name\" and \"description\" is only available for custom groups."
+          },
+          "value": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AssignedRolesRefIDs"
+              },
+              {
+                "$ref": "#/components/schemas/AssignedRolesRefNames"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "The roles to assign to the group (limit of 100 roles per group) or the new custom group name or description."
+          }
+        },
+        "description": "A JSON Patch document."
+      },
+      "GroupPatchSchema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/GroupPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/assignedRoles",
+            "value": [
+              {
+                "name": "TenantAdmin"
+              },
+              {
+                "name": "AnalyticsAdmin"
+              }
+            ]
+          }
+        ],
+        "description": "An array of JSON Patches for a group."
+      },
+      "GroupPostSchema": {
+        "type": "object",
+        "example": {
+          "name": "Development",
+          "status": "active",
+          "assignedRoles": [
+            {
+              "name": "Developer"
+            }
+          ]
+        },
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Development",
+            "description": "The name of the group (maximum length of 256 characters)."
+          },
+          "status": {
+            "enum": [
+              "active"
+            ],
+            "type": "string",
+            "example": "active",
+            "description": "The status of the created group within the tenant. Defaults to active if empty."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the group."
+          },
+          "providerType": {
+            "enum": [
+              "idp",
+              "custom"
+            ],
+            "type": "string",
+            "default": "idp",
+            "example": "idp",
+            "description": "The type of group provider. Must be \"idp\" or \"custom\". Defaults to \"idp\" if not provided."
+          },
+          "assignedRoles": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AssignedRolesRefIDs"
+              },
+              {
+                "$ref": "#/components/schemas/AssignedRolesRefNames"
+              }
+            ],
+            "description": "The roles to assign to the group (limit of 100 roles per group)."
+          }
+        }
+      },
+      "Groups": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            },
+            "description": "An array of groups."
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "next": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://mytenant.us.qlikcloud.com/api/v1/groups?next=FgAAAAdfaWQAYF33ydumcVj1cawoAA",
+                    "description": "Link to the next page of items"
+                  }
+                }
+              },
+              "prev": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://mytenant.us.qlikcloud.com/api/v1/groups?prev=FgAACAdfaWQAYF33ydumcVj1cawoAA",
+                    "description": "Link to the previous page of items"
+                  }
+                }
+              },
+              "self": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://mytenant.us.qlikcloud.com/api/v1/groups",
+                    "description": "Link to the current page of items"
+                  }
+                }
+              }
+            }
+          },
+          "totalResults": {
+            "type": "integer",
+            "description": "Indicates the total number of matching documents. Will only be returned if the query parameter \"totalResults\" is true."
+          }
+        },
+        "description": "A result object when listing groups."
+      },
+      "GroupSettings": {
+        "type": "object",
+        "required": [
+          "tenantId",
+          "autoCreateGroups",
+          "syncIdpGroups",
+          "links"
+        ],
+        "properties": {
+          "links": {
+            "type": "object",
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "self": {
+                "type": "object",
+                "required": [
+                  "href"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://mytenant.us.qlikcloud.com/api/v1/groups/settings",
+                    "description": "Link to the current group settings document"
+                  }
+                }
+              }
+            },
+            "description": "Contains Links for current document"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The unique tenant identifier."
+          },
+          "systemGroups": {
+            "type": "object",
+            "properties": {
+              "000000000000000000000001": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "enum": [
+                      "000000000000000000000001"
+                    ],
+                    "type": "string",
+                    "description": "The ID of the Everyone group. This value will not change and is immutable."
+                  },
+                  "name": {
+                    "enum": [
+                      "com.qlik.Everyone"
+                    ],
+                    "type": "string",
+                    "description": "The name of the Everyone group. This value will not change and is immutable."
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "For Everyone, this is always `true` and can't be patched."
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2021-03-22T10:01:02Z",
+                    "description": "The timestamp for when the Everyone group was created."
+                  },
+                  "assignedRoles": {
+                    "$ref": "#/components/schemas/AssignedRoles"
+                  },
+                  "lastUpdatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2021-03-22T10:01:02Z",
+                    "description": "The timestamp for when the Everyone group was last updated."
+                  }
+                }
+              }
+            }
+          },
+          "syncIdpGroups": {
+            "type": "boolean",
+            "example": false,
+            "description": "Determines if groups should be created on login."
+          },
+          "autoCreateGroups": {
+            "type": "boolean",
+            "example": false,
+            "description": "Determines if groups should be created on login."
+          }
+        },
+        "description": "represents a GroupSetting document"
+      },
+      "SettingsPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "enum": [
+              "/autoCreateGroups",
+              "/syncIdpGroups",
+              "/systemGroups/{id}/assignedRoles"
+            ],
+            "type": "string",
+            "description": "A JSON Pointer."
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "$ref": "#/components/schemas/AssignedRolesRefIDs"
+              },
+              {
+                "$ref": "#/components/schemas/AssignedRolesRefNames"
+              }
+            ],
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "SettingsPatchSchema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SettingsPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/syncIdpGroups",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/autoCreateGroups",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/systemGroups/000000000000000000000001/assignedRoles",
+            "value": [
+              {
+                "name": "Steward"
+              }
+            ]
+          }
+        ],
+        "description": "An array of JSON Patches for the groups settings."
+      }
+    }
+  }
+}

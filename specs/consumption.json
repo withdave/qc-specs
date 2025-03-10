@@ -1,0 +1,569 @@
+{
+  "info": {
+    "title": "consumption",
+    "version": ""
+  },
+  "paths": {
+    "/v1/consumption/executions": {
+      "get": {
+        "tags": [
+          "Consumption"
+        ],
+        "summary": "Retrieves the list of executions on an specific tenant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionsByTenantList"
+                }
+              }
+            },
+            "description": "The executions list has been successfully returned"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "actionToBlock",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://datatracker.ietf.org/doc/rfc7644/) for the syntax.\n\nexample `taskName eq \"automation_run_ended\" or taskName eq \"report_triggered\" or or taskName eq \"dataVolumeAggregated\"`\n\nThe following fields are supported: `scope`, `resourcetype`, `resourceaction`, `resourceid`, `capacitylimit`,\n`localusage`, `globalusage`, `overage`, `blocked`, `periodstart`, `periodend`, `consumptionreportid`, `blockedeventtime`,\n`overageeventtime`, `taskname`, `taskdescription`, `userid`, `tenantid`, `customerfacing`, `actiontoblock`\n"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 200,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "Limit the returned result set"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            },
+            "required": false,
+            "description": "Offset for pagination - how many elements to skip"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the page of data."
+          },
+          {
+            "in": "query",
+            "name": "periodsToInclude",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "current",
+                  "previous"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Specifies which periods to include regardless of the period type, start and end specified"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "periodstart",
+                  "-periodstart",
+                  "+periodstart",
+                  "periodend",
+                  "-periodend",
+                  "+periodend"
+                ],
+                "type": "string"
+              },
+              "default": [
+                "-periodstart"
+              ]
+            },
+            "required": false
+          }
+        ],
+        "description": "Lists of execution records by tenant.",
+        "operationId": "GetExecutionsByTenantId",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Enforcement": {
+        "type": "object",
+        "properties": {
+          "resourceType": {
+            "type": "string",
+            "description": "Resource type to be blocked"
+          },
+          "actionToBlock": {
+            "type": "string",
+            "description": "Resource action type to be blocked"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "HTTP-123",
+              "title": "short error message",
+              "details": "detailed error message"
+            }
+          ],
+          "traceId": "7975401f3954aa47"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SingleErrorResponse"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ExecutionResponse": {
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "Unit of measurement for the resource consumption",
+            "x-qlik-filterable": true
+          },
+          "scope": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "user",
+                "tenant",
+                "resourceId",
+                "resourceType",
+                "resourceAction"
+              ],
+              "type": "string",
+              "x-omitempty": false,
+              "x-qlik-filterable": true
+            },
+            "example": [
+              "tenant",
+              "resourceType"
+            ]
+          },
+          "userId": {
+            "type": "string",
+            "description": "The user id.",
+            "x-qlik-filterable": true
+          },
+          "blocked": {
+            "type": "boolean",
+            "format": "boolean",
+            "default": false,
+            "example": false,
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "overage": {
+            "type": "boolean",
+            "format": "boolean",
+            "default": false,
+            "example": false,
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "segments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "x-omitempty": true,
+              "x-qlik-filterable": false,
+              "additionalProperties": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            "example": [
+              {
+                "QDI": 10
+              },
+              {
+                "APP": 10
+              }
+            ],
+            "x-omitempty": true
+          },
+          "taskName": {
+            "type": "string",
+            "example": "task_name",
+            "description": "The resource task name.",
+            "x-qlik-filterable": true
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "The tenant id.",
+            "x-qlik-filterable": true
+          },
+          "periodEnd": {
+            "type": "string",
+            "example": "2022-01-31",
+            "description": "The end of the associated period.",
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "localUsage": {
+            "type": "number",
+            "format": "number",
+            "example": 20,
+            "description": "The local usage.",
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "periodType": {
+            "enum": [
+              "day",
+              "month",
+              "year",
+              "",
+              "fixed",
+              "minute"
+            ],
+            "type": "string",
+            "example": "month",
+            "x-omitempty": true,
+            "x-qlik-filterable": true
+          },
+          "resourceId": {
+            "type": "string",
+            "example": "228ac375-086e-4652-b9c0-fa8689bac75f",
+            "description": "The resource id.",
+            "x-omitempty": true,
+            "x-qlik-filterable": true
+          },
+          "updateTime": {
+            "type": "string",
+            "description": "The RFC3339 timestamp when the resource was updated.",
+            "x-qlik-filterable": true
+          },
+          "enforcement": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Enforcement"
+            },
+            "description": "Contains a list of resources that are blocked when quota for this is reached.",
+            "x-omitempty": true,
+            "x-qlik-filterable": true
+          },
+          "globalUsage": {
+            "type": "number",
+            "format": "number",
+            "example": 29,
+            "description": "The global usage.",
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "periodStart": {
+            "type": "string",
+            "example": "2022-01-01",
+            "description": "The start of the associated period.",
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "resourceType": {
+            "enum": [
+              "app",
+              "automations",
+              "space",
+              "data.volume.consumption"
+            ],
+            "type": "string",
+            "example": "app",
+            "description": "The resource type.",
+            "x-omitempty": true,
+            "x-qlik-filterable": true
+          },
+          "scopeMapping": {
+            "type": "string",
+            "description": "The map to the resource scope.",
+            "x-qlik-filterable": true
+          },
+          "capacityLimit": {
+            "type": "number",
+            "example": 50,
+            "description": "The capacity limit.",
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "closeToOverage": {
+            "type": "boolean",
+            "format": "boolean",
+            "default": false,
+            "example": false,
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "customerFacing": {
+            "type": "boolean",
+            "description": "The field to determine if a resource should be visible on the client.",
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "guardrailLimit": {
+            "type": "number",
+            "example": 20,
+            "description": "The guardrail limit.",
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          },
+          "resourceAction": {
+            "enum": [
+              "report.generated",
+              "reload",
+              "scheduledReload",
+              "executed",
+              "aggregation",
+              "import",
+              "updated",
+              "deployed",
+              "3rd_party_executed",
+              "standard_executed"
+            ],
+            "type": "string",
+            "example": "reload",
+            "description": "The resource action.",
+            "x-omitempty": true,
+            "x-qlik-filterable": true
+          },
+          "taskDescription": {
+            "type": "string",
+            "example": "some description",
+            "description": "The resource task description.",
+            "x-qlik-filterable": true
+          },
+          "blockedEventTime": {
+            "type": "string",
+            "description": "RFC3339 timestamp when a block event was last emitted for this execution.",
+            "x-qlik-filterable": true
+          },
+          "overageEventTime": {
+            "type": "string",
+            "description": "RFC3339 timestamp when a overage event was last emitted for this execution.",
+            "x-qlik-filterable": true
+          },
+          "consumptionReportId": {
+            "type": "string",
+            "format": "uid",
+            "example": "01xQ1chLoHkOikyzUGcHJquteNrAfketW",
+            "description": "The id of the consumption report",
+            "x-omitempty": false,
+            "x-qlik-filterable": true
+          }
+        }
+      },
+      "ExecutionsByTenantList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StandardListResponseProps"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ExecutionResponse"
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ListLinks"
+              },
+              "overage": {
+                "type": "boolean",
+                "example": false,
+                "x-omitempty": false
+              },
+              "closeToOverage": {
+                "type": "boolean",
+                "example": false,
+                "x-omitempty": false
+              },
+              "globalUsageAvailable": {
+                "type": "boolean",
+                "example": true,
+                "x-omitempty": false
+              }
+            }
+          }
+        ]
+      },
+      "ListLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Self"
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items?limit=12",
+            "description": "URL to particular set of elements"
+          },
+          "type": {
+            "enum": [
+              "prev",
+              "next"
+            ],
+            "type": "string",
+            "example": "next",
+            "description": "Page type, can be next or prev"
+          },
+          "token": {
+            "type": "string",
+            "example": "JwAAAAJfaWQAGQAAADVjZjUwM2NjMjVkYzlhMTM1MzYwZTVjZAAA",
+            "description": "Page unique token"
+          }
+        }
+      },
+      "Self": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items/5da5825325dc9a0dd0260af9"
+          }
+        },
+        "description": "Object with Href to a particular element or set of elements"
+      },
+      "SingleErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to usage-tracker."
+          },
+          "meta": {
+            "type": "object",
+            "properties": {},
+            "description": "meta properties for an error."
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "detail": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      },
+      "StandardListResponseProps": {
+        "type": "object",
+        "required": [
+          "currentPageCount",
+          "totalCount"
+        ],
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "example": 1,
+            "description": "total count of entries in the collection as a whole"
+          },
+          "currentPageCount": {
+            "type": "integer",
+            "example": 1,
+            "description": "count of entries on the currently shown page"
+          }
+        },
+        "description": "properties that should be added to every list response"
+      }
+    }
+  }
+}

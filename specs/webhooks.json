@@ -1,0 +1,1294 @@
+{
+  "info": {
+    "title": "webhooks",
+    "version": ""
+  },
+  "paths": {
+    "/v1/webhooks": {
+      "get": {
+        "tags": [
+          "webhooks"
+        ],
+        "summary": "List webhooks",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "createdByUserId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by user that created it"
+          },
+          {
+            "in": "query",
+            "name": "enabled",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter resources by enabled true/false"
+          },
+          {
+            "in": "query",
+            "name": "eventTypes",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by event-type/types, a single webhook item can have multiple event-types"
+          },
+          {
+            "in": "query",
+            "name": "level",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by level that user has access to (either user or level)"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "Maximum number of webhooks to retrieve"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by name (wildcard and case insensitive)"
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cursor to the next page"
+          },
+          {
+            "in": "query",
+            "name": "origins",
+            "schema": {
+              "enum": [
+                "api",
+                "automations",
+                "management-console"
+              ],
+              "type": "string"
+            },
+            "description": "Filter resources by origins, supports multiorigin"
+          },
+          {
+            "in": "query",
+            "name": "ownerId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by user that owns it, only applicable for user level webhooks"
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cursor to previous next page"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "name",
+                "+name",
+                "-name",
+                "url",
+                "+url",
+                "-url",
+                "createdAt",
+                "+createdAt",
+                "-createdAt",
+                "updatedAt",
+                "+updatedAt",
+                "-updatedAt"
+              ],
+              "type": "string",
+              "default": "-createdAt"
+            },
+            "description": "Field to sort by, prefix with -/+ to indicate order"
+          },
+          {
+            "in": "query",
+            "name": "updatedByUserId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by user that last updated the webhook"
+          },
+          {
+            "in": "query",
+            "name": "url",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by url (wildcard and case insensitive)"
+          }
+        ],
+        "description": "Retrieves all webhooks entries for a tenant that the user has access to. Users assigned the `TenantAdmin` role can retrieve all webhooks. A user can have up to 150 webhooks at one time.",
+        "operationId": "listWebhookEntries",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "webhooks"
+        ],
+        "summary": "Create a new webhook",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookResponse"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "description": "Creates a new webhook. User must be assigned the `TenantAdmin` role to create `tenant` level webhooks.",
+        "operationId": "createWebhook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/webhooks/{id}": {
+      "get": {
+        "tags": [
+          "webhooks"
+        ],
+        "summary": "Get a webhook",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookResponse"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The webhook's unique identifier."
+          }
+        ],
+        "description": "Returns details for a specific webhook.",
+        "operationId": "getWebhook",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "webhooks"
+        ],
+        "summary": "Update one or more webhook properties",
+        "responses": {
+          "204": {
+            "description": "No Content response."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The webhook's unique identifier."
+          }
+        ],
+        "description": "Patches a webhook to update one or more properties.",
+        "operationId": "patchWebhook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/WebhookPatch"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "put": {
+        "tags": [
+          "webhooks"
+        ],
+        "summary": "Update all webhook properties",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookResponse"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The webhook's unique identifier."
+          }
+        ],
+        "description": "Updates a webhook, any omitted fields will be cleared, returns updated webhook.",
+        "operationId": "updateWebhook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookBase"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "webhooks"
+        ],
+        "summary": "Delete a webhook",
+        "responses": {
+          "204": {
+            "description": "No Content response."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The webhook's unique identifier."
+          }
+        ],
+        "description": "Deletes a specific webhook.",
+        "operationId": "deleteWebhook",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/webhooks/{id}/deliveries": {
+      "get": {
+        "tags": [
+          "deliveries"
+        ],
+        "summary": "Return deliveries for a webhook",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeliveryList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The webhook's unique identifier."
+          },
+          {
+            "in": "query",
+            "name": "eventType",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter resources by event-type"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "Maximum number of deliveries to retrieve"
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cursor to the next page"
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cursor to previous next page"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "status",
+                "+status",
+                "-status",
+                "triggeredAt",
+                "+triggeredAt",
+                "-triggeredAt"
+              ],
+              "type": "string",
+              "default": "-triggeredAt"
+            },
+            "description": "Field to sort by, prefix with -/+ to indicate order"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "enum": [
+                "success",
+                "fail"
+              ],
+              "type": "string"
+            },
+            "description": "Filter resources by status (success or fail)"
+          }
+        ],
+        "description": "Returns deliveries for a specific webhook. Delivery history is stored for 1 week.",
+        "operationId": "getWebhookDeliveryList",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/webhooks/{id}/deliveries/{deliveryId}": {
+      "get": {
+        "tags": [
+          "deliveries"
+        ],
+        "summary": "Return details for specific delivery",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Delivery"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deliveryId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The delivery's unique identifier."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The webhook's unique identifier."
+          }
+        ],
+        "description": "Returns details for a specific delivery.",
+        "operationId": "getWebhookDelivery",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/webhooks/{id}/deliveries/{deliveryId}/actions/resend": {
+      "post": {
+        "tags": [
+          "deliveries"
+        ],
+        "summary": "Resend delivery",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Delivery"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deliveryId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The delivery's unique identifier."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The webhook's unique identifier."
+          }
+        ],
+        "description": "Resends the delivery with the same payload.",
+        "operationId": "resendDelivery",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/webhooks/event-types": {
+      "get": {
+        "tags": [
+          "webhooks"
+        ],
+        "summary": "List event-types",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventTypes"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "description": "Lists event-types that are possible to subscribe to.",
+        "operationId": "listEventTypes",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Bad Request"
+      },
+      "Forbidden": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Forbidden"
+      },
+      "InternalServerError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Internal Server Error"
+      },
+      "NotFound": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Not found"
+      },
+      "ServiceUnavailable": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Service Unavailable"
+      },
+      "Unauthorized": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      }
+    },
+    "schemas": {
+      "Delivery": {
+        "type": "object",
+        "readOnly": true,
+        "required": [
+          "id",
+          "webhookId",
+          "triggeredAt",
+          "status",
+          "eventType"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The delivery's unique identifier"
+          },
+          "status": {
+            "enum": [
+              "success",
+              "fail"
+            ],
+            "type": "string",
+            "description": "The status of delivery"
+          },
+          "request": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL used for this delivery"
+              },
+              "body": {
+                "type": "object",
+                "description": "The sent body/payload of the delivery"
+              },
+              "headers": {
+                "type": "object",
+                "example": {
+                  "headerName": "headerValue"
+                },
+                "description": "Headers sent for this delivery",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": ""
+          },
+          "response": {
+            "type": "object",
+            "properties": {
+              "body": {
+                "type": "string",
+                "description": "The received body of the delivery"
+              },
+              "headers": {
+                "type": "object",
+                "example": {
+                  "headerName": "headerValue"
+                },
+                "description": "Headers received for this delivery",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "statusCode": {
+                "type": "number",
+                "description": "The HTTP status code of the response"
+              }
+            },
+            "description": ""
+          },
+          "eventType": {
+            "type": "string",
+            "description": "The name of the triggering event-type"
+          },
+          "webhookId": {
+            "type": "string",
+            "description": "The unique webhook identifier that the delivery is for"
+          },
+          "triggeredAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The UTC timestamp when the delivery was triggered"
+          },
+          "statusMessage": {
+            "type": "string",
+            "description": "The status message of the delivery"
+          }
+        }
+      },
+      "DeliveryList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Delivery"
+            }
+          },
+          "links": {
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The unique code for the error"
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of what went wrong"
+          },
+          "detail": {
+            "type": "string",
+            "description": "May be used to provide additional details"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A way to trace the source of the error."
+          }
+        }
+      },
+      "EventType": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the event type"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the event type"
+          },
+          "levels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Specifies which levels that are supported for this event type"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the event type"
+          }
+        }
+      },
+      "EventTypes": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventType"
+            }
+          }
+        }
+      },
+      "Link": {
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "URL to a resource request"
+          }
+        }
+      },
+      "WebhookBase": {
+        "type": "object",
+        "required": [
+          "name",
+          "url"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The webhook's unique identifier"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 2048,
+            "description": "Target URL for webhook HTTPS requests"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "The name for the webhook"
+          },
+          "level": {
+            "enum": [
+              "tenant",
+              "user"
+            ],
+            "type": "string",
+            "default": "tenant",
+            "description": "Defines at what level the webhook should operate: for all resources belonging to a tenant or restricted to only those accessible by the webhook-creator."
+          },
+          "filter": {
+            "type": "string",
+            "example": "id eq \"id123\" or spaceId eq \"spaceId123\" or spaceId eq \"spaceId456\" or topLevelResourceId eq \"id789\"",
+            "description": "Filter that should match for a webhook to be triggered.\nSupported common attribute names are 'id', 'spaceId' and 'topLevelResourceId', beside the common attributes the \"com.qlik.v1.app.reload.finished\" event also supports \"data.status\" that could be either \"ok\" or \"error\" but can't be used together with other event types.\nSupported attribute operators are 'eq' and 'ne'.\nSupported logical operators are 'and' and 'or'.\nNote that attribute values must be valid JSON strings, hence they're enclosed with double quotes\nFor more detailed information regarding the SCIM filter syntax (RFC7644) used please follow the link to external documentation.",
+            "externalDocs": {
+              "url": "https://datatracker.ietf.org/doc/html/rfc7644#section-3.4.2.2",
+              "description": "More information about the SCIM filter syntax (RFC7644)"
+            }
+          },
+          "secret": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 32,
+            "description": "String used as secret for calculating HMAC hash sent as header"
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the webhook is active and sending requests"
+          },
+          "headers": {
+            "type": "object",
+            "example": {
+              "headerName": "headerValue"
+            },
+            "description": "Additional headers in the post request",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "The id of the user that owns the webhook, only applicable for user level webhooks"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the webhook was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the webhook was last updated"
+          },
+          "eventTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Types of events for which the webhook should trigger. Retrieve available types from `/v1/webhooks/event-types`."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "The reason for creating the webhook"
+          },
+          "disabledReason": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The reason for the webhook to be disabled"
+          },
+          "createdByUserId": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The id of the user that created the webhook"
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The id of the user that last updated the webhook"
+          },
+          "disabledReasonCode": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The unique code for the reason"
+          },
+          "checkCertificateRevocation": {
+            "type": "boolean",
+            "default": false,
+            "description": "If enabled the certificate chain of the configured URL will be checked for revocation before sending the webhook."
+          }
+        }
+      },
+      "WebhookList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebhookResponse"
+            }
+          },
+          "links": {
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        }
+      },
+      "WebhookPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "add",
+              "remove",
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed"
+          },
+          "path": {
+            "enum": [
+              "/name",
+              "/description",
+              "/url",
+              "/eventTypes",
+              "/headers",
+              "/enabled",
+              "/secret"
+            ],
+            "type": "string",
+            "example": "/description",
+            "description": "The path for the given resource field to patch"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902"
+      },
+      "WebhookPost": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WebhookBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "origin": {
+                "enum": [
+                  "api",
+                  "automations",
+                  "management-console"
+                ],
+                "type": "string",
+                "default": "api",
+                "description": "Indicates from where the webhook was created and its purpose"
+              }
+            }
+          }
+        ]
+      },
+      "WebhookResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WebhookBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "origin": {
+                "enum": [
+                  "api",
+                  "automations",
+                  "management-console"
+                ],
+                "type": "string",
+                "default": "api",
+                "readOnly": true,
+                "description": "Indicates from where the webhook was created and its purpose"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

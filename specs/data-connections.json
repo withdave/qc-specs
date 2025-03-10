@@ -1,0 +1,1810 @@
+{
+  "info": {
+    "title": "data-connections",
+    "version": ""
+  },
+  "paths": {
+    "/v1/data-connections": {
+      "get": {
+        "tags": [
+          "data-connections"
+        ],
+        "summary": "Gets a list of connections",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Connections"
+                }
+              }
+            },
+            "description": "List connections with optional filter queries. Connections will be filtered internally based on the space access rules applicable to the caller. When some of connections are not returned due to errors, errors array in the response will be set."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request, typically when dataName is empty"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Internal error, this happens when the service fails to make requests to dependency services"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad gateway, this happens when requests to required (dependent) services time out"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/dataName"
+          },
+          {
+            "$ref": "#/components/parameters/extended"
+          },
+          {
+            "$ref": "#/components/parameters/spaceID"
+          },
+          {
+            "$ref": "#/components/parameters/personal"
+          },
+          {
+            "$ref": "#/components/parameters/owner"
+          },
+          {
+            "$ref": "#/components/parameters/ownedbyme"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/nodatafiles"
+          },
+          {
+            "$ref": "#/components/parameters/userId"
+          },
+          {
+            "$ref": "#/components/parameters/caseinsensitive"
+          },
+          {
+            "$ref": "#/components/parameters/locale"
+          },
+          {
+            "$ref": "#/components/parameters/includeQris"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "data-connections"
+        ],
+        "summary": "Creates a new connection. Depending on the fields defined in the request body, credentials embedded (or associated) in the connection can be updated or created.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ConnectionCreateResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DcaasConnectionCreateAuthResponse"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Data connection created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Invalid data connection specified"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "User has no access to the connection or space"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Credentials referenced by qCredentialsID in the request body could not be found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data connection already exists"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ConnectionCreate"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DcaasConnectionCreate"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-connections/{qID}": {
+      "get": {
+        "tags": [
+          "data-connections"
+        ],
+        "summary": "Retrieves a connection by connection ID, or by name when the query parameter \"type\" is set to \"connectionname.\"",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionGet"
+                }
+              }
+            },
+            "description": "Data connection retrieved"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "The qID is not a valid UUID"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "User has no access to the connection or space"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data connection not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Credential decryption failed, likely due to invalid credentials"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/extended"
+          },
+          {
+            "$ref": "#/components/parameters/qConnID"
+          },
+          {
+            "$ref": "#/components/parameters/type"
+          },
+          {
+            "$ref": "#/components/parameters/credentialID"
+          },
+          {
+            "$ref": "#/components/parameters/bycredentialname"
+          },
+          {
+            "$ref": "#/components/parameters/spaceID"
+          },
+          {
+            "$ref": "#/components/parameters/nocache"
+          },
+          {
+            "$ref": "#/components/parameters/parseConnection"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "data-connections"
+        ],
+        "summary": "Patches a connection specified by connection ID (or by name when type=connectionname is set in query).",
+        "responses": {
+          "204": {
+            "description": "Data connection updated successfully"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request due to invalid data in body"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "User has no access to the connection or space"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data connection not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data connection already exists (when updated name conflicts with existing record)"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/qConnID"
+          },
+          {
+            "$ref": "#/components/parameters/type"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "put": {
+        "tags": [
+          "data-connections"
+        ],
+        "summary": "Updates a connection specified by connection ID (or by name when type=connectionname is set in query). Depends on the fields defined in the request body, credentials embedded (or associated) in the connection can be updated or created.",
+        "responses": {
+          "204": {
+            "description": "Data connection updated successfully"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request due to invalid data in body"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "User has no access to the connection or space"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data connection not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data connection already exists (when updated name conflicts with existing record)"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/qConnID"
+          },
+          {
+            "$ref": "#/components/parameters/type"
+          },
+          {
+            "$ref": "#/components/parameters/spaceID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectionUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "data-connections"
+        ],
+        "summary": "Deletes the specified data connection by ID (or by name when type=connectionname is set in query)",
+        "responses": {
+          "204": {
+            "description": "Data connection deleted successfully"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "User has no access to the connection or space"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data connection not found"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/qConnID"
+          },
+          {
+            "$ref": "#/components/parameters/type"
+          },
+          {
+            "$ref": "#/components/parameters/spaceID"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-connections/actions/delete": {
+      "post": {
+        "tags": [
+          "data-connections"
+        ],
+        "summary": "Delete multiple connections, only available to Admin",
+        "responses": {
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkResponse"
+                }
+              }
+            },
+            "description": "Bulk delete completed"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request (Missing required field in request body)"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "User has no access to the endpoint. The endpoint requires Admin role"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-connections/actions/duplicate": {
+      "post": {
+        "tags": [
+          "data-connections"
+        ],
+        "summary": "Duplicate a connection",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionCreateResponse"
+                }
+              }
+            },
+            "description": "Duplicate completed"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request (Missing required field in request body, or duplicate from / to a reserved connection)"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "User has no access to the source connection or no access to target space"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Connection defined by id not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Duplicated connection would result in a name conflict with the connections in the scope"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionDuplicateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/data-connections/actions/update": {
+      "post": {
+        "tags": [
+          "data-connections"
+        ],
+        "summary": "Update multiple connections, only available to Admin. When update is to change ownership of a connection, the credentials associated with the connection will NOT be transferred to the new owner, and new owner is expected to provide their own credentials for the connection.",
+        "responses": {
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkResponse"
+                }
+              }
+            },
+            "description": "Bulk update completed"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request (Missing required field in request body)"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "User has no access to the endpoint. The endpoint requires Admin role"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "parameters": {
+      "bycredentialname": {
+        "in": "query",
+        "name": "byCredentialName",
+        "schema": {
+          "type": "boolean"
+        },
+        "example": false,
+        "required": false,
+        "description": "If set to true, credentialId in the query will be interpreted as credential's name"
+      },
+      "caseinsensitive": {
+        "in": "query",
+        "name": "caseinsensitive",
+        "schema": {
+          "type": "boolean",
+          "example": false
+        },
+        "example": true,
+        "required": false,
+        "description": "Sort results will be returned in case insensitive order if set to true (Only used along with sort query)"
+      },
+      "credentialID": {
+        "in": "query",
+        "name": "credentialId",
+        "schema": {
+          "type": "string"
+        },
+        "example": "22379dc5-076e-4fec-ae20-5529a8a57dc2",
+        "required": false,
+        "description": "Credential ID"
+      },
+      "dataName": {
+        "in": "query",
+        "name": "dataName",
+        "schema": {
+          "type": "string"
+        },
+        "example": "data",
+        "required": false,
+        "description": "Provides an alternate name to be used for data[] element in GET response."
+      },
+      "extended": {
+        "in": "query",
+        "name": "extended",
+        "schema": {
+          "type": "boolean"
+        },
+        "example": false,
+        "required": false,
+        "description": "Returns extended list of properties (e.g. encrypted credential string) when set to true."
+      },
+      "filter": {
+        "in": "query",
+        "name": "filter",
+        "schema": {
+          "type": "string",
+          "example": "qName co \"abc\" or qName sw \"dd\" and qType eq \"rest\" and created gt \"2000-01-10T15:04:05Z\""
+        },
+        "required": false,
+        "description": "Filtering resources by properties (filterable properties only) using SCIM filter string. Note the filter string only applies to connections managed by data-connections service, i.e. filtering doesn't apply to DataFile connections. When filtering on datetime property (e.g. created, updated), datetime should be in RFC3339 format."
+      },
+      "includeQris": {
+        "in": "query",
+        "name": "includeQris",
+        "schema": {
+          "type": "boolean"
+        },
+        "example": true,
+        "required": false,
+        "description": "Base Qri (encrypted) will be returned when the query is set to true, default is false"
+      },
+      "limit": {
+        "in": "query",
+        "name": "limit",
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "default": "All resources will be returned if limit is not defined",
+          "maximum": 100,
+          "minimum": 1
+        },
+        "example": 30,
+        "required": false,
+        "description": "Number of resources to be returned (between 1 and 100)"
+      },
+      "locale": {
+        "in": "query",
+        "name": "locale",
+        "schema": {
+          "type": "string"
+        },
+        "example": "en",
+        "required": false,
+        "description": "ICU locale ID, used only when caseinsensitive is set to true, default to 'en' if undefined"
+      },
+      "nocache": {
+        "in": "query",
+        "name": "noCache",
+        "schema": {
+          "type": "boolean"
+        },
+        "example": false,
+        "required": false,
+        "description": "datafiles connections will be returned from cache by default (if data-connections is configured to use cache), this query parameter is used disable this default behavior, e.g. return an update-to-date datafiles connection if the query is set to true"
+      },
+      "nodatafiles": {
+        "in": "query",
+        "name": "noDatafiles",
+        "schema": {
+          "type": "boolean"
+        },
+        "example": true,
+        "required": false,
+        "description": "Datafiles connections will not be returned if set to true"
+      },
+      "ownedbyme": {
+        "in": "query",
+        "name": "ownedByMe",
+        "schema": {
+          "type": "boolean"
+        },
+        "example": true,
+        "required": false,
+        "description": "Filtering on connections, return connections owned by the caller if set to true (doesn't apply to datafiles connections)"
+      },
+      "owner": {
+        "in": "query",
+        "name": "owner",
+        "schema": {
+          "type": "string"
+        },
+        "example": "928e2a66-01ba-4678-aa32-e74c213896fa",
+        "required": false,
+        "description": "Filtering on datafile connections by owner (i.e. app) ID."
+      },
+      "page": {
+        "in": "query",
+        "name": "page",
+        "schema": {
+          "type": "string"
+        },
+        "example": "page=JwAAAAljcmVhdGVkAPfQ-sx0AQAAB19pZABfb93nZcM4SN1M0e8A",
+        "required": false,
+        "description": "Pagination cursor string, which is generated automatically in previous pagination query."
+      },
+      "parseConnection": {
+        "in": "query",
+        "name": "parseConnection",
+        "schema": {
+          "type": "boolean",
+          "example": true
+        },
+        "example": true,
+        "required": false,
+        "description": "List of connection properties shall be returned when the query is set to true, default is false"
+      },
+      "personal": {
+        "in": "query",
+        "name": "personal",
+        "schema": {
+          "type": "boolean"
+        },
+        "example": false,
+        "required": false,
+        "description": "Filtering on personal connections, ignored if spaceId is defined in same request"
+      },
+      "qConnID": {
+        "in": "path",
+        "name": "qID",
+        "schema": {
+          "type": "string"
+        },
+        "example": "82ee7b44-0c4d-491b-bd38-82640c0430a5",
+        "required": true,
+        "description": "Connection ID"
+      },
+      "sort": {
+        "in": "query",
+        "name": "sort",
+        "schema": {
+          "type": "string"
+        },
+        "example": "+qName",
+        "required": false,
+        "description": "Name of field sort on for pagination, with prefix with + or - indicating ascending or descending order. When used for data-connections, sort field only applies to non-datafiles connections. Whatever sorting order is, datafiles connections will be returned after all regular connections being returned."
+      },
+      "spaceID": {
+        "in": "query",
+        "name": "spaceId",
+        "schema": {
+          "type": "string"
+        },
+        "example": "611bcebaeec1203d88211ac4",
+        "required": false,
+        "description": "Filtering on connections by space ID"
+      },
+      "type": {
+        "in": "query",
+        "name": "type",
+        "schema": {
+          "enum": [
+            "connectionname",
+            "credentialname"
+          ],
+          "type": "string"
+        },
+        "example": "connectionname",
+        "required": false,
+        "description": "Connection / credential ID defined in path become connection / credential name when this query parameter is set"
+      },
+      "userId": {
+        "in": "query",
+        "name": "userId",
+        "schema": {
+          "type": "string"
+        },
+        "example": "6K9xjsItDexffolu5vg1oWYkY8x7f-0G",
+        "required": false,
+        "description": "Filtering on userId. Requires admin role if specified userId doesn't match that is defined in JWT."
+      }
+    },
+    "schemas": {
+      "ActionDeleteRequest": {
+        "type": "object",
+        "required": [
+          "connections"
+        ],
+        "properties": {
+          "connections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "b2c1ab1f-392c-4cd1-87bd-4c3cd256f5fd",
+                  "description": "ID of connection"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "MyConnection",
+                  "description": "Connection name"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ActionDuplicateRequest": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "b2c1ab1f-392c-4cd1-87bd-4c3cd256f5fd",
+            "description": "ID of the source connection being duplicated"
+          },
+          "name": {
+            "type": "string",
+            "example": "ResourceName",
+            "description": "Optional name for the duplicated connection, must be unique in the target scope. If not specified, a name will be automatically generated"
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "611bcebaeec1203d88211ac4",
+            "description": "Optional target space ID for the duplicated connection. If not specified, the duplicated connection will be in the same space as the source connection"
+          },
+          "qPassword": {
+            "type": "string",
+            "example": "Password",
+            "description": "Optional credential password, specify to override credential embedded (or associated) with the source connection"
+          },
+          "qUsername": {
+            "type": "string",
+            "example": "UserName",
+            "description": "Optional credential username, specify to override credential embedded (or associated) with the source connection"
+          }
+        }
+      },
+      "ActionUpdateRequest": {
+        "type": "object",
+        "required": [
+          "connections"
+        ],
+        "properties": {
+          "connections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "b2c1ab1f-392c-4cd1-87bd-4c3cd256f5fd",
+                  "description": "Connection ID"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "MyConnection",
+                  "description": "Connection name"
+                },
+                "ownerId": {
+                  "type": "string",
+                  "example": "6K9xjsItDexffSlu5vg1oWYkY8x7f-06",
+                  "description": "User ID to which the connection will be updated. If not present, the connection's owner wont be changed"
+                },
+                "spaceId": {
+                  "type": "string",
+                  "example": "611bcebaeec1203d88211ac4",
+                  "description": "Space ID to which the connection will be updated. If not present, the connection's space wont be changed. If it is empty string, then the connection will be moved to the personal space of the user identified by ownerId (If ownerId is undefined, then the connection will be in oroginal owner's personal space)"
+                },
+                "spaceType": {
+                  "enum": [
+                    "personal",
+                    "shared",
+                    "managed",
+                    "data"
+                  ],
+                  "type": "string",
+                  "example": "personal",
+                  "description": "Space type. Required when spaceId is specified"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BulkResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "status"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "b2c1ab1f-392c-4cd1-87bd-4c3cd256f5fd",
+                  "description": "ID of the resource"
+                },
+                "error": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 204,
+                  "description": "Status code of operation on resource identified by ID"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ConnectionCreate": {
+        "type": "object",
+        "required": [
+          "qName",
+          "qConnectStatement",
+          "qType",
+          "datasourceID"
+        ],
+        "properties": {
+          "qID": {
+            "type": "string",
+            "example": "b4a949cb-3aaf-4cd5-a140-dd3ea34f0d28",
+            "description": "Unique identifier (UUID) for the data connection. A UUID will be generated automatically if qID is not specified or empty"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "tag",
+              "description": "tag string (256 bytes or less)"
+            },
+            "example": "[\"tag1, \"tag2\"]",
+            "description": "List of tags attached to the connection (allow max 32 tags)"
+          },
+          "owner": {
+            "type": "string",
+            "example": "928e2a66-01ba-4678-aa32-e74c213896fa",
+            "description": "App ID"
+          },
+          "qName": {
+            "type": "string",
+            "example": "MyConnection",
+            "description": "Descriptive name of the data connection"
+          },
+          "qType": {
+            "type": "string",
+            "example": "QvOdbcConnectorPackage.exe",
+            "description": "Type of connection - indicates connection provider type"
+          },
+          "space": {
+            "type": "string",
+            "example": "611bcebaeec1203d88211ac4",
+            "description": "ID of the space to which the connection belongs"
+          },
+          "qLogOn": {
+            "enum": [
+              "0",
+              "1",
+              "LOG_ON_SERVICE_USER",
+              "LOG_ON_CURRENT_USER"
+            ],
+            "type": "string",
+            "example": "1",
+            "description": "Indicates the type of user associated with the data connection."
+          },
+          "qPassword": {
+            "type": "string",
+            "example": "Connector encoded password",
+            "description": "Any logon password associated with the data connection (connector encoded)"
+          },
+          "qUsername": {
+            "type": "string",
+            "example": "MyUsername",
+            "description": "Any logon username associated with the data connection"
+          },
+          "datasourceID": {
+            "type": "string",
+            "example": "snowflake",
+            "description": "ID of the datasource associated with this connection"
+          },
+          "qriInRequest": {
+            "type": "string",
+            "example": "qri:db:snowflake://BQ1-3F_BvWfxxCDDiz9vQepqHLAcHWqacoqwLq4wxWM",
+            "description": "QRI string of the connection. The string will be persisted to mongo when the request is originated from trusted client (i.e. dcaas) to avoid invalid QRi string."
+          },
+          "qArchitecture": {
+            "enum": [
+              0,
+              1
+            ],
+            "type": "integer",
+            "example": 0,
+            "description": "0 or 1 value indicating whether the data connector is 64-bit (0) or 32-bit (1). Defaults to 0 if not specified."
+          },
+          "qCredentialsID": {
+            "type": "string",
+            "example": "935ec250-65bc-47c0-965b-53554f3f87d8",
+            "description": "ID of the credential associated with the connection"
+          },
+          "qEngineObjectID": {
+            "type": "string",
+            "example": "b4a949cb-3aaf-4cd5-a140-dd3ea34f0d28",
+            "description": "Unique identifier (UUID) for the data connection as specified by the Sense engine. A UUID will be generated automatically if this field is not specified or empty"
+          },
+          "qCredentialsName": {
+            "type": "string",
+            "example": "MyCredential",
+            "description": "Name of the credential associated with the connection"
+          },
+          "qConnectStatement": {
+            "type": "string",
+            "example": "CUSTOM CONNECT TO \\\"provider=QvOdbcConnectorPackage.exe;driver=snowflake;server=...\\\"",
+            "description": "Connection string for the data connection"
+          },
+          "qConnectionSecret": {
+            "type": "string",
+            "example": "Any connection specific secret string",
+            "description": "String that contains connection specific secret (or password) that requires encryption before persist to database. This field is connection level secret"
+          },
+          "qSeparateCredentials": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "Indicates whether or not to create a credential-less connection"
+          }
+        },
+        "description": "Schema used to create a connection with given connection string (i.e. qConnectStatement) along with other metadata"
+      },
+      "ConnectionCreateResponse": {
+        "type": "object",
+        "required": [
+          "qID",
+          "qName",
+          "qConnectStatement",
+          "qType",
+          "qLogOn",
+          "qEngineObjectID",
+          "qArchitecture",
+          "qSeparateCredentials",
+          "privileges"
+        ],
+        "properties": {
+          "qID": {
+            "type": "string",
+            "example": "b4a949cb-3aaf-4cd5-a140-dd3ea34f0d28",
+            "description": "Unique identifier (UUID) for the data connection, must be same as qEngineObjectID"
+          },
+          "user": {
+            "type": "string",
+            "example": "rFdHeUOiVYgPX5iTbvL0x0Cs6F62QI",
+            "description": "User ID of the connection's creator"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "qName": {
+            "type": "string",
+            "example": "MyConnection",
+            "description": "Descriptive name of the data connection"
+          },
+          "qType": {
+            "type": "string",
+            "example": "QvOdbcConnectorPackage.exe",
+            "description": "Type of connection - indicates connection provider type"
+          },
+          "space": {
+            "type": "string",
+            "example": "611bcebaeec1203d88211ac4",
+            "description": "ID of the space to which the connection belongs"
+          },
+          "qLogOn": {
+            "enum": [
+              "0",
+              "1",
+              "LOG_ON_SERVICE_USER",
+              "LOG_ON_CURRENT_USER"
+            ],
+            "type": "string",
+            "example": "1",
+            "description": "Indicates the type of user associated with the data connection."
+          },
+          "created": {
+            "type": "string",
+            "example": "2022-04-09T10:00:28.287Z",
+            "description": "Datetime when the connection was created"
+          },
+          "updated": {
+            "type": "string",
+            "example": "2022-04-09T10:00:28.287Z",
+            "description": "Datetime when the connection was last updated"
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Privilege"
+            },
+            "example": "[update, delete, read]",
+            "description": "Array of string (i.e. update, delete, read) indicating the user's privileges on the associated connection"
+          },
+          "qArchitecture": {
+            "enum": [
+              0,
+              1
+            ],
+            "type": "integer",
+            "example": 0,
+            "description": "0 or 1 value indicating whether the data connector is 64-bit (0) or 32-bit (1). Defaults to 0 if not specified."
+          },
+          "qReferenceKey": {
+            "type": "string",
+            "example": "credential:key",
+            "description": "Reference key of credential in redis"
+          },
+          "qCredentialsID": {
+            "type": "string",
+            "example": "7b475581-2f68-4c81-ac52-25705b8229fb",
+            "description": "ID of the credential associated with the connection"
+          },
+          "qEngineObjectID": {
+            "type": "string",
+            "example": "b4a949cb-3aaf-4cd5-a140-dd3ea34f0d28",
+            "description": "Unique identifier (UUID) for the data connection, must be same as qID"
+          },
+          "qCredentialsName": {
+            "type": "string",
+            "example": "MyCredential",
+            "description": "Name of the credential associated with the connection"
+          },
+          "qConnectStatement": {
+            "type": "string",
+            "example": "CUSTOM CONNECT TO \\\"provider=QvOdbcConnectorPackage.exe;driver=snowflake;server=...\\\"",
+            "description": "Connection string for the data connection"
+          },
+          "qSeparateCredentials": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether or not this is a credential-less connection"
+          }
+        },
+        "description": "Essential fields of a connection"
+      },
+      "ConnectionGet": {
+        "type": "object",
+        "required": [
+          "qID",
+          "qName",
+          "qConnectStatement",
+          "qType",
+          "qLogOn",
+          "qEngineObjectID",
+          "qArchitecture",
+          "qSeparateCredentials",
+          "privileges",
+          "created",
+          "updated",
+          "user",
+          "tenant"
+        ],
+        "properties": {
+          "qID": {
+            "type": "string",
+            "example": "a7eb530e-475a-4864-bc12-dacf4b081e72",
+            "description": "Unique identifier (UUID) for the data connection, must be same as qEngineObjectID"
+          },
+          "qri": {
+            "type": "string",
+            "example": "qri:db:snowflake://BQ1-3F_BvWfxxCDDiz9vQepqHLAcHWqacoqwLq4wxWM",
+            "description": "Encrypted base Qri string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "tag",
+              "description": "tag string"
+            },
+            "example": "[\"tag1, \"tag2\"]",
+            "description": "List of tags attached to the connection"
+          },
+          "user": {
+            "type": "string",
+            "example": "rFdHeUOiVYgPX5iTbvL0x0Cs6F62QI",
+            "description": "User ID of the connection's creator"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "qName": {
+            "type": "string",
+            "example": "MyConnection",
+            "description": "Descriptive name of the data connection",
+            "x-qlik-filterable": true
+          },
+          "qType": {
+            "type": "string",
+            "example": "QvOdbcConnectorPackage.exe",
+            "description": "Type of connection, i.e. provider type of underlying connector",
+            "x-qlik-filterable": true
+          },
+          "space": {
+            "type": "string",
+            "example": "6226583d53a69876774d4f96",
+            "description": "ID of the space to which the connection belongs"
+          },
+          "qLogOn": {
+            "enum": [
+              0,
+              1
+            ],
+            "type": "integer",
+            "example": 1,
+            "description": "Indicates the type of user associated with the data connection"
+          },
+          "tenant": {
+            "type": "string",
+            "example": "xqFQ0k34vSR0d9G7J-vZtHZQkiYrCqc8",
+            "description": "Tenant ID of the connection's creator"
+          },
+          "created": {
+            "type": "string",
+            "example": "2022-04-08T10:00:28.287Z",
+            "description": "Datetime when the connection was created",
+            "x-qlik-filterable": true
+          },
+          "updated": {
+            "type": "string",
+            "example": "2022-04-09T10:00:28.287Z",
+            "description": "Datetime when the connection was last updated",
+            "x-qlik-filterable": true
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Privilege"
+            },
+            "example": "[update, delete, read]",
+            "description": "Array of string (i.e. update, delete, read) indicating the user's privileges on the associated connection"
+          },
+          "datasourceID": {
+            "type": "string",
+            "example": "sfdc",
+            "description": "Data source ID",
+            "x-qlik-filterable": true
+          },
+          "qArchitecture": {
+            "enum": [
+              0,
+              1
+            ],
+            "type": "integer",
+            "example": 0,
+            "description": "0 or 1 value indicating whether the data connector is 64-bit (0) or 32-bit (1). Defaults to 0 if not specified."
+          },
+          "qCredentialsID": {
+            "type": "string",
+            "example": "a4e00184-8743-4a44-a1a8-07bba573afea",
+            "description": "ID of the credential associated with the connection"
+          },
+          "qEngineObjectID": {
+            "type": "string",
+            "example": "a7eb530e-475a-4864-bc12-dacf4b081e72",
+            "description": "Unique identifier (UUID) for the data connection, must be same as qID"
+          },
+          "qConnectStatement": {
+            "type": "string",
+            "example": "CUSTOM CONNECT TO \\\"provider=QvOdbcConnectorPackage.exe;driver=snowflake;server=...\\\"",
+            "description": "Connection string for the data connection"
+          },
+          "qConnectionSecret": {
+            "type": "string",
+            "example": "Connection_Specific_Secret",
+            "description": "String that contains connection specific secret (or password). This field will not be included in response of GET /data-connections, will only be included in the response of GET /data-connections/{qID}"
+          },
+          "connectionProperties": {
+            "type": "object",
+            "example": "{\"property1\": \"value\", \"property2\": \"value\"}",
+            "description": "List of connection parsed from connection string (only available when query parseConnection=true is set)"
+          },
+          "qSeparateCredentials": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether or not this is a credential-less connection"
+          }
+        },
+        "description": "Essential fields of a connection"
+      },
+      "Connections": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectionGet"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/TopLevelLink"
+          },
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          }
+        }
+      },
+      "ConnectionUpdate": {
+        "type": "object",
+        "required": [
+          "qID",
+          "qName",
+          "qConnectStatement",
+          "qType",
+          "qEngineObjectID"
+        ],
+        "properties": {
+          "qID": {
+            "type": "string",
+            "example": "55e13286-fbd8-4a59-a10d-807937a97443",
+            "description": "Unique identifier for the data connection"
+          },
+          "qName": {
+            "type": "string",
+            "example": "MyConnection",
+            "description": "Descriptive name of the data connection"
+          },
+          "qType": {
+            "type": "string",
+            "example": "snowflake",
+            "description": "Type of connection - indicates connection provider type"
+          },
+          "space": {
+            "type": "string",
+            "example": "611bcebaeec1203d88211ac4",
+            "description": "ID of the space to which the connection belongs"
+          },
+          "qLogOn": {
+            "enum": [
+              "0",
+              "1",
+              "LOG_ON_SERVICE_USER",
+              "LOG_ON_CURRENT_USER"
+            ],
+            "type": "string",
+            "example": "1",
+            "description": "Indicates the type of user associated with the data connection."
+          },
+          "qPassword": {
+            "type": "string",
+            "example": "password",
+            "description": "Any logon password associated with the data connection"
+          },
+          "qUsername": {
+            "type": "string",
+            "example": "MyUsername",
+            "description": "Any logon username associated with the data connection"
+          },
+          "datasourceID": {
+            "type": "string",
+            "example": "snowflake",
+            "description": "ID of the datasource associated with this connection"
+          },
+          "qArchitecture": {
+            "enum": [
+              0,
+              1
+            ],
+            "type": "integer",
+            "example": 1,
+            "description": "0 or 1 value indicating whether the data connector is 64-bit (0) or 32-bit (1). Defaults to 0 if not specified."
+          },
+          "qCredentialsID": {
+            "type": "string",
+            "example": "cea94172-fa83-47c8-8171-b6f151918ad0",
+            "description": "ID of the credential associated with the connection"
+          },
+          "qEngineObjectID": {
+            "type": "string",
+            "example": "55e13286-fbd8-4a59-a10d-807937a97443",
+            "description": "Unique identifier for the data connection as specified by the Sense engine"
+          },
+          "qCredentialsName": {
+            "type": "string",
+            "example": "CredentialName",
+            "description": "Name of the credential associated with the connection"
+          },
+          "qConnectStatement": {
+            "type": "string",
+            "example": "CUSTOM CONNECT TO \\\"provider=QvOdbcConnectorPackage.exe;driver=snowflake;server=...\\\"",
+            "description": "Connection string for the data connection"
+          },
+          "qConnectionSecret": {
+            "type": "string",
+            "example": "connection specific secret string",
+            "description": "String that contains connection level secret (or password). If this field presents in request, then existing connection secret will be updated to its value. If is an empty string, then existing connection secret will be cleared. If this field is missing, existing secret will not be updated."
+          },
+          "qSeparateCredentials": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether or not this is a credential-less connection"
+          }
+        }
+      },
+      "DcaasConnectionCreate": {
+        "type": "object",
+        "required": [
+          "qName",
+          "datasourceID",
+          "connectionProperties"
+        ],
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "tag",
+              "description": "tag string (256 bytes or less)"
+            },
+            "example": "[\"tag1, \"tag2\"]",
+            "description": "List of tags attached to the connection (allow max 31 tags)"
+          },
+          "qName": {
+            "type": "string",
+            "example": "MyConnection",
+            "description": "Descriptive name of the data connection"
+          },
+          "space": {
+            "type": "string",
+            "example": "611bcebaeec1203d88211ac4",
+            "description": "ID of the space in which the connection shall be created. Connection will be created in user's personal space if undefined"
+          },
+          "authUrlOnly": {
+            "type": "boolean",
+            "example": true,
+            "description": "When set to true, only authentication URL will be returned (i.e. no connection will be created) if datasource supports OAuth, and other properties set in the request will ignored. This property will be ignored if the request is not OAuth or datasource doesn't support OAuth"
+          },
+          "datasourceID": {
+            "type": "string",
+            "example": "rest",
+            "description": "ID of the datasource of the connection"
+          },
+          "connectionProperties": {
+            "type": "object",
+            "example": "{\"property1\": \"value1\", \"property2\": \"value2\", ...}",
+            "description": "Connection properties required to create dataconnection for the given datasource, which is defined by the response of 'GET /v1/data-sources/:{datasourceId}/api-specs'"
+          }
+        },
+        "description": "Schema used to create a connection using a list of connection properties for given datasource"
+      },
+      "DcaasConnectionCreateAuthResponse": {
+        "type": "object",
+        "required": [
+          "authUrl"
+        ],
+        "properties": {
+          "authUrl": {
+            "type": "string",
+            "example": "https://www.dropbox.com/oauth2/authorize?client_id=...",
+            "description": "Authentication URL used to generate authentication code for datasources supporting OAuth"
+          }
+        },
+        "description": "Authentication URL response for OAuth datasources (when authUrlOnly is set to true in request)"
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "DCERROR-0010",
+            "description": "Unique internal error code"
+          },
+          "title": {
+            "type": "string",
+            "example": "Bad or invalid request",
+            "description": "A summary in english explaining what went wrong"
+          },
+          "detail": {
+            "type": "string",
+            "example": "Field xxx is missing in the request",
+            "description": "More concrete details"
+          },
+          "status": {
+            "type": "integer",
+            "example": 400,
+            "description": "HTTP status code"
+          }
+        }
+      },
+      "Errors": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Error"
+        }
+      },
+      "Link": {
+        "type": "object",
+        "required": [
+          "self"
+        ],
+        "properties": {
+          "self": {
+            "type": "object",
+            "required": [
+              "href"
+            ],
+            "properties": {
+              "href": {
+                "type": "string",
+                "example": "https://mytenant.us.qlikcloud.com/...",
+                "description": "URL pointing to the resource"
+              }
+            },
+            "description": "Link to current query"
+          }
+        }
+      },
+      "Meta": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 12,
+            "description": "Total count of resources being requested."
+          }
+        }
+      },
+      "PatchRequest": {
+        "type": "object",
+        "required": [
+          "patchData"
+        ],
+        "properties": {
+          "patchData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "op": {
+                  "enum": [
+                    "add",
+                    "replace",
+                    "remove"
+                  ],
+                  "type": "string",
+                  "example": "add",
+                  "description": "Operation type"
+                },
+                "path": {
+                  "type": "string",
+                  "example": "/qName",
+                  "description": "Path to the target field to be patched"
+                },
+                "value": {
+                  "type": "string",
+                  "example": "New value",
+                  "description": "The value used for the patch, only needed for 'add' or 'replace'. Value type could be either string or integer, should match with the type of the target field"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Privilege": {
+        "enum": [
+          "list",
+          "update",
+          "delete",
+          "read",
+          "change_owner",
+          "change_space"
+        ],
+        "type": "string",
+        "example": "list",
+        "description": "Access type allowed on associated data connection"
+      },
+      "ResponseErrors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          }
+        }
+      },
+      "TopLevelLink": {
+        "type": "object",
+        "required": [
+          "self"
+        ],
+        "properties": {
+          "next": {
+            "type": "object",
+            "required": [
+              "href"
+            ],
+            "properties": {
+              "href": {
+                "type": "string",
+                "example": "https://mytenant.us.qlikcloud.com/...",
+                "description": "URL pointing to the next page of resources"
+              }
+            },
+            "description": "URL link to next page of requested resources (available to paged request only)"
+          },
+          "prev": {
+            "type": "object",
+            "required": [
+              "href"
+            ],
+            "properties": {
+              "href": {
+                "type": "string",
+                "example": "https://mytenant.us.qlikcloud.com/...",
+                "description": "URL pointing to the previous page of resources"
+              }
+            },
+            "description": "URL link to previous page of requested resources (available to paged request only)"
+          },
+          "self": {
+            "type": "object",
+            "required": [
+              "href"
+            ],
+            "properties": {
+              "href": {
+                "type": "string",
+                "example": "https://mytenant.us.qlikcloud.com/.../0e445014-a564-496a-9a8d-28baadcc3ef9",
+                "description": "URL pointing to the resource"
+              }
+            },
+            "description": "Link to current query"
+          }
+        }
+      }
+    }
+  }
+}

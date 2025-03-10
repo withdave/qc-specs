@@ -1,0 +1,274 @@
+{
+  "info": {
+    "title": "quotas",
+    "version": ""
+  },
+  "paths": {
+    "/v1/quotas": {
+      "get": {
+        "tags": [
+          "quotas"
+        ],
+        "summary": "Returns all quota items for the tenant (provided in JWT).",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetQuotasResult"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "reportUsage",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "The Boolean flag indicating whether quota usage shall be part of the response. The default value is false (only limits returned)."
+          }
+        ],
+        "operationId": "quotas",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/quotas/{id}": {
+      "get": {
+        "tags": [
+          "quotas"
+        ],
+        "summary": "Returns a specific quota item for the tenant (provided in JWT).",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetQuotaByIdResult"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier of the quota item. For example, \"app_mem_size\", \"app_upload_disk_size\", or \"shared_spaces\"."
+          },
+          {
+            "in": "query",
+            "name": "reportUsage",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "The Boolean flag indicating whether quota usage shall be part of the response. The default value is false (usage not included)."
+          }
+        ],
+        "operationId": "quota",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          }
+        },
+        "description": "A specific error."
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "GetQuotaByIdResult": {
+        "type": "object",
+        "title": "Result containing an array with a single quota item.",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Quota"
+            },
+            "description": "Quota item."
+          }
+        }
+      },
+      "GetQuotasResult": {
+        "type": "object",
+        "title": "Result containing an array of quota items.",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Quota"
+            },
+            "description": "Array of quota items."
+          }
+        }
+      },
+      "Quota": {
+        "type": "object",
+        "title": "One single quota with attributes.",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the quota item. For example, \"app_mem_size\", \"app_upload_disk_size\", or \"shared_spaces\"."
+          },
+          "type": {
+            "type": "string",
+            "description": "The resource type of the quota item. Always equal to \"quotas\"."
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "quota",
+              "unit"
+            ],
+            "properties": {
+              "unit": {
+                "type": "string",
+                "description": "The unit of the quota limit. For memory quotas, the unit is always \"bytes\". For other discrete units, the item counted is used as unit, for example \"spaces\"."
+              },
+              "quota": {
+                "type": "number",
+                "format": "double",
+                "description": "The quota limit. If there is no quota limit, -1 is returned."
+              },
+              "usage": {
+                "type": "number",
+                "format": "double",
+                "description": "The current quota usage, if applicable. This attribute is only present if it is requested using the reportUsage query parameter."
+              },
+              "warningThresholds": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "example": [
+                  0.9
+                ],
+                "description": "The warning thresholds at which \"close to quota\" warnings can be issued when exceeded. If omitted, no warning threshold shall be used. Currently, the array will contain only one threshold value. In the future, this may be extended. The threshold is a number between 0 and 1, relating to the quota limit. For example, a value of 0.9 means that a warning should be issued when exceeding 90% of the quota limit."
+              }
+            },
+            "description": "The attributes of the quota."
+          }
+        }
+      }
+    }
+  }
+}

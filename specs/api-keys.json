@@ -1,0 +1,1098 @@
+{
+  "info": {
+    "title": "api-keys",
+    "version": ""
+  },
+  "paths": {
+    "/v1/api-keys": {
+      "get": {
+        "tags": [
+          "api-keys"
+        ],
+        "summary": "List API keys",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api-key-page"
+                }
+              }
+            },
+            "description": "The list API keys result."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Requestor not allowed to list API keys."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetryAfterHeader"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "createdByUser",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "64ef645a3b7009d55dee5a2b"
+            },
+            "description": "The user ID that created the API key."
+          },
+          {
+            "in": "query",
+            "name": "endingBefore",
+            "schema": {
+              "type": "string",
+              "format": "uid v4"
+            },
+            "required": false,
+            "description": "Get resources with IDs that are lower than the target resource ID. Cannot be used in conjunction with startingAfter."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "Maximum number of API keys to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "createdByUser",
+                "+createdByUser",
+                "-createdByUser",
+                "sub",
+                "+sub",
+                "-sub",
+                "status",
+                "+status",
+                "-status",
+                "description",
+                "+description",
+                "-description",
+                "created",
+                "+created",
+                "-created"
+              ],
+              "type": "string",
+              "default": "-created"
+            },
+            "required": false,
+            "description": "The field to sort by, with +/- prefix indicating sort order"
+          },
+          {
+            "in": "query",
+            "name": "startingAfter",
+            "schema": {
+              "type": "string",
+              "format": "uid v4"
+            },
+            "required": false,
+            "description": "Get resources with IDs that are higher than the target resource ID. Cannot be used in conjunction with endingBefore."
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "enum": [
+                "active",
+                "expired",
+                "revoked"
+              ],
+              "type": "string",
+              "format": "text"
+            },
+            "required": false,
+            "description": "The status of the API key."
+          },
+          {
+            "in": "query",
+            "name": "sub",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "SCIM\\\\215g5595380d646163cadbb9"
+            },
+            "required": false,
+            "description": "The ID of the subject. For SCIM the format is `SCIM\\\\{{IDP-ID}}`, where `{{IDP-ID}}` is the ID of the IDP in Qlik. For users, use their user ID, e.g. `64ef645a3b7009d55dee5a2b`."
+          }
+        ],
+        "description": "Lists API keys for the tenant. To list API keys owned by other users, requesting user must be assigned the `TenantAdmin` role.",
+        "operationId": "getApiKeys",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "api-keys"
+        ],
+        "summary": "Create API key",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyWithToken"
+                }
+              }
+            },
+            "description": "Created the API key successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Requestor not allowed to create an API key"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetryAfterHeader"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "description": "Creates an API key, either for a user, or for configuring SCIM for a compatible Identity Provider.\nSending `sub` and `subType` is required only for creating SCIM keys.\n",
+        "operationId": "createApiKey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiKeyBody"
+              }
+            }
+          },
+          "required": true,
+          "description": "Properties that the user wants to set for the API key."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/api-keys/{id}": {
+      "get": {
+        "tags": [
+          "api-keys"
+        ],
+        "summary": "Get API key for a given ID",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKey"
+                }
+              }
+            },
+            "description": "Returns an API key resource."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Requestor not allowed to query this API key."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "API key was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetryAfterHeader"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the API key to be retrieved."
+          }
+        ],
+        "description": "Returns the API key for a given API key ID.",
+        "operationId": "getApiKeyById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "api-keys"
+        ],
+        "summary": "Update API key description",
+        "responses": {
+          "204": {
+            "description": "API key updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Requestor not allowed to update this API key."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "API key was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetryAfterHeader"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "JWT ID (jti)"
+            },
+            "required": true,
+            "description": "The ID of the API key resource to be updated."
+          }
+        ],
+        "description": "Updates an API key description for a given API key ID.",
+        "operationId": "updateApiKey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiKeysPatchSchema"
+              }
+            }
+          },
+          "required": true,
+          "description": "Properties that the user wants to update for the API key."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "api-keys"
+        ],
+        "summary": "Delete or revoke an API key",
+        "responses": {
+          "204": {
+            "description": "Deleted or revoked an API key resource."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Requestor not allowed to delete or revoke this API key."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "API key was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetryAfterHeader"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The ID of the API key to be retrieved."
+          }
+        ],
+        "description": "Deletes or revokes an API key for a given API key ID. When the owner of the API key sends the request, the key will be deleted and removed from the tenant. When a user assigned the `TenantAdmin` role sends the request, the key will be disabled and marked as revoked.",
+        "operationId": "deleteApiKeyById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/api-keys/configs/{tenantId}": {
+      "get": {
+        "tags": [
+          "api-keys configurations"
+        ],
+        "summary": "Get API key configuration",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeysConfig"
+                }
+              }
+            },
+            "description": "API keys configuration."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetryAfterHeader"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unexpected error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenantId",
+            "schema": {
+              "type": "string",
+              "format": "uid",
+              "example": "Hj5p89bylz1r2AUC6joLNuHzVx5Ya8cF"
+            },
+            "required": true,
+            "description": "The tenant ID from which you wish to retrieve the API key configuration."
+          }
+        ],
+        "description": "Retrieves the API key configuration for a tenant.",
+        "operationId": "getApiKeysConfiguration",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "api-keys configurations"
+        ],
+        "summary": "Update API keys configuration",
+        "responses": {
+          "204": {
+            "description": "API keys configuration updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request was made."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Requestor not allowed to update the API keys configuration."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Failed to update the API keys configuration."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetryAfterHeader"
+                }
+              }
+            },
+            "description": "Request has been rate limited."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenantId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The tenant ID of the API keys configuration to be retrieved."
+          }
+        ],
+        "description": "Updates the API keys configuration for a given tenant ID.",
+        "operationId": "updateApiKeyConfiguration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiKeysConfigPatchSchema"
+              }
+            }
+          },
+          "required": true,
+          "description": "Configurations that the user wants to update for API keys."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/authenticate"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/authenticate"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "api-key-page": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiKey"
+            },
+            "description": "Properties of API keys in a given tenant."
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "self"
+            ],
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            },
+            "description": "Navigation links to page results."
+          }
+        }
+      },
+      "ApiKey": {
+        "type": "object",
+        "required": [
+          "id",
+          "tenantId",
+          "description",
+          "status",
+          "sub",
+          "subType",
+          "expiry",
+          "createdByUser"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "description": "The unique ID for the resource."
+          },
+          "sub": {
+            "type": "string",
+            "example": "SCIM\\\\215g5595380d646163cadbb9",
+            "description": "The ID of the subject for the API key. For SCIM the format is `SCIM\\\\{{IDP-ID}}`, where `{{IDP-ID}}` is the ID of the IDP in Qlik. For users, use their user ID, e.g. `64ef645a3b7009d55dee5a2b`."
+          },
+          "expiry": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the API key will expire and no longer be a valid authentication token."
+          },
+          "status": {
+            "enum": [
+              "active",
+              "expired",
+              "revoked"
+            ],
+            "type": "string",
+            "description": "The status of the API key."
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "When the API key was created."
+          },
+          "subType": {
+            "enum": [
+              "user",
+              "externalClient"
+            ],
+            "type": "string",
+            "description": "Type of the subject. For SCIM, it should be `externalClient`."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The tenant ID."
+          },
+          "description": {
+            "type": "string",
+            "description": "A description for the API key."
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "When the API key was last updated."
+          },
+          "createdByUser": {
+            "type": "string",
+            "format": "uid",
+            "description": "The ID of the user who created the key."
+          }
+        }
+      },
+      "ApiKeyBody": {
+        "type": "object",
+        "required": [
+          "description"
+        ],
+        "properties": {
+          "sub": {
+            "type": "string",
+            "example": "SCIM\\\\215g5595380d646163cadbb9",
+            "description": "The ID of the subject for the API key. For SCIM the format is `SCIM\\\\{{IDP-ID}}`, where `{{IDP-ID}}` is the ID of the IDP in Qlik. When creating an API key for a user, this is their user ID, e.g. `64ef645a3b7009d55dee5a2b`, and will default to the requesting user if not provided. User must be assigned the `Developer` role."
+          },
+          "expiry": {
+            "type": "string",
+            "example": "P7D",
+            "description": "The expiry of the API key, in ISO8601 duration format. For example, `P7D` sets expiry after 7 days. If not provided, defaults to the maximum API key or SCIM key expiry configured in the tenant."
+          },
+          "subType": {
+            "enum": [
+              "user",
+              "externalClient"
+            ],
+            "type": "string",
+            "default": "user",
+            "description": "Type of the subject. For SCIM, it should be `externalClient`. If not specified, defaults to `user`."
+          },
+          "description": {
+            "type": "string",
+            "description": "Text that describes the API key."
+          }
+        }
+      },
+      "ApiKeyConfigPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "enum": [
+              "/api_keys_enabled",
+              "/max_api_key_expiry",
+              "/max_keys_per_user",
+              "/scim_externalClient_expiry"
+            ],
+            "type": "string",
+            "description": "The path for the given resource field to patch."
+          },
+          "value": {
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902."
+      },
+      "ApiKeyPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "enum": [
+              "/description"
+            ],
+            "type": "string",
+            "description": "The path for the given resource field to patch."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902."
+      },
+      "ApiKeysConfig": {
+        "type": "object",
+        "properties": {
+          "api_keys_enabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enables or disables user API key functionality for the specified tenant."
+          },
+          "max_keys_per_user": {
+            "type": "number",
+            "default": 5,
+            "maximum": 1000,
+            "minimum": 0,
+            "description": "The maximum number of active API keys that any user can create for the specified tenant."
+          },
+          "max_api_key_expiry": {
+            "type": "string",
+            "default": "PT24H",
+            "example": "PT24H",
+            "description": "The maximum lifetime, in ISO8601 duration format, for which an API key can be issued for the specified tenant, e.g. `P7D` for 7 days."
+          },
+          "scim_externalClient_expiry": {
+            "type": "string",
+            "default": "P365D",
+            "example": "P365D",
+            "description": "The expiry of the scim `externalClient` token in ISO8601 duration format, e.g. `P365D` for 365 days. Used during the creation of an `externalClient` API key for configuring a SCIM compatible Identity Provider."
+          }
+        }
+      },
+      "ApiKeysConfigPatchSchema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ApiKeyConfigPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/api_keys_enabled",
+            "value": true
+          }
+        ]
+      },
+      "ApiKeysPatchSchema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ApiKeyPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/description",
+            "value": "my new description"
+          }
+        ]
+      },
+      "ApiKeyWithToken": {
+        "type": "object",
+        "required": [
+          "id",
+          "tenantId",
+          "description",
+          "status",
+          "token",
+          "sub",
+          "subType",
+          "expiry",
+          "createdByUser"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "description": "The unique ID for the resource."
+          },
+          "sub": {
+            "type": "string",
+            "format": "uid",
+            "description": "The ID of the subject for the API key."
+          },
+          "token": {
+            "type": "string",
+            "description": "The generated signed JWT."
+          },
+          "expiry": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the API key will expire and no longer be a valid authentication token."
+          },
+          "status": {
+            "enum": [
+              "active",
+              "expired",
+              "revoked"
+            ],
+            "type": "string",
+            "description": "The status of the API key."
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "When the API key was created."
+          },
+          "subType": {
+            "enum": [
+              "user"
+            ],
+            "type": "string",
+            "description": "Type of the subject."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "description": "The tenant ID."
+          },
+          "description": {
+            "type": "string",
+            "description": "A description for the API key."
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "When the API key was last updated."
+          },
+          "createdByUser": {
+            "type": "string",
+            "format": "uid",
+            "description": "The id of the user who created the key."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON Pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code."
+          }
+        },
+        "description": "An error object."
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "List of errors and their properties."
+          }
+        }
+      },
+      "Link": {
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL for the link."
+          }
+        }
+      },
+      "RetryAfterHeader": {
+        "type": "object",
+        "properties": {
+          "retry-after": {
+            "type": "integer",
+            "description": "The amount of seconds to wait before retrying the request."
+          }
+        }
+      }
+    }
+  }
+}

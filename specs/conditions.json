@@ -1,0 +1,1652 @@
+{
+  "info": {
+    "title": "conditions",
+    "version": ""
+  },
+  "paths": {
+    "/v1/conditions": {
+      "post": {
+        "tags": [
+          "conditions"
+        ],
+        "summary": "Creates a new condition.",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConditionResponse"
+                }
+              }
+            },
+            "description": "Condition created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request body"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "operationId": "createCondition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConditionCreateRequest"
+              }
+            }
+          },
+          "description": "The condition create request definition."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/conditions/{id}": {
+      "get": {
+        "tags": [
+          "conditions"
+        ],
+        "summary": "Retrieve a specific condition by id.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Condition"
+                }
+              }
+            },
+            "description": "The condition"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the condition"
+          }
+        ],
+        "operationId": "getCondition",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "conditions"
+        ],
+        "summary": "Patch values in the condition",
+        "responses": {
+          "204": {
+            "description": "The condition was updated"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "A path or value was invalid"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the condition"
+          }
+        ],
+        "operationId": "updateCondition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConditionPatch"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "conditions"
+        ],
+        "summary": "Delete the condition",
+        "responses": {
+          "204": {
+            "description": "The record was deleted."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the condition"
+          }
+        ],
+        "operationId": "deleteCondition",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/conditions/{id}/evaluations": {
+      "post": {
+        "tags": [
+          "evaluations"
+        ],
+        "summary": "Executes the condition",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateEvaluationResponse"
+                }
+              }
+            },
+            "description": "Condition evaluation created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request body"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the condition"
+          }
+        ],
+        "operationId": "executeCondition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEvaluationRequest"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/conditions/{id}/evaluations/{evaluationId}": {
+      "get": {
+        "tags": [
+          "evaluations"
+        ],
+        "summary": "Get an Evaluation",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEvaluationResponse"
+                }
+              }
+            },
+            "description": "The evaluation"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "evaluationId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the evaluation"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the condition"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "delete": {
+        "tags": [
+          "evaluations"
+        ],
+        "summary": "Delete an Evaluation",
+        "responses": {
+          "204": {
+            "description": "The evaluation was deleted"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "evaluationId",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the evaluation"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the condition"
+          }
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/conditions/previews": {
+      "post": {
+        "tags": [
+          "condition preview"
+        ],
+        "summary": "Create condition preview request\\",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewResponse"
+                }
+              }
+            },
+            "description": "Condition preview request created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request body"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Create condition preview request.",
+        "operationId": "conditionsPreview",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConditionCreateRequest"
+              }
+            }
+          },
+          "description": "Create condition preview request"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/conditions/previews/{id}": {
+      "get": {
+        "tags": [
+          "condition preview"
+        ],
+        "summary": "Get condition preview response",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewStatusResponse"
+                }
+              }
+            },
+            "description": "The evaluation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request body"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uid"
+            },
+            "required": true,
+            "description": "The id of the condition"
+          }
+        ],
+        "description": "Get condition preview response.",
+        "operationId": "conditionsPreviewGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/conditions/settings": {
+      "get": {
+        "tags": [
+          "api settings"
+        ],
+        "summary": "Retrieves condition manager settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APISettings"
+                }
+              }
+            },
+            "description": "The api settings have been successfully returned"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Lists api settings.",
+        "operationId": "ConditionManagerAPISettingsGet",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "api settings"
+        ],
+        "summary": "Updates condition manager settings",
+        "responses": {
+          "204": {
+            "description": "api settings have been successfully updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request body"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The JWT used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
+          }
+        ],
+        "description": "Updates API configuration. Accessible only by tenant admins.",
+        "operationId": "conditionManagerAPISettingsUpload",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APISettingsUpload"
+              }
+            }
+          },
+          "description": "Request for updating the api settings"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/build"
+        ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [
+    "external/build"
+  ],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "APISettings": {
+        "type": "object",
+        "required": [
+          "enable-conditions"
+        ],
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "example": "cgdsAumGmQ6l0Bi7CUKt9V8P_Y9GL0sC",
+            "readOnly": true,
+            "description": "These persisted api settings are only available for this tenant. Extracted from request JWT."
+          },
+          "enable-conditions": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether API endpoints for condition manager are enabled"
+          }
+        }
+      },
+      "APISettingsUpload": {
+        "type": "object",
+        "required": [
+          "enable-conditions"
+        ],
+        "properties": {
+          "enable-conditions": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether API endpoints for condition manager are enabled"
+          }
+        }
+      },
+      "CausalEvent": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CausalEventData"
+          },
+          "eventID": {
+            "type": "string",
+            "description": "the event id from eventing"
+          },
+          "extensions": {
+            "$ref": "#/components/schemas/CausalEventExtensions"
+          },
+          "manualTrigger": {
+            "type": "boolean"
+          },
+          "manualTriggerID": {
+            "type": "string",
+            "description": "the manual trigger id from eventing if present"
+          }
+        }
+      },
+      "CausalEventData": {
+        "type": "object",
+        "properties": {
+          "eventID": {
+            "type": "string",
+            "description": "the event id from eventing service."
+          },
+          "lastReloadTime": {
+            "type": "string",
+            "format": "RFC3339",
+            "example": "2006-01-02T15:04:05Z07:00",
+            "description": "The time of the last reload"
+          }
+        }
+      },
+      "CausalEventExtensions": {
+        "type": "object",
+        "properties": {
+          "userID": {
+            "type": "string"
+          },
+          "tenantID": {
+            "type": "string"
+          },
+          "sessionID": {
+            "type": "string"
+          }
+        }
+      },
+      "CompoundCondition": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CompoundCondition_data"
+          },
+          "conditionBase": {
+            "$ref": "#/components/schemas/ConditionBase"
+          }
+        },
+        "description": "A condition made up of other conditions",
+        "x-discriminator-value": "compound",
+        "x-ms-discriminator-value": "compound"
+      },
+      "CompoundCondition_data": {
+        "type": "object",
+        "properties": {
+          "history": {
+            "$ref": "#/components/schemas/HistoryProperties"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "rDDAcMEI1V0qzauEWepEVY8oSLJ9fvA2",
+              "qFPF1dAtPK4vfPTmKyyuKaqA6iERCwLi",
+              "4gnz8E6ZruG0lkSKwkau66P24CtORyLr",
+              "ATs--Z0b_NGyuHajcbQkxu7RrajgPaEQ"
+            ],
+            "description": "Array of condition ids"
+          },
+          "expression": {
+            "type": "string",
+            "example": "($0 OR $1) AND ($2 OR $3)",
+            "description": "Boolean expression made up of variable names defined from the conditions section"
+          }
+        },
+        "description": "Condition data"
+      },
+      "Condition": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "compound",
+              "data"
+            ],
+            "type": "string",
+            "example": "compound",
+            "description": "Indicates the condition type"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uid",
+            "example": "EIwSIgqjmbHGwQJI0ShQoS3ORdz5nCpA",
+            "description": "UserID of the condition owner"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "5GI7yWoJk9lvNtuEc66SXCypXVfhbVeH",
+            "description": "The tenant id"
+          },
+          "dataCondition": {
+            "$ref": "#/components/schemas/DataCondition"
+          },
+          "compoundCondition": {
+            "$ref": "#/components/schemas/CompoundCondition"
+          }
+        },
+        "description": "only one of compoundCondition or dataCondition should be set"
+      },
+      "ConditionBase": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "example": "5f31c6e8476ae50001030fb6",
+            "readOnly": true,
+            "description": "The unique id for the resource"
+          },
+          "type": {
+            "enum": [
+              "compound",
+              "data"
+            ],
+            "type": "string",
+            "example": "compound",
+            "description": "Indicates the condition type"
+          },
+          "appId": {
+            "type": "string",
+            "example": "4xQ1chLoHkOikyzUGcHJquteNrAfketW",
+            "description": "The id of the app the condition is evaluated against"
+          },
+          "created": {
+            "type": "string",
+            "format": "string",
+            "example": "2006-01-02T15:04:05Z07:00",
+            "readOnly": true,
+            "description": "When the resource was created"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uid",
+            "example": "EIwSIgqjmbHGwQJI0ShQoS3ORdz5nCpA",
+            "readOnly": true,
+            "description": "The id of the user the user which owns the condition"
+          },
+          "updated": {
+            "type": "string",
+            "format": "string",
+            "example": "2006-01-02T14:04:05Z07:00",
+            "readOnly": true,
+            "description": "When the resource was last updated"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "5GI7yWoJk9lvNtuEc66SXCypXVfhbVeH",
+            "readOnly": true,
+            "description": "The tenant id"
+          },
+          "bookmarkId": {
+            "type": "string",
+            "example": "anTjnOABmxlCirVx8IRfhWhLd9IZjENl",
+            "description": "The bookmark corresponding to the selection state to apply to the app at evaluation time"
+          },
+          "createdById": {
+            "type": "string",
+            "format": "uid",
+            "example": "EIwSIgqjmbHGwQJI0ShQoS3ORdz5nCpA",
+            "readOnly": true,
+            "description": "The id of the user which created the condition"
+          },
+          "description": {
+            "type": "string",
+            "example": "My condition",
+            "description": "Description of the condition"
+          },
+          "lastReloadTime": {
+            "type": "string",
+            "format": "RFC3339",
+            "example": "2006-01-02T15:04:05Z07:00",
+            "readOnly": true,
+            "description": "The time of the last reload, if the scan is triggered by a reload. If exists and value does not match app's last reload time, the evaluation will fail."
+          }
+        },
+        "description": "A base condition"
+      },
+      "ConditionCreateRequest": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "compound",
+              "data"
+            ],
+            "type": "string",
+            "example": "compound",
+            "description": "Indicates the condition type"
+          },
+          "dataCondition": {
+            "$ref": "#/components/schemas/DataConditionCreateRequest"
+          },
+          "compoundCondition": {
+            "$ref": "#/components/schemas/CompoundCondition"
+          }
+        },
+        "description": "only one of compoundCondition or dataCondition should be set"
+      },
+      "ConditionDimensions": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ConditionDimensions_inner"
+        },
+        "description": "List of returned dimensions"
+      },
+      "ConditionDimensions_inner": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "example": "Neighborhood",
+            "description": "Field referred to the dimension where the selection is made. This may be used to generate deep links."
+          },
+          "title": {
+            "type": "string",
+            "example": "Neighborhood",
+            "description": "Dimension title"
+          },
+          "qLibraryId": {
+            "type": "string",
+            "example": "PgQKNQ",
+            "description": "Refers to a dimension stored in the library"
+          }
+        }
+      },
+      "ConditionHeaders": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "sumnum"
+        ],
+        "description": "List of header labels"
+      },
+      "ConditionMeasures": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ConditionMeasures_inner"
+        },
+        "description": "List of returned measures"
+      },
+      "ConditionMeasures_inner": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "sumnum",
+            "description": "Measure title"
+          },
+          "qLibraryId": {
+            "type": "string",
+            "example": "PgQKNQ",
+            "description": "Refers to a measure stored in the library"
+          },
+          "qNumFormat": {
+            "type": "object",
+            "example": {
+              "qDec": ".",
+              "qFmt": "###0",
+              "qType": "I",
+              "qnDec": 0,
+              "qUseThou": 1
+            },
+            "properties": {},
+            "description": "Format of the field"
+          }
+        }
+      },
+      "ConditionPatch": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ConditionPatch_inner"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/compoundCondition/conditionBase/ownerId",
+            "value": "I6mWVd60wRWIbOXZr1ZKV8QTnxhnitbX"
+          },
+          {
+            "op": "replace",
+            "path": "/dataCondition/conditionBase/description",
+            "value": "My description"
+          },
+          {
+            "op": "remove",
+            "path": "/compoundCondition/data/conditions/0"
+          },
+          {
+            "op": "replace",
+            "path": "/compoundCondition//data/expression",
+            "value": "$0 AND $1"
+          },
+          {
+            "op": "replace",
+            "path": "/dataCondition/conditionData/measure",
+            "value": "revenue"
+          }
+        ],
+        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902."
+      },
+      "ConditionPatch_inner": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace",
+              "remove",
+              "add"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "type": "string",
+            "description": "The path for the given resource field to patch."
+          },
+          "value": {
+            "type": "object",
+            "properties": {},
+            "description": "The value to be used for this operation."
+          }
+        }
+      },
+      "ConditionResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/Condition"
+          }
+        }
+      },
+      "CreateEvaluationRequest": {
+        "type": "object",
+        "required": [
+          "causalEvent",
+          "contextId"
+        ],
+        "properties": {
+          "alertId": {
+            "type": "string",
+            "example": "5f64885b2e11d23982c09e03",
+            "description": "The id of the alerting task the condition and evaluation is part of"
+          },
+          "contextId": {
+            "type": "string",
+            "example": "795c75ba-7812-4c8f-9ced-551b6b006183",
+            "description": "Extra context information to carry through to the result if any"
+          },
+          "causalEvent": {
+            "$ref": "#/components/schemas/CausalEvent"
+          }
+        }
+      },
+      "CreateEvaluationResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          },
+          "contextId": {
+            "type": "string",
+            "example": "795c75ba-7812-4c8f-9ced-551b6b006183",
+            "description": "Extra context information to carry through to the result if any"
+          },
+          "evaluationId": {
+            "type": "string",
+            "example": "795c75ba-7812-4c8f-9ced-551b6b006183",
+            "description": "Extra context information to carry through to the result if any"
+          }
+        }
+      },
+      "DataCondition": {
+        "type": "object",
+        "properties": {
+          "headers": {
+            "$ref": "#/components/schemas/ConditionHeaders"
+          },
+          "history": {
+            "$ref": "#/components/schemas/HistoryProperties"
+          },
+          "measures": {
+            "$ref": "#/components/schemas/ConditionMeasures"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/ConditionDimensions"
+          },
+          "selections": {
+            "$ref": "#/components/schemas/Selections"
+          },
+          "conditionBase": {
+            "$ref": "#/components/schemas/ConditionBase"
+          },
+          "conditionData": {
+            "type": "object",
+            "example": {},
+            "properties": {},
+            "description": "List of parameters specific to data condition are available in DCE and will be passed as is to DCE as per https://github.com/qlik-trial/data-condition-evaluator/blob/master/api-docs.yml"
+          }
+        },
+        "description": "A condition based on data within an app",
+        "x-discriminator-value": "data",
+        "x-ms-discriminator-value": "data"
+      },
+      "DataConditionCreateRequest": {
+        "type": "object",
+        "properties": {
+          "headers": {
+            "$ref": "#/components/schemas/ConditionHeaders"
+          },
+          "history": {
+            "$ref": "#/components/schemas/HistoryProperties"
+          },
+          "measures": {
+            "$ref": "#/components/schemas/ConditionMeasures"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/ConditionDimensions"
+          },
+          "selections": {
+            "$ref": "#/components/schemas/Selections"
+          },
+          "conditionBase": {
+            "$ref": "#/components/schemas/ConditionBase"
+          },
+          "conditionData": {
+            "type": "object",
+            "example": {},
+            "properties": {},
+            "description": "List of parameters specific to data condition are available in DCE and will be passed as is to DCE as per https://github.com/qlik-trial/data-condition-evaluator/blob/master/api-docs.yml"
+          }
+        },
+        "description": "A condition based on data within an app",
+        "x-discriminator-value": "data",
+        "x-ms-discriminator-value": "data"
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to condition manager."
+          },
+          "meta": {
+            "type": "object",
+            "properties": {}
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "detail": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "HTTP-123",
+              "title": "short error message",
+              "details": "detailed error message"
+            }
+          ],
+          "traceId": "7975401f3954aa47"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SingleErrorResponse"
+            },
+            "description": "Array of errors"
+          },
+          "traceId": {
+            "type": "string",
+            "example": "d6dba97c917e3f3d77c82f40f37c9d85",
+            "description": "trace id"
+          }
+        }
+      },
+      "Errors": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Error"
+        }
+      },
+      "Evaluation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique id for the resource",
+            "x-go-custom-tag": "bson:\"_id\""
+          },
+          "errors": {
+            "$ref": "#/components/schemas/EvaluationErrors"
+          },
+          "result": {
+            "type": "boolean",
+            "readOnly": true,
+            "description": "The final result of the evalution"
+          },
+          "status": {
+            "enum": [
+              "RUNNING",
+              "FAILED",
+              "FINISHED",
+              "DELETING"
+            ],
+            "type": "string",
+            "readOnly": true,
+            "description": "The status of the evaluation execution"
+          },
+          "alertId": {
+            "type": "string",
+            "example": "5f64885b2e11d23982c09e03",
+            "description": "The id of the alerting task the condition and evaluation is part of"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "string",
+            "readOnly": true,
+            "description": "The time the evaluation ended"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "userId of user being impersonated to evaluate the condition"
+          },
+          "retries": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "number of retries sent to DCE"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The tenant id"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/Condition"
+          },
+          "contextId": {
+            "type": "string",
+            "description": "Extra context information to carry through to the result if one was included on when the evaluation was triggered"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "string",
+            "readOnly": true,
+            "description": "The time the evaluation started"
+          },
+          "resultData": {
+            "type": "object",
+            "properties": {},
+            "description": "Condition type specific result, one of dataResult or compoundResult"
+          },
+          "causalEvent": {
+            "type": "object",
+            "properties": {},
+            "description": "Representation of the event that caused the condition to be evaluated if one was included on when the evaluation was triggered"
+          },
+          "conditionId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique id of the associated condition"
+          },
+          "retryPolicy": {
+            "enum": [
+              "NONE",
+              "TOO_MANY_REQUESTS",
+              "GENERIC_ERROR"
+            ],
+            "type": "string",
+            "description": "what kind of retry policy this evaluation has"
+          },
+          "reloadEndTime": {
+            "type": "string",
+            "format": "string",
+            "readOnly": true,
+            "description": "The time when the reload was completed in Engine"
+          },
+          "byokMigrationId": {
+            "type": "string",
+            "description": "internal identifier used when migrating keys"
+          },
+          "removalErrorCount": {
+            "type": "integer",
+            "example": 3,
+            "description": "The number of times we have attempted to remove this evaluation data-file"
+          },
+          "dataConditionEvaluatorId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The unique id for the resource given from Data Condition Evaluator.",
+            "x-qlik-deprecated": true
+          }
+        }
+      },
+      "EvaluationError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to condition smanager."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/EvaluationError_meta"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "status": {
+            "readOnly": true,
+            "description": "Error status."
+          }
+        }
+      },
+      "EvaluationError_meta": {
+        "type": "object",
+        "properties": {
+          "fatal": {
+            "type": "boolean",
+            "description": "defines whether an error is recoverable or not"
+          }
+        }
+      },
+      "EvaluationErrors": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EvaluationError"
+        }
+      },
+      "GetEvaluationResponse": {
+        "type": "object",
+        "properties": {
+          "condition": {
+            "$ref": "#/components/schemas/Condition"
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/Evaluation"
+          }
+        },
+        "description": "Get response returns the evaluation and condition associated"
+      },
+      "HistoryProperties": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Is history enabled"
+          }
+        },
+        "description": "History properties"
+      },
+      "PreviewEvaluation": {
+        "type": "object",
+        "properties": {
+          "endTime": {
+            "type": "string",
+            "format": "string",
+            "readOnly": true,
+            "description": "The time the evaluation ended"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "userId of user being impersonated to evaluate the condition"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true,
+            "description": "The tenant id"
+          },
+          "resultUrl": {
+            "type": "string",
+            "description": "URL to download the condition results"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "string",
+            "readOnly": true,
+            "description": "The time the evaluation started"
+          }
+        }
+      },
+      "PreviewResponse": {
+        "type": "object",
+        "properties": {
+          "previewId": {
+            "type": "string",
+            "format": "uid",
+            "example": "467ea9bc-bbd7-11ea-b3de-0242ac130004",
+            "readOnly": true,
+            "description": "When the resource was created"
+          }
+        }
+      },
+      "PreviewStatusResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          },
+          "status": {
+            "enum": [
+              "ACCEPTED",
+              "FAILED",
+              "RUNNING",
+              "SUCCESSFUL"
+            ],
+            "type": "string",
+            "readOnly": true
+          },
+          "condition": {
+            "$ref": "#/components/schemas/Condition"
+          },
+          "previewId": {
+            "type": "string",
+            "format": "uid",
+            "example": "467ea9bc-bbd7-11ea-b3de-0242ac130004",
+            "readOnly": true,
+            "description": "When the resource was created"
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/PreviewEvaluation"
+          }
+        }
+      },
+      "Selections": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Selections_inner"
+        },
+        "description": "List of fields according to the bookmark definition"
+      },
+      "Selections_inner": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number",
+            "example": 2,
+            "description": "The count"
+          },
+          "field": {
+            "type": "string",
+            "example": "SalesTerritoryCountry",
+            "description": "Field name"
+          },
+          "selectedSummary": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": "[ Germany, Australia ]",
+            "description": "Array of selected"
+          }
+        }
+      },
+      "SingleErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to condition manager."
+          },
+          "meta": {
+            "type": "object",
+            "properties": {},
+            "description": "meta properties for an error."
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "detail": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      }
+    }
+  }
+}
