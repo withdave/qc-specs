@@ -1,0 +1,211 @@
+name: Update API Specs
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-api-specs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set Git Identity
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "github-actions"
+
+      - name: Fetch branches
+        run: |
+          git fetch origin main apispecs || true
+          if git rev-parse --verify origin/apispecs >/dev/null 2>&1; then
+              git checkout apispecs
+              git pull --rebase origin/main || {
+                  echo "Rebase failed. Resetting and reapplying changes."
+                  git reset --hard origin/main
+                  git pull --rebase origin main || {
+                      echo "Rebase failed again. Aborting rebase and merging instead."
+                      git rebase --abort
+                      git merge origin/main || {
+                          echo "Merge also failed. Manual resolution needed."
+                          exit 1
+                      }
+                  }
+              }
+          else
+              git checkout -b apispecs
+              git push origin apispecs --set-upstream
+          fi
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xmlstarlet jq
+
+      - name: Fetch API Specs from qlik.dev
+        run: |
+          set -euo pipefail
+          mkdir -p specs
+
+          sitemap_index_url="https://qlik.dev/sitemap-index.xml"
+          echo "Fetching sitemap index from: $sitemap_index_url"
+
+          sitemap_urls=$(curl -s "$sitemap_index_url" | \
+            xmlstarlet sel -N ns="http://www.sitemaps.org/schemas/sitemap/0.9" \
+            -t -m "//ns:sitemap/ns:loc" -v . -n)
+
+          if [[ -z "$sitemap_urls" ]]; then
+            echo "Error: No sitemaps found"
+            exit 1
+          fi
+
+          declare -A downloaded_specs
+
+          for sitemap in $sitemap_urls; do
+            echo "Processing sitemap: $sitemap"
+            api_urls=$(curl -s "$sitemap" | \
+              xmlstarlet sel -N ns="http://www.sitemaps.org/schemas/sitemap/0.9" \
+              -t -m "//ns:url/ns:loc" -v . -n | grep '^https://qlik.dev/apis/rest/')
+            
+            if [[ -z "$api_urls" ]]; then
+              echo "Warning: No API URLs found in $sitemap"
+              continue
+            fi
+            
+            for url in $api_urls; do
+              api_name=$(echo "$url" | sed -E 's|.*/([^/]+)/?$|\1|')
+              
+              [[ "$api_name" == "rate-limiting" || "$api_name" == "pagination-sorting-filtering" || "$api_name" == "rest" ]] && continue
+              
+              echo "Processing API: $api_name"
+              spec_url="https://qlik.dev/specs/rest/$api_name.json"
+              echo "Processing API URL: $spec_url"
+              response_code=$(curl -s -o "specs/$api_name.json" -w "%{http_code}" "$spec_url")
+              downloaded_specs["$api_name.json"]=1
+              
+              if [[ "$response_code" == "200" ]]; then
+                echo "✅ $spec_url found (HTTP $response_code)"
+              else
+                echo "❌ $spec_url not found (HTTP $response_code)"
+                rm -f "specs/$api_name.json"
+              fi
+            done
+          done
+
+          shopt -s dotglob
+          for file in specs/*; do
+            filename=$(basename "$file")
+            if [[ -z "${downloaded_specs[$filename]:-}" ]]; then
+              echo "Removing outdated spec: $filename"
+              rm -f "specs/$filename"
+            fi
+          done
+          shopt -u dotglob
+
+      - name: List specs directory contents
+        run: |
+          echo "Listing contents of specs directory:"
+          ls -la specs
+
+      - name: Check for changes against main
+        id: git-status
+        run: |
+          git add specs
+          git commit -m "chore: updating API specs from qlik.dev" || echo "No changes to commit"
+          if git diff --quiet origin/main..HEAD; then
+            echo "No changes detected compared to main"
+            echo "no_changes=true" >> $GITHUB_ENV
+          else
+            echo "Changes detected compared to main"
+            echo "no_changes=false" >> $GITHUB_ENV
+          fi
+
+      - name: Push changes to apispecs branch
+        if: ${{ env.no_changes == 'false' }}
+        run: |
+          git pull --rebase origin apispecs
+          git push origin apispecs
+
+      - name: Find existing PR or create a new one
+        if: ${{ env.no_changes == 'false' }}
+        id: find-or-create-pr
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: "apispecs",
+              base: "main",
+              state: "all"
+            });
+            if (prs.data.length > 0) {
+              let open_pr = prs.data.find(pr => pr.state === "open");
+              if (open_pr) {
+                  console.log(`Existing PR found: ${open_pr.html_url}`);
+                  core.setOutput("pr_number", open_pr.number);
+              } else {
+                  console.log("Existing PR was closed, creating a new one.");
+                  const pr = await github.rest.pulls.create({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      title: "chore: updating API specs from qlik.dev",
+                      head: "apispecs",
+                      base: "main",
+                      body: "This is an automated regular pull of API specs from qlik.dev."
+                  });
+                  console.log(`PR created: ${pr.data.html_url}`);
+                  core.setOutput("pr_number", pr.data.number);
+              }
+            } else {
+              console.log("No existing PR found, creating a new one.");
+              const pr = await github.rest.pulls.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: "chore: updating API specs from qlik.dev",
+                  head: "apispecs",
+                  base: "main",
+                  body: "This is an automated regular pull of API specs from qlik.dev."
+              });
+              console.log(`PR created: ${pr.data.html_url}`);
+              core.setOutput("pr_number", pr.data.number);
+            }
+
+      - name: Check and request review from withdave if not already assigned
+        if: ${{ env.no_changes == 'false' }}
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ steps.find-or-create-pr.outputs.pr_number }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = parseInt(process.env.PR_NUMBER);
+            // Get the pull request details
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+            // Extract the list of already requested reviewers
+            const existingReviewers = pr.requested_reviewers.map(reviewer => reviewer.login);
+            if (!existingReviewers.includes("withdave")) {
+              await github.rest.pulls.requestReviewers({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                reviewers: ["withdave"]
+              });
+              console.log(`Requested review from withdave for PR #${prNumber}`);
+            } else {
+              console.log(`withdave is already requested as a reviewer for PR #${prNumber}`);
+            }
