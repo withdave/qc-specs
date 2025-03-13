@@ -5082,14 +5082,14 @@
                 "type": "string"
               }
             },
-            "description": "Rows of the dataset from which to produce predictions\n"
+            "description": "Rows of the dataset from which to produce predictions.\nDate features must be in ISO 8601 format.\n"
           },
           "schema": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/RealTimePredictionInputSchema"
             },
-            "description": "List of features in the dataset"
+            "description": "List of features in the dataset."
           }
         },
         "description": "Input values for creating realtime predictions",

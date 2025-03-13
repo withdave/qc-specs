@@ -128,7 +128,8 @@
                 "$ref": "#/components/schemas/realtimePredictionInput"
               }
             }
-          }
+          },
+          "description": "Request payload containing the dataset for predictions. Date features must be in ISO 8601 format."
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -244,7 +245,7 @@
                 "type": "string"
               }
             },
-            "description": "The rows of the dataset to produce predictions from."
+            "description": "The rows of the dataset to produce predictions from. Date features must be in ISO 8601 format."
           },
           "schema": {
             "type": "array",
