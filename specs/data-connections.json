@@ -1339,7 +1339,8 @@
           "qri": {
             "type": "string",
             "example": "qri:db:snowflake://BQ1-3F_BvWfxxCDDiz9vQepqHLAcHWqacoqwLq4wxWM",
-            "description": "Encrypted base Qri string"
+            "description": "Encrypted base Qri string (filterable using SCIM filter, e.g. filter='qri co \"snowflake\"')",
+            "x-qlik-filterable": true
           },
           "tags": {
             "type": "array",
