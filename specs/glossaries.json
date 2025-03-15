@@ -268,7 +268,7 @@
         "tags": [
           "glossaries"
         ],
-        "summary": "Updates glossary properties with json-patch formated data",
+        "summary": "Updates glossary properties with json-patch formatted data",
         "responses": {
           "204": {
             "headers": {
@@ -981,7 +981,7 @@
         "tags": [
           "categories"
         ],
-        "summary": "Updates category properties with json-patch formated data",
+        "summary": "Updates category properties with json-patch formatted data",
         "responses": {
           "204": {
             "headers": {
@@ -1640,7 +1640,7 @@
         "tags": [
           "terms"
         ],
-        "summary": "Updates term properties with json-patch formated data",
+        "summary": "Updates term properties with json-patch formatted data",
         "responses": {
           "204": {
             "headers": {
@@ -2933,10 +2933,10 @@
               "format": "uid"
             },
             "example": [
-              "6305e8691a1d504df06efab9",
-              "63075b341a1d504df06efabc"
+              "6305e8691a1d504df06e2ab9",
+              "63075b341a1d504df06e2abc"
             ],
-            "description": "This list contains the uids of the stewards of the category."
+            "description": "This list contains the UIDs of the stewards of the category."
           },
           "createdAt": {
             "type": "string",
@@ -2992,10 +2992,10 @@
               "format": "uid"
             },
             "example": [
-              "6305e8691a1d504df06efab9",
-              "63075b341a1d504df06efabc"
+              "6305e8691a1d504df06e2ab9",
+              "63075b341a1d504df06e2abc"
             ],
-            "description": "This list contains the uids of the stewards of the category."
+            "description": "This list contains the UIDs of the stewards of the category."
           },
           "description": {
             "type": "string"
@@ -3076,10 +3076,10 @@
               "type": "string"
             },
             "example": [
-              "6305e8691a1d504df06efab9",
-              "63075b341a1d504df06efabc"
+              "6305e8691a1d504df06e2ab9",
+              "63075b341a1d504df06ef2bc"
             ],
-            "description": "This list contain the uids for the term's stewards"
+            "description": "This list contain the UIDs for the term's stewards"
           },
           "relatesTo": {
             "type": "array",
@@ -3436,7 +3436,7 @@
             "type": "string",
             "format": "uid",
             "example": "507f191e810c19729de860ea",
-            "description": "The unique identifier of the space containg the glossary"
+            "description": "The unique identifier of the space containing the glossary"
           },
           "overview": {
             "type": "string",
@@ -3638,7 +3638,7 @@
             "description": "The value to be used for this operation."
           }
         },
-        "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+        "description": "A JSON Patch document as defined in https://tools.ietf.org/html/rfc6902."
       },
       "JSONPatchArray": {
         "type": "array",
@@ -3696,7 +3696,8 @@
           "self": {
             "$ref": "#/components/schemas/pageLink"
           }
-        }
+        },
+        "description": "URLs to a resource request"
       },
       "qlikGlossary": {
         "type": "object",
@@ -3774,7 +3775,7 @@
           "name",
           "description",
           "relatedInformation",
-          "abbrevation",
+          "abbreviation",
           "tags",
           "stewards",
           "createdBy",
@@ -3822,10 +3823,10 @@
               "type": "string"
             },
             "example": [
-              "6305e8691a1d504df06efab9",
-              "63075b341a1d504df06efabc"
+              "6305e8691a1d504df06e2ab9",
+              "63075b341a1d504df06e2abc"
             ],
-            "description": "This list contains the uids of the terms data stewards."
+            "description": "This list contains the UIDs of the terms data stewards."
           },
           "createdAt": {
             "type": "string",
@@ -4095,7 +4096,8 @@
             "description": "The unique identifier of the user who last changed the status of the term"
           }
         },
-        "description": "Terms status is used determine the status of a term"
+        "description": "Terms status is used determine the status of a term",
+        "x-qlik-filterable": true
       },
       "termTemplate": {
         "type": "object",
