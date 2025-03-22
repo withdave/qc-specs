@@ -88,7 +88,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "The attribute to sort by, beginning with + for ascending and - for descending. Valid attributes for sorting are clientId, clientName, appType, tenantId."
+            "description": "The attribute to sort by, beginning with + for ascending and - for descending. Valid attributes for sorting are clientId, clientName, appType, tenantId, createdAt, updatedAt."
           },
           {
             "in": "query",

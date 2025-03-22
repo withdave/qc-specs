@@ -483,8 +483,8 @@
         ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
+          "tier": "special",
+          "limit": 500
         }
       }
     },
@@ -606,8 +606,8 @@
         ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
-          "tier": "2",
-          "limit": 100
+          "tier": "special",
+          "limit": 500
         }
       }
     },
@@ -710,8 +710,8 @@
         ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
+          "tier": "special",
+          "limit": 500
         }
       }
     },
