@@ -769,6 +769,10 @@
             "type": "boolean",
             "default": false
           },
+          "enableAppOpeningFeedback": {
+            "type": "boolean",
+            "default": false
+          },
           "autoAssignCreateSharedSpacesRoleToProfessionals": {
             "type": "boolean",
             "default": true
@@ -920,7 +924,8 @@
                 "/autoAssignCreateSharedSpacesRoleToProfessionals",
                 "/autoAssignPrivateAnalyticsContentCreatorRoleToProfessionals",
                 "/autoAssignDataServicesContributorRoleToProfessionals",
-                "/enableAnalyticCreation"
+                "/enableAnalyticCreation",
+                "/enableAppOpeningFeedback"
               ],
               "type": "string",
               "description": "A JSON Pointer value that references a location within the target document where the operation is performed."
