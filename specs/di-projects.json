@@ -1629,21 +1629,11 @@
         "type": "object",
         "properties": {
           "variables": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "variable1",
-                  "description": "The name of the variable"
-                },
-                "value": {
-                  "type": "string",
-                  "example": "value1",
-                  "description": "The value of the variable"
-                }
-              }
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "example": "value",
+              "description": "The value of the variable"
             }
           }
         }
@@ -1708,21 +1698,11 @@
         "type": "object",
         "properties": {
           "variables": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "variable1",
-                  "description": "The name of the variable"
-                },
-                "value": {
-                  "type": "string",
-                  "example": "value1",
-                  "description": "The value of the variable"
-                }
-              }
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "example": "value",
+              "description": "The value of the variable"
             }
           }
         }
