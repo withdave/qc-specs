@@ -9,7 +9,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Retrieves a list of automations",
+        "summary": "List automations",
         "responses": {
           "200": {
             "content": {
@@ -113,6 +113,7 @@
             "description": "The field to sort by, with +- prefix indicating sort order. (?query=-name => sort on the name field using descending order)"
           }
         ],
+        "description": "Retrieves a list of the automations that the requesting user has access to.",
         "operationId": "getAutomations",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -158,6 +159,7 @@
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         },
+        "description": "Creates a new automation. The requesting user must be assigned the `AutomationCreator` role.",
         "operationId": "createAutomation",
         "requestBody": {
           "content": {
@@ -188,7 +190,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Retrieves an automation",
+        "summary": "Get an automation",
         "responses": {
           "200": {
             "content": {
@@ -242,6 +244,7 @@
             "description": "Allows to select the actual fields to be returned. Where the default is all fields"
           }
         ],
+        "description": "Retrieves the full definition of an automation. The requesting user must be the owner of the automation.",
         "operationId": "getAutomation",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -302,6 +305,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
+        "description": "Updates the full definition of an automation. The requesting user must be the owner of the automation.",
         "operationId": "updateAutomation",
         "requestBody": {
           "content": {
@@ -363,6 +367,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
+        "description": "Deletes an automation. The requesting user must be the owner of the automation, or be assigned the `TenantAdmin` role.",
         "operationId": "deleteAutomation",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -382,7 +387,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Copy an automation.",
+        "summary": "Duplicate an automation",
         "responses": {
           "201": {
             "content": {
@@ -433,6 +438,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
+        "description": "Duplicates an existing automation. The requesting user must be the owner of the automation.",
         "operationId": "copyAutomation",
         "requestBody": {
           "content": {
@@ -471,7 +477,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Disables an automation.",
+        "summary": "Disable an automation",
         "responses": {
           "204": {
             "description": "No Content"
@@ -507,6 +513,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
+        "description": "Disables an automation so that it cannot be run. The requesting user must be the owner of the automation, or be assigned the `TenantAdmin` role.",
         "operationId": "disableAutomation",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -526,7 +533,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Enable an automation.",
+        "summary": "Enable an automation",
         "responses": {
           "204": {
             "description": "No Content"
@@ -562,6 +569,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
+        "description": "Enables an automation so that it can be run. The requesting user must be the owner of the automation, or be assigned the `TenantAdmin` role.",
         "operationId": "enableAutomation",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -581,7 +589,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Move an automation to a different user.",
+        "summary": "Change automation owner",
         "responses": {
           "204": {
             "description": "No Content"
@@ -618,7 +626,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
-        "description": "This step will remove the history and change logs of this automation. All linked connections used inside an automation will be detached.",
+        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner.",
         "operationId": "moveAutomation",
         "requestBody": {
           "content": {
@@ -657,7 +665,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Retrieves a list of runs for a specific automation.",
+        "summary": "List automation runs",
         "responses": {
           "200": {
             "content": {
@@ -757,6 +765,7 @@
             "description": "The field to sort by, with +- prefix indicating sort order. (?query=-startTime => sort on the startTime field using descending order)"
           }
         ],
+        "description": "Retrieves a list of runs for a specific automation. The requesting user must be the owner of the automation, or be assigned the `TenantAdmin` role.",
         "operationId": "getRuns",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -774,7 +783,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Create a run",
+        "summary": "Run an automation",
         "responses": {
           "201": {
             "content": {
@@ -817,6 +826,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
+        "description": "Creates a runs for a specific automation. The requesting user must be the owner of the automation.",
         "operationId": "createRun",
         "requestBody": {
           "content": {
@@ -847,7 +857,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Retrieves a run",
+        "summary": "Get an automation run",
         "responses": {
           "200": {
             "content": {
@@ -911,6 +921,7 @@
             "description": "Allows to select the actual fields to be returned. Where the default is all fields"
           }
         ],
+        "description": "Retrieves a specific run for an automation. The requesting user must be the owner of the automation.",
         "operationId": "getRun",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -930,7 +941,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Export a run.",
+        "summary": "Export log for automation run",
         "responses": {
           "200": {
             "content": {
@@ -940,7 +951,7 @@
                   "properties": {
                     "url": {
                       "type": "string",
-                      "example": "https://<bucket>.s3.<region>.amazonaws.com/<run>.json"
+                      "example": "https://{tenantname}.{region}.qlikcloud.com/api/v1/automations/{id}/runs/{runId}/debug"
                     }
                   }
                 }
@@ -989,7 +1000,7 @@
             "description": "The unique identifier for the run."
           }
         ],
-        "description": "Creates a temporary pre-signed AWS S3 URL to download the raw logs of a completed run. This URL is valid for 5 minutes.",
+        "description": "Retrieves the URL for the debug log of a specific automation run. The requesting user must be the owner of the automation.",
         "operationId": "exportRun",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -1009,7 +1020,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Retry a run.",
+        "summary": "Retry an automation run",
         "responses": {
           "204": {
             "description": "OK Response"
@@ -1055,7 +1066,7 @@
             "description": "The unique identifier for the run."
           }
         ],
-        "description": "This action allows you to retry a specific run by creating a new run using the same inputs.",
+        "description": "Retries a specific run by creating a new run using the same inputs. The requesting user must be the owner of the automation.",
         "operationId": "retryRun",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -1075,7 +1086,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Stop a running automation.",
+        "summary": "Stop an automation run",
         "responses": {
           "204": {
             "description": "OK Response"
@@ -1121,7 +1132,7 @@
             "description": "The unique identifier for the run."
           }
         ],
-        "description": "Force a run to be stopped immediately.",
+        "description": "Forcefully stops an automation run immediately. The requesting user must be the owner of the automation.",
         "operationId": "stopRun",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -1141,7 +1152,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Retrieves all automation usage for a tenant",
+        "summary": "Get automation usage metrics",
         "responses": {
           "200": {
             "content": {
@@ -1191,7 +1202,7 @@
             "description": "If specified, result will be broken apart for each automation"
           }
         ],
-        "description": "Metrics for automations, paginated.",
+        "description": "Retrieves paginated usage metrics for automations. The requesting user must be assigned the `TenantAdmin` role.",
         "operationId": "getUsageMetrics",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",

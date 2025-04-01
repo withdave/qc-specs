@@ -1241,7 +1241,7 @@
             "type": "object",
             "example": {},
             "properties": {},
-            "description": "List of parameters specific to data condition are available in DCE and will be passed as is to DCE as per https://github.com/qlik-trial/data-condition-evaluator/blob/master/api-docs.yml"
+            "description": "List of parameters specific to data condition are available in DCE and will be passed as is to DCE as per the API docs of data-condition-evaluator"
           }
         },
         "description": "A condition based on data within an app",
@@ -1273,7 +1273,7 @@
             "type": "object",
             "example": {},
             "properties": {},
-            "description": "List of parameters specific to data condition are available in DCE and will be passed as is to DCE as per https://github.com/qlik-trial/data-condition-evaluator/blob/master/api-docs.yml"
+            "description": "List of parameters specific to data condition are available in DCE and will be passed as is to DCE as per the API docs of data-condition-evaluator"
           }
         },
         "description": "A condition based on data within an app",
