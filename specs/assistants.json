@@ -3706,7 +3706,8 @@
         "properties": {
           "op": {
             "enum": [
-              "replace"
+              "replace",
+              "add"
             ],
             "type": "string",
             "description": "The operation to be performed."

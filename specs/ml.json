@@ -395,6 +395,421 @@
         }
       }
     },
+    "/v1/ml/deployments/{deploymentId}/aliases": {
+      "get": {
+        "tags": [
+          "aliases"
+        ],
+        "summary": "List aliases",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AliasFindResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/aliasesFilter"
+          },
+          {
+            "$ref": "#/components/parameters/aliasesSort"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          }
+        ],
+        "description": "Retrieves a list of aliases based on filter parameters for a deployment.",
+        "operationId": "getAliases",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "aliases"
+        ],
+        "summary": "Create an alias",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AliasPostResponse"
+                }
+              }
+            },
+            "description": "`Created`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "description": "Creates an alias for a deployment.",
+        "operationId": "postAlias",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AliasInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/aliases/{aliasId}": {
+      "get": {
+        "tags": [
+          "aliases"
+        ],
+        "summary": "Get an alias",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AliasGetResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/aliasId"
+          }
+        ],
+        "description": "Retrieves an alias that exists on the deployment.",
+        "operationId": "getAlias",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "aliases"
+        ],
+        "summary": "Update an alias",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/aliasId"
+          }
+        ],
+        "description": "Updates an alias for a deployment.",
+        "operationId": "updateAliases",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AliasPatch"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "aliases"
+        ],
+        "summary": "Delete an alias",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/aliasId"
+          }
+        ],
+        "description": "Delete an alias from a deployment.",
+        "operationId": "deleteAlias",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/aliases/{aliasName}/realtime-predictions/actions/run": {
+      "post": {
+        "tags": [
+          "predictions"
+        ],
+        "summary": "Generate predictions in a synchronous request/response",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RealtimePrediction"
+                }
+              }
+            },
+            "description": "Stream of combined prediction output returned successfully."
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/409Conflict"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "includeNotPredictedReason",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, reason why a prediction was not produced included response\n"
+          },
+          {
+            "in": "query",
+            "name": "includeShap",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, shap values included in response"
+          },
+          {
+            "in": "query",
+            "name": "includeSource",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, source data included in response"
+          },
+          {
+            "in": "query",
+            "name": "index",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The name of the feature in the source data to use as an index in the\nresponse data. The column will be included with its original name\nand values. This is intended to allow the caller to join results\nwith source data.\n"
+          },
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          },
+          {
+            "$ref": "#/components/parameters/aliasName"
+          }
+        ],
+        "operationId": "predictRealtimeWithAlias",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RealtimePredictionInput"
+              }
+            }
+          },
+          "description": "Request payload containing the dataset for predictions. Date features\nmust be in ISO 8601 format.\n"
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/v1/ml/deployments/{deploymentId}/batch-predictions": {
       "get": {
         "tags": [
@@ -1011,6 +1426,126 @@
         ],
         "description": "Deletes the schedule from a batch prediction.",
         "operationId": "deleteBatchPredictionSchedule",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/models/actions/add": {
+      "post": {
+        "tags": [
+          "deployments"
+        ],
+        "summary": "Add deployed models for this deployment",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "operationId": "addDeployedModels",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeployedModelsInput"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/ml/deployments/{deploymentId}/models/actions/remove": {
+      "post": {
+        "tags": [
+          "deployments"
+        ],
+        "summary": "Remove deployed models from this deployment",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/deploymentId"
+          }
+        ],
+        "operationId": "removeDeployedModels",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeployedModelsInput"
+              }
+            }
+          }
+        },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2024,6 +2559,45 @@
   "openapi": "3.0.0",
   "components": {
     "parameters": {
+      "aliasesFilter": {
+        "in": "query",
+        "name": "filter",
+        "schema": {
+          "type": "string"
+        },
+        "example": "`filter=modelId eq \"UUID\" and mode eq \"Default\"`",
+        "required": false,
+        "description": "Alias fields by which you can filter responses\n- `name` string - Aliases with exact name\n- `modelId` UUID string - By model ID\n- `mode` enum string - Mode by which alias is set to\n"
+      },
+      "aliasesSort": {
+        "in": "query",
+        "name": "sort",
+        "style": "form",
+        "schema": {
+          "$ref": "#/components/schemas/EnumSortAliases"
+        },
+        "example": "sort=field1,+field2,-field3,...",
+        "required": false,
+        "description": "Field(s) by which to sort response\n"
+      },
+      "aliasId": {
+        "in": "path",
+        "name": "aliasId",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "ID of the alias"
+      },
+      "aliasName": {
+        "in": "path",
+        "name": "aliasName",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "The name of the ML Deployment Alias that will be used to determine which model should be used to produce predictions"
+      },
       "batchPredictionId": {
         "in": "path",
         "name": "batchPredictionId",
@@ -2335,6 +2909,250 @@
       }
     },
     "schemas": {
+      "Alias": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "deploymentId",
+          "models",
+          "mode"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/AliasMode"
+          },
+          "name": {
+            "$ref": "#/components/schemas/EntityName"
+          },
+          "models": {
+            "$ref": "#/components/schemas/ModelsInfo"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "ID of the owner/user that created this entity"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "deploymentId": {
+            "$ref": "#/components/schemas/DeploymentId"
+          }
+        },
+        "description": "An AutoML alias"
+      },
+      "AliasFindResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id",
+                "attributes"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/EntityId"
+                },
+                "type": {
+                  "enum": [
+                    "alias"
+                  ],
+                  "type": "string"
+                },
+                "attributes": {
+                  "$ref": "#/components/schemas/Alias"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/FindResponseMeta"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ResponseLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AliasGetResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "alias"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/Alias"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "AliasId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "ID of an alias"
+      },
+      "AliasInput": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "alias"
+                ],
+                "type": "string",
+                "default": "alias"
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "models"
+                ],
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/EntityName"
+                  },
+                  "models": {
+                    "$ref": "#/components/schemas/ModelsInfo"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "description": "Input for creating a new alias\n",
+        "additionalProperties": false
+      },
+      "AliasMode": {
+        "enum": [
+          "default",
+          "undefined"
+        ],
+        "type": "string",
+        "description": "The mode of an alias. Default mode means the model assigned to that alias will be used if alias is not specified"
+      },
+      "AliasPatch": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AliasPatchItem"
+        }
+      },
+      "AliasPatchItem": {
+        "type": "object",
+        "example": {
+          "op": "replace",
+          "path": "/name",
+          "value": "New Name"
+        },
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "All patch requests use the replace operation"
+          },
+          "path": {
+            "enum": [
+              "/name",
+              "/models"
+            ],
+            "type": "string",
+            "description": "Path for the property you want to update"
+          },
+          "value": {
+            "$ref": "#/components/schemas/AnyType"
+          }
+        },
+        "description": "Alias values that can be patched.",
+        "additionalProperties": false
+      },
+      "AliasPostResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "id",
+              "attributes"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/EntityId"
+              },
+              "type": {
+                "enum": [
+                  "alias"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/Alias"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
       "AnyType": {
         "description": "Use for fields that can be `any` type (string, number, etc.)"
       },
@@ -2406,6 +3224,9 @@
           },
           "status": {
             "$ref": "#/components/schemas/BatchPredictionStatus"
+          },
+          "aliasId": {
+            "$ref": "#/components/schemas/AliasId"
           },
           "ownerId": {
             "$ref": "#/components/schemas/OwnerId"
@@ -2573,6 +3394,9 @@
                 "properties": {
                   "name": {
                     "$ref": "#/components/schemas/EntityName"
+                  },
+                  "aliasId": {
+                    "$ref": "#/components/schemas/AliasId"
                   },
                   "schedule": {
                     "$ref": "#/components/schemas/BatchPredictionScheduleInputAttributes"
@@ -3067,6 +3891,54 @@
         "type": "string",
         "description": "Timestamp when this is deleted"
       },
+      "DeployedModelIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid",
+          "description": "ID of a modelID within the tenant"
+        },
+        "description": "IDs of all models deployed to the deployment"
+      },
+      "DeployedModelsInput": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "deployed-models"
+                ],
+                "type": "string",
+                "default": "deployed-models"
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "deployedModelIds"
+                ],
+                "properties": {
+                  "deployedModelIds": {
+                    "$ref": "#/components/schemas/DeployedModelIds"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "description": "Input values for adding deployed models to a deployment",
+        "additionalProperties": false
+      },
       "Deployment": {
         "type": "object",
         "required": [
@@ -3119,6 +3991,9 @@
           },
           "errorMessage": {
             "$ref": "#/components/schemas/ErrorMessage"
+          },
+          "deployedModelIds": {
+            "$ref": "#/components/schemas/DeployedModelIds"
           },
           "enablePredictions": {
             "type": "boolean",
@@ -3366,6 +4241,14 @@
         "type": "string",
         "description": "Name of this entity",
         "x-qlik-filterable": true
+      },
+      "EnumSortAliases": {
+        "enum": [
+          "name",
+          "+name",
+          "-name"
+        ],
+        "type": "string"
       },
       "EnumSortBatchPredictions": {
         "enum": [
@@ -4220,7 +5103,10 @@
           "valid_index",
           "underrepresented_class",
           "invalid_column_name",
-          "will_be_date_engineered"
+          "will_be_date_engineered",
+          "possible_date_index",
+          "possible_group",
+          "possible_future_feature"
         ],
         "type": "string",
         "description": "Insights about a feature, such as why it's not included in a model\n"
@@ -4454,6 +5340,16 @@
         "format": "uuid",
         "description": "ID of the model",
         "x-qlik-filterable": true
+      },
+      "ModelInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId"
+          }
+        },
+        "description": "Model information stored on an alias",
+        "additionalProperties": false
       },
       "ModelMetrics": {
         "type": "object",
@@ -4691,6 +5587,12 @@
         },
         "description": "Regression metrics for numeric values. Details:\nhttps://help.qlik.com/en-US/cloud-services/Subsystems/Hub/Content/Sense_Hub/AutoML/scoring-regression.htm\n",
         "additionalProperties": false
+      },
+      "ModelsInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ModelInfo"
+        }
       },
       "ModelState": {
         "enum": [
