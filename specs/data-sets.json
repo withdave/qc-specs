@@ -1189,6 +1189,10 @@
             ],
             "type": "string"
           },
+          "evenness": {
+            "type": "number",
+            "format": "double"
+          },
           "kurtosis": {
             "type": "number",
             "format": "double"

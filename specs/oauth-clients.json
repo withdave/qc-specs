@@ -1197,6 +1197,19 @@
             },
             "description": "List of allowed origins for this client, only available with SPA application type"
           },
+          "connectionConfig": {
+            "type": "object",
+            "properties": {
+              "consentMethod": {
+                "enum": [
+                  "trusted"
+                ],
+                "type": "string",
+                "description": "Specifies the consent method for the connection. The only allowed value is \"trusted.\""
+              }
+            },
+            "description": "Optional settings for configuring the client connection."
+          },
           "allowedGrantTypes": {
             "type": "array",
             "items": {

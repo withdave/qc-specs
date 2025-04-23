@@ -665,6 +665,11 @@
             "nullable": true,
             "description": "The error code."
           },
+          "meta": {
+            "type": "object",
+            "nullable": true,
+            "description": "Additional error metadata."
+          },
           "title": {
             "type": "string",
             "example": "Cursor not formatted correctly.",

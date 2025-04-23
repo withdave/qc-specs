@@ -1365,7 +1365,6 @@
         "required": [
           "tenantId",
           "autoCreateGroups",
-          "syncIdpGroups",
           "links"
         ],
         "properties": {
@@ -1444,7 +1443,8 @@
           "syncIdpGroups": {
             "type": "boolean",
             "example": false,
-            "description": "Determines if groups should be created on login."
+            "description": "Determines if groups should be created on login.",
+            "x-qlik-deprecated": true
           },
           "autoCreateGroups": {
             "type": "boolean",

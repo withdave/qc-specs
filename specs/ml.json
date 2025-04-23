@@ -3821,6 +3821,31 @@
         "nullable": true,
         "description": "Indicates if you want to change the featureType for this\nfeature within the experiment version\n"
       },
+      "ColumnTransform": {
+        "type": "object",
+        "required": [
+          "name",
+          "changeType"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "changeType": {
+            "type": "string"
+          }
+        }
+      },
+      "ConfigurationKey": {
+        "enum": [
+          "DATE_INDEX",
+          "FUTURE_FEATURE",
+          "GROUP_ID",
+          "FORECAST_GAP_SIZE",
+          "FORECAST_WINDOW_SIZE"
+        ],
+        "type": "string"
+      },
       "CorrId": {
         "type": "string",
         "description": "The ID of a correlated resource of corrType"
@@ -3841,6 +3866,21 @@
         "type": "string",
         "description": "ID of the owner/user that created this entity.",
         "x-qlik-filterable": true
+      },
+      "DataSchemaConfiguration": {
+        "type": "object",
+        "required": [
+          "key",
+          "value"
+        ],
+        "properties": {
+          "key": {
+            "$ref": "#/components/schemas/ConfigurationKey"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
       },
       "DataSetId": {
         "type": "string",
@@ -4615,7 +4655,8 @@
         "enum": [
           "binary",
           "multiclass",
-          "regression"
+          "regression",
+          "timeseries"
         ],
         "type": "string",
         "description": "Experiment type"
@@ -4658,6 +4699,9 @@
             "type": "string",
             "example": "TargetColumn",
             "description": "The target field in the dataset"
+          },
+          "pipeline": {
+            "$ref": "#/components/schemas/Pipeline"
           },
           "createdAt": {
             "$ref": "#/components/schemas/CreatedAt"
@@ -4850,6 +4894,9 @@
                     "example": "TargetColumn",
                     "description": "The target field in the dataset. Set in first experiment\nversion and can't be changed in subsequent versions.\n"
                   },
+                  "pipeline": {
+                    "$ref": "#/components/schemas/Pipeline"
+                  },
                   "dataSetId": {
                     "$ref": "#/components/schemas/DataSetId"
                   },
@@ -5040,6 +5087,9 @@
             },
             "description": "Experiment types in this feature insight"
           },
+          "defaultFeatureType": {
+            "$ref": "#/components/schemas/FeatureType"
+          },
           "engineeredFeatures": {
             "type": "array",
             "items": {
@@ -5067,7 +5117,7 @@
           "freetext"
         ],
         "type": "string",
-        "description": "The type this feature is interpreted as within an experiment version.\nIf you want a value to be interpreted differently (e.g. see 0/1\nas categorical/boolean instead of numeric), use `changeType`.\n"
+        "description": "The default feature type based on the feature's data type.\nIf you want a value to be interpreted differently (e.g. 0/1\nas categorical/boolean instead of numeric), use `changeType`.\n"
       },
       "FileType": {
         "type": "string",
@@ -5236,7 +5286,11 @@
           "random_forest_regression",
           "sgd_regression",
           "xgb_classifier",
-          "xgb_regression"
+          "xgb_regression",
+          "deepar_timeseries",
+          "mixer_timeseries",
+          "tft_timeseries",
+          "tide_timeseries"
         ],
         "type": "string",
         "description": "Enumeration of model algorithms.\n\nA subset of these may be provided based on your ExperimentType. This is\nbased on your target's featureType. When you select a target feature\nfrom your ProfileInsights response (defaultVersionConfig.featuresList),\nit tells you which algorithms will be available if you choose it as your\ntarget.\n"
@@ -5256,7 +5310,11 @@
           "RAFR",
           "SGDR",
           "XGBC",
-          "XGBR"
+          "XGBR",
+          "DEAR",
+          "MIXR",
+          "TFTT",
+          "TIDE"
         ],
         "type": "string",
         "description": "Model algorithm name abbreviation"
@@ -5652,6 +5710,24 @@
         "type": "string",
         "description": "ID of the current job's parent"
       },
+      "Pipeline": {
+        "type": "object",
+        "properties": {
+          "transforms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transform"
+            }
+          },
+          "dataSchemaConfiguration": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSchemaConfiguration"
+            }
+          }
+        },
+        "description": "Pipeline metadata including transformations to apply to columns and\nspecific schema configuration data\n"
+      },
       "PredictionJobResponse": {
         "type": "object",
         "required": [
@@ -5835,6 +5911,13 @@
           "tenantId": {
             "$ref": "#/components/schemas/TenantId"
           },
+          "algorithms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModelAlgorithm"
+            },
+            "description": "List of algorithms available for the selected experiment type\n"
+          },
           "defaultVersionConfig": {
             "type": "object",
             "required": [
@@ -5915,8 +5998,20 @@
               "attributes": {
                 "type": "object",
                 "properties": {
+                  "target": {
+                    "type": "string",
+                    "description": "Optional selected target provided on subsequent requests\n"
+                  },
                   "dataSetId": {
                     "$ref": "#/components/schemas/DataSetId"
+                  },
+                  "shouldWait": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether the server should or client should manage polling/waiting\n"
+                  },
+                  "experimentType": {
+                    "$ref": "#/components/schemas/ExperimentType"
                   }
                 },
                 "description": "The request body for this resource",
@@ -6097,6 +6192,18 @@
         "maximum": 21600,
         "minimum": 900,
         "description": "Training duration in seconds. If provided, minimum is 900 (15m) and\nmax is 21600 (6h).\n"
+      },
+      "Transform": {
+        "type": "object",
+        "required": [
+          "name",
+          "changeType"
+        ],
+        "properties": {
+          "column": {
+            "$ref": "#/components/schemas/ColumnTransform"
+          }
+        }
       },
       "UpdatedAt": {
         "type": "string",

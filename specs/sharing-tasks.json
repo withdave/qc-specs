@@ -385,6 +385,15 @@
             },
             "required": true,
             "description": "The sharing task identifier."
+          },
+          {
+            "in": "query",
+            "name": "isViewChart",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "A boolean flag to know if the user has clicked on the view chart button"
           }
         ],
         "operationId": "sharingTasksIDGet",
@@ -1340,6 +1349,11 @@
             "items": {
               "$ref": "#/components/schemas/EmailAddressRecipientPersist"
             }
+          },
+          "netRecipientCount": {
+            "type": "integer",
+            "example": 10,
+            "description": "Net count of recipients in DLGroups and DLUsers."
           }
         },
         "description": "List of persisted recipients."
@@ -1736,7 +1750,8 @@
               "html"
             ],
             "type": "string",
-            "description": "the sharing task resource mashup sub type."
+            "description": "the sharing task resource mashup sub type.",
+            "x-qlik-deprecated": true
           },
           "trigger": {
             "$ref": "#/components/schemas/Trigger"
@@ -1839,7 +1854,8 @@
         "properties": {
           "op": {
             "enum": [
-              "replace"
+              "replace",
+              "remove"
             ],
             "type": "string",
             "description": "The operation to be performed"
@@ -1857,7 +1873,8 @@
               "/recipient",
               "/sharePointFolder",
               "/dataConnectionID",
-              "/transportChannels"
+              "/transportChannels",
+              "/bookmarkId"
             ],
             "type": "string",
             "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902"
@@ -1942,7 +1959,8 @@
             ],
             "type": "string",
             "readOnly": true,
-            "description": "Mashup subType of sharing task"
+            "description": "Mashup subType of sharing task",
+            "x-qlik-deprecated": true
           },
           "trigger": {
             "$ref": "#/components/schemas/Trigger"
@@ -1985,6 +2003,11 @@
             "example": "2019-10-15T16:07:01.492Z",
             "description": "Time for the termination of the task"
           },
+          "lastViewed": {
+            "type": "string",
+            "example": "2019-10-15T16:07:01.492Z",
+            "description": "Timestamp of the most recent view by the user."
+          },
           "recipients": {
             "$ref": "#/components/schemas/RecipientsPersist"
           },
@@ -2022,7 +2045,8 @@
             "type": "string",
             "example": "da5825325dc9a0dd0260af9",
             "readOnly": true,
-            "description": "ID of unique template"
+            "description": "ID of unique template",
+            "x-qlik-deprecated": true
           },
           "dateCreated": {
             "type": "string",

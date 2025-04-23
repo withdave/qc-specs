@@ -573,6 +573,17 @@
             "example": "65424a71c11367914c1e659b",
             "required": true,
             "description": "Data project ID"
+          },
+          {
+            "in": "query",
+            "name": "recalculate",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "example": true,
+            "required": false,
+            "description": "Recalculate the bindings if true, otherwise saved bindings are returned."
           }
         ],
         "description": "Retrieves the export variables for a specific data integration project.",
@@ -881,7 +892,7 @@
               }
             }
           },
-          "required": true
+          "required": false
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -968,7 +979,7 @@
               }
             }
           },
-          "required": true
+          "required": false
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -1692,7 +1703,8 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/DiProjectOperationSelectedTask"
-        }
+        },
+        "description": "Array of tasks to prepare. Leave empty to trigger project-level orchestration using built-in logic (same as in the user interface)."
       },
       "UpdateDiExportProjectVariablesReq": {
         "type": "object",
