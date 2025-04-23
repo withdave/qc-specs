@@ -1323,12 +1323,9 @@
           "qLogOn",
           "qEngineObjectID",
           "qArchitecture",
-          "qSeparateCredentials",
           "privileges",
-          "created",
-          "updated",
-          "user",
-          "tenant"
+          "tenant",
+          "links"
         ],
         "properties": {
           "qID": {

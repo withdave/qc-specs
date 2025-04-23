@@ -1790,7 +1790,13 @@
           "dataset",
           "automation",
           "automl-experiment",
-          "automl-deployment"
+          "automl-deployment",
+          "assistant",
+          "dataproduct",
+          "dataqualityrule",
+          "glossary",
+          "knowledgebase",
+          "script"
         ],
         "type": "string",
         "description": "The case-sensitive string defining the item's type."

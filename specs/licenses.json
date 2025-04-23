@@ -1473,7 +1473,8 @@
           "valid": "2018-01-01/2018-12-31",
           "origin": "Internal",
           "status": "Ok",
-          "product": "Qlik Sense Business"
+          "product": "Qlik Sense Business",
+          "extensionStatus": "Unavailable"
         },
         "required": [
           "origin",
@@ -1481,7 +1482,8 @@
           "status",
           "trial",
           "type",
-          "valid"
+          "valid",
+          "extensionStatus"
         ],
         "properties": {
           "type": {
@@ -1521,6 +1523,15 @@
           "product": {
             "type": "string",
             "description": "The product the license is valid for."
+          },
+          "extensionStatus": {
+            "enum": [
+              "Unavailable",
+              "Pending",
+              "Available"
+            ],
+            "type": "string",
+            "description": "Enum with extension status of license. access."
           }
         }
       },

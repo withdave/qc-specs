@@ -2144,17 +2144,6 @@
           }
         }
       },
-      "SharedSpaceRoleType": {
-        "enum": [
-          "facilitator",
-          "consumer",
-          "producer",
-          "dataconsumer",
-          "codeveloper"
-        ],
-        "type": "string",
-        "description": "The supported roles for Shared spaces."
-      },
       "SharePatch": {
         "type": "array",
         "items": {
@@ -2282,9 +2271,6 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/RoleType"
-                },
-                "example": {
-                  "$ref": "#/components/schemas/SharedSpaceRoleType"
                 },
                 "description": "The list of roles that could be assigned in this space."
               }

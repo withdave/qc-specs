@@ -4504,6 +4504,11 @@
             "format": "double",
             "description": "Average string length of textual values. 0 otherwise."
           },
+          "DataEvenness": {
+            "type": "number",
+            "format": "double",
+            "description": "Data evenness aka Shannon's entropy normalized to [0,1]"
+          },
           "EmptyStrings": {
             "type": "integer",
             "format": "int64",
