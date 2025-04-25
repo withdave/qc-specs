@@ -142,43 +142,48 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const headBranch = "apispecs";
+            const baseBranch = "main";
+
             const prs = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: "apispecs",
-              base: "main",
+              head: `${context.repo.owner}:${headBranch}`,
+              base: baseBranch,
               state: "all"
             });
-            if (prs.data.length > 0) {
-              let open_pr = prs.data.find(pr => pr.state === "open");
-              if (open_pr) {
-                  console.log(`Existing PR found: ${open_pr.html_url}`);
-                  core.setOutput("pr_number", open_pr.number);
-              } else {
-                  console.log("Existing PR was closed, creating a new one.");
-                  const pr = await github.rest.pulls.create({
-                      owner: context.repo.owner,
-                      repo: context.repo.repo,
-                      title: "chore: updating API specs from qlik.dev",
-                      head: "apispecs",
-                      base: "main",
-                      body: "This is an automated regular pull of API specs from qlik.dev."
-                  });
-                  console.log(`PR created: ${pr.data.html_url}`);
-                  core.setOutput("pr_number", pr.data.number);
-              }
+
+            let openPR = prs.data.find(pr => pr.state === "open");
+
+            if (openPR) {
+              console.log(`✅ Existing open PR found: ${openPR.html_url}`);
+              core.setOutput("pr_number", openPR.number);
+              core.setOutput("is_new_pr", "false");
             } else {
-              console.log("No existing PR found, creating a new one.");
-              const pr = await github.rest.pulls.create({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  title: "chore: updating API specs from qlik.dev",
-                  head: "apispecs",
-                  base: "main",
-                  body: "This is an automated regular pull of API specs from qlik.dev."
+              for (const pr of prs.data) {
+                if (pr.state !== "closed") {
+                  console.log(`❌ Closing stale PR: ${pr.html_url}`);
+                  await github.rest.pulls.update({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: pr.number,
+                    state: "closed"
+                  });
+                }
+              }
+
+              const newPR = await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: "chore: updating API specs from qlik.dev",
+                head: headBranch,
+                base: baseBranch,
+                body: "This is an automated regular pull of API specs from qlik.dev."
               });
-              console.log(`PR created: ${pr.data.html_url}`);
-              core.setOutput("pr_number", pr.data.number);
+
+              console.log(`📬 New PR created: ${newPR.data.html_url}`);
+              core.setOutput("pr_number", newPR.data.number);
+              core.setOutput("is_new_pr", "true");
             }
 
       - name: Check and request review from withdave if not already assigned
@@ -190,14 +195,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = parseInt(process.env.PR_NUMBER);
-            // Get the pull request details
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber
             });
-            // Extract the list of already requested reviewers
-            const existingReviewers = pr.requested_reviewers.map(reviewer => reviewer.login);
+
+            const existingReviewers = pr.requested_reviewers.map(r => r.login);
             if (!existingReviewers.includes("withdave")) {
               await github.rest.pulls.requestReviewers({
                 owner: context.repo.owner,
@@ -205,7 +209,51 @@ jobs:
                 pull_number: prNumber,
                 reviewers: ["withdave"]
               });
-              console.log(`Requested review from withdave for PR #${prNumber}`);
+              console.log(`👀 Requested review from withdave for PR #${prNumber}`);
             } else {
-              console.log(`withdave is already requested as a reviewer for PR #${prNumber}`);
+              console.log(`👀 withdave is already requested for PR #${prNumber}`);
+            }
+
+      - name: Enable auto-merge for the PR
+        if: ${{ env.no_changes == 'false' && steps.find-or-create-pr.outputs.is_new_pr == 'true' }}
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ steps.find-or-create-pr.outputs.pr_number }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = parseInt(process.env.PR_NUMBER);
+            try {
+              const pr = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+
+              const pullRequestId = pr.data.node_id;
+
+              console.log(`Attempting to enable auto-merge on PR #${prNumber}...`);
+
+              await github.graphql(`
+                mutation EnableAutoMerge($input: EnablePullRequestAutoMergeInput!) {
+                  enablePullRequestAutoMerge(input: $input) {
+                    pullRequest {
+                      number
+                      autoMergeRequest {
+                        enabledAt
+                      }
+                    }
+                  }
+                }
+              `, {
+                input: {
+                  pullRequestId: pullRequestId,
+                  mergeMethod: "SQUASH"
+                }
+              });
+
+              console.log(`✅ Auto-merge enabled for PR #${prNumber}`);
+            } catch (error) {
+              console.log(`⚠️ Auto-merge could not be enabled for PR #${prNumber}: ${error.message}`);
+              console.log(`This will not fail the workflow.`);
             }
