@@ -1,0 +1,527 @@
+{
+  "info": {
+    "title": "data-qualities",
+    "version": ""
+  },
+  "paths": {
+    "/v1/data-qualities/computations": {
+      "post": {
+        "tags": [
+          "computation"
+        ],
+        "summary": "Trigger data quality computation",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComputationResponse"
+                }
+              }
+            },
+            "description": "Accepted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Triggers the computation of data quality.",
+        "operationId": "requestDataQualityComputation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataQualityComputationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 10
+        }
+      }
+    },
+    "/v1/data-qualities/computations/{computationId}": {
+      "get": {
+        "tags": [
+          "computation"
+        ],
+        "summary": "Get data quality computation status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComputationStatusResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Computation is not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "computationId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "4db06daa-3117-412e-8fb4-b29c937f9a0e",
+            "required": true,
+            "description": "The ID of the computation"
+          }
+        ],
+        "description": "Returns the execution status of a data quality computation.",
+        "operationId": "getDataQualityComputation",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/data-qualities/global-results": {
+      "get": {
+        "tags": [
+          "data-quality"
+        ],
+        "summary": "Get global data quality",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetQualityGlobalResultsResponse"
+                }
+              }
+            },
+            "description": "Ok response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DatasetIdInQuery"
+          },
+          {
+            "$ref": "#/components/parameters/OptionalConnectionIdInQuery"
+          }
+        ],
+        "description": "Returns the global data results for a dataset, including counts of total, valid, invalid, and empty sample cells.",
+        "operationId": "getDataQualityGlobalResults",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "parameters": {
+      "DatasetIdInQuery": {
+        "in": "query",
+        "name": "datasetId",
+        "schema": {
+          "$ref": "#/components/schemas/DatasetIdType"
+        },
+        "required": true,
+        "description": "The ID of the dataset"
+      },
+      "OptionalConnectionIdInQuery": {
+        "in": "query",
+        "name": "connectionId",
+        "schema": {
+          "$ref": "#/components/schemas/ConnectionIdType"
+        },
+        "required": false,
+        "description": "The connection ID"
+      }
+    },
+    "schemas": {
+      "ComputationResponse": {
+        "type": "object",
+        "required": [
+          "computationId"
+        ],
+        "properties": {
+          "computationId": {
+            "type": "string"
+          }
+        },
+        "description": "The ID of the computation"
+      },
+      "ComputationStatusResponse": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ExecutionStatus"
+          }
+        }
+      },
+      "ConnectionIdType": {
+        "type": "string",
+        "pattern": "^[0-9a-zA-Z-]{1,36}$",
+        "description": "The ID of the connection"
+      },
+      "DataQualityComputationRequest": {
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "datasetId": {
+                "$ref": "#/components/schemas/DatasetIdType"
+              },
+              "connectionId": {
+                "$ref": "#/components/schemas/ConnectionIdType"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/SamplingConfiguration"
+          }
+        ],
+        "example": {
+          "datasetId": "669144f5aa2d642638ef1dd0",
+          "sampleMode": "ABSOLUTE",
+          "sampleSize": 10000,
+          "connectionId": "2b855c3d-426c-4aac-90cf-0edf9fc294d3",
+          "executionMode": "PULLUP"
+        },
+        "required": [
+          "datasetId"
+        ],
+        "description": "Represents a data quality computation request. The `connectionId` attribute is optional for file-based datasets. If no sampling parameters (`executionMode`, `sampleMode`, `sampleSize`) are provided, the following default configuration is used: - `executionMode: PULLUP` - `sampleMode: ABSOLUTE` - `sampleSize: 1000`\n"
+      },
+      "DatasetIdType": {
+        "type": "string",
+        "pattern": "^[0-9a-zA-Z-]{1,36}$",
+        "description": "The ID of the dataset"
+      },
+      "DatasetQualityGlobalResultsResponse": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "qualities"
+        ],
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "description": "The ID of the dataset"
+          },
+          "qualities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QualitiesGlobalResultsResponse"
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ExecutionStatus": {
+        "enum": [
+          "PROFILE_REQUESTED",
+          "PROFILE_FAILED",
+          "REQUESTED",
+          "SUBMITTED",
+          "SUCCEEDED",
+          "FAILED"
+        ],
+        "type": "string"
+      },
+      "QualitiesGlobalResultsResponse": {
+        "type": "object",
+        "required": [
+          "connectionId",
+          "quality"
+        ],
+        "properties": {
+          "quality": {
+            "$ref": "#/components/schemas/QualityGlobalResultsResponse"
+          },
+          "connectionId": {
+            "type": "string",
+            "description": "The ID of the connection"
+          }
+        }
+      },
+      "QualityGlobalResultsResponse": {
+        "type": "object",
+        "required": [
+          "valid",
+          "invalid",
+          "empty",
+          "total",
+          "updatedAt"
+        ],
+        "properties": {
+          "empty": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of empty sample cells"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of cells in the sample"
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of valid sample cells"
+          },
+          "invalid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of invalid sample cells"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SamplingConfiguration": {
+        "type": "object",
+        "properties": {
+          "sampleMode": {
+            "enum": [
+              "ABSOLUTE",
+              "RELATIVE"
+            ],
+            "type": "string",
+            "description": "Specifies how the dataset is sampled. ABSOLUTE represents a fixed number of rows, while RELATIVE refers to a percentage of the total dataset rows."
+          },
+          "sampleSize": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "description": "The actual value of the selected sampling method size (either a fixed number for ABSOLUTE mode or a percentage for RELATIVE mode)."
+          },
+          "executionMode": {
+            "enum": [
+              "PUSHDOWN",
+              "PULLUP"
+            ],
+            "type": "string",
+            "description": "Specifies where the data quality computation takes place. In PUSHDOWN mode, it runs within the Cloud Data Warehouse (e.g., Snowflake, Databricks), whereas in PULLUP mode, it runs in Qlik Cloud."
+          }
+        }
+      }
+    }
+  }
+}
