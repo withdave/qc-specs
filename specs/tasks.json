@@ -1,0 +1,1739 @@
+{
+  "info": {
+    "title": "tasks",
+    "version": ""
+  },
+  "paths": {
+    "/v1/tasks": {
+      "get": {
+        "tags": [
+          "task"
+        ],
+        "summary": "List tasks",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "resourceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "**Required**. Filter tasks by its target resource ID. If not provided, request will fail with 400 (Bad Request).\n"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of resources to return for a request."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The page cursor."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "+createdAt",
+                "-createdAt",
+                "+updatedAt",
+                "-updatedAt"
+              ],
+              "type": "string",
+              "default": "-updatedAt"
+            },
+            "required": false,
+            "description": "The property of a resource to sort on (default sort is\n-updatedAt). A property must be prefixed by + or - to\nindicate ascending or descending sort order respectively.\n"
+          }
+        ],
+        "description": "Retrieves a list of the tasks that the requesting user has access to.",
+        "operationId": "ListTasks",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      },
+      "post": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Create a task",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "migrateFrom",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "ID of the reload-task to migrate from the old system (optional)."
+          }
+        ],
+        "description": "Creates a new task.",
+        "operationId": "CreateTask",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Task"
+              },
+              "examples": {
+                "objectExample": {
+                  "$ref": "#/components/examples/Task"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      }
+    },
+    "/v1/tasks/{id}": {
+      "get": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Get a task",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The task's unique identifier."
+          }
+        ],
+        "description": "Retrieves details for a specific task.",
+        "operationId": "GetTask",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      },
+      "put": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Update a task",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The task's unique identifier."
+          }
+        ],
+        "description": "Updates a specific task. If the task is owned by another user, ownership will be transferred to the requesting user.",
+        "operationId": "UpdateTask",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Task"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      },
+      "delete": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Delete a task",
+        "responses": {
+          "204": {
+            "description": "No Content response."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The task's unique identifier."
+          }
+        ],
+        "description": "Deletes a specific task.",
+        "operationId": "DeleteTask",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      }
+    },
+    "/v1/tasks/{id}/actions/start": {
+      "post": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Start a task",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Task started successfully"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The task's unique identifier."
+          },
+          {
+            "in": "query",
+            "name": "source",
+            "schema": {
+              "type": "string",
+              "default": "manual"
+            },
+            "required": false,
+            "description": "Indicates the origin of the trigger. If not provided, defaults to 'manual'. For event-triggered tasks, this can be the name of the triggering task.\n"
+          }
+        ],
+        "description": "Starts the specified task.",
+        "operationId": "StartTask",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      }
+    },
+    "/v1/tasks/{id}/runs": {
+      "get": {
+        "tags": [
+          "task"
+        ],
+        "summary": "List task runs",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrchRunList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The task's unique identifier."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of task runs to return for a request."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The page cursor."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "+startedAt",
+                "-startedAt",
+                "+endedAt",
+                "-endedAt",
+                "+status",
+                "-status",
+                "+taskId",
+                "-taskId",
+                "+actionId",
+                "-actionId"
+              ],
+              "type": "string",
+              "default": "-startedAt"
+            },
+            "required": false,
+            "description": "The property of a resource to sort on (default sort is -startedAt).\nA property must be prefixed by + or - to indicate ascending or descending sort order respectively.\n"
+          }
+        ],
+        "description": "Returns runs for the specified task.",
+        "operationId": "GetTaskRuns",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      }
+    },
+    "/v1/tasks/{id}/runs/{runId}/log": {
+      "get": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Get task run log",
+        "responses": {
+          "200": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "logContent": {
+                      "type": "string",
+                      "example": "Task run log content"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "logContent": {
+                      "type": "string",
+                      "example": "Task run log content",
+                      "description": "Log content in plain text format"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The task's unique identifier."
+          },
+          {
+            "in": "path",
+            "name": "runId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The run's unique identifier."
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "schema": {
+              "enum": [
+                "application/json",
+                "text/plain"
+              ],
+              "type": "string",
+              "default": "application/json"
+            },
+            "required": false,
+            "description": "The acceptable content types."
+          }
+        ],
+        "description": "Get specific run log of a task.",
+        "operationId": "GetTaskRunLog",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      }
+    },
+    "/v1/tasks/{id}/runs/last": {
+      "get": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Get last task run",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrchRun"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The task's unique identifier."
+          }
+        ],
+        "description": "Returns the last run of a specific task.",
+        "operationId": "GetTaskLastRun",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      }
+    },
+    "/v1/tasks/resources/{id}/runs": {
+      "get": {
+        "tags": [
+          "task"
+        ],
+        "summary": "List task runs for a resource",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrchRunList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Filter tasks by its target resource ID"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of task runs to return for a request."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The page cursor."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "+startedAt",
+                "-startedAt",
+                "+endedAt",
+                "-endedAt",
+                "+status",
+                "-status",
+                "+taskId",
+                "-taskId",
+                "+actionId",
+                "-actionId"
+              ],
+              "type": "string",
+              "default": "-startedAt"
+            },
+            "required": false,
+            "description": "The property of a resource to sort on (default sort is -startedAt).\nA property must be prefixed by + or - to indicate ascending or descending sort order respectively.\n"
+          }
+        ],
+        "description": "Returns a list of task runs for a specified `resourceId`.",
+        "operationId": "GetResourceRuns",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 600
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "examples": {
+      "Task": {
+        "value": {
+          "id": "task-4",
+          "name": "Reload app4 when Task 1,2,3 succeeded",
+          "events": [
+            {
+              "name": "task1-succeeded",
+              "type": "com.qlik.v1.task.run.finished",
+              "source": "system-events.task",
+              "correlation": [
+                {
+                  "contextAttributeName": "id",
+                  "contextAttributeValue": "task-1"
+                }
+              ]
+            }
+          ],
+          "states": [
+            {
+              "end": true,
+              "name": "App4.Reload",
+              "type": "event",
+              "onEvents": [
+                {
+                  "actions": [
+                    {
+                      "name": "app4.reload",
+                      "functionRef": {
+                        "refName": "AppReload",
+                        "arguments": {
+                          "appId": "app4",
+                          "partial": false
+                        }
+                      }
+                    }
+                  ],
+                  "eventRefs": [
+                    "task1-succeeded"
+                  ]
+                }
+              ],
+              "exclusive": false
+            }
+          ],
+          "version": "1.0.0",
+          "description": "This is a Reload Task Demo in Serverless Workflow Spec",
+          "specVersion": "0.8"
+        },
+        "summary": "Example of Task"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "invalidPage": {
+                "value": {
+                  "errors": [
+                    {
+                      "code": 400,
+                      "context": "GetTasks",
+                      "timestamp": "2023-07-17T12:00:00Z"
+                    }
+                  ],
+                  "traceId": "abc123"
+                },
+                "summary": "Invalid page cursor"
+              },
+              "invalidSort": {
+                "value": {
+                  "errors": [
+                    {
+                      "code": 400,
+                      "context": "GetTasks",
+                      "timestamp": "2023-07-17T12:00:00Z"
+                    }
+                  ],
+                  "traceId": "abc123"
+                },
+                "summary": "Invalid sort field"
+              }
+            }
+          }
+        },
+        "description": "Bad Request"
+      },
+      "Forbidden": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Forbidden"
+      },
+      "InternalServerError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Internal Server Error"
+      },
+      "NotFound": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Not found"
+      },
+      "ServiceUnavailable": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Service Unavailable"
+      },
+      "Unauthorized": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      }
+    },
+    "schemas": {
+      "action": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [
+              "name",
+              "functionRef"
+            ]
+          },
+          {
+            "required": [
+              "name",
+              "publish"
+            ]
+          },
+          {
+            "required": [
+              "name",
+              "subscribe"
+            ]
+          },
+          {
+            "required": [
+              "name",
+              "subFlowRef"
+            ]
+          }
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9](-?[a-z0-9])*$",
+            "description": "Unique action definition name"
+          },
+          "retryRef": {
+            "type": "string",
+            "description": "References a defined workflow retry definition. If not defined the default retry policy is assumed"
+          },
+          "condition": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Expression, if defined, must evaluate to true for this action to be performed. If false, action is disregarded"
+          },
+          "functionRef": {
+            "$ref": "#/components/schemas/functionref"
+          },
+          "retryableErrors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "List of unique references to defined workflow errors for which the action should be retried. Used only when `autoRetries` is set to `false`"
+          },
+          "nonRetryableErrors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "List of unique references to defined workflow errors for which the action should not be retried. Used only when `autoRetries` is set to `true`"
+          }
+        },
+        "additionalProperties": false
+      },
+      "actionExecTimeout": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Action execution timeout duration (literal ISO 8601 duration format or expression which evaluation results in an ISO 8601 duration)"
+      },
+      "correlationDef": {
+        "type": "object",
+        "required": [
+          "contextAttributeName"
+        ],
+        "properties": {
+          "contextAttributeName": {
+            "enum": [
+              "id",
+              "status"
+            ],
+            "type": "string",
+            "description": "CloudEvent Extension Context Attribute name"
+          },
+          "contextAttributeValue": {
+            "type": "string",
+            "minLength": 1,
+            "description": "CloudEvent Extension Context Attribute value"
+          }
+        },
+        "description": "CloudEvent correlation definition",
+        "additionalProperties": false
+      },
+      "crondef": {
+        "oneOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "description": "Cron expression defining when workflow instances should be created (automatically)"
+          },
+          {
+            "type": "object",
+            "required": [
+              "expression"
+            ],
+            "properties": {
+              "expression": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Repeating interval (cron expression) describing when the workflow instance should be created"
+              },
+              "validUntil": {
+                "type": "string",
+                "description": "Specific date and time (ISO 8601 format) when the cron expression invocation is no longer valid"
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      },
+      "end": {
+        "type": "boolean",
+        "default": true,
+        "description": "State end definition"
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HttpResult"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A way to trace the source of the error."
+          }
+        }
+      },
+      "eventdef": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9](-?[a-z0-9])*$",
+            "minLength": 1,
+            "description": "Unique event name"
+          },
+          "type": {
+            "enum": [
+              "com.qlik.v1.task.run.finished"
+            ],
+            "type": "string",
+            "description": "CloudEvent type"
+          },
+          "source": {
+            "enum": [
+              "system-events.task"
+            ],
+            "type": "string",
+            "description": "CloudEvent source"
+          },
+          "dataOnly": {
+            "type": "boolean",
+            "default": true,
+            "description": "If `true`, only the Event payload is accessible to consuming Workflow states. If `false`, both event payload and context attributes should be accessible"
+          },
+          "correlation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/correlationDef"
+            },
+            "minItems": 1,
+            "description": "CloudEvent correlation definitions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Events": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/eventdef"
+        },
+        "minItems": 1,
+        "description": "Workflow CloudEvent definitions. Defines CloudEvents that can be consumed or produced"
+      },
+      "eventstate": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [
+              "name",
+              "type",
+              "onEvents",
+              "end"
+            ]
+          },
+          {
+            "required": [
+              "name",
+              "type",
+              "onEvents",
+              "transition"
+            ]
+          }
+        ],
+        "properties": {
+          "end": {
+            "$ref": "#/components/schemas/end"
+          },
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9](-?[a-z0-9])*$",
+            "description": "State name"
+          },
+          "type": {
+            "enum": [
+              "EVENT"
+            ],
+            "type": "string",
+            "description": "State type"
+          },
+          "onEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/onevents"
+            },
+            "description": "Define the events to be consumed and optional actions to be performed"
+          },
+          "timeouts": {
+            "type": "object",
+            "properties": {
+              "eventTimeout": {
+                "$ref": "#/components/schemas/eventTimeout"
+              },
+              "stateExecTimeout": {
+                "$ref": "#/components/schemas/stateExecTimeout"
+              },
+              "actionExecTimeout": {
+                "$ref": "#/components/schemas/actionExecTimeout"
+              }
+            },
+            "description": "State specific timeouts"
+          },
+          "exclusive": {
+            "type": "boolean",
+            "default": true,
+            "description": "If true consuming one of the defined events causes its associated actions to be performed. If false all of the defined events must be consumed in order for actions to be performed"
+          },
+          "compensatedBy": {
+            "type": "string",
+            "pattern": "^[a-z0-9](-?[a-z0-9])*$",
+            "minLength": 1,
+            "description": "Unique Name of a workflow state which is responsible for compensation of this state"
+          }
+        },
+        "description": "This state is used to wait for events from event sources, then consumes them and invoke one or more actions to run in sequence or parallel",
+        "additionalProperties": false
+      },
+      "eventTimeout": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Timeout duration to wait for consuming defined events (literal ISO 8601 duration format or expression which evaluation results in an ISO 8601 duration)"
+      },
+      "functionref": {
+        "type": "object",
+        "oneOf": [
+          {
+            "type": "string",
+            "pattern": "^[a-z0-9](-?[a-z0-9])*$",
+            "minLength": 1,
+            "description": "Name of the referenced function"
+          },
+          {
+            "type": "object",
+            "required": [
+              "refName"
+            ],
+            "properties": {
+              "invoke": {
+                "enum": [
+                  "SYNC",
+                  "ASYNC"
+                ],
+                "type": "string",
+                "default": "SYNC",
+                "description": "Specifies if the function should be invoked sync or async"
+              },
+              "refName": {
+                "enum": [
+                  "app.reload"
+                ],
+                "type": "string",
+                "description": "Name of the referenced function"
+              },
+              "arguments": {
+                "type": "object",
+                "description": "Function arguments/inputs"
+              },
+              "selectionSet": {
+                "type": "string",
+                "description": "Only used if function type is 'graphql'. A string containing a valid GraphQL selection set"
+              }
+            },
+            "description": "Function Reference",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "HttpResult": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "inner": {
+            "$ref": "#/components/schemas/HttpResult"
+          },
+          "title": {
+            "type": "string"
+          },
+          "result": {},
+          "context": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        }
+      },
+      "Link": {
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "URL to a resource request"
+          }
+        }
+      },
+      "onevents": {
+        "type": "object",
+        "required": [
+          "eventRefs"
+        ],
+        "properties": {
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/action"
+            },
+            "description": "Actions to be performed if expression matches"
+          },
+          "eventRefs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9](-?[a-z0-9])*$"
+            },
+            "minItems": 1,
+            "description": "References one or more unique event names in the defined workflow events",
+            "uniqueItems": true
+          },
+          "actionMode": {
+            "enum": [
+              "SEQUENTIAL",
+              "PARALLEL"
+            ],
+            "type": "string",
+            "default": "SEQUENTIAL",
+            "description": "Specifies how actions are to be performed (in sequence or in parallel)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrchMeta": {
+        "type": "object",
+        "required": [
+          "type",
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the orchestration associated with the task in the choreographer"
+          },
+          "type": {
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "type": "integer",
+            "description": "orchestration system type",
+            "x-enum-varnames": [
+              "AUTOMATION",
+              "DI_PIPELINE",
+              "TEMPORAL",
+              "MINIBUS"
+            ]
+          },
+          "attrs": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OrchRun": {
+        "type": "object",
+        "required": [
+          "resourceId",
+          "taskId",
+          "actionId",
+          "status",
+          "id",
+          "workerId",
+          "workerType",
+          "taskName",
+          "taskMeta",
+          "triggeredBy"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the task run"
+          },
+          "log": {
+            "type": "string",
+            "description": "log info of the run"
+          },
+          "status": {
+            "enum": [
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED"
+            ],
+            "type": "string",
+            "description": "task run status"
+          },
+          "taskId": {
+            "type": "string",
+            "description": "The ID of the task"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the task run ended"
+          },
+          "actionId": {
+            "type": "string",
+            "description": "The ID of the action"
+          },
+          "taskMeta": {
+            "$ref": "#/components/schemas/taskMetadata"
+          },
+          "taskName": {
+            "type": "string",
+            "description": "task name"
+          },
+          "workerId": {
+            "type": "string",
+            "description": "The ID of the worker who is carrying out the real job. e.g. App.Reload job is carried out by Reload Engine, in this case, workerId will be reloadId from reload engine. Or, if we are using Automation, workerId will be Automation runId."
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the task run started"
+          },
+          "executedAs": {
+            "type": "string",
+            "description": "user ID of on behalf of whom the Task was executed."
+          },
+          "resourceId": {
+            "type": "string",
+            "description": "The ID of the resource"
+          },
+          "workerType": {
+            "type": "string",
+            "description": "worker type or target system"
+          },
+          "triggeredBy": {
+            "type": "string",
+            "example": "manual",
+            "description": "Information about who or what triggered the task run."
+          }
+        }
+      },
+      "OrchRunList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrchRun"
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        }
+      },
+      "schedule": {
+        "oneOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "description": "Time interval (must be repeating interval) described with ISO 8601 format. Declares when workflow instances will be automatically created.  (UTC timezone is assumed)"
+          },
+          {
+            "type": "object",
+            "oneOf": [
+              {
+                "required": [
+                  "interval"
+                ]
+              },
+              {
+                "required": [
+                  "cron"
+                ]
+              }
+            ],
+            "properties": {
+              "cron": {
+                "$ref": "#/components/schemas/crondef"
+              },
+              "interval": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Time interval (must be repeating interval) described with ISO 8601 format. Declares when workflow instances will be automatically created."
+              },
+              "timezone": {
+                "type": "string",
+                "description": "Timezone name used to evaluate the interval & cron-expression. (default: UTC)"
+              },
+              "recurrence": {
+                "type": "string",
+                "description": "The RRULE recurrence string for chronos job"
+              },
+              "endDateTime": {
+                "type": "string",
+                "description": "Specific date and time (ISO 8601 format) when the workflow instance should be terminated"
+              },
+              "startDateTime": {
+                "type": "string",
+                "description": "Specific date and time (ISO 8601 format) when the workflow instance should be created"
+              }
+            },
+            "description": "Start state schedule definition",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "startdef": {
+        "type": "object",
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "schedule"
+            ],
+            "properties": {
+              "schedule": {
+                "$ref": "#/components/schemas/schedule"
+              },
+              "stateName": {
+                "type": "string",
+                "pattern": "^[a-z0-9](-?[a-z0-9])*$",
+                "minLength": 1,
+                "description": "Name of the starting workflow state"
+              }
+            },
+            "description": "Workflow start definition",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "stateExecTimeout": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Workflow state execution timeout duration (literal ISO 8601 duration format or expression which evaluation results in an ISO 8601 duration)"
+      },
+      "Task": {
+        "type": "object",
+        "required": [
+          "name",
+          "specVersion"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The choreographer's unique identifier"
+          },
+          "key": {
+            "type": "string",
+            "description": "Optional expression that will be used to generate a domain-specific workflow instance identifier"
+          },
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9](-?[a-z0-9])*$",
+            "minLength": 1,
+            "description": "The name that identifies the workflow definition, and which, when combined with its version, forms a unique identifier."
+          },
+          "start": {
+            "$ref": "#/components/schemas/startdef"
+          },
+          "events": {
+            "$ref": "#/components/schemas/Events"
+          },
+          "states": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/eventstate"
+            },
+            "minItems": 1,
+            "description": "State definitions"
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Indicates whether the task is enabled or not"
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+            "description": "Workflow version"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/taskMetadata"
+          },
+          "keepActive": {
+            "type": "boolean",
+            "default": false,
+            "description": "If 'true', workflow instances is not terminated when there are no active execution paths. Instance can be terminated via 'terminate end definition' or reaching defined 'workflowExecTimeout'"
+          },
+          "resourceId": {
+            "type": "string",
+            "description": "The resource ID of the task. The `Task.resourceId` value from user input is ignored and will be calculated automatically from `Task.states`."
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "List of helpful terms describing the workflows intended purpose, subject areas, or other important qualities"
+          },
+          "description": {
+            "type": "string",
+            "description": "Workflow description"
+          },
+          "specVersion": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Serverless Workflow schema version"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaskList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            }
+          },
+          "links": {
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        }
+      },
+      "taskMetadata": {
+        "type": "object",
+        "properties": {
+          "usage": {
+            "enum": [
+              "ANALYTICS",
+              "DATA_PREPARATION",
+              "DATAFLOW_PREP",
+              "SINGLE_TABLE_PREP"
+            ],
+            "type": "string",
+            "description": "resource usage. Normally it means in which product domain the resource is used. if this field is not presented, it has default of `ANALYTICS`"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "The user ID of the owner of the task"
+          },
+          "spaceId": {
+            "type": "string",
+            "description": "The space ID that the Task will operate in"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/TriggerMeta"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "The tenant ID that the Task will operate in"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the task was created"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The user ID of the user that created the task"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the task was deleted"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The UTC timestamp when the task was last updated"
+          },
+          "disabledCode": {
+            "enum": [
+              "MANUALLY",
+              "CONSECUTIVE-FAILURES",
+              "APP-SCRIPT-UPDATED",
+              "OWNER-DELETED",
+              "OWNER-DISABLED"
+            ],
+            "type": "string",
+            "description": "why the Task is disabled"
+          },
+          "migratedFrom": {
+            "type": "string",
+            "description": "The ID of the reload-task this one was migrated from (if applicable)"
+          },
+          "orchestration": {
+            "$ref": "#/components/schemas/OrchMeta"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TriggerMeta": {
+        "type": "object",
+        "required": [
+          "type",
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the Trigger associated with the task in the choreographer"
+          },
+          "type": {
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "type": "integer",
+            "description": "trigger type",
+            "x-enum-varnames": [
+              "TIME_SCHEDULE",
+              "SINGLE_EVENT",
+              "MULTI_EVENT",
+              "MIXED"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
