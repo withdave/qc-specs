@@ -4688,7 +4688,11 @@
             "enum": [
               "ready",
               "error",
-              "cancelled"
+              "cancelled",
+              "pending",
+              "dataprep_requested",
+              "datasync_requested",
+              "datasync_done"
             ],
             "type": "string",
             "default": "pending",
