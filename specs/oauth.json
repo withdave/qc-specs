@@ -115,6 +115,16 @@
           },
           {
             "in": "query",
+            "name": "login_hint",
+            "schema": {
+              "type": "string"
+            },
+            "example": "user@qlik.com",
+            "required": false,
+            "description": "Hint to the Authorization Server about the login identifier the End-User might use to log in."
+          },
+          {
+            "in": "query",
             "name": "max_age",
             "schema": {
               "type": "number"

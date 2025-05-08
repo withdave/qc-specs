@@ -2540,6 +2540,12 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/dataSetId"
+          },
+          {
+            "$ref": "#/components/parameters/target"
+          },
+          {
+            "$ref": "#/components/parameters/experimentType"
           }
         ],
         "description": "Retrieves profile insights for the specified dataset. If you received a\n`202 Accepted` response from `POST /ml/profile-insights`, poll this\nendpoint until a `200 OK` response with `ready` status is returned.\n",
@@ -2718,6 +2724,15 @@
         "required": false,
         "description": "Field(s) by which to sort response\n"
       },
+      "experimentType": {
+        "in": "query",
+        "name": "experimentType",
+        "schema": {
+          "$ref": "#/components/schemas/ExperimentType"
+        },
+        "required": false,
+        "description": "The optional experiment type for profile-insights GET requests after\nthis is known.\n"
+      },
       "experimentVersionId": {
         "in": "path",
         "name": "experimentVersionId",
@@ -2801,6 +2816,15 @@
         "example": 32,
         "required": false,
         "description": "Number of rows to skip before getting page[size]"
+      },
+      "target": {
+        "in": "query",
+        "name": "target",
+        "schema": {
+          "type": "string"
+        },
+        "required": false,
+        "description": "The optional target feature for profile-insights GET requests after this\nis known.\n"
       }
     },
     "responses": {
@@ -5424,6 +5448,9 @@
           },
           "regression": {
             "$ref": "#/components/schemas/ModelMetricsRegression"
+          },
+          "timeseries": {
+            "$ref": "#/components/schemas/ModelMetricsTimeseries"
           }
         },
         "description": "Model metrics based on the type of model\n",
@@ -5648,6 +5675,21 @@
           }
         },
         "description": "Regression metrics for numeric values. Details:\nhttps://help.qlik.com/en-US/cloud-services/Subsystems/Hub/Content/Sense_Hub/AutoML/scoring-regression.htm\n",
+        "additionalProperties": false
+      },
+      "ModelMetricsTimeseries": {
+        "type": "object",
+        "properties": {
+          "mape": {
+            "type": "number",
+            "description": "Mean absolute percentage error (training data)"
+          },
+          "mapeTest": {
+            "type": "number",
+            "description": "Mean absolute percentage error (test data)"
+          }
+        },
+        "description": "Timeseries metrics experiments valid for timeseries forecasting.\n",
         "additionalProperties": false
       },
       "ModelsInfo": {

@@ -579,7 +579,7 @@
             "name": "recalculate",
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             },
             "example": true,
             "required": false,
