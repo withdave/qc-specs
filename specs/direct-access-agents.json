@@ -1,0 +1,841 @@
+{
+  "info": {
+    "title": "direct-access-agents",
+    "version": ""
+  },
+  "paths": {
+    "/v1/direct-access-agents/{agentId}/actions/{agentAction}": {
+      "post": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Restart an agent",
+        "responses": {
+          "204": {
+            "description": "Service restarted successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Error restarting the service."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Non-Windows operating system."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service doesn't exist."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentAction",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The type of action to perform. Permitted values are `restart` (will not restart the agent if a reload is in `RELOADING` status) and `force-restart` (will restart the agent even if a reload is in `RELOADING` status)."
+          },
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          }
+        ],
+        "description": "Restarts the specified agent. If a reload is in `RELOADING` status, the `restart` action will be ignored, but `force-restart` will restart the agent even if a reload is in `RELOADING` status. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.2+.",
+        "operationId": "restartConnectorAgentServiceAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/direct-access-agents/{agentId}/configurations": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get agent configuration",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigurationResponse"
+                }
+              }
+            },
+            "description": "The dictionary of key/value pairs retrieved from the configuration file."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "queryProperties",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Individual properties within the agent configuration"
+          }
+        ],
+        "description": "Retrieves the connector agent configuration from the specified agent. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.2+.",
+        "operationId": "getConnectorAgentConfigAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Update agent configuration",
+        "responses": {
+          "204": {
+            "description": "Patch applied."
+          },
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchOperationResponse"
+                }
+              }
+            },
+            "description": "Patch applied, validation results show success or failure of each individual patch operation."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported content-type. This endpoint must include `application/json` as a valid content-type for API compliance, but C# JsonPatchDocument doesn't support it. Requests must use `application/json-patch+json`."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          }
+        ],
+        "description": "Makes changes to the local agent configuration using JSON Patch. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.2+.",
+        "operationId": "patchConnectorAgentConfigurationAsync",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          },
+          "description": "The JSON Patch document"
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get connector configuration files",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectorFlatFileConfigurationResponse"
+                }
+              }
+            },
+            "description": "The list of files for the specified connector."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The gateway ID"
+          },
+          {
+            "in": "query",
+            "name": "connectorType",
+            "schema": {
+              "enum": [
+                "file-connector",
+                "rest-connector",
+                "odbc-connector"
+              ],
+              "type": "string"
+            },
+            "description": "The connector to retrieve the list of files for"
+          }
+        ],
+        "description": "Retrieves the configuration files associated with the connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.3+.",
+        "operationId": "getConnectorFileListAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/{fileType}": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get connector configuration",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectorFlatFileConfigurationResponse"
+                }
+              }
+            },
+            "description": "The list of configuration values from the file."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "path",
+            "name": "connectorType",
+            "schema": {
+              "enum": [
+                "file-connector",
+                "rest-connector",
+                "odbc-connector"
+              ],
+              "type": "string"
+            },
+            "required": true,
+            "description": "The connector type to retrieve"
+          },
+          {
+            "in": "path",
+            "name": "fileType",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The type of file to retrieve"
+          }
+        ],
+        "description": "Retrieves the configuration items in the flat file for the specified connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.3+.",
+        "operationId": "getConnectorFlatFileConfigurationAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Set connector configuration",
+        "responses": {
+          "204": {
+            "description": "Updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent id"
+          },
+          {
+            "in": "path",
+            "name": "fileType",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The file type to update"
+          },
+          {
+            "in": "query",
+            "name": "connectorType",
+            "schema": {
+              "enum": [
+                "file-connector",
+                "rest-connector",
+                "odbc-connector"
+              ],
+              "type": "string"
+            },
+            "description": "The connector type to update"
+          }
+        ],
+        "description": "Completely replaces the contents of the connector's configuration file. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.3+.",
+        "operationId": "putConnectorFlatFileConfigurationAsync",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfigurationFlatFileRequest"
+              }
+            }
+          },
+          "description": "The contents of the file to be updated"
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "ConfigurationLineBase": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ConfigurationLineNumeric"
+          },
+          {
+            "$ref": "#/components/schemas/ConfigurationLineString"
+          }
+        ],
+        "additionalProperties": false
+      },
+      "ConfigurationLineNumeric": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "connector": {
+            "type": "string",
+            "nullable": true
+          },
+          "uiActions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Read",
+                "Write"
+              ],
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "apiActions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Read",
+                "Write"
+              ],
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "defaultValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "pendingValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "permittedRangeEnd": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pendingApplication": {
+            "type": "boolean"
+          },
+          "allowMultipleValues": {
+            "type": "boolean"
+          },
+          "applyWithoutRestart": {
+            "type": "boolean"
+          },
+          "permittedRangeStart": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigurationLineString": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "connector": {
+            "type": "string",
+            "nullable": true
+          },
+          "uiActions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Read",
+                "Write"
+              ],
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "apiActions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Read",
+                "Write"
+              ],
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "defaultValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "pendingValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "permittedValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "pendingApplication": {
+            "type": "boolean"
+          },
+          "allowMultipleValues": {
+            "type": "boolean"
+          },
+          "applyWithoutRestart": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigurationResponse": {
+        "type": "object",
+        "properties": {
+          "connectors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectorSettings"
+            },
+            "nullable": true
+          },
+          "dcaasSettings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigurationLineBase"
+            },
+            "nullable": true
+          },
+          "connectorAgentSettings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigurationLineBase"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConnectorFlatFileConfigurationResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "description": "The list of configuration items from the connector's configuration file."
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConnectorSettings": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigurationLineBase"
+            },
+            "nullable": true
+          },
+          "connectorName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "hasErrors": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Operation": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "add",
+              "replace",
+              "remove"
+            ],
+            "type": "string"
+          },
+          "path": {
+            "enum": [
+              "AGENT_LOG_LEVEL",
+              "AGENT_HEALTH_FAIL_MINUTES_LIMIT",
+              "AGENT_LOG_OPTIONS",
+              "EXTEND_FIRST_REQUEST_TIMEOUT",
+              "RELOAD_CACHE_MEMORY_MB",
+              "DCAAS_LOG_LEVEL",
+              "ODBC_LOG_LEVEL",
+              "ODBC_MAX_PROCESS_COUNT",
+              "ODBC_PROCESS_ISOLATION_MODE",
+              "ODBC_RELOAD_SESSION_LIFE",
+              "SAPBW_LOG_LEVEL",
+              "SAPBW_MAX_PROCESS_COUNT",
+              "SAPBW_PROCESS_ISOLATION_MODE",
+              "SAPSQL_LOG_LEVEL",
+              "SAPSQL_MAX_PROCESS_COUNT",
+              "SAPSQL_PROCESS_ISOLATION_MODE",
+              "SAPPACKAGE_LOG_LEVEL",
+              "SAPPACKAGE_MAX_PROCESS_COUNT",
+              "SAPPACKAGE_PROCESS_ISOLATION_MODE",
+              "FILE_LOG_LEVEL",
+              "FILE_MAX_PROCESS_COUNT",
+              "FILE_PROCESS_ISOLATION_MODE",
+              "REST_LOG_LEVEL",
+              "REST_MAX_PROCESS_COUNT",
+              "REST_PROCESS_ISOLATION_MODE",
+              "ODBC_TABLES_LIMIT_FOR_GENERICODBC",
+              "OVERRIDE_CHUNKS_CACHE_DIR",
+              "CHUNK_RECOVERY_RESUME_THRESHOLD_MINUTES"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "PatchOperationResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatchOperationValidationResult"
+            },
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "httpStatusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failedPatchError": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PatchOperationValidationResult": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "operation": {
+            "$ref": "#/components/schemas/Operation"
+          },
+          "validationResult": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateConfigurationFlatFileRequest": {
+        "type": "object",
+        "properties": {
+          "contentsToSave": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "C:\\\\filepath",
+              "description": "Individual lines of the file. Must be escaped when sending as json."
+            },
+            "nullable": true
+          }
+        },
+        "description": "The request to update a connector flat file",
+        "additionalProperties": false
+      }
+    }
+  }
+}
