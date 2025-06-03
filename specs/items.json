@@ -1351,6 +1351,9 @@
           "self": {
             "$ref": "#/components/schemas/Link"
           },
+          "qvPlugin": {
+            "$ref": "#/components/schemas/Link"
+          },
           "thumbnail": {
             "$ref": "#/components/schemas/Link"
           },
