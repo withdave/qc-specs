@@ -268,10 +268,10 @@
               "type": "string"
             },
             "required": true,
-            "description": "The gateway ID"
+            "description": "The agent ID"
           },
           {
-            "in": "query",
+            "in": "path",
             "name": "connectorType",
             "schema": {
               "enum": [
@@ -281,10 +281,11 @@
               ],
               "type": "string"
             },
+            "required": true,
             "description": "The connector to retrieve the list of files for"
           }
         ],
-        "description": "Retrieves the configuration files associated with the connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.3+.",
+        "description": "Retrieves the configuration files associated with the connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.4+.",
         "operationId": "getConnectorFileListAsync",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -358,7 +359,7 @@
             "description": "The type of file to retrieve"
           }
         ],
-        "description": "Retrieves the configuration items in the flat file for the specified connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.3+.",
+        "description": "Retrieves the configuration items in the flat file for the specified connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.4+.",
         "operationId": "getConnectorFlatFileConfigurationAsync",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -417,19 +418,10 @@
               "type": "string"
             },
             "required": true,
-            "description": "The agent id"
+            "description": "The agent ID"
           },
           {
             "in": "path",
-            "name": "fileType",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The file type to update"
-          },
-          {
-            "in": "query",
             "name": "connectorType",
             "schema": {
               "enum": [
@@ -439,10 +431,20 @@
               ],
               "type": "string"
             },
+            "required": true,
             "description": "The connector type to update"
+          },
+          {
+            "in": "path",
+            "name": "fileType",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The file type to update"
           }
         ],
-        "description": "Completely replaces the contents of the connector's configuration file. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.3+.",
+        "description": "Completely replaces the contents of the connector's configuration file. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.4+.",
         "operationId": "putConnectorFlatFileConfigurationAsync",
         "requestBody": {
           "content": {
