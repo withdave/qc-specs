@@ -177,7 +177,8 @@
             "in": "path",
             "name": "computationId",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9-]{1,36}$"
             },
             "example": "4db06daa-3117-412e-8fb4-b29c937f9a0e",
             "required": true,
