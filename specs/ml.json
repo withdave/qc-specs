@@ -1946,6 +1946,71 @@
         }
       }
     },
+    "/v1/ml/experiments/{experimentId}/actions/recommend-models": {
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Request model recommendations for an experiment.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentModelRecommendationPostResponse"
+                }
+              }
+            },
+            "description": "`OK`"
+          },
+          "400": {
+            "$ref": "#/components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/403Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/500InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/502BadGateway"
+          },
+          "503": {
+            "$ref": "#/components/responses/503ServiceUnavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/FailureDefault"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentId"
+          }
+        ],
+        "description": "Returns model recommendations for a specified experiment, including the best-performing, fastest, and most accurate models based on evaluation metrics.",
+        "operationId": "postExperimentRecommendModels",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperimentModelRecommendationFilter"
+              }
+            }
+          }
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/v1/ml/experiments/{experimentId}/models": {
       "get": {
         "tags": [
@@ -3108,15 +3173,22 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/AliasPatchItem"
-        }
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "New Name"
+          },
+          {
+            "op": "replace",
+            "path": "/models",
+            "value": "modelId"
+          }
+        ]
       },
       "AliasPatchItem": {
         "type": "object",
-        "example": {
-          "op": "replace",
-          "path": "/name",
-          "value": "New Name"
-        },
         "required": [
           "op",
           "path",
@@ -3727,7 +3799,7 @@
               "$ref": "#/components/schemas/AnyType"
             }
           },
-          "description": "Values that can be patched.\n- startDateTime: When the batch starts, if scheduled\n- endDateTime: When batch ends, if scheduled\n- timeZone: Timezone used for scheduling\n- recurrence: Array of strings to indicate when this batch recurs\n- applyDatasetChangeOnly: Only run prediction if dataset has changed?\n",
+          "description": "Values that can be patched.\n- startDateTime: When the batch starts, if scheduled\n- endDateTime: When batch ends, if scheduled\n- timezone: Timezone used for scheduling\n- recurrence: Array of strings to indicate when this batch recurs\n- applyDatasetChangeOnly: Only run prediction if dataset has changed?\n",
           "additionalProperties": false
         }
       },
@@ -3812,7 +3884,7 @@
             "type": "string"
           }
         },
-        "description": "Sets which files, file names, and spaces are used to write results of\nbatch predictions (output files) to the catalog.\n"
+        "description": "Sets which files, file names, and spaces are used to write results of\nbatch predictions (output files) to the catalog.\n\nNote that for predictions based on time series models, `dstShapName`\nand `dstCoordShapName` do not apply and will be ignored if set.\n"
       },
       "BinaryImbalanceSampling": {
         "type": "object",
@@ -3866,7 +3938,8 @@
           "FUTURE_FEATURE",
           "GROUP_ID",
           "FORECAST_GAP_SIZE",
-          "FORECAST_WINDOW_SIZE"
+          "FORECAST_WINDOW_SIZE",
+          "GROUP_ID_PRIMARY"
         ],
         "type": "string"
       },
@@ -4589,6 +4662,77 @@
         "default": "intelligent",
         "description": "The model training mode for the experiment version"
       },
+      "ExperimentModelRecommendationFilter": {
+        "type": "object",
+        "properties": {
+          "deployed": {
+            "type": "boolean",
+            "description": "Whether to only consider models that are already deployed"
+          },
+          "algorithms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModelAlgorithm"
+            },
+            "description": "The model algorithms to consider"
+          },
+          "fullSampling": {
+            "type": "boolean",
+            "description": "Whether to only consider models with 100% sampling"
+          },
+          "versionNumbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "The versionNumbers of the experiment versions to consider models from"
+          }
+        },
+        "description": "Criteria to determine which pool of models to provide recommendations from",
+        "additionalProperties": false
+      },
+      "ExperimentModelRecommendationPostResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "model-recommendation"
+                ],
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "bestModel": {
+                    "$ref": "#/components/schemas/ModelForRecommendations"
+                  },
+                  "fastestModel": {
+                    "$ref": "#/components/schemas/ModelForRecommendations"
+                  },
+                  "mostAccurateModel": {
+                    "$ref": "#/components/schemas/ModelForRecommendations"
+                  }
+                },
+                "description": "Model recommendations",
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
       "ExperimentPatch": {
         "type": "array",
         "items": {
@@ -4871,6 +5015,16 @@
               }
             },
             "additionalProperties": false
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "trainingMetadata": {
+                "$ref": "#/components/schemas/TrainingMetadata"
+              }
+            },
+            "description": "Metadata not directly part of the ExperimentVersion type",
+            "additionalProperties": false
           }
         },
         "additionalProperties": false
@@ -5125,6 +5279,10 @@
             },
             "example": "[\n  `${featureName}.YEAR`,\n  `${featureName}.MONTH`\n]\n",
             "description": "Preliminary list of engineered features as strings. If subsequent\nprocessing validates them, they'll be converted to EngineeredFeature\nobjects within a NestedColumn, each of which may contain its own\nFeatureInsights.\n"
+          },
+          "estimatedMaxForecastHorizon": {
+            "type": "integer",
+            "description": "Only applies for time series experiment types. This intial estimate\nof the combined max forecast window and gap (aka - horizon). It only\napplies to possible date index columns. After the experiment version\nis created, we get a more precise number for subsequent versions.\nWhen training data is grouped, this estimate may be less accurate.\n"
           }
         },
         "description": "Metadata about the features in your dataset, generated when you create\nProfileInsights.\n",
@@ -5163,6 +5321,22 @@
           }
         },
         "description": "Meta for FIND operations",
+        "additionalProperties": false
+      },
+      "GroupId": {
+        "type": "object",
+        "required": [
+          "column"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TimeseriesGroupType"
+          },
+          "column": {
+            "type": "string"
+          }
+        },
+        "description": "A group identifier that consists of the column name associated\nand the type of group (primary or secondary).\n",
         "additionalProperties": false
       },
       "IndexColumn": {
@@ -5388,6 +5562,32 @@
           }
         },
         "additionalProperties": false
+      },
+      "ModelForRecommendations": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Model"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "metrics": {
+                "type": "object",
+                "required": [
+                  "predictionSpeed"
+                ],
+                "properties": {
+                  "predictionSpeed": {
+                    "type": "number",
+                    "nullable": true,
+                    "description": "This represents model prediction speed in rows/second"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
       },
       "ModelGetResponse": {
         "type": "object",
@@ -6233,11 +6433,90 @@
         "description": "Tenant ID for this entity",
         "x-qlik-filterable": true
       },
+      "TimeseriesGroupType": {
+        "enum": [
+          "primary",
+          "secondary"
+        ],
+        "type": "string",
+        "description": "Indicates the type of group (primary or secondary groups)"
+      },
       "TrainingDuration": {
         "type": "integer",
         "maximum": 21600,
         "minimum": 900,
         "description": "Training duration in seconds. If provided, minimum is 900 (15m) and\nmax is 21600 (6h).\n"
+      },
+      "TrainingMetadata": {
+        "type": "object",
+        "properties": {
+          "gap": {
+            "type": "number",
+            "description": "The gap between the end of the training dataset\nand the start of the forecast window\n"
+          },
+          "timeStep": {
+            "type": "string",
+            "description": "The interval of time between each grouping of data in the dataset"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "applyWindow": {
+            "type": "number",
+            "description": "The maximum value to be used for the length of the apply dataset.\nThis value is 3x the forecast window\n"
+          },
+          "targetColumns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "timeRangeUsed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "forecastWindow": {
+            "type": "number",
+            "description": "The maximum range that can be forecasted"
+          },
+          "selectedGrouping": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupId"
+            },
+            "description": "The grouping selected for the experiment version"
+          },
+          "maxForecastHorizon": {
+            "type": "number",
+            "description": "The maximum value for the forecast horizon\nThe forecast horizon is equal to the gap + forecast window\n"
+          },
+          "systemRecommendations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupId"
+            },
+            "description": "Recommended groupings constructed from the workers"
+          },
+          "futureCovarianceColumns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "staticCovarianceColumns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isUsingSystemRecGrouping": {
+            "type": "boolean"
+          }
+        },
+        "description": "TrainingMetadata returned from MLCore. This will contain\nmore specific information about items like groups, systemRecommendations,\nand window/gap values\n",
+        "additionalProperties": false
       },
       "Transform": {
         "type": "object",
