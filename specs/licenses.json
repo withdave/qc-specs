@@ -1401,6 +1401,10 @@
             "type": "string",
             "description": "An ISO 8601 timestamp for when the license was last changed."
           },
+          "customerId": {
+            "type": "string",
+            "description": "Customer ID"
+          },
           "licenseKey": {
             "type": "string"
           },
@@ -1489,7 +1493,8 @@
           "type": {
             "enum": [
               "Signed",
-              "Plain"
+              "Plain",
+              "2.0"
             ],
             "type": "string",
             "description": "Type of license key."
