@@ -57,7 +57,7 @@
               "example": "name eq \"My Automation\" and runMode eq \"scheduled\" and ownerId eq \"sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy\""
             },
             "required": false,
-            "description": "Allowed filters: name, runMode, lastRunStatus, ownerId"
+            "description": "Allowed filters: name, runMode, lastRunStatus, ownerId, spaceId"
           },
           {
             "in": "query",
@@ -71,6 +71,16 @@
             },
             "required": false,
             "description": "The number of automations to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "listAll",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "required": false,
+            "description": "When true, list all automations. Restricted to tenant admins and analytics admins."
           },
           {
             "in": "query",
@@ -375,6 +385,152 @@
           "external/manage",
           "external/build"
         ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/actions/change-owner": {
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Change automation owner",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          }
+        ],
+        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner.",
+        "operationId": "automationChangeOwner",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "example": "sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy",
+                    "description": "The unique identifier of the new owner."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/v1/automations/{id}/actions/change-space": {
+      "post": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Change automation space",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          }
+        ],
+        "description": "Changes the space of an automation by specifying a new space.",
+        "operationId": "automationChangeSpace",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "spaceId"
+                ],
+                "properties": {
+                  "spaceId": {
+                    "type": "string",
+                    "example": "5f0f78b239ff4f0001234567",
+                    "description": "The unique identifier of the new space."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -727,7 +883,7 @@
               "example": "status eq \"finished\""
             },
             "required": false,
-            "description": "Allowed filters: status, context, startTime and title"
+            "description": "Allowed filters: status, context, startTime and title, spaceId, ownerId, executedById"
           },
           {
             "in": "query",
@@ -1303,6 +1459,9 @@
             "default": "available",
             "example": "available"
           },
+          "spaceId": {
+            "type": "string"
+          },
           "schedules": {
             "type": "array",
             "items": {
@@ -1357,6 +1516,11 @@
             ],
             "type": "string",
             "example": "triggered",
+            "readOnly": true
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "5f0f78b239ff4f0001234567",
             "readOnly": true
           },
           "createdAt": {
@@ -1503,6 +1667,12 @@
             ],
             "type": "string",
             "example": "triggered",
+            "readOnly": true,
+            "x-qlik-filterable": true
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "5f0f78b239ff4f0001234567",
             "readOnly": true,
             "x-qlik-filterable": true
           },
@@ -1833,6 +2003,14 @@
               }
             }
           },
+          "ownerId": {
+            "type": "string",
+            "readOnly": true
+          },
+          "spaceId": {
+            "type": "string",
+            "readOnly": true
+          },
           "stopTime": {
             "type": "string",
             "format": "date-time",
@@ -1863,6 +2041,10 @@
           },
           "isArchived": {
             "type": "boolean",
+            "readOnly": true
+          },
+          "executedById": {
+            "type": "string",
             "readOnly": true
           },
           "expectedInputs": {
@@ -1933,6 +2115,16 @@
             "type": "string",
             "x-qlik-filterable": true
           },
+          "ownerId": {
+            "type": "string",
+            "readOnly": true,
+            "x-qlik-filterable": true
+          },
+          "spaceId": {
+            "type": "string",
+            "readOnly": true,
+            "x-qlik-filterable": true
+          },
           "duration": {
             "type": "integer",
             "example": "9001",
@@ -1969,6 +2161,11 @@
           "isArchived": {
             "type": "boolean",
             "readOnly": true
+          },
+          "executedById": {
+            "type": "string",
+            "readOnly": true,
+            "x-qlik-filterable": true
           },
           "scheduledStartTime": {
             "type": "string",
