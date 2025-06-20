@@ -5015,16 +5015,6 @@
               }
             },
             "additionalProperties": false
-          },
-          "meta": {
-            "type": "object",
-            "properties": {
-              "trainingMetadata": {
-                "$ref": "#/components/schemas/TrainingMetadata"
-              }
-            },
-            "description": "Metadata not directly part of the ExperimentVersion type",
-            "additionalProperties": false
           }
         },
         "additionalProperties": false
@@ -5321,22 +5311,6 @@
           }
         },
         "description": "Meta for FIND operations",
-        "additionalProperties": false
-      },
-      "GroupId": {
-        "type": "object",
-        "required": [
-          "column"
-        ],
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/TimeseriesGroupType"
-          },
-          "column": {
-            "type": "string"
-          }
-        },
-        "description": "A group identifier that consists of the column name associated\nand the type of group (primary or secondary).\n",
         "additionalProperties": false
       },
       "IndexColumn": {
@@ -6433,90 +6407,11 @@
         "description": "Tenant ID for this entity",
         "x-qlik-filterable": true
       },
-      "TimeseriesGroupType": {
-        "enum": [
-          "primary",
-          "secondary"
-        ],
-        "type": "string",
-        "description": "Indicates the type of group (primary or secondary groups)"
-      },
       "TrainingDuration": {
         "type": "integer",
         "maximum": 21600,
         "minimum": 900,
         "description": "Training duration in seconds. If provided, minimum is 900 (15m) and\nmax is 21600 (6h).\n"
-      },
-      "TrainingMetadata": {
-        "type": "object",
-        "properties": {
-          "gap": {
-            "type": "number",
-            "description": "The gap between the end of the training dataset\nand the start of the forecast window\n"
-          },
-          "timeStep": {
-            "type": "string",
-            "description": "The interval of time between each grouping of data in the dataset"
-          },
-          "createdAt": {
-            "$ref": "#/components/schemas/CreatedAt"
-          },
-          "applyWindow": {
-            "type": "number",
-            "description": "The maximum value to be used for the length of the apply dataset.\nThis value is 3x the forecast window\n"
-          },
-          "targetColumns": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "timeRangeUsed": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "forecastWindow": {
-            "type": "number",
-            "description": "The maximum range that can be forecasted"
-          },
-          "selectedGrouping": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GroupId"
-            },
-            "description": "The grouping selected for the experiment version"
-          },
-          "maxForecastHorizon": {
-            "type": "number",
-            "description": "The maximum value for the forecast horizon\nThe forecast horizon is equal to the gap + forecast window\n"
-          },
-          "systemRecommendations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GroupId"
-            },
-            "description": "Recommended groupings constructed from the workers"
-          },
-          "futureCovarianceColumns": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "staticCovarianceColumns": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "isUsingSystemRecGrouping": {
-            "type": "boolean"
-          }
-        },
-        "description": "TrainingMetadata returned from MLCore. This will contain\nmore specific information about items like groups, systemRecommendations,\nand window/gap values\n",
-        "additionalProperties": false
       },
       "Transform": {
         "type": "object",
