@@ -1464,11 +1464,13 @@
               "DATABRICKS",
               "REDSHIFT",
               "MSSQL",
-              "FABRIC"
+              "FABRIC",
+              "QLIK_QVD",
+              "QLIK_QVD_CUSTOMER_MANAGED"
             ],
             "type": "string",
             "example": "SNOWFLAKE",
-            "description": "The platform type of the project"
+            "description": "The platform type of the project. Supported values: - SNOWFLAKE: Snowflake - BIGQUERY: Google BigQuery - SYNAPSE: Azure Synapse - DATABRICKS: Databricks - REDSHIFT: Amazon Redshift - MSSQL: Microsoft SQL Server - FABRIC: Microsoft Fabric (OneLake) - QLIK_QVD: Qlik-managed QVD - QLIK_QVD_CUSTOMER_MANAGED: Customer-managed QVD\n"
           },
           "platformConnection": {
             "type": "string",
