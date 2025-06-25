@@ -632,6 +632,17 @@
             "type": "boolean",
             "example": false,
             "description": "The boolean value used to present the reload is partial or not"
+          },
+          "variables": {
+            "type": "object",
+            "example": {
+              "var1": "value1",
+              "var2": "value2"
+            },
+            "description": "The variables to be used in the load script.",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         }
       },
