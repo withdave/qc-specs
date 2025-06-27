@@ -29,18 +29,8 @@ jobs:
           git fetch origin main apispecs || true
           if git rev-parse --verify origin/apispecs >/dev/null 2>&1; then
               git checkout apispecs
-              git pull --rebase origin/main || {
-                  echo "Rebase failed. Resetting and reapplying changes."
-                  git reset --hard origin/main
-                  git pull --rebase origin main || {
-                      echo "Rebase failed again. Aborting rebase and merging instead."
-                      git rebase --abort
-                      git merge origin/main || {
-                          echo "Merge also failed. Manual resolution needed."
-                          exit 1
-                      }
-                  }
-              }
+              # Always reset to main to avoid conflicts - we want latest specs to replace everything
+              git reset --hard origin/main
           else
               git checkout -b apispecs
               git push origin apispecs --set-upstream
@@ -54,6 +44,8 @@ jobs:
       - name: Fetch API Specs from qlik.dev
         run: |
           set -euo pipefail
+          # Clean up existing specs to start fresh
+          rm -rf specs
           mkdir -p specs
 
           sitemap_index_url="https://qlik.dev/sitemap-index.xml"
@@ -132,8 +124,7 @@ jobs:
       - name: Push changes to apispecs branch
         if: ${{ env.no_changes == 'false' }}
         run: |
-          git pull --rebase origin apispecs
-          git push origin apispecs
+          git push origin apispecs --force
 
       - name: Find existing PR or create a new one
         if: ${{ env.no_changes == 'false' }}
