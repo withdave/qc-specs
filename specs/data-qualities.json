@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/data-qualities/computations": {
+    "/api/v1/data-qualities/computations": {
       "post": {
         "tags": [
           "computation"
@@ -98,7 +98,7 @@
         }
       }
     },
-    "/v1/data-qualities/computations/{computationId}": {
+    "/api/v1/data-qualities/computations/{computationId}": {
       "get": {
         "tags": [
           "computation"
@@ -205,7 +205,7 @@
         }
       }
     },
-    "/v1/data-qualities/global-results": {
+    "/api/v1/data-qualities/global-results": {
       "get": {
         "tags": [
           "data-quality"
@@ -536,5 +536,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

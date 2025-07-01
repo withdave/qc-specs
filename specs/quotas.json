@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/quotas": {
+    "/api/v1/quotas": {
       "get": {
         "tags": [
           "quotas"
@@ -66,7 +66,7 @@
         }
       }
     },
-    "/v1/quotas/{id}": {
+    "/api/v1/quotas/{id}": {
       "get": {
         "tags": [
           "quotas"
@@ -270,5 +270,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/automation-connections": {
+    "/api/v1/automation-connections": {
       "get": {
         "tags": [
           "automation-connections"
@@ -168,7 +168,7 @@
         }
       }
     },
-    "/v1/automation-connections/{id}": {
+    "/api/v1/automation-connections/{id}": {
       "get": {
         "tags": [
           "automation-connections"
@@ -367,7 +367,7 @@
         }
       }
     },
-    "/v1/automation-connections/{id}/actions/change-owner": {
+    "/api/v1/automation-connections/{id}/actions/change-owner": {
       "post": {
         "tags": [
           "automation-connections"
@@ -434,7 +434,7 @@
         }
       }
     },
-    "/v1/automation-connections/{id}/actions/change-space": {
+    "/api/v1/automation-connections/{id}/actions/change-space": {
       "post": {
         "tags": [
           "automation-connections"
@@ -501,7 +501,7 @@
         }
       }
     },
-    "/v1/automation-connections/{id}/actions/check": {
+    "/api/v1/automation-connections/{id}/actions/check": {
       "post": {
         "tags": [
           "automation-connections"
@@ -989,5 +989,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

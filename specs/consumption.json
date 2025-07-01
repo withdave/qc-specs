@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/consumption/executions": {
+    "/api/v1/consumption/executions": {
       "get": {
         "tags": [
           "Consumption"
@@ -565,5 +565,20 @@
         "description": "properties that should be added to every list response"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

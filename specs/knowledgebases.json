@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/knowledgebases": {
+    "/api/v1/knowledgebases": {
       "get": {
         "tags": [
           "knowledgebases"
@@ -180,7 +180,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}": {
+    "/api/v1/knowledgebases/{id}": {
       "get": {
         "tags": [
           "knowledgebases"
@@ -454,7 +454,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}/datasources": {
+    "/api/v1/knowledgebases/{id}/datasources": {
       "post": {
         "tags": [
           "knowledgebases"
@@ -535,7 +535,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}/datasources/{datasourceId}": {
+    "/api/v1/knowledgebases/{id}/datasources/{datasourceId}": {
       "put": {
         "tags": [
           "knowledgebases"
@@ -701,7 +701,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}/datasources/{datasourceId}/actions/cancel": {
+    "/api/v1/knowledgebases/{id}/datasources/{datasourceId}/actions/cancel": {
       "post": {
         "tags": [
           "knowledgebases"
@@ -784,7 +784,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}/datasources/{datasourceId}/actions/download": {
+    "/api/v1/knowledgebases/{id}/datasources/{datasourceId}/actions/download": {
       "post": {
         "tags": [
           "knowledgebases"
@@ -876,7 +876,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}/datasources/{datasourceId}/actions/sync": {
+    "/api/v1/knowledgebases/{id}/datasources/{datasourceId}/actions/sync": {
       "post": {
         "tags": [
           "knowledgebases"
@@ -967,7 +967,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}/datasources/{datasourceId}/histories": {
+    "/api/v1/knowledgebases/{id}/datasources/{datasourceId}/histories": {
       "get": {
         "tags": [
           "knowledgebases"
@@ -1089,7 +1089,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}/datasources/{datasourceId}/histories/{syncId}": {
+    "/api/v1/knowledgebases/{id}/datasources/{datasourceId}/histories/{syncId}": {
       "get": {
         "tags": [
           "knowledgebases"
@@ -1183,7 +1183,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}/datasources/{datasourceId}/schedules": {
+    "/api/v1/knowledgebases/{id}/datasources/{datasourceId}/schedules": {
       "get": {
         "tags": [
           "knowledgebases"
@@ -1440,7 +1440,7 @@
         }
       }
     },
-    "/v1/knowledgebases/{id}/histories": {
+    "/api/v1/knowledgebases/{id}/histories": {
       "get": {
         "tags": [
           "knowledgebases"
@@ -2794,5 +2794,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

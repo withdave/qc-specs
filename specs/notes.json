@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/notes/settings": {
+    "/api/v1/notes/settings": {
       "get": {
         "tags": [
           "setting"
@@ -234,5 +234,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

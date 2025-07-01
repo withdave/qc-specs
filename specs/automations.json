@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/automations": {
+    "/api/v1/automations": {
       "get": {
         "tags": [
           "automations"
@@ -195,7 +195,7 @@
         }
       }
     },
-    "/v1/automations/{id}": {
+    "/api/v1/automations/{id}": {
       "get": {
         "tags": [
           "automations"
@@ -392,7 +392,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/change-owner": {
+    "/api/v1/automations/{id}/actions/change-owner": {
       "post": {
         "tags": [
           "automations"
@@ -466,7 +466,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/change-space": {
+    "/api/v1/automations/{id}/actions/change-space": {
       "post": {
         "tags": [
           "automations"
@@ -538,7 +538,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/copy": {
+    "/api/v1/automations/{id}/actions/copy": {
       "post": {
         "tags": [
           "automations"
@@ -628,7 +628,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/disable": {
+    "/api/v1/automations/{id}/actions/disable": {
       "post": {
         "tags": [
           "automations"
@@ -684,7 +684,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/enable": {
+    "/api/v1/automations/{id}/actions/enable": {
       "post": {
         "tags": [
           "automations"
@@ -740,7 +740,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/move": {
+    "/api/v1/automations/{id}/actions/move": {
       "post": {
         "tags": [
           "automations"
@@ -816,7 +816,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs": {
+    "/api/v1/automations/{id}/runs": {
       "get": {
         "tags": [
           "automations"
@@ -1008,7 +1008,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs/{runId}": {
+    "/api/v1/automations/{id}/runs/{runId}": {
       "get": {
         "tags": [
           "automations"
@@ -1092,7 +1092,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs/{runId}/actions/export": {
+    "/api/v1/automations/{id}/runs/{runId}/actions/export": {
       "post": {
         "tags": [
           "automations"
@@ -1171,7 +1171,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs/{runId}/actions/retry": {
+    "/api/v1/automations/{id}/runs/{runId}/actions/retry": {
       "post": {
         "tags": [
           "automations"
@@ -1237,7 +1237,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs/{runId}/actions/stop": {
+    "/api/v1/automations/{id}/runs/{runId}/actions/stop": {
       "post": {
         "tags": [
           "automations"
@@ -1303,7 +1303,7 @@
         }
       }
     },
-    "/v1/automations/usage": {
+    "/api/v1/automations/usage": {
       "get": {
         "tags": [
           "automations"
@@ -2283,5 +2283,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

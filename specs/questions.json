@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/questions/actions/ask": {
+    "/api/v1/questions/actions/ask": {
       "post": {
         "tags": [
           "questions"
@@ -105,7 +105,7 @@
         }
       }
     },
-    "/v1/questions/actions/filter": {
+    "/api/v1/questions/actions/filter": {
       "post": {
         "tags": [
           "questions"
@@ -963,5 +963,20 @@
         "x-qlik-visibility": "public"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

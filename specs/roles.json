@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/roles": {
+    "/api/v1/roles": {
       "get": {
         "tags": [
           "roles"
@@ -241,7 +241,7 @@
         }
       }
     },
-    "/v1/roles/{id}": {
+    "/api/v1/roles/{id}": {
       "get": {
         "tags": [
           "roles"
@@ -935,5 +935,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

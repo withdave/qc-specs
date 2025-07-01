@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/di-projects": {
+    "/api/v1/di-projects": {
       "get": {
         "tags": [
           "data project"
@@ -126,7 +126,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}": {
+    "/api/v1/di-projects/{projectId}": {
       "get": {
         "tags": [
           "data project"
@@ -189,7 +189,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/actions/export": {
+    "/api/v1/di-projects/{projectId}/actions/export": {
       "post": {
         "tags": [
           "data project deployment"
@@ -282,7 +282,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/actions/import": {
+    "/api/v1/di-projects/{projectId}/actions/import": {
       "post": {
         "tags": [
           "data project deployment"
@@ -371,7 +371,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/actions/prepare": {
+    "/api/v1/di-projects/{projectId}/actions/prepare": {
       "post": {
         "tags": [
           "data project actions"
@@ -448,7 +448,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/actions/validate": {
+    "/api/v1/di-projects/{projectId}/actions/validate": {
       "post": {
         "tags": [
           "data project actions"
@@ -525,7 +525,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/bindings": {
+    "/api/v1/di-projects/{projectId}/bindings": {
       "get": {
         "tags": [
           "data project deployment"
@@ -679,7 +679,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks": {
+    "/api/v1/di-projects/{projectId}/di-tasks": {
       "get": {
         "tags": [
           "data task"
@@ -743,7 +743,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}": {
       "get": {
         "tags": [
           "data task"
@@ -817,7 +817,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/prepare": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/prepare": {
       "post": {
         "tags": [
           "data task actions"
@@ -904,7 +904,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/validate": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/validate": {
       "post": {
         "tags": [
           "data task actions"
@@ -991,7 +991,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/start": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/start": {
       "post": {
         "tags": [
           "data task runtime"
@@ -1058,7 +1058,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/stop": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/stop": {
       "post": {
         "tags": [
           "data task runtime"
@@ -1123,7 +1123,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/state": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/state": {
       "get": {
         "tags": [
           "data task runtime"
@@ -1216,7 +1216,7 @@
         }
       }
     },
-    "/v1/di-projects/actions/{actionId}": {
+    "/api/v1/di-projects/actions/{actionId}": {
       "get": {
         "tags": [
           "async actions"
@@ -1737,5 +1737,20 @@
         "description": "Request body for task validation"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

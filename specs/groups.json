@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/groups": {
+    "/api/v1/groups": {
       "get": {
         "tags": [
           "groups"
@@ -280,7 +280,7 @@
         }
       }
     },
-    "/v1/groups/{groupId}": {
+    "/api/v1/groups/{groupId}": {
       "get": {
         "tags": [
           "groups"
@@ -560,7 +560,7 @@
         }
       }
     },
-    "/v1/groups/actions/filter": {
+    "/api/v1/groups/actions/filter": {
       "post": {
         "tags": [
           "groups"
@@ -709,7 +709,7 @@
         }
       }
     },
-    "/v1/groups/settings": {
+    "/api/v1/groups/settings": {
       "get": {
         "tags": [
           "groups-settings"
@@ -1524,5 +1524,20 @@
         "description": "An array of JSON Patches for the groups settings."
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

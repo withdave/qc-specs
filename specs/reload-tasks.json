@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/reload-tasks": {
+    "/api/v1/reload-tasks": {
       "get": {
         "tags": [
           "reload-tasks"
@@ -276,7 +276,7 @@
         }
       }
     },
-    "/v1/reload-tasks/{taskId}": {
+    "/api/v1/reload-tasks/{taskId}": {
       "get": {
         "tags": [
           "reload-tasks"
@@ -909,5 +909,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

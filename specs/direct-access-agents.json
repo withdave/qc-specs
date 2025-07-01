@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/direct-access-agents/{agentId}/actions/{agentAction}": {
+    "/api/v1/direct-access-agents/{agentId}/actions/{agentAction}": {
       "post": {
         "tags": [
           "direct-access-agent-configuration"
@@ -97,7 +97,7 @@
         }
       }
     },
-    "/v1/direct-access-agents/{agentId}/configurations": {
+    "/api/v1/direct-access-agents/{agentId}/configurations": {
       "get": {
         "tags": [
           "direct-access-agent-configuration"
@@ -272,7 +272,7 @@
         }
       }
     },
-    "/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files": {
+    "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files": {
       "get": {
         "tags": [
           "direct-access-agent-configuration"
@@ -347,7 +347,7 @@
         }
       }
     },
-    "/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/{fileType}": {
+    "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/{fileType}": {
       "get": {
         "tags": [
           "direct-access-agent-configuration"
@@ -723,8 +723,7 @@
             "items": {
               "type": "string"
             },
-            "nullable": true,
-            "description": "The list of configuration items from the connector's configuration file."
+            "nullable": true
           },
           "errorMessage": {
             "$ref": "#/components/schemas/ErrorResponse"
@@ -899,5 +898,20 @@
         "additionalProperties": false
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

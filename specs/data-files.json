@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/data-files": {
+    "/api/v1/data-files": {
       "get": {
         "tags": [
           "datafiles"
@@ -416,7 +416,7 @@
         }
       }
     },
-    "/v1/data-files/{id}": {
+    "/api/v1/data-files/{id}": {
       "get": {
         "tags": [
           "datafiles"
@@ -732,7 +732,7 @@
         }
       }
     },
-    "/v1/data-files/{id}/actions/change-owner": {
+    "/api/v1/data-files/{id}/actions/change-owner": {
       "post": {
         "tags": [
           "datafiles"
@@ -830,7 +830,7 @@
         }
       }
     },
-    "/v1/data-files/{id}/actions/change-space": {
+    "/api/v1/data-files/{id}/actions/change-space": {
       "post": {
         "tags": [
           "datafiles"
@@ -928,7 +928,7 @@
         }
       }
     },
-    "/v1/data-files/actions/change-space": {
+    "/api/v1/data-files/actions/change-space": {
       "post": {
         "tags": [
           "datafiles"
@@ -980,7 +980,7 @@
         }
       }
     },
-    "/v1/data-files/actions/delete": {
+    "/api/v1/data-files/actions/delete": {
       "post": {
         "tags": [
           "datafiles"
@@ -1031,7 +1031,7 @@
         }
       }
     },
-    "/v1/data-files/connections": {
+    "/api/v1/data-files/connections": {
       "get": {
         "tags": [
           "datafiles"
@@ -1173,7 +1173,7 @@
         }
       }
     },
-    "/v1/data-files/connections/{id}": {
+    "/api/v1/data-files/connections/{id}": {
       "get": {
         "tags": [
           "datafiles"
@@ -1237,7 +1237,7 @@
         }
       }
     },
-    "/v1/data-files/quotas": {
+    "/api/v1/data-files/quotas": {
       "get": {
         "tags": [
           "datafiles"
@@ -2046,5 +2046,20 @@
         "additionalProperties": false
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

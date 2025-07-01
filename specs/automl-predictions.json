@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/automl-predictions/{predictionId}/coordinate-shap": {
+    "/api/v1/automl-predictions/{predictionId}/coordinate-shap": {
       "get": {
         "tags": [
           "automl-predictions"
@@ -102,7 +102,7 @@
         }
       }
     },
-    "/v1/automl-predictions/{predictionId}/jobs": {
+    "/api/v1/automl-predictions/{predictionId}/jobs": {
       "post": {
         "tags": [
           "automl-predictions"
@@ -195,7 +195,7 @@
         }
       }
     },
-    "/v1/automl-predictions/{predictionId}/not-predicted-reasons": {
+    "/api/v1/automl-predictions/{predictionId}/not-predicted-reasons": {
       "get": {
         "tags": [
           "automl-predictions"
@@ -293,7 +293,7 @@
         }
       }
     },
-    "/v1/automl-predictions/{predictionId}/predictions": {
+    "/api/v1/automl-predictions/{predictionId}/predictions": {
       "get": {
         "tags": [
           "automl-predictions"
@@ -389,7 +389,7 @@
         }
       }
     },
-    "/v1/automl-predictions/{predictionId}/shap": {
+    "/api/v1/automl-predictions/{predictionId}/shap": {
       "get": {
         "tags": [
           "automl-predictions"
@@ -485,7 +485,7 @@
         }
       }
     },
-    "/v1/automl-predictions/{predictionId}/source": {
+    "/api/v1/automl-predictions/{predictionId}/source": {
       "get": {
         "tags": [
           "automl-predictions"
@@ -683,5 +683,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

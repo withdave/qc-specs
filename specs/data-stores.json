@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/data-stores": {
+    "/api/v1/data-stores": {
       "get": {
         "tags": [
           "data-store"
@@ -365,7 +365,7 @@
         }
       }
     },
-    "/v1/data-stores/{data-store-id}": {
+    "/api/v1/data-stores/{data-store-id}": {
       "get": {
         "tags": [
           "data-store"
@@ -741,7 +741,7 @@
         }
       }
     },
-    "/v1/data-stores/{data-store-ids}/data-assets": {
+    "/api/v1/data-stores/{data-store-ids}/data-assets": {
       "get": {
         "tags": [
           "data-store"
@@ -1009,7 +1009,7 @@
         }
       }
     },
-    "/v1/data-stores/{data-store-ids}/data-assets/{data-asset-ids}/data-sets": {
+    "/api/v1/data-stores/{data-store-ids}/data-assets/{data-asset-ids}/data-sets": {
       "get": {
         "tags": [
           "data-store"
@@ -2097,5 +2097,20 @@
         "description": "An array of user-supplied tags"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

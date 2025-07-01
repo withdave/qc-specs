@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/sharing-tasks": {
+    "/api/v1/sharing-tasks": {
       "get": {
         "tags": [
           "sharing tasks"
@@ -318,7 +318,7 @@
         }
       }
     },
-    "/v1/sharing-tasks/{taskId}": {
+    "/api/v1/sharing-tasks/{taskId}": {
       "get": {
         "tags": [
           "sharing tasks"
@@ -569,7 +569,7 @@
         }
       }
     },
-    "/v1/sharing-tasks/{taskId}/actions/cancel": {
+    "/api/v1/sharing-tasks/{taskId}/actions/cancel": {
       "post": {
         "tags": [
           "sharing tasks actions"
@@ -645,7 +645,7 @@
         }
       }
     },
-    "/v1/sharing-tasks/actions/execute": {
+    "/api/v1/sharing-tasks/actions/execute": {
       "post": {
         "tags": [
           "sharing tasks actions"
@@ -721,7 +721,7 @@
         }
       }
     },
-    "/v1/sharing-tasks/settings": {
+    "/api/v1/sharing-tasks/settings": {
       "get": {
         "tags": [
           "sharing settings"
@@ -2696,5 +2696,20 @@
         "description": "recipient object model that is directly persisted in the DB"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }
