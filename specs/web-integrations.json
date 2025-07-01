@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/web-integrations": {
+    "/api/v1/web-integrations": {
       "get": {
         "tags": [
           "web-integrations"
@@ -218,7 +218,7 @@
         }
       }
     },
-    "/v1/web-integrations/{id}": {
+    "/api/v1/web-integrations/{id}": {
       "get": {
         "tags": [
           "web-integrations"
@@ -776,5 +776,20 @@
         "description": "An array of web integration objects."
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

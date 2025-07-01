@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/data-connections": {
+    "/api/v1/data-connections": {
       "get": {
         "tags": [
           "data-connections"
@@ -203,7 +203,7 @@
         }
       }
     },
-    "/v1/data-connections/{qID}": {
+    "/api/v1/data-connections/{qID}": {
       "get": {
         "tags": [
           "data-connections"
@@ -512,7 +512,7 @@
         }
       }
     },
-    "/v1/data-connections/actions/delete": {
+    "/api/v1/data-connections/actions/delete": {
       "post": {
         "tags": [
           "data-connections"
@@ -572,7 +572,7 @@
         }
       }
     },
-    "/v1/data-connections/actions/duplicate": {
+    "/api/v1/data-connections/actions/duplicate": {
       "post": {
         "tags": [
           "data-connections"
@@ -652,7 +652,7 @@
         }
       }
     },
-    "/v1/data-connections/actions/update": {
+    "/api/v1/data-connections/actions/update": {
       "post": {
         "tags": [
           "data-connections"
@@ -920,14 +920,13 @@
         "name": "type",
         "schema": {
           "enum": [
-            "connectionname",
-            "credentialname"
+            "connectionname"
           ],
           "type": "string"
         },
         "example": "connectionname",
         "required": false,
-        "description": "Connection / credential ID defined in path become connection / credential name when this query parameter is set"
+        "description": "The connection ID in the path becomes a connection name when this query parameter is set."
       },
       "userId": {
         "in": "query",
@@ -1804,5 +1803,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/webhooks": {
+    "/api/v1/webhooks": {
       "get": {
         "tags": [
           "webhooks"
@@ -235,7 +235,7 @@
         }
       }
     },
-    "/v1/webhooks/{id}": {
+    "/api/v1/webhooks/{id}": {
       "get": {
         "tags": [
           "webhooks"
@@ -482,7 +482,7 @@
         }
       }
     },
-    "/v1/webhooks/{id}/deliveries": {
+    "/api/v1/webhooks/{id}/deliveries": {
       "get": {
         "tags": [
           "deliveries"
@@ -607,7 +607,7 @@
         }
       }
     },
-    "/v1/webhooks/{id}/deliveries/{deliveryId}": {
+    "/api/v1/webhooks/{id}/deliveries/{deliveryId}": {
       "get": {
         "tags": [
           "deliveries"
@@ -677,7 +677,7 @@
         }
       }
     },
-    "/v1/webhooks/{id}/deliveries/{deliveryId}/actions/resend": {
+    "/api/v1/webhooks/{id}/deliveries/{deliveryId}/actions/resend": {
       "post": {
         "tags": [
           "deliveries"
@@ -748,7 +748,7 @@
         }
       }
     },
-    "/v1/webhooks/event-types": {
+    "/api/v1/webhooks/event-types": {
       "get": {
         "tags": [
           "webhooks"
@@ -1290,5 +1290,20 @@
         ]
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

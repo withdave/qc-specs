@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/extensions": {
+    "/api/v1/extensions": {
       "get": {
         "tags": [
           "extensions"
@@ -126,7 +126,7 @@
         }
       }
     },
-    "/v1/extensions/{id}": {
+    "/api/v1/extensions/{id}": {
       "get": {
         "tags": [
           "extensions"
@@ -384,7 +384,7 @@
         }
       }
     },
-    "/v1/extensions/{id}/file": {
+    "/api/v1/extensions/{id}/file": {
       "get": {
         "tags": [
           "extensions"
@@ -450,7 +450,7 @@
         }
       }
     },
-    "/v1/extensions/{id}/file/{filepath}": {
+    "/api/v1/extensions/{id}/file/{filepath}": {
       "get": {
         "tags": [
           "extensions"
@@ -729,5 +729,20 @@
         "description": "Object containing meta data regarding an error. It does not necessarily contain all the properties."
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

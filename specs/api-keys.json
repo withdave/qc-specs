@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/api-keys": {
+    "/api/v1/api-keys": {
       "get": {
         "tags": [
           "api-keys"
@@ -258,7 +258,7 @@
         }
       }
     },
-    "/v1/api-keys/{id}": {
+    "/api/v1/api-keys/{id}": {
       "get": {
         "tags": [
           "api-keys"
@@ -514,7 +514,7 @@
         }
       }
     },
-    "/v1/api-keys/configs/{tenantId}": {
+    "/api/v1/api-keys/configs/{tenantId}": {
       "get": {
         "tags": [
           "api-keys configurations"
@@ -1095,5 +1095,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

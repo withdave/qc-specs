@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/tenants": {
+    "/api/v1/tenants": {
       "post": {
         "tags": [
           "tenants"
@@ -141,7 +141,7 @@
         }
       }
     },
-    "/v1/tenants/{tenantId}": {
+    "/api/v1/tenants/{tenantId}": {
       "get": {
         "tags": [
           "tenants"
@@ -302,7 +302,7 @@
         }
       }
     },
-    "/v1/tenants/{tenantId}/actions/deactivate": {
+    "/api/v1/tenants/{tenantId}/actions/deactivate": {
       "post": {
         "tags": [
           "tenants"
@@ -427,7 +427,7 @@
         }
       }
     },
-    "/v1/tenants/{tenantId}/actions/reactivate": {
+    "/api/v1/tenants/{tenantId}/actions/reactivate": {
       "post": {
         "tags": [
           "tenants"
@@ -541,7 +541,7 @@
         }
       }
     },
-    "/v1/tenants/me": {
+    "/api/v1/tenants/me": {
       "get": {
         "tags": [
           "tenants"
@@ -978,5 +978,20 @@
         ]
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

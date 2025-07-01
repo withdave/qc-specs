@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/data-alerts": {
+    "/api/v1/data-alerts": {
       "get": {
         "tags": [
           "alerting tasks"
@@ -287,7 +287,7 @@
         }
       }
     },
-    "/v1/data-alerts/{alertId}": {
+    "/api/v1/data-alerts/{alertId}": {
       "get": {
         "tags": [
           "alerting tasks"
@@ -526,7 +526,7 @@
         }
       }
     },
-    "/v1/data-alerts/{alertId}/condition": {
+    "/api/v1/data-alerts/{alertId}/condition": {
       "get": {
         "tags": [
           "alerting tasks"
@@ -608,7 +608,7 @@
         }
       }
     },
-    "/v1/data-alerts/{alertId}/executions/{executionId}": {
+    "/api/v1/data-alerts/{alertId}/executions/{executionId}": {
       "get": {
         "tags": [
           "alerting tasks executions"
@@ -781,7 +781,7 @@
         }
       }
     },
-    "/v1/data-alerts/{alertId}/recipient-stats": {
+    "/api/v1/data-alerts/{alertId}/recipient-stats": {
       "get": {
         "tags": [
           "alerting tasks"
@@ -911,7 +911,7 @@
         }
       }
     },
-    "/v1/data-alerts/{taskId}/executions": {
+    "/api/v1/data-alerts/{taskId}/executions": {
       "get": {
         "tags": [
           "alerting tasks executions"
@@ -1208,7 +1208,7 @@
         }
       }
     },
-    "/v1/data-alerts/{taskId}/executions/{executionId}/evaluations": {
+    "/api/v1/data-alerts/{taskId}/executions/{executionId}/evaluations": {
       "get": {
         "tags": [
           "alerting tasks executions"
@@ -1289,7 +1289,7 @@
         }
       }
     },
-    "/v1/data-alerts/{taskId}/executions/stats": {
+    "/api/v1/data-alerts/{taskId}/executions/stats": {
       "get": {
         "tags": [
           "alerting tasks executions"
@@ -1373,7 +1373,7 @@
         }
       }
     },
-    "/v1/data-alerts/actions/trigger": {
+    "/api/v1/data-alerts/actions/trigger": {
       "post": {
         "tags": [
           "alerting actions"
@@ -1445,7 +1445,7 @@
         }
       }
     },
-    "/v1/data-alerts/actions/validate": {
+    "/api/v1/data-alerts/actions/validate": {
       "post": {
         "tags": [
           "alerting actions"
@@ -1517,7 +1517,7 @@
         }
       }
     },
-    "/v1/data-alerts/settings": {
+    "/api/v1/data-alerts/settings": {
       "get": {
         "tags": [
           "alerting settings"
@@ -3092,5 +3092,20 @@
         "description": "an internal recipient based on its user id."
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

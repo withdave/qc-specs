@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/items": {
+    "/api/v1/items": {
       "get": {
         "tags": [
           "items"
@@ -300,7 +300,7 @@
         }
       }
     },
-    "/v1/items/{itemId}": {
+    "/api/v1/items/{itemId}": {
       "get": {
         "tags": [
           "items"
@@ -653,7 +653,7 @@
         }
       }
     },
-    "/v1/items/{itemId}/collections": {
+    "/api/v1/items/{itemId}/collections": {
       "get": {
         "tags": [
           "items"
@@ -835,7 +835,7 @@
         }
       }
     },
-    "/v1/items/{itemId}/publisheditems": {
+    "/api/v1/items/{itemId}/publisheditems": {
       "get": {
         "tags": [
           "items"
@@ -999,7 +999,7 @@
         }
       }
     },
-    "/v1/items/settings": {
+    "/api/v1/items/settings": {
       "get": {
         "tags": [
           "items-settings"
@@ -1872,5 +1872,20 @@
         "description": "The case-sensitive string defining the space type."
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

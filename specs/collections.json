@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/collections": {
+    "/api/v1/collections": {
       "get": {
         "tags": [
           "collections"
@@ -189,11 +189,15 @@
               }
             },
             "required": false,
-            "description": "A commaseparated case-sensitive string used to filter by multiple types."
+            "description": "A comma-separated case-sensitive string used to filter by multiple types."
           }
         ],
         "description": "Retrieves the collections that the user has access to. This endpoint does not return the user's favorites collection, which can be retrieved with `/v1/collections/favorites`.\n",
         "operationId": "collections#listCollections",
+        "x-qlik-permissions": [
+          "collection:read",
+          "collection.publicgoverned:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -314,6 +318,10 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "collection:create",
+          "admin.collection.publicgoverned:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -326,7 +334,7 @@
         }
       }
     },
-    "/v1/collections/{collectionId}": {
+    "/api/v1/collections/{collectionId}": {
       "get": {
         "tags": [
           "collections"
@@ -422,6 +430,10 @@
         ],
         "description": "Finds and returns a collection.\n",
         "operationId": "collections#getCollection",
+        "x-qlik-permissions": [
+          "collection:read",
+          "collection.publicgoverned:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -553,6 +565,10 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "collection:update",
+          "admin.collection.publicgoverned:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -684,6 +700,10 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "collection:update",
+          "admin.collection.publicgoverned:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -768,6 +788,10 @@
         ],
         "description": "Deletes a collection and removes all items from the collection.\n",
         "operationId": "collections#deleteCollection",
+        "x-qlik-permissions": [
+          "collection:delete",
+          "admin.collection.publicgoverned:delete"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -780,7 +804,7 @@
         }
       }
     },
-    "/v1/collections/{collectionId}/items": {
+    "/api/v1/collections/{collectionId}/items": {
       "get": {
         "tags": [
           "collections"
@@ -990,6 +1014,11 @@
         ],
         "description": "Retrieves items from a collection that the user has access to.\n",
         "operationId": "collections#listCollectionItems",
+        "x-qlik-permissions": [
+          "collection:read",
+          "collection.publicgoverned:read",
+          "<item>:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -1136,6 +1165,12 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "collection:read",
+          "collection:update",
+          "admin.collection.publicgoverned:add_content",
+          "<item>:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -1148,7 +1183,7 @@
         }
       }
     },
-    "/v1/collections/{collectionId}/items/{itemId}": {
+    "/api/v1/collections/{collectionId}/items/{itemId}": {
       "get": {
         "tags": [
           "collections"
@@ -1253,6 +1288,11 @@
         ],
         "description": "Finds and returns an item in a specific collection. See GET `/items/{id}`.\n",
         "operationId": "collections#getCollectionItem",
+        "x-qlik-permissions": [
+          "collection:read",
+          "collection.publicgoverned:read",
+          "<item>:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -1356,6 +1396,12 @@
         ],
         "description": "Removes an item from a collection.\n",
         "operationId": "collections#deleteCollectionItem",
+        "x-qlik-permissions": [
+          "collection:read",
+          "collection:update",
+          "admin.collection.publicgoverned:remove_content",
+          "<item>:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -1368,7 +1414,7 @@
         }
       }
     },
-    "/v1/collections/favorites": {
+    "/api/v1/collections/favorites": {
       "get": {
         "tags": [
           "collections"
@@ -1443,6 +1489,10 @@
         },
         "description": "Lists the user's favorites collection.\n",
         "operationId": "collections#getFavoritesCollection",
+        "x-qlik-permissions": [
+          "collection:read",
+          "collection.publicgoverned:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -2109,5 +2159,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

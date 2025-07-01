@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/glossaries": {
+    "/api/v1/glossaries": {
       "get": {
         "tags": [
           "glossaries"
@@ -178,7 +178,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}": {
+    "/api/v1/glossaries/{id}": {
       "get": {
         "tags": [
           "glossaries"
@@ -558,7 +558,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/actions/export": {
+    "/api/v1/glossaries/{id}/actions/export": {
       "get": {
         "tags": [
           "glossaries"
@@ -650,7 +650,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/categories": {
+    "/api/v1/glossaries/{id}/categories": {
       "get": {
         "tags": [
           "categories"
@@ -871,7 +871,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/categories/{categoryId}": {
+    "/api/v1/glossaries/{id}/categories/{categoryId}": {
       "get": {
         "tags": [
           "categories"
@@ -1304,7 +1304,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms": {
+    "/api/v1/glossaries/{id}/terms": {
       "get": {
         "tags": [
           "terms"
@@ -1539,7 +1539,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms/{termId}": {
+    "/api/v1/glossaries/{id}/terms/{termId}": {
       "get": {
         "tags": [
           "terms"
@@ -1983,7 +1983,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms/{termId}/actions/change-status": {
+    "/api/v1/glossaries/{id}/terms/{termId}/actions/change-status": {
       "post": {
         "tags": [
           "terms"
@@ -2114,7 +2114,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms/{termId}/links": {
+    "/api/v1/glossaries/{id}/terms/{termId}/links": {
       "get": {
         "tags": [
           "links"
@@ -2384,7 +2384,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms/{termId}/revisions": {
+    "/api/v1/glossaries/{id}/terms/{termId}/revisions": {
       "get": {
         "tags": [
           "terms"
@@ -2516,7 +2516,7 @@
         }
       }
     },
-    "/v1/glossaries/actions/import": {
+    "/api/v1/glossaries/actions/import": {
       "post": {
         "tags": [
           "glossaries"
@@ -4109,5 +4109,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

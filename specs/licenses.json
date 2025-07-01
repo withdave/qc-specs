@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/licenses/assignments": {
+    "/api/v1/licenses/assignments": {
       "get": {
         "tags": [
           "licenses"
@@ -124,7 +124,7 @@
         }
       }
     },
-    "/v1/licenses/assignments/actions/add": {
+    "/api/v1/licenses/assignments/actions/add": {
       "post": {
         "tags": [
           "licenses"
@@ -207,7 +207,7 @@
         }
       }
     },
-    "/v1/licenses/assignments/actions/delete": {
+    "/api/v1/licenses/assignments/actions/delete": {
       "post": {
         "tags": [
           "licenses"
@@ -290,7 +290,7 @@
         }
       }
     },
-    "/v1/licenses/assignments/actions/update": {
+    "/api/v1/licenses/assignments/actions/update": {
       "post": {
         "tags": [
           "licenses"
@@ -373,7 +373,7 @@
         }
       }
     },
-    "/v1/licenses/consumption": {
+    "/api/v1/licenses/consumption": {
       "get": {
         "tags": [
           "licenses"
@@ -484,7 +484,7 @@
         }
       }
     },
-    "/v1/licenses/overview": {
+    "/api/v1/licenses/overview": {
       "get": {
         "tags": [
           "licenses"
@@ -555,7 +555,7 @@
         }
       }
     },
-    "/v1/licenses/settings": {
+    "/api/v1/licenses/settings": {
       "get": {
         "tags": [
           "licenses"
@@ -707,7 +707,7 @@
         }
       }
     },
-    "/v1/licenses/status": {
+    "/api/v1/licenses/status": {
       "get": {
         "tags": [
           "licenses"
@@ -1558,5 +1558,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

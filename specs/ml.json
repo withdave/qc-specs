@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/ml/deployments": {
+    "/api/v1/ml/deployments": {
       "get": {
         "tags": [
           "deployments"
@@ -128,7 +128,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}": {
+    "/api/v1/ml/deployments/{deploymentId}": {
       "get": {
         "tags": [
           "deployments"
@@ -293,7 +293,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/actions/activate-models": {
+    "/api/v1/ml/deployments/{deploymentId}/actions/activate-models": {
       "post": {
         "tags": [
           "deployments"
@@ -344,7 +344,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/actions/deactivate-models": {
+    "/api/v1/ml/deployments/{deploymentId}/actions/deactivate-models": {
       "post": {
         "tags": [
           "deployments"
@@ -395,7 +395,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/aliases": {
+    "/api/v1/ml/deployments/{deploymentId}/aliases": {
       "get": {
         "tags": [
           "aliases"
@@ -529,7 +529,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/aliases/{aliasId}": {
+    "/api/v1/ml/deployments/{deploymentId}/aliases/{aliasId}": {
       "get": {
         "tags": [
           "aliases"
@@ -706,7 +706,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/aliases/{aliasName}/realtime-predictions/actions/run": {
+    "/api/v1/ml/deployments/{deploymentId}/aliases/{aliasName}/realtime-predictions/actions/run": {
       "post": {
         "tags": [
           "predictions"
@@ -810,7 +810,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/batch-predictions": {
+    "/api/v1/ml/deployments/{deploymentId}/batch-predictions": {
       "get": {
         "tags": [
           "predictions"
@@ -945,7 +945,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}": {
+    "/api/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}": {
       "get": {
         "tags": [
           "predictions"
@@ -1119,7 +1119,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/actions/predict": {
+    "/api/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/actions/predict": {
       "post": {
         "tags": [
           "predictions"
@@ -1190,7 +1190,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/schedule": {
+    "/api/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/schedule": {
       "get": {
         "tags": [
           "predictions"
@@ -1436,7 +1436,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/models/actions/add": {
+    "/api/v1/ml/deployments/{deploymentId}/models/actions/add": {
       "post": {
         "tags": [
           "deployments"
@@ -1496,7 +1496,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/models/actions/remove": {
+    "/api/v1/ml/deployments/{deploymentId}/models/actions/remove": {
       "post": {
         "tags": [
           "deployments"
@@ -1556,7 +1556,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/realtime-predictions/actions/run": {
+    "/api/v1/ml/deployments/{deploymentId}/realtime-predictions/actions/run": {
       "post": {
         "tags": [
           "predictions"
@@ -1656,7 +1656,7 @@
         }
       }
     },
-    "/v1/ml/experiments": {
+    "/api/v1/ml/experiments": {
       "get": {
         "tags": [
           "experiments"
@@ -1781,7 +1781,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}": {
+    "/api/v1/ml/experiments/{experimentId}": {
       "get": {
         "tags": [
           "experiments"
@@ -1946,7 +1946,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/actions/recommend-models": {
+    "/api/v1/ml/experiments/{experimentId}/actions/recommend-models": {
       "post": {
         "tags": [
           "experiments"
@@ -2011,7 +2011,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/models": {
+    "/api/v1/ml/experiments/{experimentId}/models": {
       "get": {
         "tags": [
           "experiments"
@@ -2072,7 +2072,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/models/{modelId}": {
+    "/api/v1/ml/experiments/{experimentId}/models/{modelId}": {
       "get": {
         "tags": [
           "experiments"
@@ -2124,7 +2124,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/versions": {
+    "/api/v1/ml/experiments/{experimentId}/versions": {
       "get": {
         "tags": [
           "experiments"
@@ -2260,7 +2260,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/versions/{experimentVersionId}": {
+    "/api/v1/ml/experiments/{experimentId}/versions/{experimentVersionId}": {
       "get": {
         "tags": [
           "experiments"
@@ -2434,7 +2434,7 @@
         }
       }
     },
-    "/v1/ml/jobs/{corrType}/{corrId}/actions/cancel": {
+    "/api/v1/ml/jobs/{corrType}/{corrId}/actions/cancel": {
       "post": {
         "tags": [
           "jobs"
@@ -2480,7 +2480,7 @@
         }
       }
     },
-    "/v1/ml/profile-insights": {
+    "/api/v1/ml/profile-insights": {
       "post": {
         "tags": [
           "profile-insights"
@@ -2560,7 +2560,7 @@
         }
       }
     },
-    "/v1/ml/profile-insights/{dataSetId}": {
+    "/api/v1/ml/profile-insights/{dataSetId}": {
       "get": {
         "tags": [
           "profile-insights"
@@ -6430,5 +6430,20 @@
         "description": "Timestamp when this was updated"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

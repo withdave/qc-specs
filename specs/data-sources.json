@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/data-sources": {
+    "/api/v1/data-sources": {
       "get": {
         "tags": [
           "data-sources"
@@ -98,7 +98,7 @@
         }
       }
     },
-    "/v1/data-sources/{dataSourceId}/api-specs": {
+    "/api/v1/data-sources/{dataSourceId}/api-specs": {
       "get": {
         "tags": [
           "data-sources"
@@ -180,7 +180,7 @@
         }
       }
     },
-    "/v1/data-sources/{dataSourceId}/gateways": {
+    "/api/v1/data-sources/{dataSourceId}/gateways": {
       "get": {
         "tags": [
           "data-sources"
@@ -635,5 +635,20 @@
         "description": "UI related metadata (only present when 'includeui' is set to true in query)"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

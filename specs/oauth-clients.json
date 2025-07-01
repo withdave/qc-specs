@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/oauth-clients": {
+    "/api/v1/oauth-clients": {
       "get": {
         "tags": [
           "oauth-clients"
@@ -173,7 +173,7 @@
         }
       }
     },
-    "/v1/oauth-clients/{id}": {
+    "/api/v1/oauth-clients/{id}": {
       "get": {
         "tags": [
           "oauth-clients"
@@ -370,7 +370,7 @@
         }
       }
     },
-    "/v1/oauth-clients/{id}/actions/publish": {
+    "/api/v1/oauth-clients/{id}/actions/publish": {
       "post": {
         "tags": [
           "oauth-clients"
@@ -432,7 +432,7 @@
         }
       }
     },
-    "/v1/oauth-clients/{id}/client-secrets": {
+    "/api/v1/oauth-clients/{id}/client-secrets": {
       "post": {
         "tags": [
           "oauth-clients"
@@ -497,7 +497,7 @@
         }
       }
     },
-    "/v1/oauth-clients/{id}/client-secrets/{hint}": {
+    "/api/v1/oauth-clients/{id}/client-secrets/{hint}": {
       "delete": {
         "tags": [
           "oauth-clients"
@@ -561,7 +561,7 @@
         }
       }
     },
-    "/v1/oauth-clients/{id}/connection-configs/me": {
+    "/api/v1/oauth-clients/{id}/connection-configs/me": {
       "get": {
         "tags": [
           "oauth-clients"
@@ -1440,5 +1440,20 @@
         "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

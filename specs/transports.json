@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/transports/email-config": {
+    "/api/v1/transports/email-config": {
       "get": {
         "tags": [
           "email-config"
@@ -169,7 +169,7 @@
         }
       }
     },
-    "/v1/transports/email-config/actions/send-test-email": {
+    "/api/v1/transports/email-config/actions/send-test-email": {
       "post": {
         "tags": [
           "email-config-actions"
@@ -244,7 +244,7 @@
         }
       }
     },
-    "/v1/transports/email-config/actions/validate": {
+    "/api/v1/transports/email-config/actions/validate": {
       "post": {
         "tags": [
           "email-config-actions"
@@ -285,7 +285,7 @@
         }
       }
     },
-    "/v1/transports/email-config/actions/verify-connection": {
+    "/api/v1/transports/email-config/actions/verify-connection": {
       "post": {
         "tags": [
           "email-config-actions"
@@ -767,5 +767,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/themes": {
+    "/api/v1/themes": {
       "get": {
         "tags": [
           "themes"
@@ -126,7 +126,7 @@
         }
       }
     },
-    "/v1/themes/{id}": {
+    "/api/v1/themes/{id}": {
       "get": {
         "tags": [
           "themes"
@@ -384,7 +384,7 @@
         }
       }
     },
-    "/v1/themes/{id}/file": {
+    "/api/v1/themes/{id}/file": {
       "get": {
         "tags": [
           "themes"
@@ -450,7 +450,7 @@
         }
       }
     },
-    "/v1/themes/{id}/file/{filepath}": {
+    "/api/v1/themes/{id}/file/{filepath}": {
       "get": {
         "tags": [
           "themes"
@@ -684,5 +684,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }
