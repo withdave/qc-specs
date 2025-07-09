@@ -570,6 +570,9 @@
             "example": "FyPG6xWp6prDU6BXQ3g7LY9gWR_YRkkx",
             "description": "The ID of the user who created the reload."
           },
+          "weight": {
+            "$ref": "#/components/schemas/Weight"
+          },
           "endTime": {
             "type": "string",
             "example": "2020-11-03T17:00:11.865Z",
@@ -627,6 +630,9 @@
             "type": "string",
             "example": "116dbfae-7fb9-4983-8e23-5ccd8c508722",
             "description": "The ID of the app to be reloaded."
+          },
+          "weight": {
+            "$ref": "#/components/schemas/Weight"
           },
           "partial": {
             "type": "boolean",
@@ -708,6 +714,14 @@
         "type": "string",
         "example": "chronos",
         "description": "What initiated the reload: hub = one-time reload manually triggered in hub, chronos = time based scheduled reload triggered by chronos, external = reload triggered via external API request, automations = reload triggered in automation, data-refresh = reload triggered by refresh of data, choreographer = reload triggered by choreographer."
+      },
+      "Weight": {
+        "type": "integer",
+        "maximum": 10,
+        "minimum": 1,
+        "description": "The weight of the reload for the same tenant. The higher the weight, the sooner the reload will be scheduled relative to other reloads for the same tenant. The personal app will be always set as 1 if the value presents.\n",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public"
       }
     }
   },
