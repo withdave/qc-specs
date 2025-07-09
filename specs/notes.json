@@ -45,6 +45,9 @@
         "operationId": "notesConfigGet",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
+        "x-qlik-permissions": [
+          "note.settings:read"
+        ],
         "x-qlik-categories": [
           "external/manage"
         ],
@@ -125,6 +128,9 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
+        "x-qlik-permissions": [
+          "admin.note.settings:update"
+        ],
         "x-qlik-categories": [
           "external/manage"
         ],
