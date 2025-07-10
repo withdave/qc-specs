@@ -9,7 +9,7 @@
         "tags": [
           "sharing tasks"
         ],
-        "summary": "Lists all sharing tasks.",
+        "summary": "List sharing tasks",
         "responses": {
           "200": {
             "content": {
@@ -233,6 +233,7 @@
             "x-qlik-deprecated": true
           }
         ],
+        "description": "Retrieves all sharing tasks accessible to the user. Users assigned the `TenantAdmin` or `AnalyticsAdmin` role can view all tasks.",
         "operationId": "sharingTasksList",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -250,7 +251,7 @@
         "tags": [
           "sharing tasks"
         ],
-        "summary": "Creates a new recurring sharing task.",
+        "summary": "Create sharing task",
         "responses": {
           "201": {
             "content": {
@@ -293,6 +294,7 @@
             "description": "Error response."
           }
         },
+        "description": "Creates a new recurring sharing task.",
         "operationId": "sharingTasksCreateRecurring",
         "requestBody": {
           "content": {
@@ -323,7 +325,7 @@
         "tags": [
           "sharing tasks"
         ],
-        "summary": "See details about a sharing task",
+        "summary": "Get sharing task",
         "responses": {
           "200": {
             "content": {
@@ -390,12 +392,14 @@
             "in": "query",
             "name": "isViewChart",
             "schema": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": false
             },
             "required": false,
-            "description": "A boolean flag to know if the user has clicked on the view chart button"
+            "description": "Determines whether to update the `lastViewed` property for the sharing task, which is used to determine whether the sharing task is still in use. If set to `true`, this will be updated to current time."
           }
         ],
+        "description": "Returns the details of a specific sharing task.",
         "operationId": "sharingTasksIDGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -413,7 +417,7 @@
         "tags": [
           "sharing tasks"
         ],
-        "summary": "Updates an existing sharing task.",
+        "summary": "Update sharing task",
         "responses": {
           "204": {
             "description": "The sharing task has been successfully updated."
@@ -470,6 +474,7 @@
             "description": "The sharing task identifier."
           }
         ],
+        "description": "Updates one or more properties of a specific sharing task.",
         "operationId": "sharingTasksUpdate",
         "requestBody": {
           "content": {
@@ -498,7 +503,7 @@
         "tags": [
           "sharing tasks"
         ],
-        "summary": "Deletes a sharing task.",
+        "summary": "Delete sharing task",
         "responses": {
           "204": {
             "description": "The sharing task has been successfully deleted."
@@ -555,6 +560,7 @@
             "description": "The sharing task identifier."
           }
         ],
+        "description": "Deletes a specific sharing task.",
         "operationId": "sharingTasksDelete",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -574,7 +580,7 @@
         "tags": [
           "sharing tasks actions"
         ],
-        "summary": "Cancels a recurring sharing task",
+        "summary": "Cancel sharing task execution",
         "responses": {
           "204": {
             "description": "The sharing task has been successfully cancelled."
@@ -631,6 +637,7 @@
             "description": "The sharing task identifier."
           }
         ],
+        "description": "Requests cancellation of an execution of the specified recurring sharing task.",
         "operationId": "sharingTasksActionsCancel",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -650,7 +657,7 @@
         "tags": [
           "sharing tasks actions"
         ],
-        "summary": "Executes a recurring sharing task",
+        "summary": "Start sharing task execution",
         "responses": {
           "204": {
             "description": "The sharing task has been successfully set up for execution."
@@ -696,6 +703,7 @@
             "description": "Error response."
           }
         },
+        "description": "Requests execution of the specified recurring sharing task.",
         "operationId": "sharingTasksActionsRecurring",
         "requestBody": {
           "content": {
@@ -726,7 +734,7 @@
         "tags": [
           "sharing settings"
         ],
-        "summary": "Lists sharing settings.",
+        "summary": "Get sharing settings",
         "responses": {
           "200": {
             "content": {
@@ -759,6 +767,7 @@
             "description": "Error response."
           }
         },
+        "description": "Retrieves the current settings for sharing tasks, reports, and other related configuration.",
         "operationId": "sharingSettingsGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -776,7 +785,7 @@
         "tags": [
           "sharing settings"
         ],
-        "summary": "Patches sharing features toggles. Accessible only by tenant admins.",
+        "summary": "Update sharing toggle settings",
         "responses": {
           "204": {
             "description": "Sharing settings have been successfully updated."
@@ -812,6 +821,7 @@
             "description": "Error response."
           }
         },
+        "description": "Patches the toggle settings for sharing tasks, reports, and other related configuration in the tenant. User must be assigned the `TenantAdmin` role.",
         "operationId": "sharingSettingsPatch",
         "requestBody": {
           "content": {
@@ -840,7 +850,7 @@
         "tags": [
           "sharing settings"
         ],
-        "summary": "Updates API configuration. Accessible only by tenant admins.",
+        "summary": "Update sharing settings",
         "responses": {
           "204": {
             "description": "API settings have been successfully updated."
@@ -876,6 +886,7 @@
             "description": "Error response."
           }
         },
+        "description": "Updates the settings for sharing tasks, reports, and other related configuration in the tenant. User must be assigned the `TenantAdmin` role.",
         "operationId": "sharingAPISettingsUpload",
         "requestBody": {
           "content": {
