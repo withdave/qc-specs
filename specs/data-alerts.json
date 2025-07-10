@@ -9,7 +9,7 @@
         "tags": [
           "alerting tasks"
         ],
-        "summary": "Get a list of alerting tasks.",
+        "summary": "List data alert tasks",
         "responses": {
           "200": {
             "content": {
@@ -204,6 +204,7 @@
             "description": "The status you would like to filter by"
           }
         ],
+        "description": "Retrieves all data alert tasks accessible to the user. Users assigned the `TenantAdmin` or `AnalyticsAdmin` role can view all tasks.",
         "operationId": "alertingTasksList",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -220,7 +221,7 @@
         "tags": [
           "alerting tasks"
         ],
-        "summary": "Creates a new alerting task.",
+        "summary": "Create data alert task",
         "responses": {
           "202": {
             "content": {
@@ -263,6 +264,7 @@
             "description": "Error response."
           }
         },
+        "description": "Creates a new data alerting task.",
         "operationId": "alertingTasksCreate",
         "requestBody": {
           "content": {
@@ -292,7 +294,7 @@
         "tags": [
           "alerting tasks"
         ],
-        "summary": "Get an alerting task by its id",
+        "summary": "Get data alert task",
         "responses": {
           "200": {
             "content": {
@@ -356,6 +358,7 @@
             "description": "The alerting task identifier."
           }
         ],
+        "description": "Returns the details of a specific data alert task.",
         "operationId": "alertingTasksIDGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -372,7 +375,7 @@
         "tags": [
           "alerting tasks"
         ],
-        "summary": "Updates an existing alerting task",
+        "summary": "Update data alert task",
         "responses": {
           "204": {
             "description": "The alerting task has been successfully updated."
@@ -429,6 +432,7 @@
             "description": "The alerting task identifier."
           }
         ],
+        "description": "Updates one or more properties of a specific data alerting task.",
         "operationId": "alertingTasksUpdate",
         "requestBody": {
           "content": {
@@ -456,7 +460,7 @@
         "tags": [
           "alerting tasks"
         ],
-        "summary": "Deletes an alerting task.",
+        "summary": "Delete data alert task",
         "responses": {
           "204": {
             "description": "The alerting task has been successfully deleted."
@@ -513,6 +517,7 @@
             "description": "The alerting task identifier."
           }
         ],
+        "description": "Deletes a specific data alerting task.",
         "operationId": "alertingTasksDelete",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -531,7 +536,7 @@
         "tags": [
           "alerting tasks"
         ],
-        "summary": "Get the condition associated with an alerting task",
+        "summary": "Get data alert task condition",
         "responses": {
           "200": {
             "content": {
@@ -595,6 +600,7 @@
             "description": "The alerting task identifier."
           }
         ],
+        "description": "Retrieves the condition associated with a data alerting task.",
         "operationId": "alertingConditionGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -613,7 +619,7 @@
         "tags": [
           "alerting tasks executions"
         ],
-        "summary": "Gets a specified alerting execution.",
+        "summary": "Get data alert task execution",
         "responses": {
           "200": {
             "content": {
@@ -686,6 +692,7 @@
             "description": "The execution identifier. If value is \"latest\", the latest execution will be returned"
           }
         ],
+        "description": "Retrieves a specific execution for the specified data alerting task.",
         "operationId": "alertingExecutionsIDGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -702,7 +709,7 @@
         "tags": [
           "alerting tasks executions"
         ],
-        "summary": "Deletes an execution.",
+        "summary": "Delete data alert task execution",
         "responses": {
           "204": {
             "description": "The execution has been successfully deleted."
@@ -768,6 +775,7 @@
             "description": "The execution identifier."
           }
         ],
+        "description": "Deletes a specific data alerting task execution.",
         "operationId": "alertingExecutionsDelete",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -786,7 +794,7 @@
         "tags": [
           "alerting tasks"
         ],
-        "summary": "Get the recipient stats for an alerting task",
+        "summary": "Get data alert task recipient stats",
         "responses": {
           "200": {
             "content": {
@@ -898,6 +906,7 @@
             "description": "The recipients ID you would like to filter by"
           }
         ],
+        "description": "Retrieve the recipient stats for a data alerting task.",
         "operationId": "alertingRecipientStatsGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -916,7 +925,7 @@
         "tags": [
           "alerting tasks executions"
         ],
-        "summary": "Lists all alerting-executions linked to a user and a tenant.",
+        "summary": "List data alert task executions",
         "responses": {
           "200": {
             "content": {
@@ -1195,6 +1204,7 @@
             "description": "Specifies a date that executions should have been created before. Date in RFC3339Nano format, such as 2020-01-01T00:00:00.000Z"
           }
         ],
+        "description": "Lists executions for the specified data alerting task.",
         "operationId": "alertingExecutionsList",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -1213,7 +1223,7 @@
         "tags": [
           "alerting tasks executions"
         ],
-        "summary": "Gets the content of an evaluation from an execution",
+        "summary": "Get data alert task execution evaluation",
         "responses": {
           "200": {
             "content": {
@@ -1276,6 +1286,7 @@
             "description": "The alerting task identifier."
           }
         ],
+        "description": "Retrieves the content of an evaluation for a specified data alerting task execution.",
         "operationId": "alertingExecutionsEvaluationGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -1294,7 +1305,7 @@
         "tags": [
           "alerting tasks executions"
         ],
-        "summary": "Gets the stats for alerting task executions",
+        "summary": "Get data alert task execution stats",
         "responses": {
           "200": {
             "content": {
@@ -1360,6 +1371,7 @@
             "description": "The period by which the stats aggregation needs to be performed."
           }
         ],
+        "description": "Retrieves stats for overall data alerting task executions.",
         "operationId": "alertingExecutionsEvaluationStats",
         "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
@@ -1378,7 +1390,7 @@
         "tags": [
           "alerting actions"
         ],
-        "summary": "Creates a new alerting trigger action.",
+        "summary": "Create data alert task trigger",
         "responses": {
           "202": {
             "content": {
@@ -1421,6 +1433,7 @@
             "description": "Error response."
           }
         },
+        "description": "Creates a new data alerting task trigger action.",
         "operationId": "alertingActionsTriggerCreate",
         "requestBody": {
           "content": {
@@ -1450,7 +1463,7 @@
         "tags": [
           "alerting actions"
         ],
-        "summary": "Validates a new alerting task. Current support includes validation for recipients only.",
+        "summary": "Validate data alert task",
         "responses": {
           "200": {
             "content": {
@@ -1493,6 +1506,7 @@
             "description": "Error response."
           }
         },
+        "description": "Validates a new data alerting task. Current support includes validation for recipients only.",
         "operationId": "alertingTaskActionsValidate",
         "requestBody": {
           "content": {
@@ -1522,7 +1536,7 @@
         "tags": [
           "alerting settings"
         ],
-        "summary": "Lists alerting settings.",
+        "summary": "Get data alert settings",
         "responses": {
           "200": {
             "content": {
@@ -1555,6 +1569,7 @@
             "description": "Error response."
           }
         },
+        "description": "Retrieves the current settings for data alerts.",
         "operationId": "alertingSettingsGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -1571,7 +1586,7 @@
         "tags": [
           "alerting settings"
         ],
-        "summary": "Updates Alerting configuration. Accessible only by tenant admins.",
+        "summary": "Update data alert settings",
         "responses": {
           "204": {
             "description": "Alerting settings have been successfully updated."
@@ -1617,6 +1632,7 @@
             "description": "Error response."
           }
         },
+        "description": "Updates the settings for data alerts. User must be assigned the `TenantAdmin` role.",
         "operationId": "alertingSettingsUpload",
         "requestBody": {
           "content": {
