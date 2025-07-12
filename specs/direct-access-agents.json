@@ -525,6 +525,153 @@
           "limit": 100
         }
       }
+    },
+    "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/custom-data-type-mappings": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get connector type mapping configuration",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdbcCustomDataTypeResponse"
+                }
+              }
+            },
+            "description": "The list of configuration values from the file."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          },
+          {
+            "in": "path",
+            "name": "connectorType",
+            "schema": {
+              "enum": [
+                "odbc-connector"
+              ],
+              "type": "string"
+            },
+            "required": true,
+            "description": "The connector type. Must be `odbc-connector` for this endpoint."
+          }
+        ],
+        "description": "Retrieves custom data type mapping settings for the Generic ODBC Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
+        "operationId": "getOdbcCustomTypeMappingsAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Set connector type mapping configuration",
+        "responses": {
+          "204": {
+            "description": "Updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          },
+          {
+            "in": "path",
+            "name": "connectorType",
+            "schema": {
+              "enum": [
+                "odbc-connector"
+              ],
+              "type": "string"
+            },
+            "required": true,
+            "description": "The connector type. Must be `odbc-connector` for this endpoint."
+          }
+        ],
+        "description": "Completely replaces the contents of the custom data type mapping configuration file for the Generic ODBC connector. Partial updates are not supported. There are property naming differences between the API and the file contents. Use the API property format when making changes. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
+        "operationId": "putOdbcCustomTypeMappingsAsync",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOdbcCustomTypeMappingsRequest"
+              }
+            }
+          },
+          "description": "The contents of the file to be updated."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
     }
   },
   "x-qlik-categories": [],
@@ -787,6 +934,62 @@
         },
         "additionalProperties": false
       },
+      "OdbcCustomDataType": {
+        "type": "object",
+        "required": [
+          "id",
+          "nativeDataType",
+          "qlikDataType"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "Amazon Athena ODBC (x64)",
+            "minLength": 1,
+            "description": "The Identifier property in the ODBC custom data type mapping file."
+          },
+          "bit": {
+            "type": "boolean",
+            "example": true,
+            "description": "The IsBit property in the ODBC custom data type mapping file."
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0,
+            "description": "The Size property in the ODBC custom data type mapping file."
+          },
+          "qlikDataType": {
+            "type": "string",
+            "example": "String",
+            "minLength": 1,
+            "description": "The QlikDataType property in the ODBC custom data type mapping file."
+          },
+          "nativeDataType": {
+            "type": "string",
+            "example": "varchar",
+            "minLength": 1,
+            "description": "The NativeDataType property in the ODBC custom data type mapping file."
+          }
+        },
+        "additionalProperties": false
+      },
+      "OdbcCustomDataTypeResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OdbcCustomDataType"
+            },
+            "nullable": true
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "additionalProperties": false
+      },
       "Operation": {
         "type": "object",
         "required": [
@@ -895,6 +1098,19 @@
           }
         },
         "description": "The request to update a connector flat file",
+        "additionalProperties": false
+      },
+      "UpdateOdbcCustomTypeMappingsRequest": {
+        "type": "object",
+        "properties": {
+          "odbcCustomDataTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OdbcCustomDataType"
+            },
+            "nullable": true
+          }
+        },
         "additionalProperties": false
       }
     }
