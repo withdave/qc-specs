@@ -16,11 +16,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Tenant"
-                },
-                "examples": {
-                  "Tenant": {
-                    "$ref": "#/components/examples/PostTenant201Response"
-                  }
                 }
               }
             },
@@ -585,31 +580,6 @@
   ],
   "openapi": "3.0.0",
   "components": {
-    "examples": {
-      "PostTenant201Response": {
-        "value": {
-          "id": "kg1knZuzosd7LR-CfvV7ZZnyEI--XYZZ",
-          "name": "bk1672h181jm1b1",
-          "links": {
-            "self": {
-              "href": "https://bk1672h181jm1b1.us.qlikcloud.com/api/v1/tenants/kg1knZuzosd7LR-CfvV7ZZnyEI--XYZZ"
-            }
-          },
-          "status": "active",
-          "created": "2022-06-24T18:28:31.301Z",
-          "hostnames": [
-            "bk1672h181jm1b1.us.qlikcloud.com"
-          ],
-          "datacenter": "us-east-1",
-          "lastUpdated": "2022-06-24T18:28:31.301Z",
-          "createdByUser": "dyk0nG9WvXZmupfFtULqgVAp1l3kbmTY",
-          "enableAnalyticCreation": true,
-          "autoAssignCreateSharedSpacesRoleToProfessionals": false,
-          "autoAssignDataServicesContributorRoleToProfessionals": false,
-          "autoAssignPrivateAnalyticsContentCreatorRoleToProfessionals": false
-        }
-      }
-    },
     "schemas": {
       "Error": {
         "type": "object",
@@ -725,6 +695,12 @@
                 "description": "A link to this tenant."
               }
             }
+          },
+          "region": {
+            "type": "string",
+            "example": "us",
+            "readOnly": true,
+            "description": "The region where the tenant is located."
           },
           "status": {
             "enum": [
