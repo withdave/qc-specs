@@ -5854,13 +5854,77 @@
       "ModelMetricsTimeseries": {
         "type": "object",
         "properties": {
+          "mae": {
+            "type": "number",
+            "description": "Mean absolute error (training data)"
+          },
           "mape": {
             "type": "number",
             "description": "Mean absolute percentage error (training data)"
           },
+          "mase": {
+            "type": "number",
+            "description": "Mean absolute scaled error (training data)"
+          },
+          "rmse": {
+            "type": "number",
+            "description": "Root mean squared error (training data)"
+          },
+          "mdape": {
+            "type": "number",
+            "description": "Median absolute percentage error (training data)"
+          },
+          "smape": {
+            "type": "number",
+            "description": "Symmetric mean absolute percentage error (training data)"
+          },
+          "wmape": {
+            "type": "number",
+            "description": "Weighted mean absolute percentage error (training data)"
+          },
+          "mnrmse": {
+            "type": "number",
+            "description": "Mean root mean squared error (training data)"
+          },
+          "maeTest": {
+            "type": "number",
+            "description": "Mean absolute error (test data)"
+          },
+          "mdnrmse": {
+            "type": "number",
+            "description": "Median root mean squared error (training data)"
+          },
           "mapeTest": {
             "type": "number",
             "description": "Mean absolute percentage error (test data)"
+          },
+          "maseTest": {
+            "type": "number",
+            "description": "Mean absolute scaled error (test data)"
+          },
+          "rmseTest": {
+            "type": "number",
+            "description": "Root mean squared error (test data)"
+          },
+          "mdapeTest": {
+            "type": "number",
+            "description": "Median absolute percentage error (test data)"
+          },
+          "smapeTest": {
+            "type": "number",
+            "description": "Symmetric mean absolute percentage error (test data)"
+          },
+          "wmapeTest": {
+            "type": "number",
+            "description": "Weighted mean absolute percentage error (test data)"
+          },
+          "mnrmseTest": {
+            "type": "number",
+            "description": "Mean root mean squared error (test data)"
+          },
+          "mdnrmseTest": {
+            "type": "number",
+            "description": "Median root mean squared error (test data)"
           }
         },
         "description": "Timeseries metrics experiments valid for timeseries forecasting.\n",

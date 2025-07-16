@@ -717,9 +717,10 @@
       },
       "Weight": {
         "type": "integer",
+        "default": 1,
         "maximum": 10,
         "minimum": 1,
-        "description": "The weight of the reload for the same tenant. The higher the weight, the sooner the reload will be scheduled relative to other reloads for the same tenant. The personal app will be always set as 1 if the value presents.\n",
+        "description": "The weight of the reload for the same tenant. The higher the weight, the sooner the reload will be scheduled relative to other reloads for the same tenant. The personal app will be always set as 1.\n",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public"
       }
