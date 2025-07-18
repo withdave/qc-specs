@@ -1487,7 +1487,8 @@
           "trial",
           "type",
           "valid",
-          "extensionStatus"
+          "extensionStatus",
+          "deactivated"
         ],
         "properties": {
           "type": {
@@ -1528,6 +1529,10 @@
           "product": {
             "type": "string",
             "description": "The product the license is valid for."
+          },
+          "deactivated": {
+            "type": "boolean",
+            "description": "Boolean indicating if the license is deactivated."
           },
           "extensionStatus": {
             "enum": [
