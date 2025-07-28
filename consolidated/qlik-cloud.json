@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -13357,6 +13357,7 @@
         ],
         "description": "Retrieves all content security policies for a tenant.",
         "operationId": "listCSPEntries",
+        "x-qlik-permissions": "csp:list",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13447,6 +13448,7 @@
           },
           "required": true
         },
+        "x-qlik-permissions": "csp:create",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13550,6 +13552,7 @@
         ],
         "description": "Returns details for a specific content security policy.",
         "operationId": "getCSPEntry",
+        "x-qlik-permissions": "csp:list",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13661,6 +13664,7 @@
           },
           "required": true
         },
+        "x-qlik-permissions": "csp:update",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13755,6 +13759,7 @@
         ],
         "description": "Deletes a specific content security policy.",
         "operationId": "deleteCSPEntry",
+        "x-qlik-permissions": "csp:delete",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13847,6 +13852,7 @@
         ],
         "description": "Retrieves the full content security policy header (including all configured policies and origins) for the tenant.",
         "operationId": "getCSPHeader",
+        "x-qlik-permissions": "csp:list",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -19600,6 +19606,16 @@
           },
           {
             "in": "query",
+            "name": "includeDisabled",
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true,
+            "required": false,
+            "description": "When true disabled datasources are also included in the response"
+          },
+          {
+            "in": "query",
             "name": "includeui",
             "schema": {
               "type": "boolean"
@@ -21369,7 +21385,8 @@
                 "application/octet-stream"
               ],
               "type": "string"
-            }
+            },
+            "description": "response content type"
           }
         ],
         "description": "Exports the specified data integration project.",
@@ -22249,7 +22266,7 @@
                   "type": "object",
                   "properties": {
                     "lastRun": {
-                      "$ref": "#/components/schemas/DataTaskInstanceState"
+                      "$ref": "#/components/schemas/DataTaskInstanceStateOld"
                     },
                     "runReadiness": {
                       "type": "object",
@@ -22963,7 +22980,7 @@
             "description": "The connector type. Must be `odbc-connector` for this endpoint."
           }
         ],
-        "description": "Retrieves custom data type mapping settings for the Generic ODBC Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
+        "description": "Retrieves the custom data type mapping settings for the Generic ODBC Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
         "operationId": "getOdbcCustomTypeMappingsAsync",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -48703,6 +48720,10 @@
         ],
         "description": "Retrieves all webhooks entries for a tenant that the user has access to. Users assigned the `TenantAdmin` role can retrieve all webhooks. A user can have up to 150 webhooks at one time.",
         "operationId": "listWebhookEntries",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -48758,6 +48779,10 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:create",
+          "webhook:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -48819,6 +48844,10 @@
         ],
         "description": "Returns details for a specific webhook.",
         "operationId": "getWebhook",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -48884,6 +48913,10 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:update",
+          "webhook:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -48953,6 +48986,10 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:update",
+          "webhook:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49005,6 +49042,10 @@
         ],
         "description": "Deletes a specific webhook.",
         "operationId": "deleteWebhook",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:delete",
+          "webhook:delete"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49130,6 +49171,10 @@
         ],
         "description": "Returns deliveries for a specific webhook. Delivery history is stored for 1 week.",
         "operationId": "getWebhookDeliveryList",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49200,6 +49245,10 @@
         ],
         "description": "Returns details for a specific delivery.",
         "operationId": "getWebhookDelivery",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49271,6 +49320,10 @@
         ],
         "description": "Resends the delivery with the same payload.",
         "operationId": "resendDelivery",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:create",
+          "webhook:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49312,6 +49365,10 @@
         },
         "description": "Lists event-types that are possible to subscribe to.",
         "operationId": "listEventTypes",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -62839,7 +62896,7 @@
           }
         }
       },
-      "DataTaskInstanceState": {
+      "DataTaskInstanceStateOld": {
         "type": "object",
         "properties": {
           "state": {
@@ -62890,7 +62947,11 @@
           "REGISTERED_DATA",
           "REPLICATION",
           "DISTRIBUTION",
-          "LAKE_LANDING"
+          "LAKE_LANDING",
+          "KNOWLEDGE_MART",
+          "FILE_BASED_KNOWLEDGE_MART",
+          "LAKEHOUSE_STORAGE",
+          "LAKEHOUSE_MIRROR"
         ],
         "type": "string",
         "x-enum-varnames": [
@@ -62901,8 +62962,11 @@
           "DATAMART",
           "REGISTERED_DATA",
           "REPLICATION",
-          "DISTRIBUTION",
-          "LAKE_LANDING"
+          "LAKE_LANDING",
+          "KNOWLEDGE_MART",
+          "FILE_BASED_KNOWLEDGE_MART",
+          "LAKEHOUSE_STORAGE",
+          "LAKEHOUSE_MIRROR"
         ]
       },
       "DiProjectItemRsp": {
@@ -62967,6 +63031,14 @@
               "type": "string",
               "example": "value",
               "description": "The value of the variable"
+            }
+          },
+          "nameToIdMap": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "example": "value",
+              "description": "The calculated ID of the variable value, when relevant."
             }
           }
         }
@@ -63419,7 +63491,8 @@
             "items": {
               "$ref": "#/components/schemas/OdbcCustomDataType"
             },
-            "nullable": true
+            "nullable": true,
+            "description": "The list of custom data types to update in the ODBC connector"
           }
         },
         "additionalProperties": false
@@ -78989,7 +79062,13 @@
         }
       },
       "ShareRoleType": {
-        "description": "Supported roles by space type:\n- Shared: consumer\n- Managed: consumer, contributor\n"
+        "enum": [
+          "consumer",
+          "contributor",
+          "basicconsumer"
+        ],
+        "type": "string",
+        "description": "The roles for the space share. Supported roles by space type:\n- Shared: consumer\n- Managed: basicconsumer, consumer, contributor\n"
       },
       "Shares": {
         "type": "object",

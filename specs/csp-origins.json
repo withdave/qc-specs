@@ -241,6 +241,7 @@
         ],
         "description": "Retrieves all content security policies for a tenant.",
         "operationId": "listCSPEntries",
+        "x-qlik-permissions": "csp:list",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -331,6 +332,7 @@
           },
           "required": true
         },
+        "x-qlik-permissions": "csp:create",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -434,6 +436,7 @@
         ],
         "description": "Returns details for a specific content security policy.",
         "operationId": "getCSPEntry",
+        "x-qlik-permissions": "csp:list",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -545,6 +548,7 @@
           },
           "required": true
         },
+        "x-qlik-permissions": "csp:update",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -639,6 +643,7 @@
         ],
         "description": "Deletes a specific content security policy.",
         "operationId": "deleteCSPEntry",
+        "x-qlik-permissions": "csp:delete",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -731,6 +736,7 @@
         ],
         "description": "Retrieves the full content security policy header (including all configured policies and origins) for the tenant.",
         "operationId": "getCSPHeader",
+        "x-qlik-permissions": "csp:list",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [

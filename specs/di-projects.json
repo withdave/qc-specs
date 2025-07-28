@@ -257,7 +257,8 @@
                 "application/octet-stream"
               ],
               "type": "string"
-            }
+            },
+            "description": "response content type"
           }
         ],
         "description": "Exports the specified data integration project.",
@@ -1137,7 +1138,7 @@
                   "type": "object",
                   "properties": {
                     "lastRun": {
-                      "$ref": "#/components/schemas/DataTaskInstanceState"
+                      "$ref": "#/components/schemas/DataTaskInstanceStateOld"
                     },
                     "runReadiness": {
                       "type": "object",
@@ -1484,7 +1485,7 @@
           }
         }
       },
-      "DataTaskInstanceState": {
+      "DataTaskInstanceStateOld": {
         "type": "object",
         "properties": {
           "state": {
@@ -1535,7 +1536,11 @@
           "REGISTERED_DATA",
           "REPLICATION",
           "DISTRIBUTION",
-          "LAKE_LANDING"
+          "LAKE_LANDING",
+          "KNOWLEDGE_MART",
+          "FILE_BASED_KNOWLEDGE_MART",
+          "LAKEHOUSE_STORAGE",
+          "LAKEHOUSE_MIRROR"
         ],
         "type": "string",
         "x-enum-varnames": [
@@ -1546,8 +1551,11 @@
           "DATAMART",
           "REGISTERED_DATA",
           "REPLICATION",
-          "DISTRIBUTION",
-          "LAKE_LANDING"
+          "LAKE_LANDING",
+          "KNOWLEDGE_MART",
+          "FILE_BASED_KNOWLEDGE_MART",
+          "LAKEHOUSE_STORAGE",
+          "LAKEHOUSE_MIRROR"
         ]
       },
       "DiProjectItemRsp": {
@@ -1647,6 +1655,14 @@
               "type": "string",
               "example": "value",
               "description": "The value of the variable"
+            }
+          },
+          "nameToIdMap": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "example": "value",
+              "description": "The calculated ID of the variable value, when relevant."
             }
           }
         }

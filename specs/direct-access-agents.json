@@ -577,7 +577,7 @@
             "description": "The connector type. Must be `odbc-connector` for this endpoint."
           }
         ],
-        "description": "Retrieves custom data type mapping settings for the Generic ODBC Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
+        "description": "Retrieves the custom data type mapping settings for the Generic ODBC Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
         "operationId": "getOdbcCustomTypeMappingsAsync",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -1108,7 +1108,8 @@
             "items": {
               "$ref": "#/components/schemas/OdbcCustomDataType"
             },
-            "nullable": true
+            "nullable": true,
+            "description": "The list of custom data types to update in the ODBC connector"
           }
         },
         "additionalProperties": false
