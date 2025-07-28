@@ -75,6 +75,16 @@
           },
           {
             "in": "query",
+            "name": "includeDisabled",
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true,
+            "required": false,
+            "description": "When true disabled datasources are also included in the response"
+          },
+          {
+            "in": "query",
             "name": "includeui",
             "schema": {
               "type": "boolean"

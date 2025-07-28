@@ -168,6 +168,10 @@
         ],
         "description": "Retrieves all webhooks entries for a tenant that the user has access to. Users assigned the `TenantAdmin` role can retrieve all webhooks. A user can have up to 150 webhooks at one time.",
         "operationId": "listWebhookEntries",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -223,6 +227,10 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:create",
+          "webhook:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -284,6 +292,10 @@
         ],
         "description": "Returns details for a specific webhook.",
         "operationId": "getWebhook",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -349,6 +361,10 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:update",
+          "webhook:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -418,6 +434,10 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:update",
+          "webhook:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -470,6 +490,10 @@
         ],
         "description": "Deletes a specific webhook.",
         "operationId": "deleteWebhook",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:delete",
+          "webhook:delete"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -595,6 +619,10 @@
         ],
         "description": "Returns deliveries for a specific webhook. Delivery history is stored for 1 week.",
         "operationId": "getWebhookDeliveryList",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -665,6 +693,10 @@
         ],
         "description": "Returns details for a specific delivery.",
         "operationId": "getWebhookDelivery",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -736,6 +768,10 @@
         ],
         "description": "Resends the delivery with the same payload.",
         "operationId": "resendDelivery",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:create",
+          "webhook:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -777,6 +813,10 @@
         },
         "description": "Lists event-types that are possible to subscribe to.",
         "operationId": "listEventTypes",
+        "x-qlik-permissions": [
+          "admin.webhook.tenant:list",
+          "webhook:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [

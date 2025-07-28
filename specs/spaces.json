@@ -2170,7 +2170,13 @@
         }
       },
       "ShareRoleType": {
-        "description": "Supported roles by space type:\n- Shared: consumer\n- Managed: consumer, contributor\n"
+        "enum": [
+          "consumer",
+          "contributor",
+          "basicconsumer"
+        ],
+        "type": "string",
+        "description": "The roles for the space share. Supported roles by space type:\n- Shared: consumer\n- Managed: basicconsumer, consumer, contributor\n"
       },
       "Shares": {
         "type": "object",
