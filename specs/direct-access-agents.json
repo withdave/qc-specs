@@ -526,6 +526,153 @@
         }
       }
     },
+    "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/allowed-paths": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get connector allowed paths configuration",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileConnectorAllowedPathsResponse"
+                }
+              }
+            },
+            "description": "The list of configuration values from the file."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          },
+          {
+            "in": "path",
+            "name": "connectorType",
+            "schema": {
+              "enum": [
+                "file-connector"
+              ],
+              "type": "string"
+            },
+            "required": true,
+            "description": "The connector type. Must be `file-connector` for this endpoint."
+          }
+        ],
+        "description": "Retrieves the allowed paths settings for the File Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
+        "operationId": "getConnectorFileListAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Set connector allowed paths configuration",
+        "responses": {
+          "204": {
+            "description": "Updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          },
+          {
+            "in": "path",
+            "name": "connectorType",
+            "schema": {
+              "enum": [
+                "file-connector"
+              ],
+              "type": "string"
+            },
+            "required": true,
+            "description": "The connector type. Must be `file-connector` for this endpoint."
+          }
+        ],
+        "description": "Completely replaces the contents of the allowed paths configuration file for the File connector. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
+        "operationId": "putConnectorFlatFileConfigurationAsync",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFileConnectorAllowedPathsRequest"
+              }
+            }
+          },
+          "description": "The contents of the file to be updated."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/custom-data-type-mappings": {
       "get": {
         "tags": [
@@ -934,6 +1081,48 @@
         },
         "additionalProperties": false
       },
+      "FileConnectorAllowedPath": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "example": "\\\\\\\\Server\\\\Share\\\\example",
+            "minLength": 1,
+            "description": "The Path property in the File connector allowed paths file."
+          },
+          "spaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Foo",
+              "Bar"
+            ],
+            "description": "The Spaces property in the File connector allowed paths file."
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileConnectorAllowedPathsResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileConnectorAllowedPath"
+            },
+            "nullable": true
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "additionalProperties": false
+      },
       "OdbcCustomDataType": {
         "type": "object",
         "required": [
@@ -1035,7 +1224,9 @@
               "REST_PROCESS_ISOLATION_MODE",
               "ODBC_TABLES_LIMIT_FOR_GENERICODBC",
               "OVERRIDE_CHUNKS_CACHE_DIR",
-              "CHUNK_RECOVERY_RESUME_THRESHOLD_MINUTES"
+              "CHUNK_RECOVERY_RESUME_THRESHOLD_MINUTES",
+              "REST_ALLOW_LOCALHOST_CONNECTION",
+              "OPTIONAL_CAPABILITIES"
             ],
             "type": "string"
           },
@@ -1098,6 +1289,20 @@
           }
         },
         "description": "The request to update a connector flat file",
+        "additionalProperties": false
+      },
+      "UpdateFileConnectorAllowedPathsRequest": {
+        "type": "object",
+        "properties": {
+          "fileConnectorAllowedPaths": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileConnectorAllowedPath"
+            },
+            "nullable": true,
+            "description": "The list of allowed paths to update in the File connector"
+          }
+        },
         "additionalProperties": false
       },
       "UpdateOdbcCustomTypeMappingsRequest": {
