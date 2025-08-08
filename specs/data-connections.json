@@ -99,6 +99,9 @@
             "$ref": "#/components/parameters/filter"
           }
         ],
+        "x-qlik-permissions": [
+          "dataconnections:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -191,6 +194,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "dataconnections:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -287,6 +293,9 @@
             "$ref": "#/components/parameters/parseConnection"
           }
         ],
+        "x-qlik-permissions": [
+          "dataconnections:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -354,6 +363,9 @@
           },
           {
             "$ref": "#/components/parameters/type"
+          },
+          {
+            "$ref": "#/components/parameters/authCodeInHeader"
           }
         ],
         "requestBody": {
@@ -366,6 +378,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "dataconnections:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -448,6 +463,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "dataconnections:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -499,6 +517,9 @@
           {
             "$ref": "#/components/parameters/spaceID"
           }
+        ],
+        "x-qlik-permissions": [
+          "dataconnections:delete"
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -560,6 +581,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.dataconnections.actions:delete"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -700,6 +724,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.dataconnections.actions:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -719,6 +746,16 @@
   "openapi": "3.0.0",
   "components": {
     "parameters": {
+      "authCodeInHeader": {
+        "in": "header",
+        "name": "qlik-auth-code",
+        "schema": {
+          "type": "string",
+          "example": "code=aPrxxWbemCeRRVGEJVgYDAkU_TzTKE6Geu9..."
+        },
+        "required": false,
+        "description": "OAuth authentication code. This header is required by certain datasources when patching a data connection."
+      },
       "bycredentialname": {
         "in": "query",
         "name": "byCredentialName",
@@ -1696,37 +1733,46 @@
         }
       },
       "PatchRequest": {
-        "type": "object",
-        "required": [
-          "patchData"
-        ],
-        "properties": {
-          "patchData": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "op": {
-                  "enum": [
-                    "add",
-                    "replace",
-                    "remove"
-                  ],
-                  "type": "string",
-                  "example": "add",
-                  "description": "Operation type"
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "op",
+            "path"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "add",
+                "replace",
+                "remove"
+              ],
+              "type": "string",
+              "example": "add",
+              "description": "Operation type"
+            },
+            "path": {
+              "type": "string",
+              "example": "/qName",
+              "description": "Path to the target field to be patched"
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "string"
                 },
-                "path": {
-                  "type": "string",
-                  "example": "/qName",
-                  "description": "Path to the target field to be patched"
+                {
+                  "type": "boolean"
                 },
-                "value": {
-                  "type": "string",
-                  "example": "New value",
-                  "description": "The value used for the patch, only needed for 'add' or 'replace'. Value type could be either string or integer, should match with the type of the target field"
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "array"
                 }
-              }
+              ],
+              "example": "New value",
+              "description": "Value used for the patch. Required only for `add` or `replace` operations. The value type should match the type of the target field."
             }
           }
         }

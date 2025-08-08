@@ -24,6 +24,9 @@
         },
         "description": "Lists all imported themes in the tenant.",
         "operationId": "getThemes",
+        "x-qlik-permissions": [
+          "theme:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -114,6 +117,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.theme:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -187,6 +193,9 @@
         ],
         "description": "Returns a specific theme matching either theme ID or theme name.",
         "operationId": "getThemeById",
+        "x-qlik-permissions": [
+          "theme:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -308,6 +317,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.theme:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -372,6 +384,9 @@
         ],
         "description": "Deletes a specific theme matching either theme ID or theme name.",
         "operationId": "deleteThemeById",
+        "x-qlik-permissions": [
+          "admin.theme:delete"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -438,6 +453,9 @@
         ],
         "description": "Downloads all files in the theme matching either theme ID or theme name as a `.zip` archive.",
         "operationId": "getThemeArchive",
+        "x-qlik-permissions": [
+          "admin.theme:download"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -514,6 +532,9 @@
         ],
         "description": "Downloads a file from the theme matching either theme ID or theme name, identified by the file path within the imported extension.",
         "operationId": "getFileFromThemeArchive",
+        "x-qlik-permissions": [
+          "theme:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [

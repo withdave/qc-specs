@@ -13,7 +13,11 @@
         "responses": {
           "202": {
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostReportsResponse"
+                }
+              }
             },
             "headers": {
               "Location": {
@@ -861,6 +865,28 @@
           }
         },
         "description": "Output to be used to export a single visualization, a sheet, Sense Excel template as pdf. For Sense Excel template (sense-excel-template-1.0) no properties are needed, any property specified has no effect."
+      },
+      "PostReportsResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Report request has been accepted and is being processed.",
+            "description": "A message indicating the status of the request."
+          },
+          "requestId": {
+            "type": "string",
+            "example": "c61841ac-7b35-4434-aa74-4421f10fc68e",
+            "readOnly": true,
+            "description": "The report request ID"
+          },
+          "outputsUrl": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://t.eu.qlikcloud.com:443/api/v1/reports/c61841ac-7b35-4434-aa74-4421f10fc68e/outputs",
+            "description": "The absolute URL to get the outputs of the report request."
+          }
+        }
       },
       "PptxCompositionOutput": {
         "properties": {

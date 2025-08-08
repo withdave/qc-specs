@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -16274,6 +16274,9 @@
             "$ref": "#/components/parameters/filter"
           }
         ],
+        "x-qlik-permissions": [
+          "dataconnections:list"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16366,6 +16369,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "dataconnections:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16462,6 +16468,9 @@
             "$ref": "#/components/parameters/parseConnection"
           }
         ],
+        "x-qlik-permissions": [
+          "dataconnections:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16529,6 +16538,9 @@
           },
           {
             "$ref": "#/components/parameters/type"
+          },
+          {
+            "$ref": "#/components/parameters/authCodeInHeader"
           }
         ],
         "requestBody": {
@@ -16541,6 +16553,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "dataconnections:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16623,6 +16638,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "dataconnections:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16674,6 +16692,9 @@
           {
             "$ref": "#/components/parameters/spaceID"
           }
+        ],
+        "x-qlik-permissions": [
+          "dataconnections:delete"
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -16735,6 +16756,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.dataconnections.actions:delete"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16875,6 +16899,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.dataconnections.actions:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16932,6 +16959,9 @@
           {
             "$ref": "#/components/parameters/bycredentialname"
           }
+        ],
+        "x-qlik-permissions": [
+          "datacredentials:crud"
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -17002,6 +17032,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "datacredentials:crud"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -17071,6 +17104,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "datacredentials:crud"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -17109,6 +17145,9 @@
           {
             "$ref": "#/components/parameters/bycredentialname"
           }
+        ],
+        "x-qlik-permissions": [
+          "datacredentials:crud"
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -22929,6 +22968,153 @@
         }
       }
     },
+    "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/allowed-paths": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get connector allowed paths configuration",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileConnectorAllowedPathsResponse"
+                }
+              }
+            },
+            "description": "The list of configuration values from the file."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          },
+          {
+            "in": "path",
+            "name": "connectorType",
+            "schema": {
+              "enum": [
+                "file-connector"
+              ],
+              "type": "string"
+            },
+            "required": true,
+            "description": "The connector type. Must be `file-connector` for this endpoint."
+          }
+        ],
+        "description": "Retrieves the allowed paths settings for the File Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
+        "operationId": "getConnectorFileListAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Set connector allowed paths configuration",
+        "responses": {
+          "204": {
+            "description": "Updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          },
+          {
+            "in": "path",
+            "name": "connectorType",
+            "schema": {
+              "enum": [
+                "file-connector"
+              ],
+              "type": "string"
+            },
+            "required": true,
+            "description": "The connector type. Must be `file-connector` for this endpoint."
+          }
+        ],
+        "description": "Completely replaces the contents of the allowed paths configuration file for the File connector. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
+        "operationId": "putConnectorFlatFileConfigurationAsync",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFileConnectorAllowedPathsRequest"
+              }
+            }
+          },
+          "description": "The contents of the file to be updated."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/custom-data-type-mappings": {
       "get": {
         "tags": [
@@ -24027,6 +24213,9 @@
         },
         "description": "Lists all imported extensions in the tenant.",
         "operationId": "getExtensions",
+        "x-qlik-permissions": [
+          "extension:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24117,6 +24306,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.extension:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24190,6 +24382,9 @@
         ],
         "description": "Returns a specific extension matching either extension ID or extension name.",
         "operationId": "getExtensionById",
+        "x-qlik-permissions": [
+          "extension:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24311,6 +24506,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.extension:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24375,6 +24573,9 @@
         ],
         "description": "Deletes a specific extension matching either extension ID or extension name.",
         "operationId": "deleteExtensionById",
+        "x-qlik-permissions": [
+          "admin.extension:delete"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24441,6 +24642,9 @@
         ],
         "description": "Downloads all files in the extension matching either extension ID or extension name as a `.zip` archive.",
         "operationId": "getExtensionArchive",
+        "x-qlik-permissions": [
+          "admin.extension:download"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24517,6 +24721,9 @@
         ],
         "description": "Downloads a specific file from the extension matching either extension ID or extension name, identified by the file path within the imported extension.",
         "operationId": "getFileFromExtensionArchive",
+        "x-qlik-permissions": [
+          "extension:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -32031,6 +32238,9 @@
         ],
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
+        "x-qlik-permissions": [
+          "license:read"
+        ],
         "x-qlik-categories": [
           "external/manage"
         ],
@@ -39533,7 +39743,11 @@
         "responses": {
           "202": {
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostReportsResponse"
+                }
+              }
             },
             "headers": {
               "Location": {
@@ -45305,6 +45519,9 @@
         },
         "description": "Lists all imported themes in the tenant.",
         "operationId": "getThemes",
+        "x-qlik-permissions": [
+          "theme:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45395,6 +45612,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.theme:create"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45468,6 +45688,9 @@
         ],
         "description": "Returns a specific theme matching either theme ID or theme name.",
         "operationId": "getThemeById",
+        "x-qlik-permissions": [
+          "theme:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45589,6 +45812,9 @@
           },
           "required": true
         },
+        "x-qlik-permissions": [
+          "admin.theme:update"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45653,6 +45879,9 @@
         ],
         "description": "Deletes a specific theme matching either theme ID or theme name.",
         "operationId": "deleteThemeById",
+        "x-qlik-permissions": [
+          "admin.theme:delete"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45719,6 +45948,9 @@
         ],
         "description": "Downloads all files in the theme matching either theme ID or theme name as a `.zip` archive.",
         "operationId": "getThemeArchive",
+        "x-qlik-permissions": [
+          "admin.theme:download"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45795,6 +46027,9 @@
         ],
         "description": "Downloads a file from the theme matching either theme ID or theme name, identified by the file path within the imported extension.",
         "operationId": "getFileFromThemeArchive",
+        "x-qlik-permissions": [
+          "theme:read"
+        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -60248,37 +60483,46 @@
         "description": "Notifications meta data"
       },
       "PatchRequest": {
-        "type": "object",
-        "required": [
-          "patchData"
-        ],
-        "properties": {
-          "patchData": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "op": {
-                  "enum": [
-                    "add",
-                    "replace",
-                    "remove"
-                  ],
-                  "type": "string",
-                  "example": "add",
-                  "description": "Operation type"
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "op",
+            "path"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "add",
+                "replace",
+                "remove"
+              ],
+              "type": "string",
+              "example": "add",
+              "description": "Operation type"
+            },
+            "path": {
+              "type": "string",
+              "example": "/qName",
+              "description": "Path to the target field to be patched"
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "string"
                 },
-                "path": {
-                  "type": "string",
-                  "example": "/qName",
-                  "description": "Path to the target field to be patched"
+                {
+                  "type": "boolean"
                 },
-                "value": {
-                  "type": "string",
-                  "example": "New value",
-                  "description": "The value used for the patch, only needed for 'add' or 'replace'. Value type could be either string or integer, should match with the type of the target field"
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "array"
                 }
-              }
+              ],
+              "example": "New value",
+              "description": "Value used for the patch. Required only for `add` or `replace` operations. The value type should match the type of the target field."
             }
           }
         }
@@ -63349,6 +63593,48 @@
         "type": "string",
         "description": "JSON string of error object"
       },
+      "FileConnectorAllowedPath": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "example": "\\\\\\\\Server\\\\Share\\\\example",
+            "minLength": 1,
+            "description": "The Path property in the File connector allowed paths file."
+          },
+          "spaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Foo",
+              "Bar"
+            ],
+            "description": "The Spaces property in the File connector allowed paths file."
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileConnectorAllowedPathsResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileConnectorAllowedPath"
+            },
+            "nullable": true
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "additionalProperties": false
+      },
       "OdbcCustomDataType": {
         "type": "object",
         "required": [
@@ -63481,6 +63767,20 @@
           }
         },
         "description": "The request to update a connector flat file",
+        "additionalProperties": false
+      },
+      "UpdateFileConnectorAllowedPathsRequest": {
+        "type": "object",
+        "properties": {
+          "fileConnectorAllowedPaths": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileConnectorAllowedPath"
+            },
+            "nullable": true,
+            "description": "The list of allowed paths to update in the File connector"
+          }
+        },
         "additionalProperties": false
       },
       "UpdateOdbcCustomTypeMappingsRequest": {
@@ -75904,6 +76204,28 @@
           }
         },
         "description": "Output to be used to export a single visualization, a sheet, Sense Excel template as pdf. For Sense Excel template (sense-excel-template-1.0) no properties are needed, any property specified has no effect."
+      },
+      "PostReportsResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Report request has been accepted and is being processed.",
+            "description": "A message indicating the status of the request."
+          },
+          "requestId": {
+            "type": "string",
+            "example": "c61841ac-7b35-4434-aa74-4421f10fc68e",
+            "readOnly": true,
+            "description": "The report request ID"
+          },
+          "outputsUrl": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://t.eu.qlikcloud.com:443/api/v1/reports/c61841ac-7b35-4434-aa74-4421f10fc68e/outputs",
+            "description": "The absolute URL to get the outputs of the report request."
+          }
+        }
       },
       "PptxCompositionOutput": {
         "properties": {
