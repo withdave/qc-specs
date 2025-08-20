@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -7040,6 +7040,98 @@
         }
       }
     },
+    "/api/v1/audits/actions/fetch-consumption-app": {
+      "post": {
+        "tags": [
+          "audits"
+        ],
+        "summary": "Export consumption app",
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The JWT used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
+          }
+        ],
+        "description": "Returns a Qlik Sense application (QVF file) containing usage data for the tenant's subscription. Requesting user must be assigned the `TenantAdmin` role. Available only for Capacity subscriptions. Consumption report is updated once per day.",
+        "operationId": "fetch-consumption-app",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/audits/archive": {
       "get": {
         "tags": [
@@ -10898,10 +10990,6 @@
         ],
         "description": "Retrieves the collections that the user has access to. This endpoint does not return the user's favorites collection, which can be retrieved with `/v1/collections/favorites`.\n",
         "operationId": "collections#listCollections",
-        "x-qlik-permissions": [
-          "collection:read",
-          "collection.publicgoverned:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -11022,10 +11110,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "collection:create",
-          "admin.collection.publicgoverned:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -11134,10 +11218,6 @@
         ],
         "description": "Finds and returns a collection.\n",
         "operationId": "collections#getCollection",
-        "x-qlik-permissions": [
-          "collection:read",
-          "collection.publicgoverned:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -11269,10 +11349,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "collection:update",
-          "admin.collection.publicgoverned:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -11404,10 +11480,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "collection:update",
-          "admin.collection.publicgoverned:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -11492,10 +11564,6 @@
         ],
         "description": "Deletes a collection and removes all items from the collection.\n",
         "operationId": "collections#deleteCollection",
-        "x-qlik-permissions": [
-          "collection:delete",
-          "admin.collection.publicgoverned:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -11718,11 +11786,6 @@
         ],
         "description": "Retrieves items from a collection that the user has access to.\n",
         "operationId": "collections#listCollectionItems",
-        "x-qlik-permissions": [
-          "collection:read",
-          "collection.publicgoverned:read",
-          "<item>:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -11869,12 +11932,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "collection:read",
-          "collection:update",
-          "admin.collection.publicgoverned:add_content",
-          "<item>:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -11992,11 +12049,6 @@
         ],
         "description": "Finds and returns an item in a specific collection. See GET `/items/{id}`.\n",
         "operationId": "collections#getCollectionItem",
-        "x-qlik-permissions": [
-          "collection:read",
-          "collection.publicgoverned:read",
-          "<item>:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -12100,12 +12152,6 @@
         ],
         "description": "Removes an item from a collection.\n",
         "operationId": "collections#deleteCollectionItem",
-        "x-qlik-permissions": [
-          "collection:read",
-          "collection:update",
-          "admin.collection.publicgoverned:remove_content",
-          "<item>:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -12193,10 +12239,6 @@
         },
         "description": "Lists the user's favorites collection.\n",
         "operationId": "collections#getFavoritesCollection",
-        "x-qlik-permissions": [
-          "collection:read",
-          "collection.publicgoverned:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13357,7 +13399,6 @@
         ],
         "description": "Retrieves all content security policies for a tenant.",
         "operationId": "listCSPEntries",
-        "x-qlik-permissions": "csp:list",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13448,7 +13489,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": "csp:create",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13552,7 +13592,6 @@
         ],
         "description": "Returns details for a specific content security policy.",
         "operationId": "getCSPEntry",
-        "x-qlik-permissions": "csp:list",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13664,7 +13703,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": "csp:update",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13759,7 +13797,6 @@
         ],
         "description": "Deletes a specific content security policy.",
         "operationId": "deleteCSPEntry",
-        "x-qlik-permissions": "csp:delete",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -13852,7 +13889,6 @@
         ],
         "description": "Retrieves the full content security policy header (including all configured policies and origins) for the tenant.",
         "operationId": "getCSPHeader",
-        "x-qlik-permissions": "csp:list",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16274,9 +16310,6 @@
             "$ref": "#/components/parameters/filter"
           }
         ],
-        "x-qlik-permissions": [
-          "dataconnections:list"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16369,9 +16402,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "dataconnections:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16468,9 +16498,6 @@
             "$ref": "#/components/parameters/parseConnection"
           }
         ],
-        "x-qlik-permissions": [
-          "dataconnections:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16553,9 +16580,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "dataconnections:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16638,9 +16662,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "dataconnections:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16692,9 +16713,6 @@
           {
             "$ref": "#/components/parameters/spaceID"
           }
-        ],
-        "x-qlik-permissions": [
-          "dataconnections:delete"
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -16756,9 +16774,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.dataconnections.actions:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16899,9 +16914,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.dataconnections.actions:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -16959,9 +16971,6 @@
           {
             "$ref": "#/components/parameters/bycredentialname"
           }
-        ],
-        "x-qlik-permissions": [
-          "datacredentials:crud"
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -17032,9 +17041,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "datacredentials:crud"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -17104,9 +17110,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "datacredentials:crud"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -17145,9 +17148,6 @@
           {
             "$ref": "#/components/parameters/bycredentialname"
           }
-        ],
-        "x-qlik-permissions": [
-          "datacredentials:crud"
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -18585,10 +18585,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "dataquality:update",
-          "dataset:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -18692,10 +18688,6 @@
         "operationId": "getDataQualityComputation",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "dataquality:read",
-          "dataset:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -18794,10 +18786,6 @@
         "operationId": "getDataQualityGlobalResults",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "dataquality:read",
-          "dataset:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -22302,28 +22290,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "lastRun": {
-                      "$ref": "#/components/schemas/DataTaskInstanceStateOld"
-                    },
-                    "runReadiness": {
-                      "type": "object",
-                      "properties": {
-                        "state": {
-                          "enum": [
-                            "READY_TO_RUN",
-                            "ALREADY_RUNNING",
-                            "NOT_RUNNABLE"
-                          ],
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/DataTaskRuntimeState"
                 }
               }
             },
@@ -22370,7 +22337,7 @@
             "required": true
           }
         ],
-        "description": "Get data task runtime state within a data integration project.",
+        "description": "Get the current runtime state of a data task",
         "operationId": "get_data_task_runtime_state",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -22379,8 +22346,8 @@
         ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
+          "tier": "special",
+          "limit": 30
         }
       }
     },
@@ -24213,9 +24180,6 @@
         },
         "description": "Lists all imported extensions in the tenant.",
         "operationId": "getExtensions",
-        "x-qlik-permissions": [
-          "extension:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24306,9 +24270,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.extension:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24382,9 +24343,6 @@
         ],
         "description": "Returns a specific extension matching either extension ID or extension name.",
         "operationId": "getExtensionById",
-        "x-qlik-permissions": [
-          "extension:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24506,9 +24464,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.extension:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24573,9 +24528,6 @@
         ],
         "description": "Deletes a specific extension matching either extension ID or extension name.",
         "operationId": "deleteExtensionById",
-        "x-qlik-permissions": [
-          "admin.extension:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24642,9 +24594,6 @@
         ],
         "description": "Downloads all files in the extension matching either extension ID or extension name as a `.zip` archive.",
         "operationId": "getExtensionArchive",
-        "x-qlik-permissions": [
-          "admin.extension:download"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -24721,9 +24670,6 @@
         ],
         "description": "Downloads a specific file from the extension matching either extension ID or extension name, identified by the file path within the imported extension.",
         "operationId": "getFileFromExtensionArchive",
-        "x-qlik-permissions": [
-          "extension:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -32238,9 +32184,6 @@
         ],
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "license:read"
-        ],
         "x-qlik-categories": [
           "external/manage"
         ],
@@ -33389,6 +33332,16 @@
           },
           {
             "in": "query",
+            "name": "max_age",
+            "schema": {
+              "type": "number",
+              "example": 3600
+            },
+            "required": false,
+            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider.\nIf time is greater than max_age, force user to re-authorize.\n"
+          },
+          {
+            "in": "query",
             "name": "returnto",
             "schema": {
               "type": "string"
@@ -33396,6 +33349,21 @@
             "example": "automations/editor/fef1ba5f-facb-4cd1-9c69-8ddc6c61b7e3",
             "required": false,
             "description": "Relative or full URL on the tenant to redirect to after successful login."
+          },
+          {
+            "in": "query",
+            "name": "scope",
+            "style": "spaceDelimited",
+            "schema": {
+              "enum": [
+                "offline_access"
+              ],
+              "type": "array",
+              "example": "offline_access"
+            },
+            "explode": false,
+            "required": false,
+            "description": "Specifies the scope of access for login. Only supports offline_access to request a refresh token from the identity provider."
           },
           {
             "in": "header",
@@ -33528,15 +33496,6 @@
           }
         ],
         "operationId": "getDeployments",
-        "x-qlik-permissions": [
-          "admin.automl-model:list",
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read",
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -33594,11 +33553,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:create && automl-experiment:read",
-          "automl-deployment:create && admin.automl-experiment:read",
-          "automl-deployment:create && admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -33657,11 +33611,6 @@
           }
         ],
         "operationId": "getDeployment",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -33720,11 +33669,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update",
-          "automl-deployment:change_space",
-          "admin.automl-deployment:change_space"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -33774,11 +33718,6 @@
           }
         ],
         "operationId": "deleteDeployment",
-        "x-qlik-permissions": [
-          "automl-deployment:delete",
-          "admin.automl-deployment:delete",
-          "admin.automl-deployment.sharedmanagedspace:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -33830,14 +33769,6 @@
           }
         ],
         "operationId": "activateDeploymentModels",
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-model:approve && automl-deployment:read",
-          "automl-deployment:update && automl-model:approve && admin.automl-deployment:read",
-          "automl-deployment:update && automl-model:approve && admin.automl-deployment.sharedmanagedspace:read",
-          "admin.automl-model:approve && automl-deployment:read",
-          "admin.automl-model:approve && admin.automl-deployment:read",
-          "admin.automl-model:approve && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -33889,14 +33820,6 @@
           }
         ],
         "operationId": "deactivateDeploymentModels",
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-model:approve && automl-deployment:read",
-          "automl-deployment:update && automl-model:approve && admin.automl-deployment:read",
-          "automl-deployment:update && automl-model:approve && admin.automl-deployment.sharedmanagedspace:read",
-          "admin.automl-model:approve && automl-deployment:read",
-          "admin.automl-model:approve && admin.automl-deployment:read",
-          "admin.automl-model:approve && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -33961,15 +33884,13 @@
           },
           {
             "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/deploymentId"
           }
         ],
         "description": "Retrieves a list of aliases based on filter parameters for a deployment.",
         "operationId": "getAliases",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34036,9 +33957,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34101,11 +34019,6 @@
         ],
         "description": "Retrieves an alias that exists on the deployment.",
         "operationId": "getAlias",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34168,11 +34081,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34226,11 +34134,6 @@
         ],
         "description": "Delete an alias from a deployment.",
         "operationId": "deleteAlias",
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34335,9 +34238,6 @@
           },
           "description": "Request payload containing the dataset for predictions. Date features\nmust be in ISO 8601 format.\n"
         },
-        "x-qlik-permissions": [
-          "automl-deployment:run_rtp"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34408,11 +34308,6 @@
           }
         ],
         "operationId": "getBatchPredictions",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34478,9 +34373,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34542,11 +34434,6 @@
           }
         ],
         "operationId": "getBatchPrediction",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34608,11 +34495,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34665,11 +34547,6 @@
           }
         ],
         "operationId": "deleteBatchPrediction",
-        "x-qlik-permissions": [
-          "automl-deployment:delete",
-          "admin.automl-deployment:delete",
-          "admin.automl-deployment.sharedmanagedspace:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34741,9 +34618,6 @@
           }
         ],
         "operationId": "predictBatchPrediction",
-        "x-qlik-permissions": [
-          "automl-deployment:run"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34806,11 +34680,6 @@
         ],
         "description": "Retrieves the schedule for a batch prediction.",
         "operationId": "getBatchPredictionSchedule",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34873,11 +34742,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -34947,9 +34811,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35003,9 +34864,6 @@
         ],
         "description": "Deletes the schedule from a batch prediction.",
         "operationId": "deleteBatchPredictionSchedule",
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35066,11 +34924,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:create && automl-experiment:read",
-          "automl-deployment:create && admin.automl-experiment:read",
-          "automl-deployment:create && admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35131,9 +34984,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35234,9 +35084,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:run_rtp"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35305,11 +35152,6 @@
         ],
         "description": "Retrieves a list of experiments based on provided filter and sort\nparameters.\n",
         "operationId": "getExperiments",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35367,9 +35209,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-experiment:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35428,11 +35267,6 @@
           }
         ],
         "operationId": "getExperiment",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35491,9 +35325,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-experiment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35543,11 +35374,6 @@
           }
         ],
         "operationId": "deleteExperiment",
-        "x-qlik-permissions": [
-          "automl-experiment:delete",
-          "admin.automl-experiment:delete",
-          "admin.automl-experiment.sharedmanagedspace:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35615,11 +35441,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -35679,11 +35500,6 @@
           }
         ],
         "operationId": "getExperimentModels",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35736,11 +35552,6 @@
           }
         ],
         "operationId": "getExperimentModel",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35811,11 +35622,6 @@
           }
         ],
         "operationId": "getExperimentVersions",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35882,9 +35688,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-experiment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -35946,11 +35749,6 @@
           }
         ],
         "operationId": "getExperimentVersion",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -36012,9 +35810,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-experiment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -36067,9 +35862,6 @@
           }
         ],
         "operationId": "deleteExperimentVersion",
-        "x-qlik-permissions": [
-          "automl-experiment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -36116,9 +35908,6 @@
         ],
         "description": "Cancels jobs for an experiment version or batch prediction.",
         "operationId": "cancelJobs",
-        "x-qlik-permissions": [
-          "admin.automl-job:read && admin.automl-job:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -36199,7 +35988,6 @@
             }
           }
         },
-        "x-qlik-permissions": [],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -36265,7 +36053,6 @@
         ],
         "description": "Retrieves profile insights for the specified dataset. If you received a\n`202 Accepted` response from `POST /ml/profile-insights`, poll this\nendpoint until a `200 OK` response with `ready` status is returned.\n",
         "operationId": "getProfileInsights",
-        "x-qlik-permissions": [],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -36317,9 +36104,6 @@
         "operationId": "notesConfigGet",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "note.settings:read"
-        ],
         "x-qlik-categories": [
           "external/manage"
         ],
@@ -36400,9 +36184,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "admin.note.settings:update"
-        ],
         "x-qlik-categories": [
           "external/manage"
         ],
@@ -37466,12 +37247,8 @@
             "name": "scope",
             "style": "spaceDelimited",
             "schema": {
-              "enum": [
-                "user_default",
-                "offline_access"
-              ],
               "type": "array",
-              "example": "user_default"
+              "example": "users:read apps:read"
             },
             "explode": false,
             "required": true,
@@ -37512,12 +37289,16 @@
               "type": "number"
             },
             "required": false,
-            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider."
+            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider.\nIf time is greater than max_age, force user to re-authorize.\n"
           },
           {
             "in": "query",
             "name": "prompt",
             "schema": {
+              "enum": [
+                "none",
+                "login"
+              ],
               "type": "string"
             },
             "required": false,
@@ -45519,9 +45300,6 @@
         },
         "description": "Lists all imported themes in the tenant.",
         "operationId": "getThemes",
-        "x-qlik-permissions": [
-          "theme:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45612,9 +45390,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.theme:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45688,9 +45463,6 @@
         ],
         "description": "Returns a specific theme matching either theme ID or theme name.",
         "operationId": "getThemeById",
-        "x-qlik-permissions": [
-          "theme:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45812,9 +45584,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.theme:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45879,9 +45648,6 @@
         ],
         "description": "Deletes a specific theme matching either theme ID or theme name.",
         "operationId": "deleteThemeById",
-        "x-qlik-permissions": [
-          "admin.theme:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -45948,9 +45714,6 @@
         ],
         "description": "Downloads all files in the theme matching either theme ID or theme name as a `.zip` archive.",
         "operationId": "getThemeArchive",
-        "x-qlik-permissions": [
-          "admin.theme:download"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -46027,9 +45790,6 @@
         ],
         "description": "Downloads a file from the theme matching either theme ID or theme name, identified by the file path within the imported extension.",
         "operationId": "getFileFromThemeArchive",
-        "x-qlik-permissions": [
-          "theme:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -48955,10 +48715,6 @@
         ],
         "description": "Retrieves all webhooks entries for a tenant that the user has access to. Users assigned the `TenantAdmin` role can retrieve all webhooks. A user can have up to 150 webhooks at one time.",
         "operationId": "listWebhookEntries",
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:list",
-          "webhook:list"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49014,10 +48770,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:create",
-          "webhook:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49079,10 +48831,6 @@
         ],
         "description": "Returns details for a specific webhook.",
         "operationId": "getWebhook",
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:list",
-          "webhook:list"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49148,10 +48896,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:update",
-          "webhook:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49221,10 +48965,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:update",
-          "webhook:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49277,10 +49017,6 @@
         ],
         "description": "Deletes a specific webhook.",
         "operationId": "deleteWebhook",
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:delete",
-          "webhook:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49406,10 +49142,6 @@
         ],
         "description": "Returns deliveries for a specific webhook. Delivery history is stored for 1 week.",
         "operationId": "getWebhookDeliveryList",
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:list",
-          "webhook:list"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49480,10 +49212,6 @@
         ],
         "description": "Returns details for a specific delivery.",
         "operationId": "getWebhookDelivery",
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:list",
-          "webhook:list"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49555,10 +49283,6 @@
         ],
         "description": "Resends the delivery with the same payload.",
         "operationId": "resendDelivery",
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:create",
-          "webhook:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -49600,10 +49324,6 @@
         },
         "description": "Lists event-types that are possible to subscribe to.",
         "operationId": "listEventTypes",
-        "x-qlik-permissions": [
-          "admin.webhook.tenant:list",
-          "webhook:list"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -56185,6 +55905,10 @@
           "status": {
             "type": "number",
             "description": "The HTTP status code."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "The active traceId."
           }
         },
         "description": "An error object."
@@ -63140,7 +62864,7 @@
           }
         }
       },
-      "DataTaskInstanceStateOld": {
+      "DataTaskInstanceState": {
         "type": "object",
         "properties": {
           "state": {
@@ -63149,12 +62873,132 @@
               "RUNNING",
               "COMPLETED",
               "FAILED",
-              "CANCELED"
+              "CANCELED",
+              "STOPPING"
             ],
             "type": "string"
           },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the task instance ended"
+          },
+          "general": {
+            "type": "object",
+            "properties": {
+              "gatewayId": {
+                "type": "string",
+                "description": "For tasks that run on a gateway, this is the id of the gateway"
+              },
+              "gatewayName": {
+                "type": "string",
+                "description": "For tasks that run on a gateway, this is the name of the gateway"
+              },
+              "datasetCount": {
+                "type": "number",
+                "description": "Total number of datasets produced by the task, including ones in error"
+              },
+              "gatewayTaskName": {
+                "type": "string",
+                "description": "For tasks that run on a gateway, this is the internal name of the task on the gateway"
+              },
+              "dataTaskUpdatedTo": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The latest point in time the data reflects, based on updates from the source system."
+              },
+              "liveViewsUpdatedTo": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The latest point in time the live views reflect, based on updates from the source system."
+              },
+              "datasetsInErrorCount": {
+                "type": "number",
+                "description": "Count of datasets that encountered errors"
+              },
+              "lakehouseClusterName": {
+                "type": "string",
+                "description": "For lakehouse storage tasks, this is the name of the cluster where the task runs"
+              }
+            }
+          },
           "message": {
             "type": "string"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+          },
+          "fullLoad": {
+            "type": "object",
+            "properties": {
+              "errorCount": {
+                "type": "number",
+                "description": "Number of datasets that have failed full load in this task run"
+              },
+              "queuedCount": {
+                "type": "number",
+                "description": "Number of datasets that are queued for full load in this task run"
+              },
+              "loadingCount": {
+                "type": "number",
+                "description": "Number of datasets that are currently being loaded in this task run"
+              },
+              "completedCount": {
+                "type": "number",
+                "description": "Number of datasets that have completed full load in this task run"
+              }
+            }
+          },
+          "cdcStatus": {
+            "type": "object",
+            "properties": {
+              "latency": {
+                "type": "string",
+                "example": "01:30:45",
+                "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+              },
+              "totalProcessedCount": {
+                "type": "number"
+              },
+              "applyingChangesCount": {
+                "type": "number"
+              },
+              "accumulatingChangesCount": {
+                "type": "number"
+              },
+              "throughputInKilobytesPerSecond": {
+                "type": "number",
+                "description": "Throughput in kilobytes per second"
+              }
+            }
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the task instance started"
+          },
+          "lastBatchOfChanges": {
+            "type": "object",
+            "properties": {
+              "relatesToRecordsTo": {
+                "type": "string",
+                "format": "date-time",
+                "description": "This batch ends with operational source changes from this time."
+              },
+              "totalProcessedCount": {
+                "type": "number"
+              },
+              "relatesToRecordsFrom": {
+                "type": "string",
+                "format": "date-time",
+                "description": "This batch starts with operational source changes from this time."
+              },
+              "throughputInRecordsPerSecond": {
+                "type": "number",
+                "description": "Throughput in records per second"
+              }
+            }
           }
         }
       },
@@ -63178,6 +63022,37 @@
           },
           "description": {
             "type": "string"
+          }
+        }
+      },
+      "DataTaskRuntimeState": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the data task"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DataTaskType"
+          },
+          "lastRun": {
+            "$ref": "#/components/schemas/DataTaskInstanceState"
+          },
+          "runReadiness": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "READY_TO_RUN",
+                  "ALREADY_RUNNING",
+                  "NOT_RUNNABLE"
+                ],
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
           }
         }
       },
