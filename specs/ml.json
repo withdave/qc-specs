@@ -61,15 +61,6 @@
           }
         ],
         "operationId": "getDeployments",
-        "x-qlik-permissions": [
-          "admin.automl-model:list",
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read",
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -127,11 +118,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:create && automl-experiment:read",
-          "automl-deployment:create && admin.automl-experiment:read",
-          "automl-deployment:create && admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -190,11 +176,6 @@
           }
         ],
         "operationId": "getDeployment",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -253,11 +234,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update",
-          "automl-deployment:change_space",
-          "admin.automl-deployment:change_space"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -307,11 +283,6 @@
           }
         ],
         "operationId": "deleteDeployment",
-        "x-qlik-permissions": [
-          "automl-deployment:delete",
-          "admin.automl-deployment:delete",
-          "admin.automl-deployment.sharedmanagedspace:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -363,14 +334,6 @@
           }
         ],
         "operationId": "activateDeploymentModels",
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-model:approve && automl-deployment:read",
-          "automl-deployment:update && automl-model:approve && admin.automl-deployment:read",
-          "automl-deployment:update && automl-model:approve && admin.automl-deployment.sharedmanagedspace:read",
-          "admin.automl-model:approve && automl-deployment:read",
-          "admin.automl-model:approve && admin.automl-deployment:read",
-          "admin.automl-model:approve && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -422,14 +385,6 @@
           }
         ],
         "operationId": "deactivateDeploymentModels",
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-model:approve && automl-deployment:read",
-          "automl-deployment:update && automl-model:approve && admin.automl-deployment:read",
-          "automl-deployment:update && automl-model:approve && admin.automl-deployment.sharedmanagedspace:read",
-          "admin.automl-model:approve && automl-deployment:read",
-          "admin.automl-model:approve && admin.automl-deployment:read",
-          "admin.automl-model:approve && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -494,15 +449,13 @@
           },
           {
             "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/deploymentId"
           }
         ],
         "description": "Retrieves a list of aliases based on filter parameters for a deployment.",
         "operationId": "getAliases",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -569,9 +522,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -634,11 +584,6 @@
         ],
         "description": "Retrieves an alias that exists on the deployment.",
         "operationId": "getAlias",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -701,11 +646,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -759,11 +699,6 @@
         ],
         "description": "Delete an alias from a deployment.",
         "operationId": "deleteAlias",
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -868,9 +803,6 @@
           },
           "description": "Request payload containing the dataset for predictions. Date features\nmust be in ISO 8601 format.\n"
         },
-        "x-qlik-permissions": [
-          "automl-deployment:run_rtp"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -941,11 +873,6 @@
           }
         ],
         "operationId": "getBatchPredictions",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1011,9 +938,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1075,11 +999,6 @@
           }
         ],
         "operationId": "getBatchPrediction",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1141,11 +1060,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1198,11 +1112,6 @@
           }
         ],
         "operationId": "deleteBatchPrediction",
-        "x-qlik-permissions": [
-          "automl-deployment:delete",
-          "admin.automl-deployment:delete",
-          "admin.automl-deployment.sharedmanagedspace:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1274,9 +1183,6 @@
           }
         ],
         "operationId": "predictBatchPrediction",
-        "x-qlik-permissions": [
-          "automl-deployment:run"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1339,11 +1245,6 @@
         ],
         "description": "Retrieves the schedule for a batch prediction.",
         "operationId": "getBatchPredictionSchedule",
-        "x-qlik-permissions": [
-          "automl-deployment:read",
-          "admin.automl-deployment:read",
-          "admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1406,11 +1307,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update && automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment:read",
-          "automl-deployment:update && admin.automl-deployment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1480,9 +1376,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1536,9 +1429,6 @@
         ],
         "description": "Deletes the schedule from a batch prediction.",
         "operationId": "deleteBatchPredictionSchedule",
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1599,11 +1489,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:create && automl-experiment:read",
-          "automl-deployment:create && admin.automl-experiment:read",
-          "automl-deployment:create && admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1664,9 +1549,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1767,9 +1649,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-deployment:run_rtp"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1838,11 +1717,6 @@
         ],
         "description": "Retrieves a list of experiments based on provided filter and sort\nparameters.\n",
         "operationId": "getExperiments",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1900,9 +1774,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-experiment:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -1961,11 +1832,6 @@
           }
         ],
         "operationId": "getExperiment",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2024,9 +1890,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-experiment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2076,11 +1939,6 @@
           }
         ],
         "operationId": "deleteExperiment",
-        "x-qlik-permissions": [
-          "automl-experiment:delete",
-          "admin.automl-experiment:delete",
-          "admin.automl-experiment.sharedmanagedspace:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2148,11 +2006,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -2212,11 +2065,6 @@
           }
         ],
         "operationId": "getExperimentModels",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2269,11 +2117,6 @@
           }
         ],
         "operationId": "getExperimentModel",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2344,11 +2187,6 @@
           }
         ],
         "operationId": "getExperimentVersions",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2415,9 +2253,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-experiment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2479,11 +2314,6 @@
           }
         ],
         "operationId": "getExperimentVersion",
-        "x-qlik-permissions": [
-          "automl-experiment:read",
-          "admin.automl-experiment:read",
-          "admin.automl-experiment.sharedmanagedspace:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2545,9 +2375,6 @@
             }
           }
         },
-        "x-qlik-permissions": [
-          "automl-experiment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2600,9 +2427,6 @@
           }
         ],
         "operationId": "deleteExperimentVersion",
-        "x-qlik-permissions": [
-          "automl-experiment:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2649,9 +2473,6 @@
         ],
         "description": "Cancels jobs for an experiment version or batch prediction.",
         "operationId": "cancelJobs",
-        "x-qlik-permissions": [
-          "admin.automl-job:read && admin.automl-job:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2732,7 +2553,6 @@
             }
           }
         },
-        "x-qlik-permissions": [],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -2798,7 +2618,6 @@
         ],
         "description": "Retrieves profile insights for the specified dataset. If you received a\n`202 Accepted` response from `POST /ml/profile-insights`, poll this\nendpoint until a `200 OK` response with `ready` status is returned.\n",
         "operationId": "getProfileInsights",
-        "x-qlik-permissions": [],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],

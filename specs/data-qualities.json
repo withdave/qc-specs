@@ -86,10 +86,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "dataquality:update",
-          "dataset:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -193,10 +189,6 @@
         "operationId": "getDataQualityComputation",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "dataquality:read",
-          "dataset:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -295,10 +287,6 @@
         "operationId": "getDataQualityGlobalResults",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "dataquality:read",
-          "dataset:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {

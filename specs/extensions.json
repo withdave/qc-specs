@@ -24,9 +24,6 @@
         },
         "description": "Lists all imported extensions in the tenant.",
         "operationId": "getExtensions",
-        "x-qlik-permissions": [
-          "extension:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -117,9 +114,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.extension:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -193,9 +187,6 @@
         ],
         "description": "Returns a specific extension matching either extension ID or extension name.",
         "operationId": "getExtensionById",
-        "x-qlik-permissions": [
-          "extension:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -317,9 +308,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.extension:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -384,9 +372,6 @@
         ],
         "description": "Deletes a specific extension matching either extension ID or extension name.",
         "operationId": "deleteExtensionById",
-        "x-qlik-permissions": [
-          "admin.extension:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -453,9 +438,6 @@
         ],
         "description": "Downloads all files in the extension matching either extension ID or extension name as a `.zip` archive.",
         "operationId": "getExtensionArchive",
-        "x-qlik-permissions": [
-          "admin.extension:download"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -532,9 +514,6 @@
         ],
         "description": "Downloads a specific file from the extension matching either extension ID or extension name, identified by the file path within the imported extension.",
         "operationId": "getFileFromExtensionArchive",
-        "x-qlik-permissions": [
-          "extension:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -591,6 +570,10 @@
           "status": {
             "type": "number",
             "description": "The HTTP status code."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "The active traceId."
           }
         },
         "description": "An error object."
