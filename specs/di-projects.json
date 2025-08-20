@@ -1135,28 +1135,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "lastRun": {
-                      "$ref": "#/components/schemas/DataTaskInstanceStateOld"
-                    },
-                    "runReadiness": {
-                      "type": "object",
-                      "properties": {
-                        "state": {
-                          "enum": [
-                            "READY_TO_RUN",
-                            "ALREADY_RUNNING",
-                            "NOT_RUNNABLE"
-                          ],
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/DataTaskRuntimeState"
                 }
               }
             },
@@ -1203,7 +1182,7 @@
             "required": true
           }
         ],
-        "description": "Get data task runtime state within a data integration project.",
+        "description": "Get the current runtime state of a data task",
         "operationId": "get_data_task_runtime_state",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -1212,8 +1191,8 @@
         ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
+          "tier": "special",
+          "limit": 30
         }
       }
     },
@@ -1485,7 +1464,7 @@
           }
         }
       },
-      "DataTaskInstanceStateOld": {
+      "DataTaskInstanceState": {
         "type": "object",
         "properties": {
           "state": {
@@ -1494,12 +1473,132 @@
               "RUNNING",
               "COMPLETED",
               "FAILED",
-              "CANCELED"
+              "CANCELED",
+              "STOPPING"
             ],
             "type": "string"
           },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the task instance ended"
+          },
+          "general": {
+            "type": "object",
+            "properties": {
+              "gatewayId": {
+                "type": "string",
+                "description": "For tasks that run on a gateway, this is the id of the gateway"
+              },
+              "gatewayName": {
+                "type": "string",
+                "description": "For tasks that run on a gateway, this is the name of the gateway"
+              },
+              "datasetCount": {
+                "type": "number",
+                "description": "Total number of datasets produced by the task, including ones in error"
+              },
+              "gatewayTaskName": {
+                "type": "string",
+                "description": "For tasks that run on a gateway, this is the internal name of the task on the gateway"
+              },
+              "dataTaskUpdatedTo": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The latest point in time the data reflects, based on updates from the source system."
+              },
+              "liveViewsUpdatedTo": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The latest point in time the live views reflect, based on updates from the source system."
+              },
+              "datasetsInErrorCount": {
+                "type": "number",
+                "description": "Count of datasets that encountered errors"
+              },
+              "lakehouseClusterName": {
+                "type": "string",
+                "description": "For lakehouse storage tasks, this is the name of the cluster where the task runs"
+              }
+            }
+          },
           "message": {
             "type": "string"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+          },
+          "fullLoad": {
+            "type": "object",
+            "properties": {
+              "errorCount": {
+                "type": "number",
+                "description": "Number of datasets that have failed full load in this task run"
+              },
+              "queuedCount": {
+                "type": "number",
+                "description": "Number of datasets that are queued for full load in this task run"
+              },
+              "loadingCount": {
+                "type": "number",
+                "description": "Number of datasets that are currently being loaded in this task run"
+              },
+              "completedCount": {
+                "type": "number",
+                "description": "Number of datasets that have completed full load in this task run"
+              }
+            }
+          },
+          "cdcStatus": {
+            "type": "object",
+            "properties": {
+              "latency": {
+                "type": "string",
+                "example": "01:30:45",
+                "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+              },
+              "totalProcessedCount": {
+                "type": "number"
+              },
+              "applyingChangesCount": {
+                "type": "number"
+              },
+              "accumulatingChangesCount": {
+                "type": "number"
+              },
+              "throughputInKilobytesPerSecond": {
+                "type": "number",
+                "description": "Throughput in kilobytes per second"
+              }
+            }
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the task instance started"
+          },
+          "lastBatchOfChanges": {
+            "type": "object",
+            "properties": {
+              "relatesToRecordsTo": {
+                "type": "string",
+                "format": "date-time",
+                "description": "This batch ends with operational source changes from this time."
+              },
+              "totalProcessedCount": {
+                "type": "number"
+              },
+              "relatesToRecordsFrom": {
+                "type": "string",
+                "format": "date-time",
+                "description": "This batch starts with operational source changes from this time."
+              },
+              "throughputInRecordsPerSecond": {
+                "type": "number",
+                "description": "Throughput in records per second"
+              }
+            }
           }
         }
       },
@@ -1523,6 +1622,37 @@
           },
           "description": {
             "type": "string"
+          }
+        }
+      },
+      "DataTaskRuntimeState": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the data task"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DataTaskType"
+          },
+          "lastRun": {
+            "$ref": "#/components/schemas/DataTaskInstanceState"
+          },
+          "runReadiness": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "READY_TO_RUN",
+                  "ALREADY_RUNNING",
+                  "NOT_RUNNABLE"
+                ],
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
           }
         }
       },

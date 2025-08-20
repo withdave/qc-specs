@@ -84,12 +84,8 @@
             "name": "scope",
             "style": "spaceDelimited",
             "schema": {
-              "enum": [
-                "user_default",
-                "offline_access"
-              ],
               "type": "array",
-              "example": "user_default"
+              "example": "users:read apps:read"
             },
             "explode": false,
             "required": true,
@@ -130,12 +126,16 @@
               "type": "number"
             },
             "required": false,
-            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider."
+            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider.\nIf time is greater than max_age, force user to re-authorize.\n"
           },
           {
             "in": "query",
             "name": "prompt",
             "schema": {
+              "enum": [
+                "none",
+                "login"
+              ],
               "type": "string"
             },
             "required": false,

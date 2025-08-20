@@ -758,9 +758,6 @@
         ],
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "license:read"
-        ],
         "x-qlik-categories": [
           "external/manage"
         ],

@@ -99,9 +99,6 @@
             "$ref": "#/components/parameters/filter"
           }
         ],
-        "x-qlik-permissions": [
-          "dataconnections:list"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -194,9 +191,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "dataconnections:create"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -293,9 +287,6 @@
             "$ref": "#/components/parameters/parseConnection"
           }
         ],
-        "x-qlik-permissions": [
-          "dataconnections:read"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -378,9 +369,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "dataconnections:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -463,9 +451,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "dataconnections:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -517,9 +502,6 @@
           {
             "$ref": "#/components/parameters/spaceID"
           }
-        ],
-        "x-qlik-permissions": [
-          "dataconnections:delete"
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -581,9 +563,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.dataconnections.actions:delete"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -724,9 +703,6 @@
           },
           "required": true
         },
-        "x-qlik-permissions": [
-          "admin.dataconnections.actions:update"
-        ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [

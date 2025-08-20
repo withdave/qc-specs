@@ -52,6 +52,16 @@
           },
           {
             "in": "query",
+            "name": "max_age",
+            "schema": {
+              "type": "number",
+              "example": 3600
+            },
+            "required": false,
+            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider.\nIf time is greater than max_age, force user to re-authorize.\n"
+          },
+          {
+            "in": "query",
             "name": "returnto",
             "schema": {
               "type": "string"
@@ -59,6 +69,21 @@
             "example": "automations/editor/fef1ba5f-facb-4cd1-9c69-8ddc6c61b7e3",
             "required": false,
             "description": "Relative or full URL on the tenant to redirect to after successful login."
+          },
+          {
+            "in": "query",
+            "name": "scope",
+            "style": "spaceDelimited",
+            "schema": {
+              "enum": [
+                "offline_access"
+              ],
+              "type": "array",
+              "example": "offline_access"
+            },
+            "explode": false,
+            "required": false,
+            "description": "Specifies the scope of access for login. Only supports offline_access to request a refresh token from the identity provider."
           },
           {
             "in": "header",
