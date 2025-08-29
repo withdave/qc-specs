@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -8294,7 +8294,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AutomationDetailRequestObject"
+                "$ref": "#/components/schemas/AutomationDetailUpdateRequestObject"
               }
             }
           },
@@ -9314,11 +9314,28 @@
             "in": "query",
             "name": "filter",
             "schema": {
-              "type": "string",
-              "example": "name eq \"duration\" and date eq \"2021-12-15\""
+              "type": "string"
+            },
+            "examples": {
+              "dateRange": {
+                "value": "date ge \"2025-08-07\" and date le \"2025-08-12\"",
+                "summary": "Filter metrics by date range"
+              },
+              "singleName": {
+                "value": "name eq \"runs\"",
+                "summary": "Filter metrics by a name"
+              },
+              "nameAndDateRange": {
+                "value": "name eq \"duration\" and date ge \"2025-08-07\" and date le \"2025-08-12\"",
+                "summary": "Filter metrics by name and date range"
+              },
+              "nameAndSpecificDate": {
+                "value": "name eq \"runs\" and date eq \"2025-08-07\"",
+                "summary": "Filter metrics by name and specific date"
+              }
             },
             "required": true,
-            "description": "Indicates how the metrics should be filtered"
+            "description": "Indicates how the metrics should be filtered using a SCIM-style expression. Available parameters:\n- name (specify one or more enums to return specific metrics. Supported enum values: `runs`, `scheduledRun`, `triggeredRun`, `webhookRuns`, `duration`, `bandwidthIn`, `bandwidthOut`)\n- date (return a metric for a specific date or range of dates, e.g. \"2025-08-01\")"
           },
           {
             "in": "query",
@@ -9473,12 +9490,15 @@
           },
           "description": "Request payload containing the dataset for predictions. Date features must be in ISO 8601 format."
         },
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
+        "x-qlik-deprecated-description": "This endpoint has been replaced by a new version",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
           "limit": 300
@@ -9571,12 +9591,14 @@
         ],
         "description": "Returns a file containing the shapley values in coordinate form that are associated with a prediction ID.",
         "operationId": "getCoordinateShapForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -9664,12 +9686,14 @@
         ],
         "description": "Retrieve jobs that are associated with a prediction. Job with correlation type `prediction`.",
         "operationId": "getPredictionJobs",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -9762,12 +9786,14 @@
         ],
         "description": "Returns a file containing any rows in a prediction operation where a prediction was unable to be produced.",
         "operationId": "getErrorsForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -9858,12 +9884,14 @@
         ],
         "description": "Returns a file containing the predicted values that are associated with a prediction ID.",
         "operationId": "getConfigurationsForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -9954,12 +9982,14 @@
         ],
         "description": "Returns a file containing the shapley values that are associated with a prediction ID.",
         "operationId": "getShapForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -10052,12 +10082,14 @@
         ],
         "description": "Returns a file containing the source values and an index field that are associated with a prediction ID.",
         "operationId": "getSourceForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -39700,6 +39732,232 @@
         }
       }
     },
+    "/api/v1/reports/{id}/outputs": {
+      "get": {
+        "tags": [
+          "outputs"
+        ],
+        "summary": "Get report request outputs.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputList"
+                }
+              }
+            },
+            "description": "The outputs have been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-400000",
+                      "title": "Bad or malformed request",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Bad request. Malformed syntax, errors in params."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-401000",
+                      "title": "Forbidden",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-403000",
+                      "title": "Forbidden",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Forbidden, user did not authenticate."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-404000",
+                      "title": "url path not found",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-409000",
+                      "title": "Conflict",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Conflicted request. Report aborted."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "HTTP-429",
+                      "title": "Too Many Requests",
+                      "detail": "The user has sent too frequent requests which resulted in an undesired response code (\"error rate limiting\")"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Too many request. Indicates the user has sent too many requests in a given amount of time, aka \"rate limiting\"."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-500000",
+                      "title": "Internal server error",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "01562a37-23e3-4b43-865d-84c26122276c"
+            },
+            "required": true,
+            "description": "Identifier of the request."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://datatracker.ietf.org/doc/rfc7644/) for the syntax. Cannot be combined with any of the fields marked as deprecated. All conditional statements within this query parameter are case insensitive.\nThe following fields support the `eq` (equals) operator: `outputId`\nExample:\noutputId eq \"123\" or outputId eq \"321\"\n"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "example": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "Limit the returned result set"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string",
+              "example": "NzlmNzI5NWMtZGJlZC00Y2Y4LThkNDAtMzQ5ZDU3YzNjMzQ1",
+              "nullable": true
+            },
+            "example": "NzlmNzI5NWMtZGJlZC00Y2Y4LThkNDAtMzQ5ZDU3YzNjMzQ1",
+            "description": "If present, the cursor that starts the page of data that is returned."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "+outputId",
+                  "-outputId",
+                  "+sizeBytes",
+                  "-sizeBytes"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Sorting parameters"
+          }
+        ],
+        "description": "Get the list of the outputs produced so far for the given report request. The outputs are generated asynchronously \nand are complete only when the status of the report request is 'done' or 'failed' or 'aborted'.\n",
+        "operationId": "getOutputs",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/v1/reports/{id}/status": {
       "get": {
         "tags": [
@@ -51593,8 +51851,8 @@
           "href": {
             "type": "string",
             "format": "uri",
-            "nullable": true,
-            "description": "The URL for the link."
+            "example": "https://tenant.qlik-cloud.com:443/api/v1/apps/816e23e1-03d2-446b-8721-cdee6b5e59cf/report-filters?filter=&filterTypes=REP&filterTypes=REP&limit=20&page=0&sort=%2Bname",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -51630,6 +51888,17 @@
       },
       "LinksResponse": {
         "type": "object",
+        "example": {
+          "next": {
+            "href": "https://tenant.qlik-cloud.com:443/api/v1/apps/816e23e1-03d2-446b-8721-cdee6b5e59cf/report-filters?filter=&filterTypes=REP&filterTypes=REP&limit=20&page=0&sort=%2Bname"
+          },
+          "prev": {
+            "href": "https://tenant.qlik-cloud.com:443/api/v1/apps/816e23e1-03d2-446b-8721-cdee6b5e59cf/report-filters?filter=&filterTypes=REP&filterTypes=REP&limit=20&page=0&sort=%2Bname"
+          },
+          "self": {
+            "href": "https://tenant.qlik-cloud.com:443/api/v1/apps/816e23e1-03d2-446b-8721-cdee6b5e59cf/report-filters?filter=&filterTypes=REP&filterTypes=REP&limit=20&page=0&sort=%2Bname"
+          }
+        },
         "required": [
           "next",
           "prev",
@@ -52720,6 +52989,12 @@
               "$ref": "#/components/schemas/ScriptMeta"
             },
             "description": "Script versions metadata."
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -53051,7 +53326,8 @@
           "spaceId",
           "knowledgeBases",
           "welcomeMessage",
-          "customProperties"
+          "customProperties",
+          "legacy"
         ],
         "properties": {
           "id": {
@@ -53080,6 +53356,12 @@
             "type": "string",
             "example": "Assistant for Sales activities",
             "description": "The title of the assistant."
+          },
+          "legacy": {
+            "type": "boolean",
+            "example": true,
+            "readOnly": true,
+            "description": "Indiciates if the assistant is legacy. Immutable once created."
           },
           "ownerId": {
             "type": "string",
@@ -53269,6 +53551,11 @@
             "example": "Assistant for Sales activities",
             "description": "The title of the assistant."
           },
+          "legacy": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether the assistant uses legacy functionality. Immutable once created."
+          },
           "spaceId": {
             "type": "string",
             "format": "uuid",
@@ -53374,6 +53661,11 @@
             "type": "string",
             "format": "file",
             "description": "user uploaded avatar, filetype must be png"
+          },
+          "legacy": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether the assistant uses legacy functionality. Immutable once created."
           },
           "spaceId": {
             "type": "string",
@@ -55258,6 +55550,27 @@
           }
         }
       },
+      "AutomationDetailUpdateRequestObject": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "schedules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleRequestObject"
+            }
+          },
+          "workspace": {
+            "type": "object",
+            "description": "The workspace generated by the Qlik Automate editor."
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
       "AutomationList": {
         "type": "object",
         "properties": {
@@ -55421,8 +55734,7 @@
           "guid": {
             "type": "string",
             "example": "00000000-0000-0000-0000-000000000000",
-            "description": "The unique identifier for the automation.",
-            "x-qlik-filterable": true
+            "description": "The unique identifier for the automation."
           },
           "name": {
             "type": "string",
@@ -55433,14 +55745,12 @@
           "ownerId": {
             "type": "string",
             "example": "KP1zJiPDn0gsla236GmETadFcxBW-J8F",
-            "description": "The unique identifier for the user who owns the automation",
-            "x-qlik-filterable": true
+            "description": "The unique identifier for the user who owns the automation"
           },
           "duration": {
             "type": "integer",
             "example": 9001,
-            "description": "Duration of the last run, indicated in seconds. Calculated from start and stop times",
-            "x-qlik-filterable": true
+            "description": "Duration of the last run, indicated in seconds. Calculated from start and stop times"
           }
         }
       },
@@ -55847,7 +56157,8 @@
           "date": {
             "type": "string",
             "example": "2021-12-15",
-            "description": "The date for the metric"
+            "description": "The date for the metric",
+            "x-qlik-filterable": true
           },
           "name": {
             "enum": [
@@ -55862,7 +56173,8 @@
             "type": "string",
             "example": "bandwidthIn",
             "maxLength": 50,
-            "description": "The name for the metric"
+            "description": "The name for the metric",
+            "x-qlik-filterable": true
           },
           "value": {
             "type": "integer",
@@ -55905,10 +56217,6 @@
           "status": {
             "type": "number",
             "description": "The HTTP status code."
-          },
-          "traceId": {
-            "type": "string",
-            "description": "The active traceId."
           }
         },
         "description": "An error object."
@@ -70797,17 +71105,6 @@
           }
         }
       },
-      "ConfigurationKey": {
-        "enum": [
-          "DATE_INDEX",
-          "FUTURE_FEATURE",
-          "GROUP_ID",
-          "FORECAST_GAP_SIZE",
-          "FORECAST_WINDOW_SIZE",
-          "GROUP_ID_PRIMARY"
-        ],
-        "type": "string"
-      },
       "CorrId": {
         "type": "string",
         "description": "The ID of a correlated resource of corrType"
@@ -70828,21 +71125,6 @@
         "type": "string",
         "description": "ID of the owner/user that created this entity.",
         "x-qlik-filterable": true
-      },
-      "DataSchemaConfiguration": {
-        "type": "object",
-        "required": [
-          "key",
-          "value"
-        ],
-        "properties": {
-          "key": {
-            "$ref": "#/components/schemas/ConfigurationKey"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
       },
       "DataSetId": {
         "type": "string",
@@ -71676,8 +71958,7 @@
         "enum": [
           "binary",
           "multiclass",
-          "regression",
-          "timeseries"
+          "regression"
         ],
         "type": "string",
         "description": "Experiment type"
@@ -72182,10 +72463,7 @@
           "valid_index",
           "underrepresented_class",
           "invalid_column_name",
-          "will_be_date_engineered",
-          "possible_date_index",
-          "possible_group",
-          "possible_future_feature"
+          "will_be_date_engineered"
         ],
         "type": "string",
         "description": "Insights about a feature, such as why it's not included in a model\n"
@@ -72315,11 +72593,7 @@
           "random_forest_regression",
           "sgd_regression",
           "xgb_classifier",
-          "xgb_regression",
-          "deepar_timeseries",
-          "mixer_timeseries",
-          "tft_timeseries",
-          "tide_timeseries"
+          "xgb_regression"
         ],
         "type": "string",
         "description": "Enumeration of model algorithms.\n\nA subset of these may be provided based on your ExperimentType. This is\nbased on your target's featureType. When you select a target feature\nfrom your ProfileInsights response (defaultVersionConfig.featuresList),\nit tells you which algorithms will be available if you choose it as your\ntarget.\n"
@@ -72339,11 +72613,7 @@
           "RAFR",
           "SGDR",
           "XGBC",
-          "XGBR",
-          "DEAR",
-          "MIXR",
-          "TFTT",
-          "TIDE"
+          "XGBR"
         ],
         "type": "string",
         "description": "Model algorithm name abbreviation"
@@ -72854,12 +73124,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Transform"
-            }
-          },
-          "dataSchemaConfiguration": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DataSchemaConfiguration"
             }
           }
         },
@@ -75975,6 +76239,73 @@
           },
           "pptxCompositionOutput": {
             "$ref": "#/components/schemas/PptxCompositionOutput"
+          }
+        }
+      },
+      "OutputList": {
+        "type": "object",
+        "readOnly": true,
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OutputListItem"
+            },
+            "description": "a list of outputs containing all the report outputs"
+          },
+          "links": {
+            "$ref": "#/components/schemas/LinksResponse"
+          }
+        }
+      },
+      "OutputListItem": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "queued",
+              "processing",
+              "done",
+              "failed",
+              "aborted",
+              "aborting"
+            ],
+            "type": "string",
+            "example": "processing",
+            "description": "Status of the requested report."
+          },
+          "traceId": {
+            "type": "string",
+            "example": "1234"
+          },
+          "location": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://t.eu.qlikcloud.com:443/api/v1/temp-contents/619b77be498fea00018de0e1?inline=1",
+            "description": "Location to download the generated report file."
+          },
+          "outputId": {
+            "type": "string",
+            "example": "c61841ac-7b35-4434-aa74-4421f10fc68e",
+            "readOnly": true,
+            "description": "The output ID"
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "description": "output size in bytes"
+          },
+          "exportErrors": {
+            "$ref": "#/components/schemas/ExportErrors"
+          },
+          "cycleSelections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QSelection"
+            }
           }
         }
       },
