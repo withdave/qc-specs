@@ -6313,6 +6313,12 @@
               "$ref": "#/components/schemas/ScriptMeta"
             },
             "description": "Script versions metadata."
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
