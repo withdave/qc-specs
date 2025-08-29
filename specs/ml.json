@@ -3935,17 +3935,6 @@
           }
         }
       },
-      "ConfigurationKey": {
-        "enum": [
-          "DATE_INDEX",
-          "FUTURE_FEATURE",
-          "GROUP_ID",
-          "FORECAST_GAP_SIZE",
-          "FORECAST_WINDOW_SIZE",
-          "GROUP_ID_PRIMARY"
-        ],
-        "type": "string"
-      },
       "CorrId": {
         "type": "string",
         "description": "The ID of a correlated resource of corrType"
@@ -3966,21 +3955,6 @@
         "type": "string",
         "description": "ID of the owner/user that created this entity.",
         "x-qlik-filterable": true
-      },
-      "DataSchemaConfiguration": {
-        "type": "object",
-        "required": [
-          "key",
-          "value"
-        ],
-        "properties": {
-          "key": {
-            "$ref": "#/components/schemas/ConfigurationKey"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
       },
       "DataSetId": {
         "type": "string",
@@ -4826,8 +4800,7 @@
         "enum": [
           "binary",
           "multiclass",
-          "regression",
-          "timeseries"
+          "regression"
         ],
         "type": "string",
         "description": "Experiment type"
@@ -5332,10 +5305,7 @@
           "valid_index",
           "underrepresented_class",
           "invalid_column_name",
-          "will_be_date_engineered",
-          "possible_date_index",
-          "possible_group",
-          "possible_future_feature"
+          "will_be_date_engineered"
         ],
         "type": "string",
         "description": "Insights about a feature, such as why it's not included in a model\n"
@@ -5465,11 +5435,7 @@
           "random_forest_regression",
           "sgd_regression",
           "xgb_classifier",
-          "xgb_regression",
-          "deepar_timeseries",
-          "mixer_timeseries",
-          "tft_timeseries",
-          "tide_timeseries"
+          "xgb_regression"
         ],
         "type": "string",
         "description": "Enumeration of model algorithms.\n\nA subset of these may be provided based on your ExperimentType. This is\nbased on your target's featureType. When you select a target feature\nfrom your ProfileInsights response (defaultVersionConfig.featuresList),\nit tells you which algorithms will be available if you choose it as your\ntarget.\n"
@@ -5489,11 +5455,7 @@
           "RAFR",
           "SGDR",
           "XGBC",
-          "XGBR",
-          "DEAR",
-          "MIXR",
-          "TFTT",
-          "TIDE"
+          "XGBR"
         ],
         "type": "string",
         "description": "Model algorithm name abbreviation"
@@ -6004,12 +5966,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Transform"
-            }
-          },
-          "dataSchemaConfiguration": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DataSchemaConfiguration"
             }
           }
         },

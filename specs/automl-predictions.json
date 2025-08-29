@@ -90,12 +90,14 @@
         ],
         "description": "Returns a file containing the shapley values in coordinate form that are associated with a prediction ID.",
         "operationId": "getCoordinateShapForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -183,12 +185,14 @@
         ],
         "description": "Retrieve jobs that are associated with a prediction. Job with correlation type `prediction`.",
         "operationId": "getPredictionJobs",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -281,12 +285,14 @@
         ],
         "description": "Returns a file containing any rows in a prediction operation where a prediction was unable to be produced.",
         "operationId": "getErrorsForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -377,12 +383,14 @@
         ],
         "description": "Returns a file containing the predicted values that are associated with a prediction ID.",
         "operationId": "getConfigurationsForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -473,12 +481,14 @@
         ],
         "description": "Returns a file containing the shapley values that are associated with a prediction ID.",
         "operationId": "getShapForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -571,12 +581,14 @@
         ],
         "description": "Returns a file containing the source values and an index field that are associated with a prediction ID.",
         "operationId": "getSourceForPrediction",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000

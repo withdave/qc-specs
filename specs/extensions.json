@@ -570,10 +570,6 @@
           "status": {
             "type": "number",
             "description": "The HTTP status code."
-          },
-          "traceId": {
-            "type": "string",
-            "description": "The active traceId."
           }
         },
         "description": "An error object."

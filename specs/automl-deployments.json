@@ -131,12 +131,15 @@
           },
           "description": "Request payload containing the dataset for predictions. Date features must be in ISO 8601 format."
         },
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-02",
+        "x-qlik-deprecated-version": "2025-08",
+        "x-qlik-deprecated-description": "This endpoint has been replaced by a new version",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
           "external/build"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
           "limit": 300

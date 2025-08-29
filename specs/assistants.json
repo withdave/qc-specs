@@ -2894,7 +2894,8 @@
           "spaceId",
           "knowledgeBases",
           "welcomeMessage",
-          "customProperties"
+          "customProperties",
+          "legacy"
         ],
         "properties": {
           "id": {
@@ -2923,6 +2924,12 @@
             "type": "string",
             "example": "Assistant for Sales activities",
             "description": "The title of the assistant."
+          },
+          "legacy": {
+            "type": "boolean",
+            "example": true,
+            "readOnly": true,
+            "description": "Indiciates if the assistant is legacy. Immutable once created."
           },
           "ownerId": {
             "type": "string",
@@ -3112,6 +3119,11 @@
             "example": "Assistant for Sales activities",
             "description": "The title of the assistant."
           },
+          "legacy": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether the assistant uses legacy functionality. Immutable once created."
+          },
           "spaceId": {
             "type": "string",
             "format": "uuid",
@@ -3217,6 +3229,11 @@
             "type": "string",
             "format": "file",
             "description": "user uploaded avatar, filetype must be png"
+          },
+          "legacy": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether the assistant uses legacy functionality. Immutable once created."
           },
           "spaceId": {
             "type": "string",
