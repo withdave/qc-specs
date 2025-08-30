@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -22376,6 +22376,84 @@
         "x-qlik-categories": [
           "external/manage"
         ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 30
+        }
+      }
+    },
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/state/datasets": {
+      "get": {
+        "tags": [
+          "data task runtime"
+        ],
+        "summary": "List runtime dataset states",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "datasets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DataTaskDatasetState"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Returns all datasets for the specified data task"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the data task"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the project"
+          }
+        ],
+        "description": "Returns dataset-level runtime state for a data task",
+        "operationId": "list_data_task_datasets",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -63169,6 +63247,151 @@
             "type": "string",
             "example": "storage-connection-string",
             "description": "The cloud staging connection string"
+          }
+        }
+      },
+      "DataTaskDatasetState": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the dataset"
+          },
+          "fullLoad": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "QUEUED",
+                  "LOADING",
+                  "COMPLETED",
+                  "ERROR"
+                ],
+                "type": "string"
+              },
+              "endTime": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "message": {
+                "type": "string"
+              },
+              "duration": {
+                "type": "string",
+                "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+              },
+              "startTime": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "cachedChangesCount": {
+                "type": "number",
+                "description": "Number of changes captured and cached during full load (CDC landing/replication tasks only)"
+              },
+              "failedRecordsCount": {
+                "type": "number",
+                "description": "Number of records that failed to load (currently only for knowledge marts)"
+              },
+              "totalProcessedCount": {
+                "type": "number",
+                "description": "Number of records (or docs in knowledge marts) were loaded."
+              }
+            }
+          },
+          "cdcStatus": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "QUEUED",
+                  "PROCESSING",
+                  "ACCUMULATING_CHANGES",
+                  "COMPLETED",
+                  "ERROR"
+                ],
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "ddlCount": {
+                "type": "number",
+                "description": "Number of DDL statements executed during the last run"
+              },
+              "deleteCount": {
+                "type": "number",
+                "description": "delete portion of totalProcessedCount. Only available for some task types"
+              },
+              "insertCount": {
+                "type": "number",
+                "description": "Insert portion of totalProcessedCount. Only available for some task types"
+              },
+              "updateCount": {
+                "type": "number",
+                "description": "update portion of totalProcessedCount. Only available for some task types"
+              },
+              "lastProcessed": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "totalProcessedCount": {
+                "type": "number",
+                "description": "Total number of changes/DMLs applied to the dataset"
+              }
+            }
+          },
+          "datasetId": {
+            "type": "string",
+            "description": "Id of the dataset"
+          },
+          "sourceName": {
+            "type": "string",
+            "description": "Original name of the dataset, relevant only for data movement tasks"
+          },
+          "dataReadiness": {
+            "enum": [
+              "READY",
+              "NOT_READY",
+              "ERROR"
+            ],
+            "type": "string",
+            "description": "Is the data ready for use?"
+          },
+          "lastBatchOfChanges": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "QUEUED",
+                  "PROCESSING",
+                  "COMPLETED",
+                  "ERROR"
+                ],
+                "type": "string"
+              },
+              "endTime": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "message": {
+                "type": "string"
+              },
+              "duration": {
+                "type": "string",
+                "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+              },
+              "startTime": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "totalProcessedCount": {
+                "type": "number"
+              },
+              "throughputInRecordsPerSecond": {
+                "type": "number",
+                "description": "Throughput in records per second"
+              }
+            }
           }
         }
       },
