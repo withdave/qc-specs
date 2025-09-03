@@ -401,6 +401,11 @@
           "uiInfo": {
             "$ref": "#/components/schemas/UiInfo"
           },
+          "disabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates if the datasource is disabled"
+          },
           "provider": {
             "type": "string",
             "example": "QvRestConnector.exe",
