@@ -120,7 +120,7 @@
               "example": "-name"
             },
             "required": false,
-            "description": "The field to sort by, with +- prefix indicating sort order. (?query=-name => sort on the name field using descending order)"
+            "description": "The field to sort by, with +- prefix indicating sort order. (?sort=-name => sort on the name field using descending order)\nThe `duration` option is deprecated and will be removed in a future release."
           }
         ],
         "description": "Retrieves a list of the automations that the requesting user has access to.",
@@ -1616,7 +1616,8 @@
               "paused",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit"
             ],
             "type": "string",
             "example": "finished",
@@ -1793,7 +1794,8 @@
               "paused",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit"
             ],
             "type": "string",
             "example": "finished",
@@ -1941,7 +1943,9 @@
               "not started",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit",
+              "queued"
             ],
             "type": "string"
           },
@@ -2132,7 +2136,9 @@
               "not started",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit",
+              "queued"
             ],
             "type": "string",
             "x-qlik-filterable": true
