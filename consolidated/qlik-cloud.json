@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -8093,7 +8093,7 @@
               "example": "-name"
             },
             "required": false,
-            "description": "The field to sort by, with +- prefix indicating sort order. (?query=-name => sort on the name field using descending order)"
+            "description": "The field to sort by, with +- prefix indicating sort order. (?sort=-name => sort on the name field using descending order)\nThe `duration` option is deprecated and will be removed in a future release."
           }
         ],
         "description": "Retrieves a list of the automations that the requesting user has access to.",
@@ -55615,7 +55615,8 @@
               "paused",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit"
             ],
             "type": "string",
             "example": "finished",
@@ -55792,7 +55793,8 @@
               "paused",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit"
             ],
             "type": "string",
             "example": "finished",
@@ -55886,7 +55888,9 @@
               "not started",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit",
+              "queued"
             ],
             "type": "string"
           },
@@ -56077,7 +56081,9 @@
               "not started",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit",
+              "queued"
             ],
             "type": "string",
             "x-qlik-filterable": true
