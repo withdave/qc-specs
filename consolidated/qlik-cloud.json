@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -72556,6 +72556,9 @@
               "$ref": "#/components/schemas/APIError"
             },
             "uniqueItems": true
+          },
+          "traceId": {
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -73826,7 +73829,7 @@
         "type": "integer",
         "maximum": 21600,
         "minimum": 900,
-        "description": "Training duration in seconds. If provided, minimum is 900 (15m) and\nmax is 21600 (6h).\n"
+        "description": "Optional training duration in seconds. If not provided, max value used.\nIf provided, min 900 (15m) and max 21600 (6h).\n"
       },
       "Transform": {
         "type": "object",

@@ -5164,6 +5164,9 @@
               "$ref": "#/components/schemas/APIError"
             },
             "uniqueItems": true
+          },
+          "traceId": {
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -6434,7 +6437,7 @@
         "type": "integer",
         "maximum": 21600,
         "minimum": 900,
-        "description": "Training duration in seconds. If provided, minimum is 900 (15m) and\nmax is 21600 (6h).\n"
+        "description": "Optional training duration in seconds. If not provided, max value used.\nIf provided, min 900 (15m) and max 21600 (6h).\n"
       },
       "Transform": {
         "type": "object",
