@@ -97,6 +97,9 @@
           },
           {
             "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/includeDisabled"
           }
         ],
         "x-qlik-visibility": "public",
@@ -792,6 +795,16 @@
         },
         "required": false,
         "description": "Filtering resources by properties (filterable properties only) using SCIM filter string. Note the filter string only applies to connections managed by data-connections service, i.e. filtering doesn't apply to DataFile connections. When filtering on datetime property (e.g. created, updated), datetime should be in RFC3339 format."
+      },
+      "includeDisabled": {
+        "in": "query",
+        "name": "includeDisabled",
+        "schema": {
+          "type": "boolean"
+        },
+        "example": true,
+        "required": false,
+        "description": "Includes connections that uses disabled datasources"
       },
       "includeQris": {
         "in": "query",

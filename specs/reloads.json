@@ -645,9 +645,11 @@
               "var1": "value1",
               "var2": "value2"
             },
-            "description": "The variables to be used in the load script.",
+            "description": "The variables to be used in the load script. Maximum of 20 variables allowed with a maximum length of 256 characters for each name/value.",
+            "maxProperties": 20,
             "additionalProperties": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 256
             }
           }
         }
