@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -16340,6 +16340,9 @@
           },
           {
             "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/includeDisabled"
           }
         ],
         "x-qlik-visibility": "public",
@@ -75885,9 +75888,11 @@
               "var1": "value1",
               "var2": "value2"
             },
-            "description": "The variables to be used in the load script.",
+            "description": "The variables to be used in the load script. Maximum of 20 variables allowed with a maximum length of 256 characters for each name/value.",
+            "maxProperties": 20,
             "additionalProperties": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 256
             }
           }
         }
