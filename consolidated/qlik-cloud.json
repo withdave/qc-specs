@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -22382,7 +22382,7 @@
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
-          "limit": 30
+          "limit": 120
         }
       }
     },
@@ -22460,7 +22460,7 @@
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
-          "limit": 30
+          "limit": 120
         }
       }
     },
@@ -33455,6 +33455,19 @@
           },
           {
             "in": "query",
+            "name": "prompt",
+            "schema": {
+              "enum": [
+                "none",
+                "login"
+              ],
+              "type": "string"
+            },
+            "required": false,
+            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication and consent."
+          },
+          {
+            "in": "query",
             "name": "returnto",
             "schema": {
               "type": "string"
@@ -37415,7 +37428,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication and consent."
+            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication or requires a non-interactive authentication."
           }
         ],
         "description": "Allows a client application to use an OAuth flow to request user authorization.",
@@ -46146,7 +46159,7 @@
         "tags": [
           "email-config"
         ],
-        "summary": "Returns the email configuration for a given tenant id (retrieved from JWT).",
+        "summary": "Get email configuration",
         "responses": {
           "200": {
             "content": {
@@ -46179,6 +46192,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Returns the current email configuration and configuration status for the tenant.",
         "operationId": "getEmailConfig",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -46195,7 +46209,7 @@
         "tags": [
           "email-config"
         ],
-        "summary": "Patch the email configuration for a given tenant id (retrieved from JWT).",
+        "summary": "Patch email configuration",
         "responses": {
           "204": {
             "description": "Success."
@@ -46231,6 +46245,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Patch the email configuration for the tenant.",
         "operationId": "patchEmailConfig",
         "requestBody": {
           "content": {
@@ -46257,7 +46272,7 @@
         "tags": [
           "email-config"
         ],
-        "summary": "Deletes email configuration for a given tenant id (retrieved from JWT).",
+        "summary": "Delete email configuration",
         "responses": {
           "204": {
             "description": "Success."
@@ -46293,6 +46308,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Deletes the email configuration for the tenant.",
         "operationId": "deleteEmailConfig",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -46311,7 +46327,7 @@
         "tags": [
           "email-config-actions"
         ],
-        "summary": "Send a test mail with the supplied email info (subject, body, recipient). Email config from database is used for the connection.",
+        "summary": "Send test email",
         "responses": {
           "200": {
             "content": {
@@ -46354,6 +46370,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Attempts to sends a test email using the active configuration, with the supplied email info (subject, body, recipient).",
         "operationId": "sendTestEmailAction",
         "requestBody": {
           "content": {
@@ -46386,7 +46403,7 @@
         "tags": [
           "email-config-actions"
         ],
-        "summary": "Returns the isValid value for the email configuration for the tenant. Will return false if no email configuration exists.",
+        "summary": "Get configuration status",
         "responses": {
           "200": {
             "content": {
@@ -46409,6 +46426,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Returns the current isValid value for the email configuration for the tenant. Does not attempt to connect to a server to verify the connection or send a test email. Will return false if no email configuration exists.",
         "operationId": "validateAction",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -46427,7 +46445,7 @@
         "tags": [
           "email-config-actions"
         ],
-        "summary": "Verifies connection to email server for tenant provided via JWT",
+        "summary": "Verify configuration",
         "responses": {
           "200": {
             "content": {
@@ -46460,6 +46478,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Attempts to verify connection to email server using a low-level protocol handshake to confirm the server is reachable and the credentials are valid, without sending a test email.",
         "operationId": "verifyConnectionAction",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
