@@ -139,7 +139,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication and consent."
+            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication or requires a non-interactive authentication."
           }
         ],
         "description": "Allows a client application to use an OAuth flow to request user authorization.",
