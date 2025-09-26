@@ -62,6 +62,19 @@
           },
           {
             "in": "query",
+            "name": "prompt",
+            "schema": {
+              "enum": [
+                "none",
+                "login"
+              ],
+              "type": "string"
+            },
+            "required": false,
+            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication and consent."
+          },
+          {
+            "in": "query",
             "name": "returnto",
             "schema": {
               "type": "string"

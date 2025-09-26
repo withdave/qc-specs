@@ -1192,7 +1192,7 @@
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
-          "limit": 30
+          "limit": 120
         }
       }
     },
@@ -1270,7 +1270,7 @@
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
-          "limit": 30
+          "limit": 120
         }
       }
     },
