@@ -817,6 +817,12 @@
         },
         "description": "The result of tenant deactivation."
       },
+      "TenantMultipleMetaErrorsDetail": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/TenantSingleMetaErrorDetail"
+        }
+      },
       "TenantPatchErrors": {
         "type": "object",
         "properties": {
@@ -835,20 +841,14 @@
                   "description": "The error code."
                 },
                 "meta": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string",
-                      "example": "TENANTS-11",
-                      "description": "The error code."
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TenantSingleMetaErrorDetail"
                     },
-                    "title": {
-                      "type": "string",
-                      "example": "The specified hostname is unavailable for use",
-                      "description": "Summary of the problem."
+                    {
+                      "$ref": "#/components/schemas/TenantMultipleMetaErrorsDetail"
                     }
-                  },
-                  "description": "Additional properties relating to the error."
+                  ]
                 },
                 "title": {
                   "type": "string",
@@ -952,6 +952,21 @@
             "value": false
           }
         ]
+      },
+      "TenantSingleMetaErrorDetail": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "TENANTS-10",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "example": "Subdomain should be between 3 and 63 characters",
+            "description": "The error summary."
+          }
+        }
       }
     }
   },

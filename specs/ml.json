@@ -2688,9 +2688,9 @@
         "schema": {
           "type": "string"
         },
-        "example": "`filter=modelId eq \"UUID\"`",
+        "example": "`filter=modelId eq \"UUID\" and ownerId eq \"string\"`",
         "required": false,
-        "description": "Batch prediction fields by which you can filter responses.<br><br>\n- `modelId` UUID string - By model ID\n"
+        "description": "Batch prediction fields by which you can filter responses.<br><br>\n- `aliasId` UUID string - ID of an alias within the batch prediction\n- `createdBy` ID string\n- `deploymentId` UUID string - ID of a deployment of a model associated with the experiment\n- `experimentId` UUID string - ID of experiment in which model(s) exist\n- `experimentVersionId` UUID string - ID of experiment version in which model(s) exist\n- `modelId` UUID string - By model ID\n- `ownerId` ID string of batch prediction owner\n"
       },
       "batchPredictionsSort": {
         "in": "query",
