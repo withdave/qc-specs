@@ -110,7 +110,7 @@
         "tags": [
           "glossaries"
         ],
-        "summary": "Creates a new glossary. Only a steward can create a glossary.\n",
+        "summary": "Creates a new glossary.",
         "responses": {
           "201": {
             "content": {
@@ -157,6 +157,7 @@
             "description": "The user does not have privileges to perform the requested action."
           }
         },
+        "description": "Only a steward can create a glossary.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -268,7 +269,7 @@
         "tags": [
           "glossaries"
         ],
-        "summary": "Updates glossary properties with json-patch formatted data",
+        "summary": "Updates glossary properties with json-patch formatted data.",
         "responses": {
           "204": {
             "headers": {
@@ -981,7 +982,7 @@
         "tags": [
           "categories"
         ],
-        "summary": "Updates category properties with json-patch formatted data",
+        "summary": "Updates category properties with json-patch formatted data.",
         "responses": {
           "204": {
             "headers": {
@@ -1988,7 +1989,7 @@
         "tags": [
           "terms"
         ],
-        "summary": "Changes the status of the term. Only a steward can verify a term. Once the term is verified only a steward can modify the term.",
+        "summary": "Changes the status of the term.",
         "responses": {
           "200": {
             "content": {
@@ -2102,6 +2103,7 @@
             "description": "Optional header to do conditional updates. Using the Etag value that was returned the last time the term was fetched."
           }
         ],
+        "description": "Only a steward can verify a term. Once the term is verified only a steward can modify the term. Note that links to resources are considered external relations that can be managed independently of the status of the term.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -2363,6 +2365,7 @@
             "description": "Optional header to do conditional updates. Using the Etag value that was returned the last time the term was fetched."
           }
         ],
+        "description": "Links to resources are not considered term properties but external relations. Links can be created for terms in any status. Permissions on term and resource determine if the link can be created.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2521,7 +2524,7 @@
         "tags": [
           "glossaries"
         ],
-        "summary": "Creates a new glossary, including categories and terms, based on a glossary definition file.\nSupported formats are currently, qlik, atlan and atlas\n",
+        "summary": "Imports a glossary from file.",
         "responses": {
           "201": {
             "content": {
@@ -2592,6 +2595,7 @@
             "description": "The spaceId (leave blank or omit for personal)"
           }
         ],
+        "description": "Creates a new or updates an existing glossary, including categories and terms, based on a glossary definition file.\nSupported formats are currently, qlik, atlan and atlas.\n",
         "requestBody": {
           "content": {
             "application/json": {
