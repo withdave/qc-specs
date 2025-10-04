@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -24901,7 +24901,7 @@
         "tags": [
           "glossaries"
         ],
-        "summary": "Creates a new glossary. Only a steward can create a glossary.\n",
+        "summary": "Creates a new glossary.",
         "responses": {
           "201": {
             "content": {
@@ -24948,6 +24948,7 @@
             "description": "The user does not have privileges to perform the requested action."
           }
         },
+        "description": "Only a steward can create a glossary.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -25059,7 +25060,7 @@
         "tags": [
           "glossaries"
         ],
-        "summary": "Updates glossary properties with json-patch formatted data",
+        "summary": "Updates glossary properties with json-patch formatted data.",
         "responses": {
           "204": {
             "headers": {
@@ -25772,7 +25773,7 @@
         "tags": [
           "categories"
         ],
-        "summary": "Updates category properties with json-patch formatted data",
+        "summary": "Updates category properties with json-patch formatted data.",
         "responses": {
           "204": {
             "headers": {
@@ -26779,7 +26780,7 @@
         "tags": [
           "terms"
         ],
-        "summary": "Changes the status of the term. Only a steward can verify a term. Once the term is verified only a steward can modify the term.",
+        "summary": "Changes the status of the term.",
         "responses": {
           "200": {
             "content": {
@@ -26893,6 +26894,7 @@
             "description": "Optional header to do conditional updates. Using the Etag value that was returned the last time the term was fetched."
           }
         ],
+        "description": "Only a steward can verify a term. Once the term is verified only a steward can modify the term. Note that links to resources are considered external relations that can be managed independently of the status of the term.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -27154,6 +27156,7 @@
             "description": "Optional header to do conditional updates. Using the Etag value that was returned the last time the term was fetched."
           }
         ],
+        "description": "Links to resources are not considered term properties but external relations. Links can be created for terms in any status. Permissions on term and resource determine if the link can be created.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -27312,7 +27315,7 @@
         "tags": [
           "glossaries"
         ],
-        "summary": "Creates a new glossary, including categories and terms, based on a glossary definition file.\nSupported formats are currently, qlik, atlan and atlas\n",
+        "summary": "Imports a glossary from file.",
         "responses": {
           "201": {
             "content": {
@@ -27383,6 +27386,7 @@
             "description": "The spaceId (leave blank or omit for personal)"
           }
         ],
+        "description": "Creates a new or updates an existing glossary, including categories and terms, based on a glossary definition file.\nSupported formats are currently, qlik, atlan and atlas.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -32312,7 +32316,7 @@
         "tags": [
           "impact"
         ],
-        "summary": "Returns next-level nodes inside a specified node on an impact analysis graph retrieved using a base node. \n",
+        "summary": "Get next-level nodes\n",
         "responses": {
           "200": {
             "content": {
@@ -32439,6 +32443,7 @@
             "description": "The number of downstream resource levels nodes to retrieve. (5 if not provided, -1 means unlimited and 1 means direct lineage)"
           }
         ],
+        "description": "Returns next-level nodes inside a specified node on an impact analysis graph retrieved using a base node.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -32456,7 +32461,7 @@
         "tags": [
           "impact"
         ],
-        "summary": "Search all labels within a impact graph on all available levels. \nReturns result per level\n",
+        "summary": "Search all labels\n",
         "responses": {
           "200": {
             "content": {
@@ -32570,6 +32575,7 @@
             "description": "The number of downstream resource levels nodes to search. (5 if not provided, -1 means unlimited) and 1 means direct lineage."
           }
         ],
+        "description": "Searchs all labels within a impact graph on all available levels. Returns result per level.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -32587,7 +32593,7 @@
         "tags": [
           "impact"
         ],
-        "summary": "Returns all RESOURCE level nodes that are impacted by a change in the source node. \nThe number of tables and fields that are impacted for each resource are included as metadata.\nThe id (QRI) can be on any level (FIELD, TABLE or RESOURCE) and the impact will be collected based on the starting QRI.   \n",
+        "summary": "Get all RESOURCE level nodes\n",
         "responses": {
           "200": {
             "content": {
@@ -32691,6 +32697,7 @@
             "description": "The number of downstream resource levels nodes to retrieve. (5 if not provided, -1 means unlimited and 1 means direct lineage)"
           }
         ],
+        "description": "Returns all RESOURCE level nodes that are impacted by a change in the source node. The number of tables and fields that are impacted for each resource are included as metadata. The id (QRI) can be on any level (FIELD, TABLE or RESOURCE) and the impact will be collected based on the starting QRI.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -32708,7 +32715,7 @@
         "tags": [
           "impact"
         ],
-        "summary": "Returns all levels of the requested root node. Only node information will be returned.",
+        "summary": "Get all levels of requested root node",
         "responses": {
           "200": {
             "content": {
@@ -32802,6 +32809,7 @@
             "description": "The id (QRI) for root node."
           }
         ],
+        "description": "Returns all levels of the requested root node. Only node information will be returned.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -32819,7 +32827,7 @@
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Returns lineage graphs for requested levels of a source node. \nThe id (QRI) can point to an item on the field, table and resource level.\n",
+        "summary": "Get lineage graphs\n",
         "responses": {
           "200": {
             "content": {
@@ -32949,6 +32957,7 @@
             "description": "The number of upstream levels of nodes to retrieve. (5 if not provided, -1 means unlimited)"
           }
         ],
+        "description": "Returns lineage graphs of a source node. The id (QRI) can point to an item on the field, table and resource level.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -32966,7 +32975,7 @@
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Returns the expanded node and its edges. \nUp and downstream nodes are not part of the response, edges are.\nThe id is the root node that lineage is requested for. The QRI of the node to expand is sent as the query parameter \"node\" for expansion.\n",
+        "summary": "Get expanded node and its edges\n",
         "responses": {
           "200": {
             "content": {
@@ -33103,6 +33112,7 @@
             "description": "The number of upstream levels of nodes retrieved to expand. (5 if not provided, -1 means unlimited)"
           }
         ],
+        "description": "Returns the expanded node and its edges. Up and downstream nodes are not part of the response, edges are. The id is the root node that lineage is requested for. The QRI of the node to expand is sent as the query parameter \"node\" for expansion.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -33120,7 +33130,7 @@
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Search all labels within a lineage graph on all available levels. \nReturns result per level.\n",
+        "summary": "Search all labels\n",
         "responses": {
           "200": {
             "content": {
@@ -33244,6 +33254,7 @@
             "description": "The number of upstream levels of nodes retrieved to search. (5 if not provided, -1 means unlimited)"
           }
         ],
+        "description": "Returns result per level by searching all labels within a lineage graph on all available levels.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -33261,7 +33272,7 @@
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Returns the first generation upstream direct lineage. \nFor each field QRI, will find any direct linege dataset or application.  \n",
+        "summary": "Create first generation upstream direct lineage\n",
         "responses": {
           "200": {
             "content": {
@@ -33376,6 +33387,7 @@
             "description": "The number of upstream levels of nodes retrieved to get overview from. (5 if not provided, -1 means unlimited)"
           }
         ],
+        "description": "Returns the first generation upstream direct lineage. For each field QRI, will find any direct linege dataset or application.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -81043,6 +81055,12 @@
         },
         "description": "The result of tenant deactivation."
       },
+      "TenantMultipleMetaErrorsDetail": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/TenantSingleMetaErrorDetail"
+        }
+      },
       "TenantPatchErrors": {
         "type": "object",
         "properties": {
@@ -81061,20 +81079,14 @@
                   "description": "The error code."
                 },
                 "meta": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string",
-                      "example": "TENANTS-11",
-                      "description": "The error code."
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TenantSingleMetaErrorDetail"
                     },
-                    "title": {
-                      "type": "string",
-                      "example": "The specified hostname is unavailable for use",
-                      "description": "Summary of the problem."
+                    {
+                      "$ref": "#/components/schemas/TenantMultipleMetaErrorsDetail"
                     }
-                  },
-                  "description": "Additional properties relating to the error."
+                  ]
                 },
                 "title": {
                   "type": "string",
@@ -81178,6 +81190,21 @@
             "value": false
           }
         ]
+      },
+      "TenantSingleMetaErrorDetail": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "TENANTS-10",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "example": "Subdomain should be between 3 and 63 characters",
+            "description": "The error summary."
+          }
+        }
       },
       "theme": {
         "type": "object",
