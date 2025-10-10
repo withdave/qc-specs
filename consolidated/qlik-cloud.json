@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -19674,7 +19674,7 @@
             },
             "example": true,
             "required": false,
-            "description": "When true disabled datasources are also included in the response"
+            "description": "When true, disabled datasources are also included in the response"
           },
           {
             "in": "query",
@@ -19894,6 +19894,178 @@
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
+        }
+      }
+    },
+    "/api/v1/data-sources/{dataSourceId}/settings": {
+      "get": {
+        "tags": [
+          "data-sources"
+        ],
+        "summary": "Get data source settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSourceSettingsResponse"
+                }
+              }
+            },
+            "description": "A JSON object containing the data source settings."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Unauthorized request (Bad JWT token etc)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data source not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Internal errors"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataSourceId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "rest",
+            "required": true,
+            "description": "Datasource ID"
+          }
+        ],
+        "description": "Retrieves the settings for a data source.",
+        "operationId": "getDataSourceSettings",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "data-sources"
+        ],
+        "summary": "Update data source settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSourceSettingsResponse"
+                }
+              }
+            },
+            "description": "Data source settings updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Unauthorized request (Bad JWT token etc)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data source not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Internal errors"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataSourceId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "rest",
+            "required": true,
+            "description": "Datasource ID"
+          }
+        ],
+        "description": "Updates the settings for a data source.",
+        "operationId": "updateDataSourceSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceSettingsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
         }
       }
     },
@@ -39824,7 +39996,7 @@
             }
           },
           "required": true,
-          "description": "Definition of the report request.\nPlease note that sense-html-template-1.0, sense-story-x.0 and qv-data-x.0 types are only for internal use.\n\nEach report request type requires a specific template to be provided:\n - composition-1.0 requires compositionTemplates to be set\n - sense-excel-template-1.0 requires senseExcelTemplate to be set\n - sense-image-1.0 requires senseImageTemplate to be set\n - sense-sheet-1.0 requires senseSheetTemplate to be set\n - sense-data-1.0 requires senseDataTemplate to be set\n - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n - sense-html-template-1.0 requires senseHtmlTemplate to be set\n\nEach template type supports specific output types:\n - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n - sense-excel-template-1.0 supports excel and pdf output type\n - sense-image-1.0 supports pdf, pptx and image output types\n - sense-sheet-1.0 supports pdf and pptx output type\n - sense-data-1.0 supports xlsx output type\n - sense-pixel-perfect-template-1.0 supports pdf output types\n - sense-html-template-1.0 supports html output types\n\nEach output type requires a specific output to be provided:\n - pdfcomposition requires pdfCompositionOutput to be set\n - pptxcomposition requires pptxCompositionOutput to be set\n - pdf requires pdfOutput to be set\n - pptx requires pptxOutput to be set\n - image requires imageOutput to be set\n - xlsx requires xlsxOutput to be set\n"
+          "description": "Definition of the report request.\nPlease note that sense-powerpoint-template-1.0, sense-word-template-1.0, sense-story-x.0 and qv-data-x.0 types are only for internal use.\n\nEach report request type requires a specific template to be provided:\n - composition-1.0 requires compositionTemplates to be set\n - sense-excel-template-1.0 requires senseExcelTemplate to be set\n - sense-image-1.0 requires senseImageTemplate to be set\n - sense-sheet-1.0 requires senseSheetTemplate to be set\n - sense-data-1.0 requires senseDataTemplate to be set\n - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n - sense-html-template-1.0 requires senseHtmlTemplate to be set\n - sense-powerpoint-template-1.0 requires sensePowerPointTemplate to be set\n - sense-word-template-1.0 requires senseWordTemplate to be set\n\nEach template type supports specific output types:\n - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n - sense-excel-template-1.0 supports excel and pdf output type\n - sense-image-1.0 supports pdf, pptx and image output types\n - sense-sheet-1.0 supports pdf and pptx output type\n - sense-data-1.0 supports xlsx output type\n - sense-pixel-perfect-template-1.0 supports pdf output types\n - sense-html-template-1.0 supports html output types\n - sense-powerpoint-template-1.0 supports powerpoint and pdf output types\n - sense-word-template-1.0 supports word and pdf output types\n\nEach output type requires a specific output to be provided:\n - pdfcomposition requires pdfCompositionOutput to be set\n - pptxcomposition requires pptxCompositionOutput to be set\n - pdf requires pdfOutput to be set\n - pptx requires pptxOutput to be set\n - image requires imageOutput to be set\n - xlsx requires xlsxOutput to be set\n"
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -62653,12 +62825,12 @@
             "example": [
               "rest"
             ],
-            "description": "List of datasource Ids provided by the provider"
+            "description": "List of datasource IDs provided by the provider"
           },
           "dataSourcesUpdated": {
             "type": "boolean",
             "example": "true",
-            "description": "Indicates if the datasources is up to date"
+            "description": "Indicates whether the datasources are up to date"
           }
         },
         "description": "Datasource metadata"
@@ -62683,7 +62855,7 @@
           "disabled": {
             "type": "boolean",
             "example": true,
-            "description": "Indicates if the datasource is disabled"
+            "description": "Indicates whether the datasource is disabled"
           },
           "provider": {
             "type": "string",
@@ -62723,6 +62895,31 @@
           }
         },
         "description": "Datasource metadata"
+      },
+      "DataSourceSettingsRequest": {
+        "type": "object",
+        "required": [
+          "disabled"
+        ],
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "example": false,
+            "description": "Indicates whether the data source is disabled."
+          }
+        },
+        "description": "Defines configuration settings for a data source."
+      },
+      "DataSourceSettingsResponse": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "example": false,
+            "description": "Indicates whether the data source is disabled."
+          }
+        },
+        "description": "Represents the current settings of a data source."
       },
       "DataSourcesResponseNew": {
         "type": "object",
@@ -76280,7 +76477,9 @@
             "enum": [
               "excel",
               "pdf",
-              "html"
+              "html",
+              "powerpoint",
+              "word"
             ],
             "type": "string"
           },
@@ -76478,10 +76677,12 @@
               "pptxcomposition",
               "csv",
               "cycle",
-              "html"
+              "html",
+              "powerpoint",
+              "word"
             ],
             "type": "string",
-            "description": "The generated report type.\n\nEach template type supports specific output types:\n   - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n   - sense-excel-template-1.0 supports only excel and pdf output type\n   - sense-image-1.0 supports pdf, pptx and image output types\n   - sense-sheet-1.0 supports pdf and pptx output type\n   - sense-data-1.0 supports xlsx output type\n\nEach output type requires a specific output to be provided:\n   - excel requires excelOutput to be set\n   - pdfcomposition requires pdfCompositionOutput to be set\n   - pptxcomposition requires pptxCompositionOutput to be set\n   - pdf requires pdfOutput to be set\n   - pptx requires pptxOutput to be set\n   - image requires imageOutput to be set\n   - csv doesn't have csv output\n   - xlsx requires xlsxOutput to be set\n"
+            "description": "The generated report type.\n\nEach template type supports specific output types:\n   - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n   - sense-excel-template-1.0 supports only excel and pdf output type\n   - sense-pixel-perfect-template-1.0 supports only pdf output type\n   - sense-html-template-1.0 supports only html output type\n   - sense-powerpoint-template-1.0 supports powerpoint and pdf output types\n   - sense-word-template-1.0 supports word and pdf output types\n   - sense-image-1.0 supports pdf, pptx and image output types\n   - sense-sheet-1.0 supports pdf and pptx output type\n   - sense-data-1.0 supports xlsx output type\n\nEach output type requires a specific output to be provided:\n   - excel requires excelOutput to be set\n   - pdfcomposition requires pdfCompositionOutput to be set\n   - pptxcomposition requires pptxCompositionOutput to be set\n   - pdf requires pdfOutput to be set\n   - pptx requires pptxOutput to be set\n   - image requires imageOutput to be set\n   - csv doesn't have csv output\n   - xlsx requires xlsxOutput to be set\n"
           },
           "outputId": {
             "type": "string",
@@ -76920,10 +77121,12 @@
               "qv-data-2.0",
               "sense-excel-template-1.0",
               "sense-pixel-perfect-template-1.0",
-              "sense-html-template-1.0"
+              "sense-html-template-1.0",
+              "sense-powerpoint-template-1.0",
+              "sense-word-template-1.0"
             ],
             "type": "string",
-            "description": "Template type and version using semantic versioning. It must have the following name convention: dashed-separated-template-name-MAJOR.MINOR.\nPlease note that sense-html-template-1.0, sense-story-x.0 and qv-data-x.0 are only for internal use.\n\nEach type requires a specific template to be provided:\n  - composition-1.0 requires compositionTemplates to be set\n  - sense-excel-template-1.0 requires senseExcelTemplate to be set\n  - sense-image-1.0 requires senseImageTemplate to be set\n  - sense-sheet-1.0 requires senseSheetTemplate to be set\n  - sense-data-1.0 requires senseDataTemplate to be set\n  - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n  - sense-html-template-1.0 requires senseHtmlTemplate to be set\n\nEach template type supports specific output types:\n  - composition-1.0 supports pdfcomposition and pptxcomposition output type\n  - sense-excel-template-1.0 supports excel and pdf output type\n  - sense-image-1.0 supports pdf, pptx and png output types\n  - sense-sheet-1.0 supports pdf, pptx output type\n  - sense-data-1.0 supports xlsx output type\n  - sense-pixel-perfect-template-1.0 supports pdf output types\n  - sense-html-template-1.0 supports html output types\n\nEach output type requires a specific output to be provided:\n  - pdfcomposition requires pdfCompositionOutput to be set\n  - pptxcomposition requires pptxCompositionOutput to be set\n  - pdf requires pdfOutput to be set\n  - pptx requires pptxOutput to be set\n  - image requires imageOutput to be set\n  - xlsx requires xlsxOutput to be set\n"
+            "description": "Template type and version using semantic versioning. It must have the following name convention: dashed-separated-template-name-MAJOR.MINOR.\nPlease note that sense-powerpoint-template-1.0, sense-word-template-1.0, sense-story-x.0 and qv-data-x.0 are only for internal use.\n\nEach type requires a specific template to be provided:\n  - composition-1.0 requires compositionTemplates to be set\n  - sense-excel-template-1.0 requires senseExcelTemplate to be set\n  - sense-image-1.0 requires senseImageTemplate to be set\n  - sense-sheet-1.0 requires senseSheetTemplate to be set\n  - sense-data-1.0 requires senseDataTemplate to be set\n  - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n  - sense-html-template-1.0 requires senseHtmlTemplate to be set\n  - sense-powerpoint-template-1.0 requires sensePowerPointTemplate to be set\n  - sense-word-template-1.0 requires senseWordTemplate to be set\n\nEach template type supports specific output types:\n  - composition-1.0 supports pdfcomposition and pptxcomposition output type\n  - sense-excel-template-1.0 supports excel and pdf output type\n  - sense-image-1.0 supports pdf, pptx and png output types\n  - sense-sheet-1.0 supports pdf, pptx output type\n  - sense-data-1.0 supports xlsx output type\n  - sense-pixel-perfect-template-1.0 supports pdf output types\n  - sense-html-template-1.0 supports html output types\n  - sense-powerpoint-template-1.0 supports powerpoint and pdf output types\n  - sense-word-template-1.0 supports word and pdf output types\n\nEach output type requires a specific output to be provided:\n  - pdfcomposition requires pdfCompositionOutput to be set\n  - pptxcomposition requires pptxCompositionOutput to be set\n  - pdf requires pdfOutput to be set\n  - pptx requires pptxOutput to be set\n  - image requires imageOutput to be set\n  - xlsx requires xlsxOutput to be set\n"
           },
           "output": {
             "$ref": "#/components/schemas/OutputItem"
@@ -76935,6 +77138,9 @@
             "$ref": "#/components/schemas/SenseDataTemplate"
           },
           "senseHtmlTemplate": {
+            "$ref": "#/components/schemas/SenseFileTemplate"
+          },
+          "senseWordTemplate": {
             "$ref": "#/components/schemas/SenseFileTemplate"
           },
           "senseExcelTemplate": {
@@ -76956,6 +77162,9 @@
           },
           "requestCallBackAction": {
             "$ref": "#/components/schemas/CallBackAction"
+          },
+          "sensePowerPointTemplate": {
+            "$ref": "#/components/schemas/SenseFileTemplate"
           },
           "sensePixelPerfectTemplate": {
             "$ref": "#/components/schemas/SenseFileTemplate"
