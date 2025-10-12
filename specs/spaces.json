@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/spaces": {
+    "/api/v1/spaces": {
       "get": {
         "tags": [
           "spaces"
@@ -61,16 +61,6 @@
             },
             "required": false,
             "description": "Action on space. Supports only \"?action=publish\"."
-          },
-          {
-            "in": "query",
-            "name": "filter",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Exact match filtering on space name using SCIM. Case insensitive on attribute name. For example ?filter=name eq \"MySpace\" and ?filter=NAME eq \"MySpace\" is both valid.",
-            "x-qlik-stability": "experimental"
           },
           {
             "in": "query",
@@ -233,7 +223,7 @@
         }
       }
     },
-    "/v1/spaces/{spaceId}": {
+    "/api/v1/spaces/{spaceId}": {
       "get": {
         "tags": [
           "spaces"
@@ -588,7 +578,7 @@
         }
       }
     },
-    "/v1/spaces/{spaceId}/assignments": {
+    "/api/v1/spaces/{spaceId}/assignments": {
       "get": {
         "tags": [
           "assignments"
@@ -822,7 +812,7 @@
         }
       }
     },
-    "/v1/spaces/{spaceId}/assignments/{assignmentId}": {
+    "/api/v1/spaces/{spaceId}/assignments/{assignmentId}": {
       "get": {
         "tags": [
           "assignments"
@@ -1104,7 +1094,7 @@
         }
       }
     },
-    "/v1/spaces/{spaceId}/shares": {
+    "/api/v1/spaces/{spaceId}/shares": {
       "get": {
         "tags": [
           "shares"
@@ -1368,7 +1358,7 @@
         }
       }
     },
-    "/v1/spaces/{spaceId}/shares/{shareId}": {
+    "/api/v1/spaces/{spaceId}/shares/{shareId}": {
       "get": {
         "tags": [
           "shares"
@@ -1649,7 +1639,7 @@
         }
       }
     },
-    "/v1/spaces/types": {
+    "/api/v1/spaces/types": {
       "get": {
         "tags": [
           "spaces"
@@ -1716,7 +1706,8 @@
           "update",
           "delete",
           "publish",
-          "link_environment"
+          "link_environment",
+          "restrict"
         ],
         "type": "string",
         "description": "The supported actions for user-created spaces."
@@ -1874,7 +1865,8 @@
       "AssignmentType": {
         "enum": [
           "user",
-          "group"
+          "group",
+          "bot"
         ],
         "type": "string",
         "description": "The type of assignment such as user or group"
@@ -2178,7 +2170,13 @@
         }
       },
       "ShareRoleType": {
-        "description": "Supported roles by space type:\n- Shared: consumer\n- Managed: consumer, contributor\n"
+        "enum": [
+          "consumer",
+          "contributor",
+          "basicconsumer"
+        ],
+        "type": "string",
+        "description": "The roles for the space share. Supported roles by space type:\n- Shared: consumer\n- Managed: basicconsumer, consumer, contributor\n"
       },
       "Shares": {
         "type": "object",
@@ -2519,5 +2517,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

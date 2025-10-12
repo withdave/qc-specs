@@ -4,12 +4,12 @@
     "version": ""
   },
   "paths": {
-    "/v1/lineage-graphs/impact/{id}/actions/expand": {
+    "/api/v1/lineage-graphs/impact/{id}/actions/expand": {
       "get": {
         "tags": [
           "impact"
         ],
-        "summary": "Returns next-level nodes inside a specified node on an impact analysis graph retrieved using a base node. \n",
+        "summary": "Get next-level nodes\n",
         "responses": {
           "200": {
             "content": {
@@ -136,6 +136,7 @@
             "description": "The number of downstream resource levels nodes to retrieve. (5 if not provided, -1 means unlimited and 1 means direct lineage)"
           }
         ],
+        "description": "Returns next-level nodes inside a specified node on an impact analysis graph retrieved using a base node.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -148,12 +149,12 @@
         }
       }
     },
-    "/v1/lineage-graphs/impact/{id}/actions/search": {
+    "/api/v1/lineage-graphs/impact/{id}/actions/search": {
       "get": {
         "tags": [
           "impact"
         ],
-        "summary": "Search all labels within a impact graph on all available levels. \nReturns result per level\n",
+        "summary": "Search all labels\n",
         "responses": {
           "200": {
             "content": {
@@ -267,6 +268,7 @@
             "description": "The number of downstream resource levels nodes to search. (5 if not provided, -1 means unlimited) and 1 means direct lineage."
           }
         ],
+        "description": "Searchs all labels within a impact graph on all available levels. Returns result per level.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -279,12 +281,12 @@
         }
       }
     },
-    "/v1/lineage-graphs/impact/{id}/overview": {
+    "/api/v1/lineage-graphs/impact/{id}/overview": {
       "get": {
         "tags": [
           "impact"
         ],
-        "summary": "Returns all RESOURCE level nodes that are impacted by a change in the source node. \nThe number of tables and fields that are impacted for each resource are included as metadata.\nThe id (QRI) can be on any level (FIELD, TABLE or RESOURCE) and the impact will be collected based on the starting QRI.   \n",
+        "summary": "Get all RESOURCE level nodes\n",
         "responses": {
           "200": {
             "content": {
@@ -388,6 +390,7 @@
             "description": "The number of downstream resource levels nodes to retrieve. (5 if not provided, -1 means unlimited and 1 means direct lineage)"
           }
         ],
+        "description": "Returns all RESOURCE level nodes that are impacted by a change in the source node. The number of tables and fields that are impacted for each resource are included as metadata. The id (QRI) can be on any level (FIELD, TABLE or RESOURCE) and the impact will be collected based on the starting QRI.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -400,12 +403,12 @@
         }
       }
     },
-    "/v1/lineage-graphs/impact/{id}/source": {
+    "/api/v1/lineage-graphs/impact/{id}/source": {
       "get": {
         "tags": [
           "impact"
         ],
-        "summary": "Returns all levels of the requested root node. Only node information will be returned.",
+        "summary": "Get all levels of requested root node",
         "responses": {
           "200": {
             "content": {
@@ -499,6 +502,7 @@
             "description": "The id (QRI) for root node."
           }
         ],
+        "description": "Returns all levels of the requested root node. Only node information will be returned.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -511,12 +515,12 @@
         }
       }
     },
-    "/v1/lineage-graphs/nodes/{id}": {
+    "/api/v1/lineage-graphs/nodes/{id}": {
       "get": {
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Returns lineage graphs for requested levels of a source node. \nThe id (QRI) can point to an item on the field, table and resource level.\n",
+        "summary": "Get lineage graphs\n",
         "responses": {
           "200": {
             "content": {
@@ -646,6 +650,7 @@
             "description": "The number of upstream levels of nodes to retrieve. (5 if not provided, -1 means unlimited)"
           }
         ],
+        "description": "Returns lineage graphs of a source node. The id (QRI) can point to an item on the field, table and resource level.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -658,12 +663,12 @@
         }
       }
     },
-    "/v1/lineage-graphs/nodes/{id}/actions/expand": {
+    "/api/v1/lineage-graphs/nodes/{id}/actions/expand": {
       "get": {
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Returns the expanded node and its edges. \nUp and downstream nodes are not part of the response, edges are.\nThe id is the root node that lineage is requested for. The QRI of the node to expand is sent as the query parameter \"node\" for expansion.\n",
+        "summary": "Get expanded node and its edges\n",
         "responses": {
           "200": {
             "content": {
@@ -800,6 +805,7 @@
             "description": "The number of upstream levels of nodes retrieved to expand. (5 if not provided, -1 means unlimited)"
           }
         ],
+        "description": "Returns the expanded node and its edges. Up and downstream nodes are not part of the response, edges are. The id is the root node that lineage is requested for. The QRI of the node to expand is sent as the query parameter \"node\" for expansion.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -812,12 +818,12 @@
         }
       }
     },
-    "/v1/lineage-graphs/nodes/{id}/actions/search": {
+    "/api/v1/lineage-graphs/nodes/{id}/actions/search": {
       "get": {
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Search all labels within a lineage graph on all available levels. \nReturns result per level.\n",
+        "summary": "Search all labels\n",
         "responses": {
           "200": {
             "content": {
@@ -941,6 +947,7 @@
             "description": "The number of upstream levels of nodes retrieved to search. (5 if not provided, -1 means unlimited)"
           }
         ],
+        "description": "Returns result per level by searching all labels within a lineage graph on all available levels.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -953,12 +960,12 @@
         }
       }
     },
-    "/v1/lineage-graphs/nodes/{id}/overview": {
+    "/api/v1/lineage-graphs/nodes/{id}/overview": {
       "post": {
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Returns the first generation upstream direct lineage. \nFor each field QRI, will find any direct linege dataset or application.  \n",
+        "summary": "Create first generation upstream direct lineage\n",
         "responses": {
           "200": {
             "content": {
@@ -1073,6 +1080,7 @@
             "description": "The number of upstream levels of nodes retrieved to get overview from. (5 if not provided, -1 means unlimited)"
           }
         ],
+        "description": "Returns the first generation upstream direct lineage. For each field QRI, will find any direct linege dataset or application.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1587,5 +1595,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

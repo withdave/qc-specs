@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/data-sources": {
+    "/api/v1/data-sources": {
       "get": {
         "tags": [
           "data-sources"
@@ -75,6 +75,16 @@
           },
           {
             "in": "query",
+            "name": "includeDisabled",
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true,
+            "required": false,
+            "description": "When true, disabled datasources are also included in the response"
+          },
+          {
+            "in": "query",
             "name": "includeui",
             "schema": {
               "type": "boolean"
@@ -98,7 +108,7 @@
         }
       }
     },
-    "/v1/data-sources/{dataSourceId}/api-specs": {
+    "/api/v1/data-sources/{dataSourceId}/api-specs": {
       "get": {
         "tags": [
           "data-sources"
@@ -180,7 +190,7 @@
         }
       }
     },
-    "/v1/data-sources/{dataSourceId}/gateways": {
+    "/api/v1/data-sources/{dataSourceId}/gateways": {
       "get": {
         "tags": [
           "data-sources"
@@ -293,6 +303,178 @@
           "limit": 1000
         }
       }
+    },
+    "/api/v1/data-sources/{dataSourceId}/settings": {
+      "get": {
+        "tags": [
+          "data-sources"
+        ],
+        "summary": "Get data source settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSourceSettingsResponse"
+                }
+              }
+            },
+            "description": "A JSON object containing the data source settings."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Unauthorized request (Bad JWT token etc)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data source not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Internal errors"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataSourceId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "rest",
+            "required": true,
+            "description": "Datasource ID"
+          }
+        ],
+        "description": "Retrieves the settings for a data source.",
+        "operationId": "getDataSourceSettings",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "data-sources"
+        ],
+        "summary": "Update data source settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataSourceSettingsResponse"
+                }
+              }
+            },
+            "description": "Data source settings updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Unauthorized request (Bad JWT token etc)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Data source not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrors"
+                }
+              }
+            },
+            "description": "Internal errors"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataSourceId",
+            "schema": {
+              "type": "string"
+            },
+            "example": "rest",
+            "required": true,
+            "description": "Datasource ID"
+          }
+        ],
+        "description": "Updates the settings for a data source.",
+        "operationId": "updateDataSourceSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceSettingsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
     }
   },
   "x-qlik-categories": [
@@ -364,12 +546,12 @@
             "example": [
               "rest"
             ],
-            "description": "List of datasource Ids provided by the provider"
+            "description": "List of datasource IDs provided by the provider"
           },
           "dataSourcesUpdated": {
             "type": "boolean",
             "example": "true",
-            "description": "Indicates if the datasources is up to date"
+            "description": "Indicates whether the datasources are up to date"
           }
         },
         "description": "Datasource metadata"
@@ -390,6 +572,11 @@
           },
           "uiInfo": {
             "$ref": "#/components/schemas/UiInfo"
+          },
+          "disabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the datasource is disabled"
           },
           "provider": {
             "type": "string",
@@ -429,6 +616,31 @@
           }
         },
         "description": "Datasource metadata"
+      },
+      "DataSourceSettingsRequest": {
+        "type": "object",
+        "required": [
+          "disabled"
+        ],
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "example": false,
+            "description": "Indicates whether the data source is disabled."
+          }
+        },
+        "description": "Defines configuration settings for a data source."
+      },
+      "DataSourceSettingsResponse": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "example": false,
+            "description": "Indicates whether the data source is disabled."
+          }
+        },
+        "description": "Represents the current settings of a data source."
       },
       "DataSourcesResponseNew": {
         "type": "object",
@@ -635,5 +847,20 @@
         "description": "UI related metadata (only present when 'includeui' is set to true in query)"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

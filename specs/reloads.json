@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/reloads": {
+    "/api/v1/reloads": {
       "get": {
         "tags": [
           "reloads"
@@ -256,7 +256,7 @@
         }
       }
     },
-    "/v1/reloads/{reloadId}": {
+    "/api/v1/reloads/{reloadId}": {
       "get": {
         "tags": [
           "reloads"
@@ -357,7 +357,7 @@
         }
       }
     },
-    "/v1/reloads/{reloadId}/actions/cancel": {
+    "/api/v1/reloads/{reloadId}/actions/cancel": {
       "post": {
         "tags": [
           "reloads"
@@ -570,6 +570,9 @@
             "example": "FyPG6xWp6prDU6BXQ3g7LY9gWR_YRkkx",
             "description": "The ID of the user who created the reload."
           },
+          "weight": {
+            "$ref": "#/components/schemas/Weight"
+          },
           "endTime": {
             "type": "string",
             "example": "2020-11-03T17:00:11.865Z",
@@ -628,6 +631,9 @@
             "example": "116dbfae-7fb9-4983-8e23-5ccd8c508722",
             "description": "The ID of the app to be reloaded."
           },
+          "weight": {
+            "$ref": "#/components/schemas/Weight"
+          },
           "partial": {
             "type": "boolean",
             "example": false,
@@ -639,9 +645,11 @@
               "var1": "value1",
               "var2": "value2"
             },
-            "description": "The variables to be used in the load script.",
+            "description": "The variables to be used in the load script. Maximum of 20 variables allowed with a maximum length of 256 characters for each name/value.",
+            "maxProperties": 20,
             "additionalProperties": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 256
             }
           }
         }
@@ -708,7 +716,31 @@
         "type": "string",
         "example": "chronos",
         "description": "What initiated the reload: hub = one-time reload manually triggered in hub, chronos = time based scheduled reload triggered by chronos, external = reload triggered via external API request, automations = reload triggered in automation, data-refresh = reload triggered by refresh of data, choreographer = reload triggered by choreographer."
+      },
+      "Weight": {
+        "type": "integer",
+        "default": 1,
+        "maximum": 10,
+        "minimum": 1,
+        "description": "The weight of the reload for the same tenant. The higher the weight, the sooner the reload will be scheduled relative to other reloads for the same tenant. The personal app will be always set as 1.\n",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

@@ -1,50 +1,42 @@
-name: Update API Specs
+name: Update API specs
+
 
 on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
+env:
+  API_SPECS_BRANCH: apispecs
+
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  update-api-specs:
+  prepare:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set Git Identity
+      - name: Delete existing API specs branch (local and remote)
         run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "github-actions"
-
-      - name: Fetch branches
-        run: |
-          git fetch origin main apispecs || true
-          if git rev-parse --verify origin/apispecs >/dev/null 2>&1; then
-              git checkout apispecs
-              git pull --rebase origin/main || {
-                  echo "Rebase failed. Resetting and reapplying changes."
-                  git reset --hard origin/main
-                  git pull --rebase origin main || {
-                      echo "Rebase failed again. Aborting rebase and merging instead."
-                      git rebase --abort
-                      git merge origin/main || {
-                          echo "Merge also failed. Manual resolution needed."
-                          exit 1
-                      }
-                  }
-              }
-          else
-              git checkout -b apispecs
-              git push origin apispecs --set-upstream
+          git fetch origin
+          git branch -D $API_SPECS_BRANCH || true
+          if git ls-remote --exit-code --heads origin $API_SPECS_BRANCH; then
+            git push origin --delete $API_SPECS_BRANCH
           fi
+
+  update-api-specs:
+    runs-on: ubuntu-latest
+    needs: prepare
+    outputs:
+      no_changes: ${{ steps.git-status.outputs.no_changes }}
+      commit_sha: ${{ steps.commit.outputs.commit_sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
@@ -54,6 +46,8 @@ jobs:
       - name: Fetch API Specs from qlik.dev
         run: |
           set -euo pipefail
+          # Clean up existing specs to start fresh
+          rm -rf specs
           mkdir -p specs
 
           sitemap_index_url="https://qlik.dev/sitemap-index.xml"
@@ -119,82 +113,219 @@ jobs:
       - name: Check for changes against main
         id: git-status
         run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
           git add specs
-          git commit -m "chore: updating API specs from qlik.dev" || echo "No changes to commit"
-          if git diff --quiet origin/main..HEAD; then
+          if git diff --cached --quiet origin/main -- specs/; then
             echo "No changes detected compared to main"
             echo "no_changes=true" >> $GITHUB_ENV
+            echo "no_changes=true" >> $GITHUB_OUTPUT
           else
             echo "Changes detected compared to main"
             echo "no_changes=false" >> $GITHUB_ENV
+            echo "no_changes=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Push changes to apispecs branch
+      - name: Capture spec file changes
+        if: ${{ env.no_changes == 'false' }}
+        id: file-changes
+        run: |
+          echo "## API Spec Changes" > changes.md
+
+          added=$(git diff --name-status origin/main -- specs/ | grep '^A' | cut -f2-)
+          modified=$(git diff --name-status origin/main -- specs/ | grep '^M' | cut -f2-)
+          deleted=$(git diff --name-status origin/main -- specs/ | grep '^D' | cut -f2-)
+
+          if [[ -n "$added" ]]; then
+            echo -e "\n### Added" >> changes.md
+            echo "$added" | sed 's|^|• |' >> changes.md
+          fi
+
+          if [[ -n "$modified" ]]; then
+            echo -e "\n### Modified" >> changes.md
+            echo "$modified" | sed 's|^|• |' >> changes.md
+          fi
+
+          if [[ -n "$deleted" ]]; then
+            echo -e "\n### Removed" >> changes.md
+            echo "$deleted" | sed 's|^|• |' >> changes.md
+          fi
+
+      - name: Upload changes.md as artifact
+        if: ${{ env.no_changes == 'false' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: changes-md
+          path: changes.md
+
+      - name: Prepare new branch, commit, and push changes
         if: ${{ env.no_changes == 'false' }}
         run: |
-          git pull --rebase origin apispecs
-          git push origin apispecs
+          git checkout -B $API_SPECS_BRANCH origin/main
+          git add specs
+          git commit -m "chore: updating API specs from qlik.dev"
+          git push origin $API_SPECS_BRANCH --force
 
-      - name: Find existing PR or create a new one
+      - name: Get commit SHA
         if: ${{ env.no_changes == 'false' }}
+        id: commit
+        run: echo "commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+  create-consolidated-openapi:
+    runs-on: ubuntu-latest
+    needs: update-api-specs
+    if: needs.update-api-specs.outputs.no_changes == 'false'
+    outputs:
+      no_changes: ${{ steps.git-status.outputs.no_changes }}
+      commit_sha: ${{ steps.commit.outputs.commit_sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.API_SPECS_BRANCH }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Create Consolidated OpenAPI Spec
+        run: |
+          chmod +x .github/scripts/consolidate-openapi.sh
+          .github/scripts/consolidate-openapi.sh
+
+      - name: Check for changes
+        id: git-status
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add consolidated/qlik-cloud.json
+          git fetch origin main || true
+          if git rev-parse --verify origin/main >/dev/null 2>&1; then
+            if git diff --cached --quiet origin/main -- consolidated/; then
+              echo "No changes detected compared to main"
+              echo "no_changes=true" >> $GITHUB_ENV
+              echo "no_changes=true" >> $GITHUB_OUTPUT
+            else
+              echo "Changes detected compared to main"
+              echo "no_changes=false" >> $GITHUB_ENV
+              echo "no_changes=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "No origin/main branch found, treating as changes detected"
+            echo "no_changes=false" >> $GITHUB_ENV
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push consolidated file to PR branch
+        if: ${{ env.no_changes == 'false' }}
+        run: |
+          git commit -m "chore: updating consolidated OpenAPI spec from API specs"
+          echo "Pushing to branch: $API_SPECS_BRANCH"
+          git push origin $API_SPECS_BRANCH
+
+      - name: Get commit SHA
+        if: ${{ env.no_changes == 'false' }}
+        id: commit
+        run: echo "commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        
+  create-pr:
+    runs-on: ubuntu-latest
+    needs: create-consolidated-openapi
+    if: needs.update-api-specs.outputs.no_changes == 'false'
+    env:
+      CONSOLIDATED_COMMIT: ${{ needs.create-consolidated-openapi.outputs.commit_sha }}
+      CONSOLIDATED_NO_CHANGES: ${{ needs.create-consolidated-openapi.outputs.no_changes }}
+      BASE_COMMIT: ${{ needs.update-api-specs.outputs.commit_sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Wait for commit to be indexed by GitHub
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const expectedSha = process.env.CONSOLIDATED_NO_CHANGES === 'false'
+              ? process.env.CONSOLIDATED_COMMIT
+              : process.env.BASE_COMMIT;
+
+            const branch = process.env.API_SPECS_BRANCH;
+            const repo = context.repo.repo;
+            const owner = context.repo.owner;
+            const delay = ms => new Promise(res => setTimeout(res, ms));
+            let retries = 10;
+
+            console.log(`🔎 Waiting for commit ${expectedSha} to appear on branch ${branch}`);
+
+            while (retries-- > 0) {
+              const ref = await github.rest.git.getRef({
+                owner,
+                repo,
+                ref: `heads/${branch}`
+              });
+
+              const currentSha = ref.data.object.sha;
+              if (currentSha === expectedSha) {
+                console.log(`Commit ${expectedSha} is now visible on ${branch}`);
+                break;
+              }
+
+              console.log(`⏳ Not yet (${currentSha} != ${expectedSha}), retrying...`);
+              await delay(3000);
+            }
+
+            if (retries <= 0) {
+              throw new Error(`❌ Commit ${expectedSha} never appeared on ${branch}`);
+            }
+      - name: Find existing PR or create a new one
         id: find-or-create-pr
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const headBranch = "apispecs";
+            const headBranch = process.env.API_SPECS_BRANCH;
             const baseBranch = "main";
 
-            const prs = await github.rest.pulls.list({
+            const newPR = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: `${context.repo.owner}:${headBranch}`,
+              title: "chore: updating API specs from qlik.dev",
+              head: headBranch,
               base: baseBranch,
-              state: "all"
+              body: "This is an automated regular pull of API specs from qlik.dev."
             });
 
-            let openPR = prs.data.find(pr => pr.state === "open");
+            console.log(`New PR created: ${newPR.data.html_url}`);
+            core.setOutput("pr_number", newPR.data.number);
+            core.setOutput("is_new_pr", "true");
 
-            if (openPR) {
-              console.log(`✅ Existing open PR found: ${openPR.html_url}`);
-              core.setOutput("pr_number", openPR.number);
-              core.setOutput("is_new_pr", "false");
-            } else {
-              for (const pr of prs.data) {
-                if (pr.state !== "closed") {
-                  console.log(`❌ Closing stale PR: ${pr.html_url}`);
-                  await github.rest.pulls.update({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    pull_number: pr.number,
-                    state: "closed"
-                  });
-                }
-              }
-
-              const newPR = await github.rest.pulls.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: "chore: updating API specs from qlik.dev",
-                head: headBranch,
-                base: baseBranch,
-                body: "This is an automated regular pull of API specs from qlik.dev."
-              });
-
-              console.log(`📬 New PR created: ${newPR.data.html_url}`);
-              core.setOutput("pr_number", newPR.data.number);
-              core.setOutput("is_new_pr", "true");
-            }
+      - name: Download changes.md artifact
+        if: ${{ steps.find-or-create-pr.outputs.is_new_pr == 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: changes-md
+      - name: Post PR comment with spec changes
+        if: ${{ steps.find-or-create-pr.outputs.is_new_pr == 'true' }}
+        run: |
+          echo "Posting PR comment body:"
+          echo '---'
+          cat changes.md
+          echo '---'
+          body=$(cat <<EOF
+          $(cat changes.md)
+          EOF
+          )
+          gh pr comment ${{ steps.find-or-create-pr.outputs.pr_number }} --body "$body"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check and request review from withdave if not already assigned
-        if: ${{ env.no_changes == 'false' }}
         uses: actions/github-script@v7
-        env:
-          PR_NUMBER: ${{ steps.find-or-create-pr.outputs.pr_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prNumber = parseInt(process.env.PR_NUMBER);
+            const prNumber = parseInt("${{ steps.find-or-create-pr.outputs.pr_number }}");
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -209,20 +340,18 @@ jobs:
                 pull_number: prNumber,
                 reviewers: ["withdave"]
               });
-              console.log(`👀 Requested review from withdave for PR #${prNumber}`);
+              console.log(`Requested review from withdave for PR #${prNumber}`);
             } else {
-              console.log(`👀 withdave is already requested for PR #${prNumber}`);
+              console.log(`withdave is already requested for PR #${prNumber}`);
             }
 
       - name: Enable auto-merge for the PR
-        if: ${{ env.no_changes == 'false' && steps.find-or-create-pr.outputs.is_new_pr == 'true' }}
+        if: ${{ steps.find-or-create-pr.outputs.is_new_pr == 'true' }}
         uses: actions/github-script@v7
-        env:
-          PR_NUMBER: ${{ steps.find-or-create-pr.outputs.pr_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prNumber = parseInt(process.env.PR_NUMBER);
+            const prNumber = parseInt("${{ steps.find-or-create-pr.outputs.pr_number }}");
             try {
               const pr = await github.rest.pulls.get({
                 owner: context.repo.owner,
@@ -252,7 +381,7 @@ jobs:
                 }
               });
 
-              console.log(`✅ Auto-merge enabled for PR #${prNumber}`);
+              console.log(`Auto-merge enabled for PR #${prNumber}`);
             } catch (error) {
               console.log(`⚠️ Auto-merge could not be enabled for PR #${prNumber}: ${error.message}`);
               console.log(`This will not fail the workflow.`);

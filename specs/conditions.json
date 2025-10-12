@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/conditions": {
+    "/api/v1/conditions": {
       "post": {
         "tags": [
           "conditions"
@@ -65,7 +65,7 @@
         }
       }
     },
-    "/v1/conditions/{id}": {
+    "/api/v1/conditions/{id}": {
       "get": {
         "tags": [
           "conditions"
@@ -255,7 +255,7 @@
         }
       }
     },
-    "/v1/conditions/{id}/evaluations": {
+    "/api/v1/conditions/{id}/evaluations": {
       "post": {
         "tags": [
           "evaluations"
@@ -337,7 +337,7 @@
         }
       }
     },
-    "/v1/conditions/{id}/evaluations/{evaluationId}": {
+    "/api/v1/conditions/{id}/evaluations/{evaluationId}": {
       "get": {
         "tags": [
           "evaluations"
@@ -472,7 +472,7 @@
         }
       }
     },
-    "/v1/conditions/previews": {
+    "/api/v1/conditions/previews": {
       "post": {
         "tags": [
           "condition preview"
@@ -544,7 +544,7 @@
         }
       }
     },
-    "/v1/conditions/previews/{id}": {
+    "/api/v1/conditions/previews/{id}": {
       "get": {
         "tags": [
           "condition preview"
@@ -628,7 +628,7 @@
         }
       }
     },
-    "/v1/conditions/settings": {
+    "/api/v1/conditions/settings": {
       "get": {
         "tags": [
           "api settings"
@@ -1648,5 +1648,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

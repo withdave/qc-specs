@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/encryption/keyproviders": {
+    "/api/v1/encryption/keyproviders": {
       "get": {
         "tags": [
           "tenant key provider management"
@@ -195,7 +195,7 @@
         }
       }
     },
-    "/v1/encryption/keyproviders/{arnFingerPrint}": {
+    "/api/v1/encryption/keyproviders/{arnFingerPrint}": {
       "get": {
         "tags": [
           "tenant key provider operations"
@@ -472,7 +472,7 @@
         }
       }
     },
-    "/v1/encryption/keyproviders/{arnFingerPrint}/actions/migrate": {
+    "/api/v1/encryption/keyproviders/{arnFingerPrint}/actions/migrate": {
       "post": {
         "tags": [
           "tenant key provider operations"
@@ -588,7 +588,7 @@
         }
       }
     },
-    "/v1/encryption/keyproviders/{arnFingerPrint}/actions/test": {
+    "/api/v1/encryption/keyproviders/{arnFingerPrint}/actions/test": {
       "post": {
         "tags": [
           "tenant key provider operations"
@@ -684,7 +684,7 @@
         }
       }
     },
-    "/v1/encryption/keyproviders/actions/list": {
+    "/api/v1/encryption/keyproviders/actions/list": {
       "get": {
         "tags": [
           "tenant key provider management"
@@ -751,7 +751,7 @@
         }
       }
     },
-    "/v1/encryption/keyproviders/actions/reset-to-default-provider": {
+    "/api/v1/encryption/keyproviders/actions/reset-to-default-provider": {
       "post": {
         "tags": [
           "tenant key provider management"
@@ -848,7 +848,7 @@
         }
       }
     },
-    "/v1/encryption/keyproviders/migration/actions/details": {
+    "/api/v1/encryption/keyproviders/migration/actions/details": {
       "get": {
         "tags": [
           "tenant key migration information"
@@ -1307,5 +1307,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

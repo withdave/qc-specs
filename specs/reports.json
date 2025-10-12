@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/reports": {
+    "/api/v1/reports": {
       "post": {
         "tags": [
           "reports"
@@ -13,7 +13,11 @@
         "responses": {
           "202": {
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostReportsResponse"
+                }
+              }
             },
             "headers": {
               "Location": {
@@ -171,7 +175,7 @@
             }
           },
           "required": true,
-          "description": "Definition of the report request.\nPlease note that sense-html-template-1.0, sense-story-x.0 and qv-data-x.0 types are only for internal use.\n\nEach report request type requires a specific template to be provided:\n - composition-1.0 requires compositionTemplates to be set\n - sense-excel-template-1.0 requires senseExcelTemplate to be set\n - sense-image-1.0 requires senseImageTemplate to be set\n - sense-sheet-1.0 requires senseSheetTemplate to be set\n - sense-data-1.0 requires senseDataTemplate to be set\n - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n - sense-html-template-1.0 requires senseHtmlTemplate to be set\n\nEach template type supports specific output types:\n - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n - sense-excel-template-1.0 supports excel and pdf output type\n - sense-image-1.0 supports pdf, pptx and image output types\n - sense-sheet-1.0 supports pdf and pptx output type\n - sense-data-1.0 supports xlsx output type\n - sense-pixel-perfect-template-1.0 supports pdf output types\n - sense-html-template-1.0 supports html output types\n\nEach output type requires a specific output to be provided:\n - pdfcomposition requires pdfCompositionOutput to be set\n - pptxcomposition requires pptxCompositionOutput to be set\n - pdf requires pdfOutput to be set\n - pptx requires pptxOutput to be set\n - image requires imageOutput to be set\n - xlsx requires xlsxOutput to be set\n"
+          "description": "Definition of the report request.\nPlease note that sense-powerpoint-template-1.0, sense-word-template-1.0, sense-story-x.0 and qv-data-x.0 types are only for internal use.\n\nEach report request type requires a specific template to be provided:\n - composition-1.0 requires compositionTemplates to be set\n - sense-excel-template-1.0 requires senseExcelTemplate to be set\n - sense-image-1.0 requires senseImageTemplate to be set\n - sense-sheet-1.0 requires senseSheetTemplate to be set\n - sense-data-1.0 requires senseDataTemplate to be set\n - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n - sense-html-template-1.0 requires senseHtmlTemplate to be set\n - sense-powerpoint-template-1.0 requires sensePowerPointTemplate to be set\n - sense-word-template-1.0 requires senseWordTemplate to be set\n\nEach template type supports specific output types:\n - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n - sense-excel-template-1.0 supports excel and pdf output type\n - sense-image-1.0 supports pdf, pptx and image output types\n - sense-sheet-1.0 supports pdf and pptx output type\n - sense-data-1.0 supports xlsx output type\n - sense-pixel-perfect-template-1.0 supports pdf output types\n - sense-html-template-1.0 supports html output types\n - sense-powerpoint-template-1.0 supports powerpoint and pdf output types\n - sense-word-template-1.0 supports word and pdf output types\n\nEach output type requires a specific output to be provided:\n - pdfcomposition requires pdfCompositionOutput to be set\n - pptxcomposition requires pptxCompositionOutput to be set\n - pdf requires pdfOutput to be set\n - pptx requires pptxOutput to be set\n - image requires imageOutput to be set\n - xlsx requires xlsxOutput to be set\n"
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -185,7 +189,233 @@
         }
       }
     },
-    "/v1/reports/{id}/status": {
+    "/api/v1/reports/{id}/outputs": {
+      "get": {
+        "tags": [
+          "outputs"
+        ],
+        "summary": "Get report request outputs.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputList"
+                }
+              }
+            },
+            "description": "The outputs have been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-400000",
+                      "title": "Bad or malformed request",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Bad request. Malformed syntax, errors in params."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-401000",
+                      "title": "Forbidden",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-403000",
+                      "title": "Forbidden",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Forbidden, user did not authenticate."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-404000",
+                      "title": "url path not found",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-409000",
+                      "title": "Conflict",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Conflicted request. Report aborted."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "HTTP-429",
+                      "title": "Too Many Requests",
+                      "detail": "The user has sent too frequent requests which resulted in an undesired response code (\"error rate limiting\")"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Too many request. Indicates the user has sent too many requests in a given amount of time, aka \"rate limiting\"."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "REP-500000",
+                      "title": "Internal server error",
+                      "detail": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "01562a37-23e3-4b43-865d-84c26122276c"
+            },
+            "required": true,
+            "description": "Identifier of the request."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://datatracker.ietf.org/doc/rfc7644/) for the syntax. Cannot be combined with any of the fields marked as deprecated. All conditional statements within this query parameter are case insensitive.\nThe following fields support the `eq` (equals) operator: `outputId`\nExample:\noutputId eq \"123\" or outputId eq \"321\"\n"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "example": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "Limit the returned result set"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string",
+              "example": "NzlmNzI5NWMtZGJlZC00Y2Y4LThkNDAtMzQ5ZDU3YzNjMzQ1",
+              "nullable": true
+            },
+            "example": "NzlmNzI5NWMtZGJlZC00Y2Y4LThkNDAtMzQ5ZDU3YzNjMzQ1",
+            "description": "If present, the cursor that starts the page of data that is returned."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "+outputId",
+                  "-outputId",
+                  "+sizeBytes",
+                  "-sizeBytes"
+                ],
+                "type": "string"
+              }
+            },
+            "required": false,
+            "description": "Sorting parameters"
+          }
+        ],
+        "description": "Get the list of the outputs produced so far for the given report request. The outputs are generated asynchronously \nand are complete only when the status of the report request is 'done' or 'failed' or 'aborted'.\n",
+        "operationId": "getOutputs",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/v1/reports/{id}/status": {
       "get": {
         "tags": [
           "status"
@@ -463,7 +693,9 @@
             "enum": [
               "excel",
               "pdf",
-              "html"
+              "html",
+              "powerpoint",
+              "word"
             ],
             "type": "string"
           },
@@ -634,6 +866,49 @@
         },
         "description": "Output to be used to export a single visualization as image."
       },
+      "LinkResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://tenant.qlik-cloud.com:443/api/v1/apps/816e23e1-03d2-446b-8721-cdee6b5e59cf/report-filters?filter=&filterTypes=REP&filterTypes=REP&limit=20&page=0&sort=%2Bname",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinksResponse": {
+        "type": "object",
+        "example": {
+          "next": {
+            "href": "https://tenant.qlik-cloud.com:443/api/v1/apps/816e23e1-03d2-446b-8721-cdee6b5e59cf/report-filters?filter=&filterTypes=REP&filterTypes=REP&limit=20&page=0&sort=%2Bname"
+          },
+          "prev": {
+            "href": "https://tenant.qlik-cloud.com:443/api/v1/apps/816e23e1-03d2-446b-8721-cdee6b5e59cf/report-filters?filter=&filterTypes=REP&filterTypes=REP&limit=20&page=0&sort=%2Bname"
+          },
+          "self": {
+            "href": "https://tenant.qlik-cloud.com:443/api/v1/apps/816e23e1-03d2-446b-8721-cdee6b5e59cf/report-filters?filter=&filterTypes=REP&filterTypes=REP&limit=20&page=0&sort=%2Bname"
+          }
+        },
+        "required": [
+          "next",
+          "prev",
+          "self"
+        ],
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/LinkResponse"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/LinkResponse"
+          },
+          "self": {
+            "$ref": "#/components/schemas/LinkResponse"
+          }
+        },
+        "additionalProperties": false
+      },
       "Meta": {
         "properties": {
           "outputTtl": {
@@ -723,10 +998,12 @@
               "pptxcomposition",
               "csv",
               "cycle",
-              "html"
+              "html",
+              "powerpoint",
+              "word"
             ],
             "type": "string",
-            "description": "The generated report type.\n\nEach template type supports specific output types:\n   - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n   - sense-excel-template-1.0 supports only excel and pdf output type\n   - sense-image-1.0 supports pdf, pptx and image output types\n   - sense-sheet-1.0 supports pdf and pptx output type\n   - sense-data-1.0 supports xlsx output type\n\nEach output type requires a specific output to be provided:\n   - excel requires excelOutput to be set\n   - pdfcomposition requires pdfCompositionOutput to be set\n   - pptxcomposition requires pptxCompositionOutput to be set\n   - pdf requires pdfOutput to be set\n   - pptx requires pptxOutput to be set\n   - image requires imageOutput to be set\n   - csv doesn't have csv output\n   - xlsx requires xlsxOutput to be set\n"
+            "description": "The generated report type.\n\nEach template type supports specific output types:\n   - composition-1.0 supports only pdfcomposition and pptxcomposition output types\n   - sense-excel-template-1.0 supports only excel and pdf output type\n   - sense-pixel-perfect-template-1.0 supports only pdf output type\n   - sense-html-template-1.0 supports only html output type\n   - sense-powerpoint-template-1.0 supports powerpoint and pdf output types\n   - sense-word-template-1.0 supports word and pdf output types\n   - sense-image-1.0 supports pdf, pptx and image output types\n   - sense-sheet-1.0 supports pdf and pptx output type\n   - sense-data-1.0 supports xlsx output type\n\nEach output type requires a specific output to be provided:\n   - excel requires excelOutput to be set\n   - pdfcomposition requires pdfCompositionOutput to be set\n   - pptxcomposition requires pptxCompositionOutput to be set\n   - pdf requires pdfOutput to be set\n   - pptx requires pptxOutput to be set\n   - image requires imageOutput to be set\n   - csv doesn't have csv output\n   - xlsx requires xlsxOutput to be set\n"
           },
           "outputId": {
             "type": "string",
@@ -757,6 +1034,73 @@
           },
           "pptxCompositionOutput": {
             "$ref": "#/components/schemas/PptxCompositionOutput"
+          }
+        }
+      },
+      "OutputList": {
+        "type": "object",
+        "readOnly": true,
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OutputListItem"
+            },
+            "description": "a list of outputs containing all the report outputs"
+          },
+          "links": {
+            "$ref": "#/components/schemas/LinksResponse"
+          }
+        }
+      },
+      "OutputListItem": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "queued",
+              "processing",
+              "done",
+              "failed",
+              "aborted",
+              "aborting"
+            ],
+            "type": "string",
+            "example": "processing",
+            "description": "Status of the requested report."
+          },
+          "traceId": {
+            "type": "string",
+            "example": "1234"
+          },
+          "location": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://t.eu.qlikcloud.com:443/api/v1/temp-contents/619b77be498fea00018de0e1?inline=1",
+            "description": "Location to download the generated report file."
+          },
+          "outputId": {
+            "type": "string",
+            "example": "c61841ac-7b35-4434-aa74-4421f10fc68e",
+            "readOnly": true,
+            "description": "The output ID"
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "description": "output size in bytes"
+          },
+          "exportErrors": {
+            "$ref": "#/components/schemas/ExportErrors"
+          },
+          "cycleSelections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QSelection"
+            }
           }
         }
       },
@@ -861,6 +1205,28 @@
           }
         },
         "description": "Output to be used to export a single visualization, a sheet, Sense Excel template as pdf. For Sense Excel template (sense-excel-template-1.0) no properties are needed, any property specified has no effect."
+      },
+      "PostReportsResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Report request has been accepted and is being processed.",
+            "description": "A message indicating the status of the request."
+          },
+          "requestId": {
+            "type": "string",
+            "example": "c61841ac-7b35-4434-aa74-4421f10fc68e",
+            "readOnly": true,
+            "description": "The report request ID"
+          },
+          "outputsUrl": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://t.eu.qlikcloud.com:443/api/v1/reports/c61841ac-7b35-4434-aa74-4421f10fc68e/outputs",
+            "description": "The absolute URL to get the outputs of the report request."
+          }
+        }
       },
       "PptxCompositionOutput": {
         "properties": {
@@ -1076,10 +1442,12 @@
               "qv-data-2.0",
               "sense-excel-template-1.0",
               "sense-pixel-perfect-template-1.0",
-              "sense-html-template-1.0"
+              "sense-html-template-1.0",
+              "sense-powerpoint-template-1.0",
+              "sense-word-template-1.0"
             ],
             "type": "string",
-            "description": "Template type and version using semantic versioning. It must have the following name convention: dashed-separated-template-name-MAJOR.MINOR.\nPlease note that sense-html-template-1.0, sense-story-x.0 and qv-data-x.0 are only for internal use.\n\nEach type requires a specific template to be provided:\n  - composition-1.0 requires compositionTemplates to be set\n  - sense-excel-template-1.0 requires senseExcelTemplate to be set\n  - sense-image-1.0 requires senseImageTemplate to be set\n  - sense-sheet-1.0 requires senseSheetTemplate to be set\n  - sense-data-1.0 requires senseDataTemplate to be set\n  - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n  - sense-html-template-1.0 requires senseHtmlTemplate to be set\n\nEach template type supports specific output types:\n  - composition-1.0 supports pdfcomposition and pptxcomposition output type\n  - sense-excel-template-1.0 supports excel and pdf output type\n  - sense-image-1.0 supports pdf, pptx and png output types\n  - sense-sheet-1.0 supports pdf, pptx output type\n  - sense-data-1.0 supports xlsx output type\n  - sense-pixel-perfect-template-1.0 supports pdf output types\n  - sense-html-template-1.0 supports html output types\n\nEach output type requires a specific output to be provided:\n  - pdfcomposition requires pdfCompositionOutput to be set\n  - pptxcomposition requires pptxCompositionOutput to be set\n  - pdf requires pdfOutput to be set\n  - pptx requires pptxOutput to be set\n  - image requires imageOutput to be set\n  - xlsx requires xlsxOutput to be set\n"
+            "description": "Template type and version using semantic versioning. It must have the following name convention: dashed-separated-template-name-MAJOR.MINOR.\nPlease note that sense-powerpoint-template-1.0, sense-word-template-1.0, sense-story-x.0 and qv-data-x.0 are only for internal use.\n\nEach type requires a specific template to be provided:\n  - composition-1.0 requires compositionTemplates to be set\n  - sense-excel-template-1.0 requires senseExcelTemplate to be set\n  - sense-image-1.0 requires senseImageTemplate to be set\n  - sense-sheet-1.0 requires senseSheetTemplate to be set\n  - sense-data-1.0 requires senseDataTemplate to be set\n  - sense-pixel-perfect-template-1.0 requires sensePixelPerfectTemplate to be set\n  - sense-html-template-1.0 requires senseHtmlTemplate to be set\n  - sense-powerpoint-template-1.0 requires sensePowerPointTemplate to be set\n  - sense-word-template-1.0 requires senseWordTemplate to be set\n\nEach template type supports specific output types:\n  - composition-1.0 supports pdfcomposition and pptxcomposition output type\n  - sense-excel-template-1.0 supports excel and pdf output type\n  - sense-image-1.0 supports pdf, pptx and png output types\n  - sense-sheet-1.0 supports pdf, pptx output type\n  - sense-data-1.0 supports xlsx output type\n  - sense-pixel-perfect-template-1.0 supports pdf output types\n  - sense-html-template-1.0 supports html output types\n  - sense-powerpoint-template-1.0 supports powerpoint and pdf output types\n  - sense-word-template-1.0 supports word and pdf output types\n\nEach output type requires a specific output to be provided:\n  - pdfcomposition requires pdfCompositionOutput to be set\n  - pptxcomposition requires pptxCompositionOutput to be set\n  - pdf requires pdfOutput to be set\n  - pptx requires pptxOutput to be set\n  - image requires imageOutput to be set\n  - xlsx requires xlsxOutput to be set\n"
           },
           "output": {
             "$ref": "#/components/schemas/OutputItem"
@@ -1091,6 +1459,9 @@
             "$ref": "#/components/schemas/SenseDataTemplate"
           },
           "senseHtmlTemplate": {
+            "$ref": "#/components/schemas/SenseFileTemplate"
+          },
+          "senseWordTemplate": {
             "$ref": "#/components/schemas/SenseFileTemplate"
           },
           "senseExcelTemplate": {
@@ -1112,6 +1483,9 @@
           },
           "requestCallBackAction": {
             "$ref": "#/components/schemas/CallBackAction"
+          },
+          "sensePowerPointTemplate": {
+            "$ref": "#/components/schemas/SenseFileTemplate"
           },
           "sensePixelPerfectTemplate": {
             "$ref": "#/components/schemas/SenseFileTemplate"
@@ -1645,5 +2019,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

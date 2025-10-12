@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/ml/deployments": {
+    "/api/v1/ml/deployments": {
       "get": {
         "tags": [
           "deployments"
@@ -128,7 +128,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}": {
+    "/api/v1/ml/deployments/{deploymentId}": {
       "get": {
         "tags": [
           "deployments"
@@ -293,7 +293,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/actions/activate-models": {
+    "/api/v1/ml/deployments/{deploymentId}/actions/activate-models": {
       "post": {
         "tags": [
           "deployments"
@@ -344,7 +344,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/actions/deactivate-models": {
+    "/api/v1/ml/deployments/{deploymentId}/actions/deactivate-models": {
       "post": {
         "tags": [
           "deployments"
@@ -395,7 +395,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/aliases": {
+    "/api/v1/ml/deployments/{deploymentId}/aliases": {
       "get": {
         "tags": [
           "aliases"
@@ -449,6 +449,9 @@
           },
           {
             "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/deploymentId"
           }
         ],
         "description": "Retrieves a list of aliases based on filter parameters for a deployment.",
@@ -529,7 +532,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/aliases/{aliasId}": {
+    "/api/v1/ml/deployments/{deploymentId}/aliases/{aliasId}": {
       "get": {
         "tags": [
           "aliases"
@@ -706,7 +709,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/aliases/{aliasName}/realtime-predictions/actions/run": {
+    "/api/v1/ml/deployments/{deploymentId}/aliases/{aliasName}/realtime-predictions/actions/run": {
       "post": {
         "tags": [
           "predictions"
@@ -810,7 +813,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/batch-predictions": {
+    "/api/v1/ml/deployments/{deploymentId}/batch-predictions": {
       "get": {
         "tags": [
           "predictions"
@@ -945,7 +948,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}": {
+    "/api/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}": {
       "get": {
         "tags": [
           "predictions"
@@ -1119,7 +1122,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/actions/predict": {
+    "/api/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/actions/predict": {
       "post": {
         "tags": [
           "predictions"
@@ -1190,7 +1193,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/schedule": {
+    "/api/v1/ml/deployments/{deploymentId}/batch-predictions/{batchPredictionId}/schedule": {
       "get": {
         "tags": [
           "predictions"
@@ -1436,7 +1439,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/models/actions/add": {
+    "/api/v1/ml/deployments/{deploymentId}/models/actions/add": {
       "post": {
         "tags": [
           "deployments"
@@ -1496,7 +1499,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/models/actions/remove": {
+    "/api/v1/ml/deployments/{deploymentId}/models/actions/remove": {
       "post": {
         "tags": [
           "deployments"
@@ -1556,7 +1559,7 @@
         }
       }
     },
-    "/v1/ml/deployments/{deploymentId}/realtime-predictions/actions/run": {
+    "/api/v1/ml/deployments/{deploymentId}/realtime-predictions/actions/run": {
       "post": {
         "tags": [
           "predictions"
@@ -1656,7 +1659,7 @@
         }
       }
     },
-    "/v1/ml/experiments": {
+    "/api/v1/ml/experiments": {
       "get": {
         "tags": [
           "experiments"
@@ -1781,7 +1784,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}": {
+    "/api/v1/ml/experiments/{experimentId}": {
       "get": {
         "tags": [
           "experiments"
@@ -1946,7 +1949,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/actions/recommend-models": {
+    "/api/v1/ml/experiments/{experimentId}/actions/recommend-models": {
       "post": {
         "tags": [
           "experiments"
@@ -2011,7 +2014,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/models": {
+    "/api/v1/ml/experiments/{experimentId}/models": {
       "get": {
         "tags": [
           "experiments"
@@ -2072,7 +2075,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/models/{modelId}": {
+    "/api/v1/ml/experiments/{experimentId}/models/{modelId}": {
       "get": {
         "tags": [
           "experiments"
@@ -2124,7 +2127,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/versions": {
+    "/api/v1/ml/experiments/{experimentId}/versions": {
       "get": {
         "tags": [
           "experiments"
@@ -2260,7 +2263,7 @@
         }
       }
     },
-    "/v1/ml/experiments/{experimentId}/versions/{experimentVersionId}": {
+    "/api/v1/ml/experiments/{experimentId}/versions/{experimentVersionId}": {
       "get": {
         "tags": [
           "experiments"
@@ -2434,7 +2437,7 @@
         }
       }
     },
-    "/v1/ml/jobs/{corrType}/{corrId}/actions/cancel": {
+    "/api/v1/ml/jobs/{corrType}/{corrId}/actions/cancel": {
       "post": {
         "tags": [
           "jobs"
@@ -2480,7 +2483,7 @@
         }
       }
     },
-    "/v1/ml/profile-insights": {
+    "/api/v1/ml/profile-insights": {
       "post": {
         "tags": [
           "profile-insights"
@@ -2560,7 +2563,7 @@
         }
       }
     },
-    "/v1/ml/profile-insights/{dataSetId}": {
+    "/api/v1/ml/profile-insights/{dataSetId}": {
       "get": {
         "tags": [
           "profile-insights"
@@ -2685,9 +2688,9 @@
         "schema": {
           "type": "string"
         },
-        "example": "`filter=modelId eq \"UUID\"`",
+        "example": "`filter=modelId eq \"UUID\" and ownerId eq \"string\"`",
         "required": false,
-        "description": "Batch prediction fields by which you can filter responses.<br><br>\n- `modelId` UUID string - By model ID\n"
+        "description": "Batch prediction fields by which you can filter responses.<br><br>\n- `aliasId` UUID string - ID of an alias within the batch prediction\n- `createdBy` ID string\n- `deploymentId` UUID string - ID of a deployment of a model associated with the experiment\n- `experimentId` UUID string - ID of experiment in which model(s) exist\n- `experimentVersionId` UUID string - ID of experiment version in which model(s) exist\n- `modelId` UUID string - By model ID\n- `ownerId` ID string of batch prediction owner\n"
       },
       "batchPredictionsSort": {
         "in": "query",
@@ -3932,17 +3935,6 @@
           }
         }
       },
-      "ConfigurationKey": {
-        "enum": [
-          "DATE_INDEX",
-          "FUTURE_FEATURE",
-          "GROUP_ID",
-          "FORECAST_GAP_SIZE",
-          "FORECAST_WINDOW_SIZE",
-          "GROUP_ID_PRIMARY"
-        ],
-        "type": "string"
-      },
       "CorrId": {
         "type": "string",
         "description": "The ID of a correlated resource of corrType"
@@ -3963,21 +3955,6 @@
         "type": "string",
         "description": "ID of the owner/user that created this entity.",
         "x-qlik-filterable": true
-      },
-      "DataSchemaConfiguration": {
-        "type": "object",
-        "required": [
-          "key",
-          "value"
-        ],
-        "properties": {
-          "key": {
-            "$ref": "#/components/schemas/ConfigurationKey"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
       },
       "DataSetId": {
         "type": "string",
@@ -4823,8 +4800,7 @@
         "enum": [
           "binary",
           "multiclass",
-          "regression",
-          "timeseries"
+          "regression"
         ],
         "type": "string",
         "description": "Experiment type"
@@ -5188,6 +5164,9 @@
               "$ref": "#/components/schemas/APIError"
             },
             "uniqueItems": true
+          },
+          "traceId": {
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -5329,10 +5308,7 @@
           "valid_index",
           "underrepresented_class",
           "invalid_column_name",
-          "will_be_date_engineered",
-          "possible_date_index",
-          "possible_group",
-          "possible_future_feature"
+          "will_be_date_engineered"
         ],
         "type": "string",
         "description": "Insights about a feature, such as why it's not included in a model\n"
@@ -5462,11 +5438,7 @@
           "random_forest_regression",
           "sgd_regression",
           "xgb_classifier",
-          "xgb_regression",
-          "deepar_timeseries",
-          "mixer_timeseries",
-          "tft_timeseries",
-          "tide_timeseries"
+          "xgb_regression"
         ],
         "type": "string",
         "description": "Enumeration of model algorithms.\n\nA subset of these may be provided based on your ExperimentType. This is\nbased on your target's featureType. When you select a target feature\nfrom your ProfileInsights response (defaultVersionConfig.featuresList),\nit tells you which algorithms will be available if you choose it as your\ntarget.\n"
@@ -5486,11 +5458,7 @@
           "RAFR",
           "SGDR",
           "XGBC",
-          "XGBR",
-          "DEAR",
-          "MIXR",
-          "TFTT",
-          "TIDE"
+          "XGBR"
         ],
         "type": "string",
         "description": "Model algorithm name abbreviation"
@@ -5854,13 +5822,77 @@
       "ModelMetricsTimeseries": {
         "type": "object",
         "properties": {
+          "mae": {
+            "type": "number",
+            "description": "Mean absolute error (training data)"
+          },
           "mape": {
             "type": "number",
             "description": "Mean absolute percentage error (training data)"
           },
+          "mase": {
+            "type": "number",
+            "description": "Mean absolute scaled error (training data)"
+          },
+          "rmse": {
+            "type": "number",
+            "description": "Root mean squared error (training data)"
+          },
+          "mdape": {
+            "type": "number",
+            "description": "Median absolute percentage error (training data)"
+          },
+          "smape": {
+            "type": "number",
+            "description": "Symmetric mean absolute percentage error (training data)"
+          },
+          "wmape": {
+            "type": "number",
+            "description": "Weighted mean absolute percentage error (training data)"
+          },
+          "mnrmse": {
+            "type": "number",
+            "description": "Mean root mean squared error (training data)"
+          },
+          "maeTest": {
+            "type": "number",
+            "description": "Mean absolute error (test data)"
+          },
+          "mdnrmse": {
+            "type": "number",
+            "description": "Median root mean squared error (training data)"
+          },
           "mapeTest": {
             "type": "number",
             "description": "Mean absolute percentage error (test data)"
+          },
+          "maseTest": {
+            "type": "number",
+            "description": "Mean absolute scaled error (test data)"
+          },
+          "rmseTest": {
+            "type": "number",
+            "description": "Root mean squared error (test data)"
+          },
+          "mdapeTest": {
+            "type": "number",
+            "description": "Median absolute percentage error (test data)"
+          },
+          "smapeTest": {
+            "type": "number",
+            "description": "Symmetric mean absolute percentage error (test data)"
+          },
+          "wmapeTest": {
+            "type": "number",
+            "description": "Weighted mean absolute percentage error (test data)"
+          },
+          "mnrmseTest": {
+            "type": "number",
+            "description": "Mean root mean squared error (test data)"
+          },
+          "mdnrmseTest": {
+            "type": "number",
+            "description": "Median root mean squared error (test data)"
           }
         },
         "description": "Timeseries metrics experiments valid for timeseries forecasting.\n",
@@ -5937,12 +5969,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Transform"
-            }
-          },
-          "dataSchemaConfiguration": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DataSchemaConfiguration"
             }
           }
         },
@@ -6411,7 +6437,7 @@
         "type": "integer",
         "maximum": 21600,
         "minimum": 900,
-        "description": "Training duration in seconds. If provided, minimum is 900 (15m) and\nmax is 21600 (6h).\n"
+        "description": "Optional training duration in seconds. If not provided, max value used.\nIf provided, min 900 (15m) and max 21600 (6h).\n"
       },
       "Transform": {
         "type": "object",
@@ -6430,5 +6456,20 @@
         "description": "Timestamp when this was updated"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

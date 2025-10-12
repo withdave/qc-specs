@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/ui-config/pinned-links": {
+    "/api/v1/ui-config/pinned-links": {
       "get": {
         "tags": [
           "Pinned Links"
@@ -117,7 +117,7 @@
         }
       }
     },
-    "/v1/ui-config/pinned-links/{id}": {
+    "/api/v1/ui-config/pinned-links/{id}": {
       "get": {
         "tags": [
           "Pinned Links"
@@ -301,7 +301,7 @@
         }
       }
     },
-    "/v1/ui-config/pinned-links/actions/bulk-create-pinned-links": {
+    "/api/v1/ui-config/pinned-links/actions/bulk-create-pinned-links": {
       "post": {
         "tags": [
           "Pinned Links"
@@ -368,7 +368,7 @@
         }
       }
     },
-    "/v1/ui-config/pinned-links/actions/delete-all-pinned-links": {
+    "/api/v1/ui-config/pinned-links/actions/delete-all-pinned-links": {
       "post": {
         "tags": [
           "Pinned Links"
@@ -604,5 +604,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

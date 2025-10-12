@@ -84,12 +84,8 @@
             "name": "scope",
             "style": "spaceDelimited",
             "schema": {
-              "enum": [
-                "user_default",
-                "offline_access"
-              ],
               "type": "array",
-              "example": "user_default"
+              "example": "users:read apps:read"
             },
             "explode": false,
             "required": true,
@@ -130,16 +126,20 @@
               "type": "number"
             },
             "required": false,
-            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider."
+            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider.\nIf time is greater than max_age, force user to re-authorize.\n"
           },
           {
             "in": "query",
             "name": "prompt",
             "schema": {
+              "enum": [
+                "none",
+                "login"
+              ],
               "type": "string"
             },
             "required": false,
-            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication and consent."
+            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication or requires a non-interactive authentication."
           }
         ],
         "description": "Allows a client application to use an OAuth flow to request user authorization.",
@@ -629,5 +629,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

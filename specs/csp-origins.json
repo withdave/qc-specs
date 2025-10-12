@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/csp-origins": {
+    "/api/v1/csp-origins": {
       "get": {
         "tags": [
           "csp-origins"
@@ -343,7 +343,7 @@
         }
       }
     },
-    "/v1/csp-origins/{id}": {
+    "/api/v1/csp-origins/{id}": {
       "get": {
         "tags": [
           "csp-origins"
@@ -651,7 +651,7 @@
         }
       }
     },
-    "/v1/csp-origins/actions/generate-header": {
+    "/api/v1/csp-origins/actions/generate-header": {
       "get": {
         "tags": [
           "csp-origins"
@@ -930,5 +930,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

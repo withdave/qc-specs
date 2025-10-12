@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/collections": {
+    "/api/v1/collections": {
       "get": {
         "tags": [
           "collections"
@@ -189,7 +189,7 @@
               }
             },
             "required": false,
-            "description": "A commaseparated case-sensitive string used to filter by multiple types."
+            "description": "A comma-separated case-sensitive string used to filter by multiple types."
           }
         ],
         "description": "Retrieves the collections that the user has access to. This endpoint does not return the user's favorites collection, which can be retrieved with `/v1/collections/favorites`.\n",
@@ -326,7 +326,7 @@
         }
       }
     },
-    "/v1/collections/{collectionId}": {
+    "/api/v1/collections/{collectionId}": {
       "get": {
         "tags": [
           "collections"
@@ -780,7 +780,7 @@
         }
       }
     },
-    "/v1/collections/{collectionId}/items": {
+    "/api/v1/collections/{collectionId}/items": {
       "get": {
         "tags": [
           "collections"
@@ -1148,7 +1148,7 @@
         }
       }
     },
-    "/v1/collections/{collectionId}/items/{itemId}": {
+    "/api/v1/collections/{collectionId}/items/{itemId}": {
       "get": {
         "tags": [
           "collections"
@@ -1368,7 +1368,7 @@
         }
       }
     },
-    "/v1/collections/favorites": {
+    "/api/v1/collections/favorites": {
       "get": {
         "tags": [
           "collections"
@@ -2109,5 +2109,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

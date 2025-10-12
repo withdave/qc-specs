@@ -4,12 +4,12 @@
     "version": ""
   },
   "paths": {
-    "/v1/transports/email-config": {
+    "/api/v1/transports/email-config": {
       "get": {
         "tags": [
           "email-config"
         ],
-        "summary": "Returns the email configuration for a given tenant id (retrieved from JWT).",
+        "summary": "Get email configuration",
         "responses": {
           "200": {
             "content": {
@@ -42,6 +42,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Returns the current email configuration and configuration status for the tenant.",
         "operationId": "getEmailConfig",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -58,7 +59,7 @@
         "tags": [
           "email-config"
         ],
-        "summary": "Patch the email configuration for a given tenant id (retrieved from JWT).",
+        "summary": "Patch email configuration",
         "responses": {
           "204": {
             "description": "Success."
@@ -94,6 +95,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Patch the email configuration for the tenant.",
         "operationId": "patchEmailConfig",
         "requestBody": {
           "content": {
@@ -120,7 +122,7 @@
         "tags": [
           "email-config"
         ],
-        "summary": "Deletes email configuration for a given tenant id (retrieved from JWT).",
+        "summary": "Delete email configuration",
         "responses": {
           "204": {
             "description": "Success."
@@ -156,6 +158,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Deletes the email configuration for the tenant.",
         "operationId": "deleteEmailConfig",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -169,12 +172,12 @@
         }
       }
     },
-    "/v1/transports/email-config/actions/send-test-email": {
+    "/api/v1/transports/email-config/actions/send-test-email": {
       "post": {
         "tags": [
           "email-config-actions"
         ],
-        "summary": "Send a test mail with the supplied email info (subject, body, recipient). Email config from database is used for the connection.",
+        "summary": "Send test email",
         "responses": {
           "200": {
             "content": {
@@ -217,6 +220,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Attempts to sends a test email using the active configuration, with the supplied email info (subject, body, recipient).",
         "operationId": "sendTestEmailAction",
         "requestBody": {
           "content": {
@@ -244,12 +248,12 @@
         }
       }
     },
-    "/v1/transports/email-config/actions/validate": {
+    "/api/v1/transports/email-config/actions/validate": {
       "post": {
         "tags": [
           "email-config-actions"
         ],
-        "summary": "Returns the isValid value for the email configuration for the tenant. Will return false if no email configuration exists.",
+        "summary": "Get configuration status",
         "responses": {
           "200": {
             "content": {
@@ -272,6 +276,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Returns the current isValid value for the email configuration for the tenant. Does not attempt to connect to a server to verify the connection or send a test email. Will return false if no email configuration exists.",
         "operationId": "validateAction",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -285,12 +290,12 @@
         }
       }
     },
-    "/v1/transports/email-config/actions/verify-connection": {
+    "/api/v1/transports/email-config/actions/verify-connection": {
       "post": {
         "tags": [
           "email-config-actions"
         ],
-        "summary": "Verifies connection to email server for tenant provided via JWT",
+        "summary": "Verify configuration",
         "responses": {
           "200": {
             "content": {
@@ -323,6 +328,7 @@
             "description": "Unexpected error."
           }
         },
+        "description": "Attempts to verify connection to email server using a low-level protocol handshake to confirm the server is reachable and the credentials are valid, without sending a test email.",
         "operationId": "verifyConnectionAction",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -767,5 +773,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

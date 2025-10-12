@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/di-projects": {
+    "/api/v1/di-projects": {
       "get": {
         "tags": [
           "data project"
@@ -126,7 +126,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}": {
+    "/api/v1/di-projects/{projectId}": {
       "get": {
         "tags": [
           "data project"
@@ -189,7 +189,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/actions/export": {
+    "/api/v1/di-projects/{projectId}/actions/export": {
       "post": {
         "tags": [
           "data project deployment"
@@ -257,7 +257,8 @@
                 "application/octet-stream"
               ],
               "type": "string"
-            }
+            },
+            "description": "response content type"
           }
         ],
         "description": "Exports the specified data integration project.",
@@ -282,7 +283,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/actions/import": {
+    "/api/v1/di-projects/{projectId}/actions/import": {
       "post": {
         "tags": [
           "data project deployment"
@@ -371,7 +372,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/actions/prepare": {
+    "/api/v1/di-projects/{projectId}/actions/prepare": {
       "post": {
         "tags": [
           "data project actions"
@@ -448,7 +449,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/actions/validate": {
+    "/api/v1/di-projects/{projectId}/actions/validate": {
       "post": {
         "tags": [
           "data project actions"
@@ -525,7 +526,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/bindings": {
+    "/api/v1/di-projects/{projectId}/bindings": {
       "get": {
         "tags": [
           "data project deployment"
@@ -679,7 +680,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks": {
+    "/api/v1/di-projects/{projectId}/di-tasks": {
       "get": {
         "tags": [
           "data task"
@@ -743,7 +744,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}": {
       "get": {
         "tags": [
           "data task"
@@ -817,7 +818,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/prepare": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/prepare": {
       "post": {
         "tags": [
           "data task actions"
@@ -904,7 +905,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/validate": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/validate": {
       "post": {
         "tags": [
           "data task actions"
@@ -991,7 +992,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/start": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/start": {
       "post": {
         "tags": [
           "data task runtime"
@@ -1058,7 +1059,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/stop": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/actions/stop": {
       "post": {
         "tags": [
           "data task runtime"
@@ -1123,7 +1124,7 @@
         }
       }
     },
-    "/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/state": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/state": {
       "get": {
         "tags": [
           "data task runtime"
@@ -1134,28 +1135,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "lastRun": {
-                      "$ref": "#/components/schemas/DataTaskInstanceState"
-                    },
-                    "runReadiness": {
-                      "type": "object",
-                      "properties": {
-                        "state": {
-                          "enum": [
-                            "READY_TO_RUN",
-                            "ALREADY_RUNNING",
-                            "NOT_RUNNABLE"
-                          ],
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/DataTaskRuntimeState"
                 }
               }
             },
@@ -1202,7 +1182,7 @@
             "required": true
           }
         ],
-        "description": "Get data task runtime state within a data integration project.",
+        "description": "Get the current runtime state of a data task",
         "operationId": "get_data_task_runtime_state",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -1211,12 +1191,90 @@
         ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
+          "tier": "special",
+          "limit": 120
         }
       }
     },
-    "/v1/di-projects/actions/{actionId}": {
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/state/datasets": {
+      "get": {
+        "tags": [
+          "data task runtime"
+        ],
+        "summary": "List runtime dataset states",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "datasets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DataTaskDatasetState"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Returns all datasets for the specified data task"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the data task"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the project"
+          }
+        ],
+        "description": "Returns dataset-level runtime state for a data task",
+        "operationId": "list_data_task_datasets",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "special",
+          "limit": 120
+        }
+      }
+    },
+    "/api/v1/di-projects/actions/{actionId}": {
       "get": {
         "tags": [
           "async actions"
@@ -1484,6 +1542,151 @@
           }
         }
       },
+      "DataTaskDatasetState": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the dataset"
+          },
+          "fullLoad": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "QUEUED",
+                  "LOADING",
+                  "COMPLETED",
+                  "ERROR"
+                ],
+                "type": "string"
+              },
+              "endTime": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "message": {
+                "type": "string"
+              },
+              "duration": {
+                "type": "string",
+                "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+              },
+              "startTime": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "cachedChangesCount": {
+                "type": "number",
+                "description": "Number of changes captured and cached during full load (CDC landing/replication tasks only)"
+              },
+              "failedRecordsCount": {
+                "type": "number",
+                "description": "Number of records that failed to load (currently only for knowledge marts)"
+              },
+              "totalProcessedCount": {
+                "type": "number",
+                "description": "Number of records (or docs in knowledge marts) were loaded."
+              }
+            }
+          },
+          "cdcStatus": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "QUEUED",
+                  "PROCESSING",
+                  "ACCUMULATING_CHANGES",
+                  "COMPLETED",
+                  "ERROR"
+                ],
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "ddlCount": {
+                "type": "number",
+                "description": "Number of DDL statements executed during the last run"
+              },
+              "deleteCount": {
+                "type": "number",
+                "description": "delete portion of totalProcessedCount. Only available for some task types"
+              },
+              "insertCount": {
+                "type": "number",
+                "description": "Insert portion of totalProcessedCount. Only available for some task types"
+              },
+              "updateCount": {
+                "type": "number",
+                "description": "update portion of totalProcessedCount. Only available for some task types"
+              },
+              "lastProcessed": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "totalProcessedCount": {
+                "type": "number",
+                "description": "Total number of changes/DMLs applied to the dataset"
+              }
+            }
+          },
+          "datasetId": {
+            "type": "string",
+            "description": "Id of the dataset"
+          },
+          "sourceName": {
+            "type": "string",
+            "description": "Original name of the dataset, relevant only for data movement tasks"
+          },
+          "dataReadiness": {
+            "enum": [
+              "READY",
+              "NOT_READY",
+              "ERROR"
+            ],
+            "type": "string",
+            "description": "Is the data ready for use?"
+          },
+          "lastBatchOfChanges": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "QUEUED",
+                  "PROCESSING",
+                  "COMPLETED",
+                  "ERROR"
+                ],
+                "type": "string"
+              },
+              "endTime": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "message": {
+                "type": "string"
+              },
+              "duration": {
+                "type": "string",
+                "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+              },
+              "startTime": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "totalProcessedCount": {
+                "type": "number"
+              },
+              "throughputInRecordsPerSecond": {
+                "type": "number",
+                "description": "Throughput in records per second"
+              }
+            }
+          }
+        }
+      },
       "DataTaskInstanceState": {
         "type": "object",
         "properties": {
@@ -1493,12 +1696,132 @@
               "RUNNING",
               "COMPLETED",
               "FAILED",
-              "CANCELED"
+              "CANCELED",
+              "STOPPING"
             ],
             "type": "string"
           },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the task instance ended"
+          },
+          "general": {
+            "type": "object",
+            "properties": {
+              "gatewayId": {
+                "type": "string",
+                "description": "For tasks that run on a gateway, this is the id of the gateway"
+              },
+              "gatewayName": {
+                "type": "string",
+                "description": "For tasks that run on a gateway, this is the name of the gateway"
+              },
+              "datasetCount": {
+                "type": "number",
+                "description": "Total number of datasets produced by the task, including ones in error"
+              },
+              "gatewayTaskName": {
+                "type": "string",
+                "description": "For tasks that run on a gateway, this is the internal name of the task on the gateway"
+              },
+              "dataTaskUpdatedTo": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The latest point in time the data reflects, based on updates from the source system."
+              },
+              "liveViewsUpdatedTo": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The latest point in time the live views reflect, based on updates from the source system."
+              },
+              "datasetsInErrorCount": {
+                "type": "number",
+                "description": "Count of datasets that encountered errors"
+              },
+              "lakehouseClusterName": {
+                "type": "string",
+                "description": "For lakehouse storage tasks, this is the name of the cluster where the task runs"
+              }
+            }
+          },
           "message": {
             "type": "string"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+          },
+          "fullLoad": {
+            "type": "object",
+            "properties": {
+              "errorCount": {
+                "type": "number",
+                "description": "Number of datasets that have failed full load in this task run"
+              },
+              "queuedCount": {
+                "type": "number",
+                "description": "Number of datasets that are queued for full load in this task run"
+              },
+              "loadingCount": {
+                "type": "number",
+                "description": "Number of datasets that are currently being loaded in this task run"
+              },
+              "completedCount": {
+                "type": "number",
+                "description": "Number of datasets that have completed full load in this task run"
+              }
+            }
+          },
+          "cdcStatus": {
+            "type": "object",
+            "properties": {
+              "latency": {
+                "type": "string",
+                "example": "01:30:45",
+                "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+              },
+              "totalProcessedCount": {
+                "type": "number"
+              },
+              "applyingChangesCount": {
+                "type": "number"
+              },
+              "accumulatingChangesCount": {
+                "type": "number"
+              },
+              "throughputInKilobytesPerSecond": {
+                "type": "number",
+                "description": "Throughput in kilobytes per second"
+              }
+            }
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the task instance started"
+          },
+          "lastBatchOfChanges": {
+            "type": "object",
+            "properties": {
+              "relatesToRecordsTo": {
+                "type": "string",
+                "format": "date-time",
+                "description": "This batch ends with operational source changes from this time."
+              },
+              "totalProcessedCount": {
+                "type": "number"
+              },
+              "relatesToRecordsFrom": {
+                "type": "string",
+                "format": "date-time",
+                "description": "This batch starts with operational source changes from this time."
+              },
+              "throughputInRecordsPerSecond": {
+                "type": "number",
+                "description": "Throughput in records per second"
+              }
+            }
           }
         }
       },
@@ -1525,6 +1848,37 @@
           }
         }
       },
+      "DataTaskRuntimeState": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the data task"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DataTaskType"
+          },
+          "lastRun": {
+            "$ref": "#/components/schemas/DataTaskInstanceState"
+          },
+          "runReadiness": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "READY_TO_RUN",
+                  "ALREADY_RUNNING",
+                  "NOT_RUNNABLE"
+                ],
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
       "DataTaskType": {
         "enum": [
           "LANDING",
@@ -1535,7 +1889,11 @@
           "REGISTERED_DATA",
           "REPLICATION",
           "DISTRIBUTION",
-          "LAKE_LANDING"
+          "LAKE_LANDING",
+          "KNOWLEDGE_MART",
+          "FILE_BASED_KNOWLEDGE_MART",
+          "LAKEHOUSE_STORAGE",
+          "LAKEHOUSE_MIRROR"
         ],
         "type": "string",
         "x-enum-varnames": [
@@ -1546,8 +1904,11 @@
           "DATAMART",
           "REGISTERED_DATA",
           "REPLICATION",
-          "DISTRIBUTION",
-          "LAKE_LANDING"
+          "LAKE_LANDING",
+          "KNOWLEDGE_MART",
+          "FILE_BASED_KNOWLEDGE_MART",
+          "LAKEHOUSE_STORAGE",
+          "LAKEHOUSE_MIRROR"
         ]
       },
       "DiProjectItemRsp": {
@@ -1648,6 +2009,14 @@
               "example": "value",
               "description": "The value of the variable"
             }
+          },
+          "nameToIdMap": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "example": "value",
+              "description": "The calculated ID of the variable value, when relevant."
+            }
           }
         }
       },
@@ -1737,5 +2106,20 @@
         "description": "Request body for task validation"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

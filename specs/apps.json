@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/apps": {
+    "/api/v1/apps": {
       "post": {
         "responses": {
           "200": {
@@ -47,7 +47,7 @@
         }
       }
     },
-    "/v1/apps/{appId}": {
+    "/api/v1/apps/{appId}": {
       "get": {
         "responses": {
           "200": {
@@ -179,7 +179,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/copy": {
+    "/api/v1/apps/{appId}/copy": {
       "post": {
         "responses": {
           "200": {
@@ -233,7 +233,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/data/lineage": {
+    "/api/v1/apps/{appId}/data/lineage": {
       "get": {
         "responses": {
           "200": {
@@ -279,7 +279,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/data/metadata": {
+    "/api/v1/apps/{appId}/data/metadata": {
       "get": {
         "responses": {
           "200": {
@@ -322,7 +322,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/export": {
+    "/api/v1/apps/{appId}/export": {
       "post": {
         "responses": {
           "201": {
@@ -385,7 +385,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/insight-analyses": {
+    "/api/v1/apps/{appId}/insight-analyses": {
       "get": {
         "tags": [
           "insight-analyses"
@@ -488,7 +488,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/insight-analyses/actions/recommend": {
+    "/api/v1/apps/{appId}/insight-analyses/actions/recommend": {
       "post": {
         "tags": [
           "insight-analyses"
@@ -611,7 +611,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/insight-analyses/model": {
+    "/api/v1/apps/{appId}/insight-analyses/model": {
       "get": {
         "tags": [
           "insight-analyses"
@@ -715,7 +715,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/media/files/{path}": {
+    "/api/v1/apps/{appId}/media/files/{path}": {
       "get": {
         "responses": {
           "200": {
@@ -895,7 +895,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/media/list/{path}": {
+    "/api/v1/apps/{appId}/media/list/{path}": {
       "get": {
         "responses": {
           "200": {
@@ -963,7 +963,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/media/thumbnail": {
+    "/api/v1/apps/{appId}/media/thumbnail": {
       "get": {
         "responses": {
           "200": {
@@ -1015,7 +1015,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/objects/{objectId}/actions/change-owner": {
+    "/api/v1/apps/{appId}/objects/{objectId}/actions/change-owner": {
       "post": {
         "responses": {
           "200": {
@@ -1086,7 +1086,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/owner": {
+    "/api/v1/apps/{appId}/owner": {
       "put": {
         "responses": {
           "200": {
@@ -1148,7 +1148,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/publish": {
+    "/api/v1/apps/{appId}/publish": {
       "post": {
         "responses": {
           "200": {
@@ -1254,7 +1254,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/reloads/logs": {
+    "/api/v1/apps/{appId}/reloads/logs": {
       "get": {
         "responses": {
           "200": {
@@ -1297,7 +1297,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/reloads/logs/{reloadId}": {
+    "/api/v1/apps/{appId}/reloads/logs/{reloadId}": {
       "get": {
         "responses": {
           "200": {
@@ -1350,7 +1350,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/reloads/metadata/{reloadId}": {
+    "/api/v1/apps/{appId}/reloads/metadata/{reloadId}": {
       "get": {
         "responses": {
           "200": {
@@ -1418,7 +1418,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/report-filters": {
+    "/api/v1/apps/{appId}/report-filters": {
       "get": {
         "tags": [
           "filters"
@@ -1721,7 +1721,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/report-filters/{id}": {
+    "/api/v1/apps/{appId}/report-filters/{id}": {
       "get": {
         "tags": [
           "filters"
@@ -2066,7 +2066,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/report-filters/actions/count": {
+    "/api/v1/apps/{appId}/report-filters/actions/count": {
       "get": {
         "tags": [
           "filters"
@@ -2190,7 +2190,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/scripts": {
+    "/api/v1/apps/{appId}/scripts": {
       "get": {
         "responses": {
           "200": {
@@ -2305,7 +2305,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/scripts/{id}": {
+    "/api/v1/apps/{appId}/scripts/{id}": {
       "get": {
         "responses": {
           "200": {
@@ -2463,7 +2463,7 @@
         }
       }
     },
-    "/v1/apps/{appId}/space": {
+    "/api/v1/apps/{appId}/space": {
       "put": {
         "responses": {
           "200": {
@@ -2552,7 +2552,7 @@
         }
       }
     },
-    "/v1/apps/{guid}/evaluations": {
+    "/api/v1/apps/{guid}/evaluations": {
       "get": {
         "tags": [
           "evaluation"
@@ -2777,7 +2777,7 @@
         }
       }
     },
-    "/v1/apps/evaluations/{baseid}/actions/compare/{comparisonid}": {
+    "/api/v1/apps/evaluations/{baseid}/actions/compare/{comparisonid}": {
       "get": {
         "tags": [
           "evaluation"
@@ -2870,7 +2870,7 @@
         }
       }
     },
-    "/v1/apps/evaluations/{baseid}/actions/compare/{comparisonid}/actions/download": {
+    "/api/v1/apps/evaluations/{baseid}/actions/compare/{comparisonid}/actions/download": {
       "get": {
         "tags": [
           "evaluation"
@@ -2946,7 +2946,7 @@
         }
       }
     },
-    "/v1/apps/evaluations/{id}": {
+    "/api/v1/apps/evaluations/{id}": {
       "get": {
         "tags": [
           "evaluation"
@@ -3029,7 +3029,7 @@
         }
       }
     },
-    "/v1/apps/evaluations/{id}/actions/download": {
+    "/api/v1/apps/evaluations/{id}/actions/download": {
       "get": {
         "tags": [
           "evaluation"
@@ -3095,7 +3095,7 @@
         }
       }
     },
-    "/v1/apps/import": {
+    "/api/v1/apps/import": {
       "post": {
         "responses": {
           "200": {
@@ -3199,7 +3199,7 @@
         }
       }
     },
-    "/v1/apps/privileges": {
+    "/api/v1/apps/privileges": {
       "get": {
         "responses": {
           "200": {
@@ -6313,6 +6313,12 @@
               "$ref": "#/components/schemas/ScriptMeta"
             },
             "description": "Script versions metadata."
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -6629,5 +6635,20 @@
         ]
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/brands": {
+    "/api/v1/brands": {
       "get": {
         "tags": [
           "brands"
@@ -196,7 +196,7 @@
         }
       }
     },
-    "/v1/brands/{brand-id}": {
+    "/api/v1/brands/{brand-id}": {
       "get": {
         "tags": [
           "brands"
@@ -344,7 +344,7 @@
         }
       }
     },
-    "/v1/brands/{brand-id}/actions/activate": {
+    "/api/v1/brands/{brand-id}/actions/activate": {
       "post": {
         "tags": [
           "brands"
@@ -400,7 +400,7 @@
         }
       }
     },
-    "/v1/brands/{brand-id}/actions/deactivate": {
+    "/api/v1/brands/{brand-id}/actions/deactivate": {
       "post": {
         "tags": [
           "brands"
@@ -456,7 +456,7 @@
         }
       }
     },
-    "/v1/brands/{brand-id}/files/{brand-file-id}": {
+    "/api/v1/brands/{brand-id}/files/{brand-file-id}": {
       "get": {
         "tags": [
           "brands"
@@ -706,7 +706,7 @@
         }
       }
     },
-    "/v1/brands/active": {
+    "/api/v1/brands/active": {
       "get": {
         "tags": [
           "brands"
@@ -1115,5 +1115,20 @@
         "description": "Empty object inferring lack of active branding."
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

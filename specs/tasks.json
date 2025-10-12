@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/tasks": {
+    "/api/v1/tasks": {
       "get": {
         "tags": [
           "task"
@@ -172,7 +172,7 @@
         }
       }
     },
-    "/v1/tasks/{id}": {
+    "/api/v1/tasks/{id}": {
       "get": {
         "tags": [
           "task"
@@ -348,7 +348,7 @@
         }
       }
     },
-    "/v1/tasks/{id}/actions/start": {
+    "/api/v1/tasks/{id}/actions/start": {
       "post": {
         "tags": [
           "task"
@@ -423,7 +423,7 @@
         }
       }
     },
-    "/v1/tasks/{id}/runs": {
+    "/api/v1/tasks/{id}/runs": {
       "get": {
         "tags": [
           "task"
@@ -525,7 +525,7 @@
         }
       }
     },
-    "/v1/tasks/{id}/runs/{runId}/log": {
+    "/api/v1/tasks/{id}/runs/{runId}/log": {
       "get": {
         "tags": [
           "task"
@@ -625,7 +625,7 @@
         }
       }
     },
-    "/v1/tasks/{id}/runs/last": {
+    "/api/v1/tasks/{id}/runs/last": {
       "get": {
         "tags": [
           "task"
@@ -684,7 +684,7 @@
         }
       }
     },
-    "/v1/tasks/resources/{id}/runs": {
+    "/api/v1/tasks/resources/{id}/runs": {
       "get": {
         "tags": [
           "task"
@@ -1735,5 +1735,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

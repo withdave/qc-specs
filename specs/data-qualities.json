@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/data-qualities/computations": {
+    "/api/v1/data-qualities/computations": {
       "post": {
         "tags": [
           "computation"
@@ -86,10 +86,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "dataquality:update",
-          "dataset:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -98,7 +94,7 @@
         }
       }
     },
-    "/v1/data-qualities/computations/{computationId}": {
+    "/api/v1/data-qualities/computations/{computationId}": {
       "get": {
         "tags": [
           "computation"
@@ -193,10 +189,6 @@
         "operationId": "getDataQualityComputation",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "dataquality:read",
-          "dataset:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -205,7 +197,7 @@
         }
       }
     },
-    "/v1/data-qualities/global-results": {
+    "/api/v1/data-qualities/global-results": {
       "get": {
         "tags": [
           "data-quality"
@@ -295,10 +287,6 @@
         "operationId": "getDataQualityGlobalResults",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-permissions": [
-          "dataquality:read",
-          "dataset:read"
-        ],
         "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
@@ -536,5 +524,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

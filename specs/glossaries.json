@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/glossaries": {
+    "/api/v1/glossaries": {
       "get": {
         "tags": [
           "glossaries"
@@ -110,7 +110,7 @@
         "tags": [
           "glossaries"
         ],
-        "summary": "Creates a new glossary. Only a steward can create a glossary.\n",
+        "summary": "Creates a new glossary.",
         "responses": {
           "201": {
             "content": {
@@ -157,6 +157,7 @@
             "description": "The user does not have privileges to perform the requested action."
           }
         },
+        "description": "Only a steward can create a glossary.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -178,7 +179,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}": {
+    "/api/v1/glossaries/{id}": {
       "get": {
         "tags": [
           "glossaries"
@@ -268,7 +269,7 @@
         "tags": [
           "glossaries"
         ],
-        "summary": "Updates glossary properties with json-patch formatted data",
+        "summary": "Updates glossary properties with json-patch formatted data.",
         "responses": {
           "204": {
             "headers": {
@@ -558,7 +559,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/actions/export": {
+    "/api/v1/glossaries/{id}/actions/export": {
       "get": {
         "tags": [
           "glossaries"
@@ -650,7 +651,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/categories": {
+    "/api/v1/glossaries/{id}/categories": {
       "get": {
         "tags": [
           "categories"
@@ -871,7 +872,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/categories/{categoryId}": {
+    "/api/v1/glossaries/{id}/categories/{categoryId}": {
       "get": {
         "tags": [
           "categories"
@@ -981,7 +982,7 @@
         "tags": [
           "categories"
         ],
-        "summary": "Updates category properties with json-patch formatted data",
+        "summary": "Updates category properties with json-patch formatted data.",
         "responses": {
           "204": {
             "headers": {
@@ -1304,7 +1305,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms": {
+    "/api/v1/glossaries/{id}/terms": {
       "get": {
         "tags": [
           "terms"
@@ -1539,7 +1540,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms/{termId}": {
+    "/api/v1/glossaries/{id}/terms/{termId}": {
       "get": {
         "tags": [
           "terms"
@@ -1983,12 +1984,12 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms/{termId}/actions/change-status": {
+    "/api/v1/glossaries/{id}/terms/{termId}/actions/change-status": {
       "post": {
         "tags": [
           "terms"
         ],
-        "summary": "Changes the status of the term. Only a steward can verify a term. Once the term is verified only a steward can modify the term.",
+        "summary": "Changes the status of the term.",
         "responses": {
           "200": {
             "content": {
@@ -2102,6 +2103,7 @@
             "description": "Optional header to do conditional updates. Using the Etag value that was returned the last time the term was fetched."
           }
         ],
+        "description": "Only a steward can verify a term. Once the term is verified only a steward can modify the term. Note that links to resources are considered external relations that can be managed independently of the status of the term.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -2114,7 +2116,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms/{termId}/links": {
+    "/api/v1/glossaries/{id}/terms/{termId}/links": {
       "get": {
         "tags": [
           "links"
@@ -2363,6 +2365,7 @@
             "description": "Optional header to do conditional updates. Using the Etag value that was returned the last time the term was fetched."
           }
         ],
+        "description": "Links to resources are not considered term properties but external relations. Links can be created for terms in any status. Permissions on term and resource determine if the link can be created.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2384,7 +2387,7 @@
         }
       }
     },
-    "/v1/glossaries/{id}/terms/{termId}/revisions": {
+    "/api/v1/glossaries/{id}/terms/{termId}/revisions": {
       "get": {
         "tags": [
           "terms"
@@ -2516,12 +2519,12 @@
         }
       }
     },
-    "/v1/glossaries/actions/import": {
+    "/api/v1/glossaries/actions/import": {
       "post": {
         "tags": [
           "glossaries"
         ],
-        "summary": "Creates a new glossary, including categories and terms, based on a glossary definition file.\nSupported formats are currently, qlik, atlan and atlas\n",
+        "summary": "Imports a glossary from file.",
         "responses": {
           "201": {
             "content": {
@@ -2592,6 +2595,7 @@
             "description": "The spaceId (leave blank or omit for personal)"
           }
         ],
+        "description": "Creates a new or updates an existing glossary, including categories and terms, based on a glossary definition file.\nSupported formats are currently, qlik, atlan and atlas.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4109,5 +4113,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

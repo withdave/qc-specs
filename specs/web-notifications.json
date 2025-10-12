@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/web-notifications": {
+    "/api/v1/web-notifications": {
       "get": {
         "tags": [
           "web-notifications"
@@ -124,7 +124,7 @@
         }
       }
     },
-    "/v1/web-notifications/{notificationId}": {
+    "/api/v1/web-notifications/{notificationId}": {
       "get": {
         "tags": [
           "web-notifications"
@@ -359,7 +359,7 @@
         }
       }
     },
-    "/v1/web-notifications/all": {
+    "/api/v1/web-notifications/all": {
       "patch": {
         "tags": [
           "web-notifications"
@@ -702,5 +702,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

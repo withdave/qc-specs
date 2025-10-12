@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/tenants": {
+    "/api/v1/tenants": {
       "post": {
         "tags": [
           "tenants"
@@ -16,11 +16,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Tenant"
-                },
-                "examples": {
-                  "Tenant": {
-                    "$ref": "#/components/examples/PostTenant201Response"
-                  }
                 }
               }
             },
@@ -141,7 +136,7 @@
         }
       }
     },
-    "/v1/tenants/{tenantId}": {
+    "/api/v1/tenants/{tenantId}": {
       "get": {
         "tags": [
           "tenants"
@@ -302,7 +297,7 @@
         }
       }
     },
-    "/v1/tenants/{tenantId}/actions/deactivate": {
+    "/api/v1/tenants/{tenantId}/actions/deactivate": {
       "post": {
         "tags": [
           "tenants"
@@ -427,7 +422,7 @@
         }
       }
     },
-    "/v1/tenants/{tenantId}/actions/reactivate": {
+    "/api/v1/tenants/{tenantId}/actions/reactivate": {
       "post": {
         "tags": [
           "tenants"
@@ -541,7 +536,7 @@
         }
       }
     },
-    "/v1/tenants/me": {
+    "/api/v1/tenants/me": {
       "get": {
         "tags": [
           "tenants"
@@ -585,31 +580,6 @@
   ],
   "openapi": "3.0.0",
   "components": {
-    "examples": {
-      "PostTenant201Response": {
-        "value": {
-          "id": "kg1knZuzosd7LR-CfvV7ZZnyEI--XYZZ",
-          "name": "bk1672h181jm1b1",
-          "links": {
-            "self": {
-              "href": "https://bk1672h181jm1b1.us.qlikcloud.com/api/v1/tenants/kg1knZuzosd7LR-CfvV7ZZnyEI--XYZZ"
-            }
-          },
-          "status": "active",
-          "created": "2022-06-24T18:28:31.301Z",
-          "hostnames": [
-            "bk1672h181jm1b1.us.qlikcloud.com"
-          ],
-          "datacenter": "us-east-1",
-          "lastUpdated": "2022-06-24T18:28:31.301Z",
-          "createdByUser": "dyk0nG9WvXZmupfFtULqgVAp1l3kbmTY",
-          "enableAnalyticCreation": true,
-          "autoAssignCreateSharedSpacesRoleToProfessionals": false,
-          "autoAssignDataServicesContributorRoleToProfessionals": false,
-          "autoAssignPrivateAnalyticsContentCreatorRoleToProfessionals": false
-        }
-      }
-    },
     "schemas": {
       "Error": {
         "type": "object",
@@ -726,6 +696,12 @@
               }
             }
           },
+          "region": {
+            "type": "string",
+            "example": "us",
+            "readOnly": true,
+            "description": "The region where the tenant is located."
+          },
           "status": {
             "enum": [
               "active",
@@ -841,6 +817,12 @@
         },
         "description": "The result of tenant deactivation."
       },
+      "TenantMultipleMetaErrorsDetail": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/TenantSingleMetaErrorDetail"
+        }
+      },
       "TenantPatchErrors": {
         "type": "object",
         "properties": {
@@ -859,20 +841,14 @@
                   "description": "The error code."
                 },
                 "meta": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string",
-                      "example": "TENANTS-11",
-                      "description": "The error code."
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TenantSingleMetaErrorDetail"
                     },
-                    "title": {
-                      "type": "string",
-                      "example": "The specified hostname is unavailable for use",
-                      "description": "Summary of the problem."
+                    {
+                      "$ref": "#/components/schemas/TenantMultipleMetaErrorsDetail"
                     }
-                  },
-                  "description": "Additional properties relating to the error."
+                  ]
                 },
                 "title": {
                   "type": "string",
@@ -976,7 +952,37 @@
             "value": false
           }
         ]
+      },
+      "TenantSingleMetaErrorDetail": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "TENANTS-10",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "example": "Subdomain should be between 3 and 63 characters",
+            "description": "The error summary."
+          }
+        }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

@@ -4,7 +4,7 @@
     "version": ""
   },
   "paths": {
-    "/v1/automations": {
+    "/api/v1/automations": {
       "get": {
         "tags": [
           "automations"
@@ -120,7 +120,7 @@
               "example": "-name"
             },
             "required": false,
-            "description": "The field to sort by, with +- prefix indicating sort order. (?query=-name => sort on the name field using descending order)"
+            "description": "The field to sort by, with +- prefix indicating sort order. (?sort=-name => sort on the name field using descending order)\nThe `duration` option is deprecated and will be removed in a future release."
           }
         ],
         "description": "Retrieves a list of the automations that the requesting user has access to.",
@@ -195,7 +195,7 @@
         }
       }
     },
-    "/v1/automations/{id}": {
+    "/api/v1/automations/{id}": {
       "get": {
         "tags": [
           "automations"
@@ -321,7 +321,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AutomationDetailRequestObject"
+                "$ref": "#/components/schemas/AutomationDetailUpdateRequestObject"
               }
             }
           },
@@ -392,7 +392,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/change-owner": {
+    "/api/v1/automations/{id}/actions/change-owner": {
       "post": {
         "tags": [
           "automations"
@@ -466,7 +466,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/change-space": {
+    "/api/v1/automations/{id}/actions/change-space": {
       "post": {
         "tags": [
           "automations"
@@ -538,7 +538,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/copy": {
+    "/api/v1/automations/{id}/actions/copy": {
       "post": {
         "tags": [
           "automations"
@@ -628,7 +628,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/disable": {
+    "/api/v1/automations/{id}/actions/disable": {
       "post": {
         "tags": [
           "automations"
@@ -684,7 +684,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/enable": {
+    "/api/v1/automations/{id}/actions/enable": {
       "post": {
         "tags": [
           "automations"
@@ -740,7 +740,7 @@
         }
       }
     },
-    "/v1/automations/{id}/actions/move": {
+    "/api/v1/automations/{id}/actions/move": {
       "post": {
         "tags": [
           "automations"
@@ -816,7 +816,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs": {
+    "/api/v1/automations/{id}/runs": {
       "get": {
         "tags": [
           "automations"
@@ -1008,7 +1008,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs/{runId}": {
+    "/api/v1/automations/{id}/runs/{runId}": {
       "get": {
         "tags": [
           "automations"
@@ -1092,7 +1092,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs/{runId}/actions/export": {
+    "/api/v1/automations/{id}/runs/{runId}/actions/export": {
       "post": {
         "tags": [
           "automations"
@@ -1171,7 +1171,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs/{runId}/actions/retry": {
+    "/api/v1/automations/{id}/runs/{runId}/actions/retry": {
       "post": {
         "tags": [
           "automations"
@@ -1237,7 +1237,7 @@
         }
       }
     },
-    "/v1/automations/{id}/runs/{runId}/actions/stop": {
+    "/api/v1/automations/{id}/runs/{runId}/actions/stop": {
       "post": {
         "tags": [
           "automations"
@@ -1303,7 +1303,7 @@
         }
       }
     },
-    "/v1/automations/usage": {
+    "/api/v1/automations/usage": {
       "get": {
         "tags": [
           "automations"
@@ -1341,11 +1341,28 @@
             "in": "query",
             "name": "filter",
             "schema": {
-              "type": "string",
-              "example": "name eq \"duration\" and date eq \"2021-12-15\""
+              "type": "string"
+            },
+            "examples": {
+              "dateRange": {
+                "value": "date ge \"2025-08-07\" and date le \"2025-08-12\"",
+                "summary": "Filter metrics by date range"
+              },
+              "singleName": {
+                "value": "name eq \"runs\"",
+                "summary": "Filter metrics by a name"
+              },
+              "nameAndDateRange": {
+                "value": "name eq \"duration\" and date ge \"2025-08-07\" and date le \"2025-08-12\"",
+                "summary": "Filter metrics by name and date range"
+              },
+              "nameAndSpecificDate": {
+                "value": "name eq \"runs\" and date eq \"2025-08-07\"",
+                "summary": "Filter metrics by name and specific date"
+              }
             },
             "required": true,
-            "description": "Indicates how the metrics should be filtered"
+            "description": "Indicates how the metrics should be filtered using a SCIM-style expression. Available parameters:\n- name (specify one or more enums to return specific metrics. Supported enum values: `runs`, `scheduledRun`, `triggeredRun`, `webhookRuns`, `duration`, `bandwidthIn`, `bandwidthOut`)\n- date (return a metric for a specific date or range of dates, e.g. \"2025-08-01\")"
           },
           {
             "in": "query",
@@ -1599,7 +1616,8 @@
               "paused",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit"
             ],
             "type": "string",
             "example": "finished",
@@ -1609,6 +1627,27 @@
             "type": "string",
             "example": "aZXuEogT9X3le0k0WXMBnzuYKq4xRlkDnurjs8NVhEAAW1BYx8C1PpIl3ielgRb1",
             "readOnly": true
+          }
+        }
+      },
+      "AutomationDetailUpdateRequestObject": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "schedules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleRequestObject"
+            }
+          },
+          "workspace": {
+            "type": "object",
+            "description": "The workspace generated by the Qlik Automate editor."
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
@@ -1755,7 +1794,8 @@
               "paused",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit"
             ],
             "type": "string",
             "example": "finished",
@@ -1775,8 +1815,7 @@
           "guid": {
             "type": "string",
             "example": "00000000-0000-0000-0000-000000000000",
-            "description": "The unique identifier for the automation.",
-            "x-qlik-filterable": true
+            "description": "The unique identifier for the automation."
           },
           "name": {
             "type": "string",
@@ -1787,14 +1826,12 @@
           "ownerId": {
             "type": "string",
             "example": "KP1zJiPDn0gsla236GmETadFcxBW-J8F",
-            "description": "The unique identifier for the user who owns the automation",
-            "x-qlik-filterable": true
+            "description": "The unique identifier for the user who owns the automation"
           },
           "duration": {
             "type": "integer",
             "example": 9001,
-            "description": "Duration of the last run, indicated in seconds. Calculated from start and stop times",
-            "x-qlik-filterable": true
+            "description": "Duration of the last run, indicated in seconds. Calculated from start and stop times"
           }
         }
       },
@@ -1906,7 +1943,9 @@
               "not started",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit",
+              "queued"
             ],
             "type": "string"
           },
@@ -2097,7 +2136,9 @@
               "not started",
               "running",
               "starting",
-              "stopped"
+              "stopped",
+              "exceeded limit",
+              "queued"
             ],
             "type": "string",
             "x-qlik-filterable": true
@@ -2255,7 +2296,8 @@
           "date": {
             "type": "string",
             "example": "2021-12-15",
-            "description": "The date for the metric"
+            "description": "The date for the metric",
+            "x-qlik-filterable": true
           },
           "name": {
             "enum": [
@@ -2270,7 +2312,8 @@
             "type": "string",
             "example": "bandwidthIn",
             "maxLength": 50,
-            "description": "The name for the metric"
+            "description": "The name for the metric",
+            "x-qlik-filterable": true
           },
           "value": {
             "type": "integer",
@@ -2283,5 +2326,20 @@
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }

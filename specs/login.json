@@ -52,6 +52,29 @@
           },
           {
             "in": "query",
+            "name": "max_age",
+            "schema": {
+              "type": "number",
+              "example": 3600
+            },
+            "required": false,
+            "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OpenID Provider.\nIf time is greater than max_age, force user to re-authorize.\n"
+          },
+          {
+            "in": "query",
+            "name": "prompt",
+            "schema": {
+              "enum": [
+                "none",
+                "login"
+              ],
+              "type": "string"
+            },
+            "required": false,
+            "description": "Specifies whether the Authorization Server prompts the End-User for re-authentication and consent."
+          },
+          {
+            "in": "query",
             "name": "returnto",
             "schema": {
               "type": "string"
@@ -59,6 +82,21 @@
             "example": "automations/editor/fef1ba5f-facb-4cd1-9c69-8ddc6c61b7e3",
             "required": false,
             "description": "Relative or full URL on the tenant to redirect to after successful login."
+          },
+          {
+            "in": "query",
+            "name": "scope",
+            "style": "spaceDelimited",
+            "schema": {
+              "enum": [
+                "offline_access"
+              ],
+              "type": "array",
+              "example": "offline_access"
+            },
+            "explode": false,
+            "required": false,
+            "description": "Specifies the scope of access for login. Only supports offline_access to request a refresh token from the identity provider."
           },
           {
             "in": "header",
@@ -185,5 +223,20 @@
         "description": "A representation of the errors encountered from the HTTP request."
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
 }
