@@ -171,7 +171,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true
           }
         ],
@@ -245,7 +249,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           },
@@ -338,7 +346,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -422,7 +434,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -499,7 +515,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -571,7 +591,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           },
@@ -582,7 +606,11 @@
               "type": "boolean",
               "default": true
             },
-            "example": true,
+            "examples": {
+              "example": {
+                "value": true
+              }
+            },
             "required": false,
             "description": "Recalculate the bindings if true, otherwise saved bindings are returned."
           }
@@ -652,7 +680,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -725,7 +757,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project id"
           }
@@ -789,7 +825,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true,
             "description": "Data task id"
           },
@@ -799,7 +839,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project id"
           }
@@ -868,9 +912,13 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true,
-            "description": "Data task ID"
+            "description": "Data task id"
           },
           {
             "in": "path",
@@ -878,7 +926,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -955,7 +1007,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true,
             "description": "Data task ID"
           },
@@ -965,7 +1021,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -1030,7 +1090,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true,
             "description": "Data task id"
           },
@@ -1040,7 +1104,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project id"
           }
@@ -1097,7 +1165,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true
           },
           {
@@ -1106,7 +1178,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true
           }
         ],
@@ -1169,7 +1245,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true
           },
           {
@@ -1178,7 +1258,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true
           }
         ],
@@ -1309,7 +1393,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "action-123456",
+            "examples": {
+              "example": {
+                "value": "action-123456"
+              }
+            },
             "required": true,
             "description": "Action ID"
           },
@@ -1347,7 +1435,11 @@
         "schema": {
           "type": "string"
         },
-        "example": "/api/v1/di-projects/actions/action-123456",
+        "examples": {
+          "example": {
+            "value": "/api/v1/di-projects/actions/action-123456"
+          }
+        },
         "description": "URL to check the status of the async action"
       }
     },

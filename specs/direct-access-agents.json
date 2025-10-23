@@ -562,7 +562,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The agent ID."
+            "description": "The agent ID"
           },
           {
             "in": "path",
@@ -574,7 +574,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The connector type. Must be `file-connector` for this endpoint."
+            "description": "Please use `file-connector` when retrieving the allowed paths for the file connector."
           }
         ],
         "description": "Retrieves the allowed paths settings for the File Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
@@ -636,7 +636,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The agent ID."
+            "description": "The agent id"
           },
           {
             "in": "path",
@@ -648,10 +648,10 @@
               "type": "string"
             },
             "required": true,
-            "description": "The connector type. Must be `file-connector` for this endpoint."
+            "description": "Please use `file-connector` when updating the allowed paths for the file connector."
           }
         ],
-        "description": "Completely replaces the contents of the allowed paths configuration file for the File connector. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
+        "description": "Completely replaces the contents of the allowed paths configuration file for the File Connector. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
         "operationId": "putConnectorFlatFileConfigurationAsync",
         "requestBody": {
           "content": {
@@ -661,7 +661,7 @@
               }
             }
           },
-          "description": "The contents of the file to be updated."
+          "description": "The contents of the file to be updated"
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -1102,7 +1102,8 @@
               "Foo",
               "Bar"
             ],
-            "description": "The Spaces property in the File connector allowed paths file."
+            "nullable": true,
+            "description": "The Spaces property in the Odbc custom type mappings file."
           }
         },
         "additionalProperties": false
@@ -1299,8 +1300,7 @@
             "items": {
               "$ref": "#/components/schemas/FileConnectorAllowedPath"
             },
-            "nullable": true,
-            "description": "The list of allowed paths to update in the File connector"
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1313,8 +1313,7 @@
             "items": {
               "$ref": "#/components/schemas/OdbcCustomDataType"
             },
-            "nullable": true,
-            "description": "The list of custom data types to update in the ODBC connector"
+            "nullable": true
           }
         },
         "additionalProperties": false

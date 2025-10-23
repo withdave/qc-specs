@@ -1,0 +1,257 @@
+{
+  "info": {
+    "title": "automation-connectors",
+    "version": ""
+  },
+  "paths": {
+    "/api/v1/automation-connectors": {
+      "get": {
+        "tags": [
+          "automation-connectors"
+        ],
+        "summary": "List automation connectors",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectorsList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "name eq \"Airtable\""
+            },
+            "required": false,
+            "description": "Filters the result based on the specified criteria: name."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "example": 50,
+              "maximum": 200,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The number of automation connectors to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "name",
+                "+name",
+                "-name"
+              ],
+              "type": "string",
+              "default": "id",
+              "example": "-name"
+            },
+            "required": false,
+            "description": "The field to sort by, with +- prefix indicating sort order. (?sort=-name => sort on the name field using descending order)"
+          }
+        ],
+        "description": "Retrieves a list of automation connectors.",
+        "operationId": "getAutomationConnectors",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Bad Request"
+      },
+      "Forbidden": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Forbidden"
+      },
+      "InternalServerError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Internal Server Error"
+      },
+      "ServiceUnavailable": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Service Unavailable"
+      },
+      "Unauthorized": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      }
+    },
+    "schemas": {
+      "AutomationConnectorsList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorsListObject"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "AutomationConnectorsListObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Airtable",
+            "description": "The name of an automation connector.",
+            "x-qlik-filterable": true
+          },
+          "billable": {
+            "type": "boolean",
+            "example": "true",
+            "description": "Indicates if the connector is billable."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The unique code for the error"
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of what went wrong"
+          },
+          "detail": {
+            "type": "string",
+            "description": "May be used to provide additional details"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A way to trace the source of the error."
+          }
+        }
+      },
+      "Links": {
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/PaginationLink"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/PaginationLink"
+          }
+        }
+      },
+      "PaginationLink": {
+        "properties": {
+          "href": {
+            "type": "string",
+            "description": "The URL to a resource request"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}
