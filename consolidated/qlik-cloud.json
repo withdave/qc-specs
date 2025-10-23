@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -7974,6 +7974,92 @@
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
+        }
+      }
+    },
+    "/api/v1/automation-connectors": {
+      "get": {
+        "tags": [
+          "automation-connectors"
+        ],
+        "summary": "List automation connectors",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectorsList"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "name eq \"Airtable\""
+            },
+            "required": false,
+            "description": "Filters the result based on the specified criteria: name."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "example": 50,
+              "maximum": 200,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The number of automation connectors to retrieve."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "name",
+                "+name",
+                "-name"
+              ],
+              "type": "string",
+              "default": "id",
+              "example": "-name"
+            },
+            "required": false,
+            "description": "The field to sort by, with +- prefix indicating sort order. (?sort=-name => sort on the name field using descending order)"
+          }
+        ],
+        "description": "Retrieves a list of automation connectors.",
+        "operationId": "getAutomationConnectors",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
         }
       }
     },
@@ -21533,7 +21619,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true
           }
         ],
@@ -21607,7 +21697,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           },
@@ -21700,7 +21794,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -21784,7 +21882,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -21861,7 +21963,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -21933,7 +22039,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           },
@@ -21944,7 +22054,11 @@
               "type": "boolean",
               "default": true
             },
-            "example": true,
+            "examples": {
+              "example": {
+                "value": true
+              }
+            },
             "required": false,
             "description": "Recalculate the bindings if true, otherwise saved bindings are returned."
           }
@@ -22014,7 +22128,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -22087,7 +22205,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project id"
           }
@@ -22151,7 +22273,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true,
             "description": "Data task id"
           },
@@ -22161,7 +22287,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project id"
           }
@@ -22230,9 +22360,13 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true,
-            "description": "Data task ID"
+            "description": "Data task id"
           },
           {
             "in": "path",
@@ -22240,7 +22374,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -22317,7 +22455,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true,
             "description": "Data task ID"
           },
@@ -22327,7 +22469,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project ID"
           }
@@ -22392,7 +22538,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true,
             "description": "Data task id"
           },
@@ -22402,7 +22552,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true,
             "description": "Data project id"
           }
@@ -22459,7 +22613,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true
           },
           {
@@ -22468,7 +22626,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true
           }
         ],
@@ -22531,7 +22693,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "task-cYSY",
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
             "required": true
           },
           {
@@ -22540,7 +22706,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "65424a71c11367914c1e659b",
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
             "required": true
           }
         ],
@@ -22671,7 +22841,11 @@
             "schema": {
               "type": "string"
             },
-            "example": "action-123456",
+            "examples": {
+              "example": {
+                "value": "action-123456"
+              }
+            },
             "required": true,
             "description": "Action ID"
           },
@@ -23256,7 +23430,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The agent ID."
+            "description": "The agent ID"
           },
           {
             "in": "path",
@@ -23268,7 +23442,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The connector type. Must be `file-connector` for this endpoint."
+            "description": "Please use `file-connector` when retrieving the allowed paths for the file connector."
           }
         ],
         "description": "Retrieves the allowed paths settings for the File Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
@@ -23330,7 +23504,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The agent ID."
+            "description": "The agent id"
           },
           {
             "in": "path",
@@ -23342,10 +23516,10 @@
               "type": "string"
             },
             "required": true,
-            "description": "The connector type. Must be `file-connector` for this endpoint."
+            "description": "Please use `file-connector` when updating the allowed paths for the file connector."
           }
         ],
-        "description": "Completely replaces the contents of the allowed paths configuration file for the File connector. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
+        "description": "Completely replaces the contents of the allowed paths configuration file for the File Connector. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
         "operationId": "putConnectorFlatFileConfigurationAsync",
         "requestBody": {
           "content": {
@@ -23355,7 +23529,7 @@
               }
             }
           },
-          "description": "The contents of the file to be updated."
+          "description": "The contents of the file to be updated"
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -55665,6 +55839,42 @@
         },
         "additionalProperties": false
       },
+      "AutomationConnectorsList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorsListObject"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "AutomationConnectorsListObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Airtable",
+            "description": "The name of an automation connector.",
+            "x-qlik-filterable": true
+          },
+          "billable": {
+            "type": "boolean",
+            "example": "true",
+            "description": "Indicates if the connector is billable."
+          }
+        }
+      },
       "AutomationDetailRequestObject": {
         "type": "object",
         "properties": {
@@ -64262,7 +64472,8 @@
               "Foo",
               "Bar"
             ],
-            "description": "The Spaces property in the File connector allowed paths file."
+            "nullable": true,
+            "description": "The Spaces property in the Odbc custom type mappings file."
           }
         },
         "additionalProperties": false
@@ -64425,8 +64636,7 @@
             "items": {
               "$ref": "#/components/schemas/FileConnectorAllowedPath"
             },
-            "nullable": true,
-            "description": "The list of allowed paths to update in the File connector"
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -64439,8 +64649,7 @@
             "items": {
               "$ref": "#/components/schemas/OdbcCustomDataType"
             },
-            "nullable": true,
-            "description": "The list of custom data types to update in the ODBC connector"
+            "nullable": true
           }
         },
         "additionalProperties": false
