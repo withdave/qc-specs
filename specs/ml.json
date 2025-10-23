@@ -2746,9 +2746,9 @@
         "schema": {
           "type": "string"
         },
-        "example": "`filter=spaceId eq \"UUID\" and modelState eq \"enabled\"`",
+        "example": "`filter=spaceId eq \"UUID\" and predictionEnabled eq \"true\" and nameContains co \"abc\"`",
         "required": false,
-        "description": "Deployment fields by which you can filter responses.<br><br>\n- `spaceId` ID string (or empty string for personal space) - ID of space in which deployment(s) exist\n- `modelId` UUID string - By model ID\n- `createdBy` ID string\n- `ownerId` ID string\n- `approverId` ID string - ID of user that approved a model in the deployment\n- `experimentId` UUID string - ID of experiment in which model(s) exist\n- `experimentVersionId` UUID string - ID of experiment version in which model(s) exist\n- `predictionEnabled` boolean - Are predictions enabled\n- `exactName` string - Deployments with exact name. Names may not be unique.\n- `nameContains` string - Deployments where name includes this. Names may not be unique\n- `modelName` string - Partial or exact, case-insensitive name of model in the deployment\n- `modelState` enum string - State by which to find models<br><br>\n  - Valid states: `pending, enabled, disabled, inactive`\n"
+        "description": "Deployment fields by which you can filter responses.<br><br>\n- `spaceId` ID string (or empty string for personal space) - ID of space in which deployment(s) exist\n- `modelId` UUID string - By model ID\n- `createdBy` ID string\n- `ownerId` ID string\n- `experimentId` UUID string - ID of experiment in which model(s) exist\n- `experimentVersionId` UUID string - ID of experiment version in which model(s) exist\n- `predictionId` UUID string - ID of prediction which exists on deployment\n- `predictionEnabled` boolean - Are predictions enabled\n- `exactName` string - Deployments with exact name. Names may not be unique.\n- `nameContains` string - Deployments where name includes this. Names may not be unique\n- `experimentType` string - Deployments that have models of the experiment type\n"
       },
       "deploymentsSort": {
         "in": "query",
