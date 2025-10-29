@@ -480,6 +480,11 @@
             "example": "john.smith@company.com",
             "description": "user name used for SMTP login"
           },
+          "senderName": {
+            "type": "string",
+            "example": "John",
+            "description": "The name that should appear in From field when sending emails with this account"
+          },
           "serverPort": {
             "type": "number",
             "example": 587,

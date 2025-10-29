@@ -1571,6 +1571,12 @@
             "example": "2020-07-07T20:52:40.8534780Z",
             "nullable": true,
             "description": "The date that the updated file or folder was last modified."
+          },
+          "contentUpdatedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "If the data file's content was updated, this is the DateTime of the last content update."
           }
         },
         "additionalProperties": false
