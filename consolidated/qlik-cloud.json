@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.14",
+    "version": "1.0.15",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -53815,12 +53815,6 @@
             "example": "Assistant for Sales activities",
             "description": "The title of the assistant."
           },
-          "legacy": {
-            "type": "boolean",
-            "example": true,
-            "readOnly": true,
-            "description": "Indiciates if the assistant is legacy. Immutable once created."
-          },
           "ownerId": {
             "type": "string",
             "format": "uuid",
@@ -54009,11 +54003,6 @@
             "example": "Assistant for Sales activities",
             "description": "The title of the assistant."
           },
-          "legacy": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether the assistant uses legacy functionality. Immutable once created."
-          },
           "spaceId": {
             "type": "string",
             "format": "uuid",
@@ -54119,11 +54108,6 @@
             "type": "string",
             "format": "file",
             "description": "user uploaded avatar, filetype must be png"
-          },
-          "legacy": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether the assistant uses legacy functionality. Immutable once created."
           },
           "spaceId": {
             "type": "string",
@@ -66275,7 +66259,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/termRelatesTo"
-            }
+            },
+            "description": "Term relations assigned to this term."
           },
           "updatedAt": {
             "type": "string",
@@ -66312,6 +66297,13 @@
           "abbreviation": {
             "type": "string",
             "example": "EBIT"
+          },
+          "referredRelations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/termRelatesTo"
+            },
+            "description": "Term relations where this term is the target of the relation."
           },
           "relatedInformation": {
             "type": "string",
@@ -66465,7 +66457,14 @@
               "synonym",
               "antonym",
               "classifies",
-              "other"
+              "other",
+              "replaces",
+              "replacedBy",
+              "hasSubtype",
+              "preferredTerm",
+              "seeInstead",
+              "defines",
+              "definedBy"
             ],
             "type": "string",
             "description": "How the term related to the other object"
@@ -68614,6 +68613,11 @@
             "example": "This knowledgebase is used for...",
             "description": "Description of the knowledgebase"
           },
+          "advancedIndexing": {
+            "type": "boolean",
+            "example": true,
+            "description": "User opt in to advanced parsing and chunking pipeline. Default is false, which will run legacy parsing and chunking."
+          },
           "selectedErrorsCount": {
             "type": "integer",
             "example": 10,
@@ -69207,6 +69211,11 @@
           },
           "contentSummary": {
             "$ref": "#/components/schemas/contentSummary"
+          },
+          "advancedIndexing": {
+            "type": "boolean",
+            "example": true,
+            "description": "User opt in to advanced parsing and chunking pipeline. Default is false, which will run legacy parsing and chunking."
           },
           "selectedErrorsCount": {
             "type": "integer",
