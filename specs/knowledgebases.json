@@ -1686,6 +1686,11 @@
             "example": "This knowledgebase is used for...",
             "description": "Description of the knowledgebase"
           },
+          "advancedIndexing": {
+            "type": "boolean",
+            "example": true,
+            "description": "User opt in to advanced parsing and chunking pipeline. Default is false, which will run legacy parsing and chunking."
+          },
           "selectedErrorsCount": {
             "type": "integer",
             "example": 10,
@@ -2363,6 +2368,11 @@
           },
           "contentSummary": {
             "$ref": "#/components/schemas/contentSummary"
+          },
+          "advancedIndexing": {
+            "type": "boolean",
+            "example": true,
+            "description": "User opt in to advanced parsing and chunking pipeline. Default is false, which will run legacy parsing and chunking."
           },
           "selectedErrorsCount": {
             "type": "integer",

@@ -3848,7 +3848,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/termRelatesTo"
-            }
+            },
+            "description": "Term relations assigned to this term."
           },
           "updatedAt": {
             "type": "string",
@@ -3885,6 +3886,13 @@
           "abbreviation": {
             "type": "string",
             "example": "EBIT"
+          },
+          "referredRelations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/termRelatesTo"
+            },
+            "description": "Term relations where this term is the target of the relation."
           },
           "relatedInformation": {
             "type": "string",
@@ -4038,7 +4046,14 @@
               "synonym",
               "antonym",
               "classifies",
-              "other"
+              "other",
+              "replaces",
+              "replacedBy",
+              "hasSubtype",
+              "preferredTerm",
+              "seeInstead",
+              "defines",
+              "definedBy"
             ],
             "type": "string",
             "description": "How the term related to the other object"
