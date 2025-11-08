@@ -1,0 +1,470 @@
+{
+  "info": {
+    "title": "banners",
+    "version": ""
+  },
+  "paths": {
+    "/api/v1/banners": {
+      "get": {
+        "tags": [
+          "banner"
+        ],
+        "summary": "Get banner",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BannerResponse"
+                }
+              }
+            },
+            "description": "Banner retrieval was successful."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "description": "Retrieves announcement banner configuration for the tenant, including content, scheduling, and link information for display at the top of the client interface.",
+        "operationId": "getBanner",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/v1/banners/actions/upsert": {
+      "post": {
+        "tags": [
+          "banner"
+        ],
+        "summary": "Set banner",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BannerResponse"
+                }
+              }
+            },
+            "description": "The banner has been successfully upserted."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "description": "Sets content, scheduling, and optional action links for the tenant-wide announcement banner. Requires `TenantAdmin` role.",
+        "operationId": "upsertBanner",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BannerUpsertDefinition"
+              }
+            }
+          }
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse400"
+            }
+          }
+        },
+        "description": "Bad Request"
+      },
+      "Forbidden": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse403"
+            }
+          }
+        },
+        "description": "Forbidden"
+      },
+      "InternalServerError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse500"
+            }
+          }
+        },
+        "description": "Internal Server Error"
+      },
+      "NotFound": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse404"
+            }
+          }
+        },
+        "description": "Not found"
+      },
+      "Unauthorized": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse401"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      }
+    },
+    "schemas": {
+      "BannerResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "tenantId",
+          "enabled",
+          "createdBy",
+          "createdAt",
+          "updatedBy",
+          "updatedAt",
+          "message",
+          "startTime",
+          "endTime",
+          "type",
+          "linkEnabled"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "type": {
+            "enum": [
+              "info",
+              "warning",
+              "error",
+              "resolved"
+            ],
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "date-time in UTC."
+          },
+          "linkUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "message": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "userId of the user who created the banner"
+          },
+          "linkLabel": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "date-time in UTC."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "userId of the user who last modified the banner"
+          },
+          "linkEnabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BannerUpsertDefinition": {
+        "type": "object",
+        "required": [
+          "enabled",
+          "message",
+          "startTime",
+          "endTime",
+          "type",
+          "linkEnabled"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "info",
+              "warning",
+              "error",
+              "resolved"
+            ],
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "date-time in UTC."
+          },
+          "linkUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "message": {
+            "type": "string"
+          },
+          "linkLabel": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "date-time in UTC."
+          },
+          "linkEnabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ErrorResponse400": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-400"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The request is incorrect."
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse401": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-401"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The user is not authorized to access the service."
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse403": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-403"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Forbidden"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "You don't have sufficient permissions to access this resource."
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 403
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse404": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-404"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Not found"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The resource was not found."
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse500": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-500"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "Something went wrong in the server."
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 500
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}

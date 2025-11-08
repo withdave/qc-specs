@@ -1911,7 +1911,8 @@
               "pdf",
               "pptx",
               "xlsx",
-              "html"
+              "html",
+              "docx"
             ],
             "type": "string"
           },
@@ -2398,7 +2399,8 @@
               "pdf",
               "pptx",
               "xlsx",
-              "html"
+              "html",
+              "docx"
             ],
             "type": "string",
             "description": "the sharing task resource mashup sub type.",
@@ -2606,7 +2608,8 @@
               "pdf",
               "pptx",
               "xlsx",
-              "html"
+              "html",
+              "docx"
             ],
             "type": "string",
             "readOnly": true,
@@ -2831,7 +2834,8 @@
           },
           "persistentBookmarkIncludeVariables": {
             "type": "boolean",
-            "description": "flag sent by UI to configure the persistent bookmark to use variables"
+            "description": "Flag to configure the persistent bookmark to use variables. it is valid for subscriptions with type chart-sharing or sheet-sharing. Deprecated: please use the same field defined in the template instead.",
+            "x-qlik-deprecated": true
           }
         },
         "description": "Type of object stored in the database. Required fields mean that property cannot be null"
@@ -3169,7 +3173,9 @@
               "multi-sheet",
               "excel",
               "pixel-perfect",
-              "html"
+              "html",
+              "powerpoint",
+              "word"
             ],
             "type": "string",
             "example": "file"
@@ -3182,7 +3188,8 @@
               "pptx",
               "xlsx",
               "qpxp",
-              "qhtml"
+              "qhtml",
+              "docx"
             ],
             "type": "string",
             "default": "image"
