@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.15",
+    "version": "1.0.16",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -10179,6 +10179,105 @@
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
+        }
+      }
+    },
+    "/api/v1/banners": {
+      "get": {
+        "tags": [
+          "banner"
+        ],
+        "summary": "Get banner",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BannerResponse"
+                }
+              }
+            },
+            "description": "Banner retrieval was successful."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "description": "Retrieves announcement banner configuration for the tenant, including content, scheduling, and link information for display at the top of the client interface.",
+        "operationId": "getBanner",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/v1/banners/actions/upsert": {
+      "post": {
+        "tags": [
+          "banner"
+        ],
+        "summary": "Set banner",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BannerResponse"
+                }
+              }
+            },
+            "description": "The banner has been successfully upserted."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "description": "Sets content, scheduling, and optional action links for the tenant-wide announcement banner. Requires `TenantAdmin` role.",
+        "operationId": "upsertBanner",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BannerUpsertDefinition"
+              }
+            }
+          }
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
         }
       }
     },
@@ -56736,140 +56835,135 @@
           }
         }
       },
-      "Brand": {
+      "BannerResponse": {
         "type": "object",
         "required": [
           "id",
-          "name",
-          "description",
-          "files"
+          "tenantId",
+          "enabled",
+          "createdBy",
+          "createdAt",
+          "updatedBy",
+          "updatedAt",
+          "message",
+          "startTime",
+          "endTime",
+          "type",
+          "linkEnabled"
         ],
         "properties": {
           "id": {
             "type": "string",
+            "format": "uid",
             "readOnly": true
           },
-          "name": {
+          "type": {
+            "enum": [
+              "info",
+              "warning",
+              "error",
+              "resolved"
+            ],
             "type": "string"
           },
-          "files": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BrandFile"
-            },
-            "description": "Collection of resources that make up the brand."
+          "enabled": {
+            "type": "boolean"
           },
-          "active": {
-            "type": "boolean",
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "date-time in UTC."
+          },
+          "linkUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "message": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
             "readOnly": true
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "readOnly": true,
-            "description": "The UTC timestamp when the brand was created."
+            "readOnly": true
           },
           "createdBy": {
             "type": "string",
-            "readOnly": true,
-            "description": "ID of a user that created the brand."
+            "description": "userId of the user who created the banner"
+          },
+          "linkLabel": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "date-time in UTC."
           },
           "updatedAt": {
             "type": "string",
             "format": "date-time",
-            "readOnly": true,
-            "description": "The UTC timestamp when the brand was last updated."
+            "readOnly": true
           },
           "updatedBy": {
             "type": "string",
-            "readOnly": true,
-            "description": "ID of a user that last updated the brand."
+            "description": "userId of the user who last modified the banner"
           },
-          "description": {
-            "type": "string"
+          "linkEnabled": {
+            "type": "boolean"
           }
-        },
-        "description": "A brand is a collection of assets for applying custom branding. Only a single brand can be active in a tenant."
+        }
       },
-      "BrandFile": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "enum": [
-              "logo",
-              "favIcon",
-              "styles"
-            ],
-            "type": "string"
-          },
-          "eTag": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          },
-          "contentType": {
-            "type": "string"
-          }
-        },
-        "description": "Represents one of the assets used as part of the brand. These include logos, favicons, and some styles."
-      },
-      "BrandPatch": {
+      "BannerUpsertDefinition": {
         "type": "object",
         "required": [
-          "op",
-          "path"
+          "enabled",
+          "message",
+          "startTime",
+          "endTime",
+          "type",
+          "linkEnabled"
         ],
         "properties": {
-          "op": {
+          "type": {
             "enum": [
-              "add",
-              "remove",
-              "replace"
+              "info",
+              "warning",
+              "error",
+              "resolved"
             ],
-            "type": "string",
-            "description": "The operation to be performed."
+            "type": "string"
           },
-          "path": {
-            "enum": [
-              "/name",
-              "/description"
-            ],
-            "type": "string",
-            "example": "/description",
-            "description": "The path for the given resource field to patch."
+          "enabled": {
+            "type": "boolean"
           },
-          "value": {
+          "endTime": {
             "type": "string",
-            "description": "The value to be used for this operation."
+            "format": "date-time",
+            "description": "date-time in UTC."
+          },
+          "linkUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "message": {
+            "type": "string"
+          },
+          "linkLabel": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "date-time in UTC."
+          },
+          "linkEnabled": {
+            "type": "boolean"
           }
-        },
-        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902."
-      },
-      "BrandsList": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Brand"
-            }
-          },
-          "links": {
-            "properties": {
-              "next": {
-                "$ref": "#/components/schemas/Link"
-              },
-              "prev": {
-                "$ref": "#/components/schemas/Link"
-              },
-              "self": {
-                "$ref": "#/components/schemas/Link"
-              }
-            }
-          }
-        },
-        "description": "A collection of brands."
+        }
       },
       "ErrorResponse400": {
         "type": "object",
@@ -57010,6 +57104,141 @@
             "type": "string"
           }
         }
+      },
+      "Brand": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "files"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrandFile"
+            },
+            "description": "Collection of resources that make up the brand."
+          },
+          "active": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the brand was created."
+          },
+          "createdBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "ID of a user that created the brand."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the brand was last updated."
+          },
+          "updatedBy": {
+            "type": "string",
+            "readOnly": true,
+            "description": "ID of a user that last updated the brand."
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "description": "A brand is a collection of assets for applying custom branding. Only a single brand can be active in a tenant."
+      },
+      "BrandFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "logo",
+              "favIcon",
+              "styles"
+            ],
+            "type": "string"
+          },
+          "eTag": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          }
+        },
+        "description": "Represents one of the assets used as part of the brand. These include logos, favicons, and some styles."
+      },
+      "BrandPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "add",
+              "remove",
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed."
+          },
+          "path": {
+            "enum": [
+              "/name",
+              "/description"
+            ],
+            "type": "string",
+            "example": "/description",
+            "description": "The path for the given resource field to patch."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in https://datatracker.ietf.org/doc/html/rfc6902."
+      },
+      "BrandsList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Brand"
+            }
+          },
+          "links": {
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "prev": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          }
+        },
+        "description": "A collection of brands."
       },
       "NoActiveBrand": {
         "type": "object",
@@ -78578,7 +78807,8 @@
               "pdf",
               "pptx",
               "xlsx",
-              "html"
+              "html",
+              "docx"
             ],
             "type": "string"
           },
@@ -79065,7 +79295,8 @@
               "pdf",
               "pptx",
               "xlsx",
-              "html"
+              "html",
+              "docx"
             ],
             "type": "string",
             "description": "the sharing task resource mashup sub type.",
@@ -79273,7 +79504,8 @@
               "pdf",
               "pptx",
               "xlsx",
-              "html"
+              "html",
+              "docx"
             ],
             "type": "string",
             "readOnly": true,
@@ -79498,7 +79730,8 @@
           },
           "persistentBookmarkIncludeVariables": {
             "type": "boolean",
-            "description": "flag sent by UI to configure the persistent bookmark to use variables"
+            "description": "Flag to configure the persistent bookmark to use variables. it is valid for subscriptions with type chart-sharing or sheet-sharing. Deprecated: please use the same field defined in the template instead.",
+            "x-qlik-deprecated": true
           }
         },
         "description": "Type of object stored in the database. Required fields mean that property cannot be null"
@@ -79765,7 +79998,9 @@
               "multi-sheet",
               "excel",
               "pixel-perfect",
-              "html"
+              "html",
+              "powerpoint",
+              "word"
             ],
             "type": "string",
             "example": "file"
@@ -79778,7 +80013,8 @@
               "pptx",
               "xlsx",
               "qpxp",
-              "qhtml"
+              "qhtml",
+              "docx"
             ],
             "type": "string",
             "default": "image"
