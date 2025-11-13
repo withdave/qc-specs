@@ -170,115 +170,6 @@
             },
             "required": false,
             "description": "Whether to return a total match count in the result. Defaults to false. It will trigger an extra DB query to count, reducing the efficiency of the endpoint."
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "schema": {
-              "type": "string",
-              "format": "email"
-            },
-            "required": false,
-            "description": "The email to filter by. Deprecated. Use the new `filter` parameter to provide an advanced query filter.",
-            "x-qlik-deprecated": true
-          },
-          {
-            "in": "query",
-            "name": "endingBefore",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Get users with IDs that are lower than the target user ID. Cannot be used in conjunction with startingAfter. Deprecated. Use `prev` instead.",
-            "x-qlik-deprecated": true
-          },
-          {
-            "in": "query",
-            "name": "role",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "The role to filter by. Deprecated.",
-            "x-qlik-deprecated": true
-          },
-          {
-            "in": "query",
-            "name": "sortBy",
-            "schema": {
-              "enum": [
-                "name"
-              ],
-              "type": "string",
-              "default": "name"
-            },
-            "required": false,
-            "description": "The user parameter to sort by. Deprecated. Use `sort` instead.",
-            "x-qlik-deprecated": true
-          },
-          {
-            "in": "query",
-            "name": "sortOrder",
-            "schema": {
-              "enum": [
-                "asc",
-                "desc"
-              ],
-              "type": "string",
-              "default": "asc"
-            },
-            "required": false,
-            "description": "The sort order, either ascending or descending. Deprecated. Use `sort` instead.",
-            "x-qlik-deprecated": true
-          },
-          {
-            "in": "query",
-            "name": "startingAfter",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Get users with IDs that are higher than the target user ID. Cannot be used in conjunction with endingBefore. Deprecated. Use `next` instead.",
-            "x-qlik-deprecated": true
-          },
-          {
-            "in": "query",
-            "name": "status",
-            "schema": {
-              "enum": [
-                "active",
-                "invited",
-                "disabled",
-                "deleted",
-                "provisioned"
-              ],
-              "type": "string",
-              "default": "active"
-            },
-            "required": false,
-            "description": "The status to filter by. Supports multiple values delimited by commas. Deprecated. Use the new `filter` parameter to provide an advanced query filter.",
-            "x-qlik-deprecated": true
-          },
-          {
-            "in": "query",
-            "name": "subject",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "The subject to filter by. Deprecated. Use the new `filter` parameter to provide an advanced query filter.",
-            "x-qlik-deprecated": true
-          },
-          {
-            "in": "query",
-            "name": "tenantId",
-            "schema": {
-              "type": "string",
-              "format": "uid"
-            },
-            "required": false,
-            "description": "The tenant ID to filter by. Deprecated.",
-            "x-qlik-deprecated": true
           }
         ],
         "description": "Returns a list of users using cursor-based pagination.",
@@ -780,19 +671,7 @@
             "description": "Request has been rate limited."
           }
         },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "tenantId",
-            "schema": {
-              "type": "string",
-              "format": "uid"
-            },
-            "required": false,
-            "description": "The tenant ID to filter by.",
-            "x-qlik-deprecated": true
-          }
-        ],
+        "parameters": [],
         "description": "Returns the number of users in a given tenant",
         "operationId": "countUsers",
         "x-qlik-visibility": "public",
@@ -1107,16 +986,11 @@
           "id": "62b6024fcdf339bb986fae75",
           "name": "John Smith",
           "email": "john.smith@corp.example",
-          "roles": [
-            "Developer"
-          ],
           "status": "invited",
-          "created": "2022-06-24T18:28:31.301Z",
           "picture": "https://corp.example/docs/jsmith.png",
           "subject": "1234asdasa6789",
           "tenantId": "q3VRZ4YMixRaLKEPhkZWM-XMIDN7cO8f",
           "createdAt": "2022-06-24T18:28:31.301Z",
-          "lastUpdated": "2022-06-24T18:28:31.301Z",
           "inviteExpiry": 1656700111,
           "assignedRoles": [
             {
@@ -1710,23 +1584,6 @@
             },
             "description": "Pagination links to the user."
           },
-          "roles": {
-            "type": "array",
-            "items": {
-              "enum": [
-                "TenantAdmin",
-                "Developer",
-                "AnalyticsAdmin",
-                "DataAdmin",
-                "DataSpaceCreator",
-                "ManagedSpaceCreator",
-                "SharedSpaceCreator"
-              ],
-              "type": "string"
-            },
-            "description": "List of system roles to which the user has been assigned. Only returned when permitted by access control. Deprecated. Use `assignedRoles` instead.",
-            "x-qlik-deprecated": true
-          },
           "locale": {
             "type": "string",
             "description": "Represents the end-user's language tag."
@@ -1742,13 +1599,6 @@
             "type": "string",
             "description": "The status of the user within the tenant.",
             "x-qlik-filterable": true
-          },
-          "created": {
-            "type": "string",
-            "format": "date",
-            "readOnly": true,
-            "description": "Deprecated. Use `createdAt` instead.",
-            "x-qlik-deprecated": true
           },
           "picture": {
             "type": "string",
@@ -1774,13 +1624,6 @@
             "format": "date-time",
             "readOnly": true,
             "description": "The timestamp for when the user record was created."
-          },
-          "lastUpdated": {
-            "type": "string",
-            "format": "date",
-            "readOnly": true,
-            "description": "Deprecated. Use `lastUpdatedAt` instead.",
-            "x-qlik-deprecated": true
           },
           "inviteExpiry": {
             "type": "number",
@@ -1852,23 +1695,6 @@
           "email": {
             "type": "string",
             "description": "The email address for the user. This is a required field when inviting a user."
-          },
-          "roles": {
-            "type": "array",
-            "items": {
-              "enum": [
-                "TenantAdmin",
-                "Developer",
-                "AnalyticsAdmin",
-                "DataAdmin",
-                "DataSpaceCreator",
-                "ManagedSpaceCreator",
-                "SharedSpaceCreator"
-              ],
-              "type": "string"
-            },
-            "description": "List of system roles to which the user has been assigned. Only returned when permitted by access control.",
-            "x-qlik-deprecated": true
           },
           "status": {
             "enum": [

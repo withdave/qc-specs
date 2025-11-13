@@ -6164,6 +6164,14 @@
             },
             "description": "List of algorithms available for the selected experiment type\n"
           },
+          "isLargeCsv": {
+            "type": "boolean",
+            "description": "Is this a CSV dataset > 1GB?"
+          },
+          "numberOfRows": {
+            "type": "number",
+            "description": "Number of rows in the dataset.\n\nWhen isLargeCsv is true, this is an estimate since their metadata is\nbased on a sample rather than the full dataset.\n\nFor datasets over 1GB, multiply `rows` (this) by `columns` (features\nincluded in experiment version) to calculate total `cells` to\nensure it stays under your license limit. Large CSVs have a hard\n100M cell limit.\n"
+          },
           "defaultVersionConfig": {
             "type": "object",
             "required": [

@@ -3912,23 +3912,28 @@
               "definition",
               "related"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "The type of relationship between the term and the linked resource:\n- `definition`: Use when the term provides the formal definition for the linked resource (e.g., a term defines what a master measure or dimension means)\n- `related`: Use when the term is generally related to the resource but doesn't formally define it\n"
           },
           "resourceId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the resource (app or dataset) to link to the term."
           },
           "resourceType": {
             "enum": [
               "app",
               "dataset"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "The type of resource being linked to the term."
           },
           "subResourceId": {
-            "type": "string"
+            "type": "string",
+            "description": "Required when subResourceType or subResourceName is provided. The unique identifier of the subresource."
           },
           "subResourceName": {
-            "type": "string"
+            "type": "string",
+            "description": "Required when subResourceType or subResourceId is provided. The display name of the subresource."
           },
           "subResourceType": {
             "enum": [
@@ -3936,10 +3941,11 @@
               "master_measure",
               "field"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Required when subResourceId or subResourceName is provided. The type of the subresource."
           }
         },
-        "description": "Describes links to other data assets such as analytics applications or dataset."
+        "description": "Describes links to other data assets such as analytics applications or dataset.\n\n**Note**: When linking to a subresource (e.g., a master dimension, master measure, or dataset field within an app or dataset),\nall three subresource fields (`subResourceType`, `subResourceId`, and `subResourceName`) must be provided together.\nIf any one subresource field is specified, all three are required.\n"
       },
       "termLinksTo": {
         "type": "object",
