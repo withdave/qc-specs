@@ -895,9 +895,10 @@
               "headers": {
                 "type": "object",
                 "example": {
-                  "headerName": "headerValue"
+                  "headerName": "headerValue",
+                  "encryptedHeadersName": "**OMITTED**"
                 },
-                "description": "Headers sent for this delivery",
+                "description": "Headers sent for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\"",
                 "additionalProperties": {
                   "type": "string"
                 }
@@ -915,9 +916,10 @@
               "headers": {
                 "type": "object",
                 "example": {
-                  "headerName": "headerValue"
+                  "headerName": "headerValue",
+                  "encryptedHeadersName": "**OMITTED**"
                 },
-                "description": "Headers received for this delivery",
+                "description": "Headers received for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\"",
                 "additionalProperties": {
                   "type": "string"
                 }
@@ -1110,7 +1112,7 @@
             "example": {
               "headerName": "headerValue"
             },
-            "description": "Additional headers in the post request",
+            "description": "Additional headers in the post request (webhook delivery). Note: duplicate headers are not allowed and are case-insensitive.",
             "additionalProperties": {
               "type": "string"
             }
@@ -1157,6 +1159,16 @@
             "type": "string",
             "readOnly": true,
             "description": "The id of the user that last updated the webhook"
+          },
+          "encryptedHeaders": {
+            "type": "object",
+            "example": {
+              "headerName": "sensitiveHeaderValue"
+            },
+            "description": "These headers are persisted encrypted and decrypted to be sent as normal headers in post request (webhook delivery), in case of URL change these headers will need to be re-entered. Note: duplicate headers are not allowed and are case-insensitive.",
+            "additionalProperties": {
+              "type": "string"
+            }
           },
           "disabledReasonCode": {
             "type": "string",
@@ -1218,7 +1230,8 @@
               "/eventTypes",
               "/headers",
               "/enabled",
-              "/secret"
+              "/secret",
+              "/encryptedHeaders"
             ],
             "type": "string",
             "example": "/description",
@@ -1269,7 +1282,7 @@
       "WebhookResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/WebhookBase"
+            "$ref": "#/components/schemas/WebhookResponseBase"
           },
           {
             "type": "object",
@@ -1288,6 +1301,140 @@
             }
           }
         ]
+      },
+      "WebhookResponseBase": {
+        "type": "object",
+        "required": [
+          "name",
+          "url"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The webhook's unique identifier"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 2048,
+            "description": "Target URL for webhook HTTPS requests"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "The name for the webhook"
+          },
+          "level": {
+            "enum": [
+              "tenant",
+              "user"
+            ],
+            "type": "string",
+            "default": "tenant",
+            "description": "Defines at what level the webhook should operate: for all resources belonging to a tenant or restricted to only those accessible by the webhook-creator."
+          },
+          "filter": {
+            "type": "string",
+            "example": "id eq \"id123\" or spaceId eq \"spaceId123\" or spaceId eq \"spaceId456\" or topLevelResourceId eq \"id789\"",
+            "description": "Filter that should match for a webhook to be triggered.\nSupported common attribute names are 'id', 'spaceId' and 'topLevelResourceId', beside the common attributes the \"com.qlik.v1.app.reload.finished\" event also supports \"data.status\" that could be either \"ok\" or \"error\" but can't be used together with other event types.\nSupported attribute operators are 'eq' and 'ne'.\nSupported logical operators are 'and' and 'or'.\nNote that attribute values must be valid JSON strings, hence they're enclosed with double quotes\nFor more detailed information regarding the SCIM filter syntax (RFC7644) used please follow the link to external documentation.",
+            "externalDocs": {
+              "url": "https://datatracker.ietf.org/doc/html/rfc7644#section-3.4.2.2",
+              "description": "More information about the SCIM filter syntax (RFC7644)"
+            }
+          },
+          "secret": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 32,
+            "description": "String used as secret for calculating HMAC hash sent as header",
+            "x-qlik-deprecated": true,
+            "x-qlik-deprecated-sunset": "2025-11",
+            "x-qlik-deprecated-description": "secret field in response will be removed to make it non-retrievable and secretKeyAdded field will provide status if the secret key is added or not"
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the webhook is active and sending requests"
+          },
+          "headers": {
+            "type": "object",
+            "example": {
+              "headerName": "headerValue"
+            },
+            "description": "Additional headers in the post request",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "The id of the user that owns the webhook, only applicable for user level webhooks"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the webhook was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The UTC timestamp when the webhook was last updated"
+          },
+          "eventTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Types of events for which the webhook should trigger. Retrieve available types from `/v1/webhooks/event-types`."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "The reason for creating the webhook"
+          },
+          "disabledReason": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The reason for the webhook to be disabled"
+          },
+          "secretKeyAdded": {
+            "type": "boolean",
+            "description": "Provides status of the string used as secret for calculating HMAC hash sent as header is already added or not"
+          },
+          "createdByUserId": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The id of the user that created the webhook"
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The id of the user that last updated the webhook"
+          },
+          "encryptedHeaders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "header1",
+              "header2"
+            ],
+            "description": "Additional encrypted headers in the post request"
+          },
+          "disabledReasonCode": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The unique code for the reason"
+          },
+          "checkCertificateRevocation": {
+            "type": "boolean",
+            "default": false,
+            "description": "If enabled the certificate chain of the configured URL will be checked for revocation before sending the webhook."
+          }
+        }
       }
     }
   },
