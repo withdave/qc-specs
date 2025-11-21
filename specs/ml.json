@@ -6110,7 +6110,9 @@
                 "has_target_leakage",
                 "feature_type_change_invalid",
                 "feature_type_change_failed",
-                "feature_type_change_successful"
+                "feature_type_change_successful",
+                "data_bias_detected",
+                "representation_bias_detected"
               ],
               "type": "string"
             },

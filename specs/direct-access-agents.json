@@ -97,6 +97,296 @@
         }
       }
     },
+    "/api/v1/direct-access-agents/{agentId}/benchmarks": {
+      "post": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Start agent benchmark",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunBenchmarkResponse"
+                }
+              }
+            },
+            "description": "Benchmark task created successfully with a unique identifier."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The agent was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "501": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "All or part of the request has not yet been implemented."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "force",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Forces the benchmark to start regardless of the state of the agent. Does not override QCS resource limits. Use with caution."
+          },
+          {
+            "in": "query",
+            "name": "gigaBytesToTransfer",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            },
+            "description": "The volume of data in GB to transfer during the throughput measurement part of the benchmark."
+          }
+        ],
+        "description": "Starts a background benchmark task to measure the performance of a Direct Access agent. Use this endpoint to evaluate agent throughput and latency for capacity planning and performance optiization. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "operationId": "runBenchmark",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/direct-access-agents/{agentId}/benchmarks/{benchmarkId}": {
+      "get": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Get benchmark status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBenchmarkStatusResponse"
+                }
+              }
+            },
+            "description": "Benchmark status and performance metrics retrieved successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The benchmark was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "path",
+            "name": "benchmarkId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The benchmark ID"
+          }
+        ],
+        "description": "Retrieves the current status and progress of a running or completed benchmark task. Use this endpoint to monitor benchmark execution and retrieve performance metrics once the task is completed. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "operationId": "getBenchmarkStatus",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/v1/direct-access-agents/{agentId}/benchmarks/{benchmarkId}/cancel": {
+      "post": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Requests a cancellation on a running benchmark",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelBenchmarkResponse"
+                }
+              }
+            },
+            "description": "The cancellation was requested successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The benchmark was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "path",
+            "name": "benchmarkId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The benchmark ID"
+          }
+        ],
+        "description": "Requests a cancellation on a running benchmark by id for the specified agent. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "operationId": "cancelBenchmark",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/direct-access-agents/{agentId}/configurations": {
       "get": {
         "tags": [
@@ -413,6 +703,13 @@
             "in": "path",
             "name": "fileType",
             "schema": {
+              "enum": [
+                "CustomTypesMapping",
+                "PlainTextConfiguration",
+                "AllowedPaths",
+                "AllowedDrivers",
+                "AllowedDsns"
+              ],
               "type": "string"
             },
             "required": true,
@@ -498,6 +795,13 @@
             "in": "path",
             "name": "fileType",
             "schema": {
+              "enum": [
+                "CustomTypesMapping",
+                "PlainTextConfiguration",
+                "AllowedPaths",
+                "AllowedDrivers",
+                "AllowedDsns"
+              ],
               "type": "string"
             },
             "required": true,
@@ -525,306 +829,25 @@
           "limit": 100
         }
       }
-    },
-    "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/allowed-paths": {
-      "get": {
-        "tags": [
-          "direct-access-agent-configuration"
-        ],
-        "summary": "Get connector allowed paths configuration",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FileConnectorAllowedPathsResponse"
-                }
-              }
-            },
-            "description": "The list of configuration values from the file."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Configuration file not found."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "agentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The agent ID"
-          },
-          {
-            "in": "path",
-            "name": "connectorType",
-            "schema": {
-              "enum": [
-                "file-connector"
-              ],
-              "type": "string"
-            },
-            "required": true,
-            "description": "Please use `file-connector` when retrieving the allowed paths for the file connector."
-          }
-        ],
-        "description": "Retrieves the allowed paths settings for the File Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
-        "operationId": "getConnectorFileListAsync",
-        "x-qlik-stability": "stable",
-        "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
-        "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
-        }
-      },
-      "put": {
-        "tags": [
-          "direct-access-agent-configuration"
-        ],
-        "summary": "Set connector allowed paths configuration",
-        "responses": {
-          "204": {
-            "description": "Updated."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Bad request."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Configuration file not found."
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Conflict."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "agentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The agent id"
-          },
-          {
-            "in": "path",
-            "name": "connectorType",
-            "schema": {
-              "enum": [
-                "file-connector"
-              ],
-              "type": "string"
-            },
-            "required": true,
-            "description": "Please use `file-connector` when updating the allowed paths for the file connector."
-          }
-        ],
-        "description": "Completely replaces the contents of the allowed paths configuration file for the File Connector. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
-        "operationId": "putConnectorFlatFileConfigurationAsync",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateFileConnectorAllowedPathsRequest"
-              }
-            }
-          },
-          "description": "The contents of the file to be updated"
-        },
-        "x-qlik-stability": "stable",
-        "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
-        "x-qlik-tier": {
-          "tier": "2",
-          "limit": 100
-        }
-      }
-    },
-    "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/custom-data-type-mappings": {
-      "get": {
-        "tags": [
-          "direct-access-agent-configuration"
-        ],
-        "summary": "Get connector type mapping configuration",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OdbcCustomDataTypeResponse"
-                }
-              }
-            },
-            "description": "The list of configuration values from the file."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Configuration file not found."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "agentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The agent ID."
-          },
-          {
-            "in": "path",
-            "name": "connectorType",
-            "schema": {
-              "enum": [
-                "odbc-connector"
-              ],
-              "type": "string"
-            },
-            "required": true,
-            "description": "The connector type. Must be `odbc-connector` for this endpoint."
-          }
-        ],
-        "description": "Retrieves the custom data type mapping settings for the Generic ODBC Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
-        "operationId": "getOdbcCustomTypeMappingsAsync",
-        "x-qlik-stability": "stable",
-        "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
-        "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
-        }
-      },
-      "put": {
-        "tags": [
-          "direct-access-agent-configuration"
-        ],
-        "summary": "Set connector type mapping configuration",
-        "responses": {
-          "204": {
-            "description": "Updated."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Bad request."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Configuration file not found."
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Conflict."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "agentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The agent ID."
-          },
-          {
-            "in": "path",
-            "name": "connectorType",
-            "schema": {
-              "enum": [
-                "odbc-connector"
-              ],
-              "type": "string"
-            },
-            "required": true,
-            "description": "The connector type. Must be `odbc-connector` for this endpoint."
-          }
-        ],
-        "description": "Completely replaces the contents of the custom data type mapping configuration file for the Generic ODBC connector. Partial updates are not supported. There are property naming differences between the API and the file contents. Use the API property format when making changes. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
-        "operationId": "putOdbcCustomTypeMappingsAsync",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateOdbcCustomTypeMappingsRequest"
-              }
-            }
-          },
-          "description": "The contents of the file to be updated."
-        },
-        "x-qlik-stability": "stable",
-        "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
-        "x-qlik-tier": {
-          "tier": "2",
-          "limit": 100
-        }
-      }
     }
   },
   "x-qlik-categories": [],
   "openapi": "3.0.0",
   "components": {
     "schemas": {
+      "CancelBenchmarkResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusUrl": {
+            "$ref": "#/components/schemas/LinkResponseObject"
+          }
+        },
+        "additionalProperties": false
+      },
       "ConfigurationLineBase": {
         "type": "object",
         "oneOf": [
@@ -1081,101 +1104,83 @@
         },
         "additionalProperties": false
       },
-      "FileConnectorAllowedPath": {
+      "GetBenchmarkStatusResponse": {
         "type": "object",
-        "required": [
-          "path"
-        ],
         "properties": {
-          "path": {
+          "status": {
             "type": "string",
-            "example": "\\\\\\\\Server\\\\Share\\\\example",
-            "minLength": 1,
-            "description": "The Path property in the File connector allowed paths file."
-          },
-          "spaces": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "Foo",
-              "Bar"
-            ],
             "nullable": true,
-            "description": "The Spaces property in the Odbc custom type mappings file."
-          }
-        },
-        "additionalProperties": false
-      },
-      "FileConnectorAllowedPathsResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileConnectorAllowedPath"
-            },
-            "nullable": true
+            "description": "The benchmark status"
           },
-          "errorMessage": {
-            "$ref": "#/components/schemas/ErrorResponse"
-          }
-        },
-        "additionalProperties": false
-      },
-      "OdbcCustomDataType": {
-        "type": "object",
-        "required": [
-          "id",
-          "nativeDataType",
-          "qlikDataType"
-        ],
-        "properties": {
-          "id": {
+          "results": {
+            "$ref": "#/components/schemas/GetBenchmarkStatusResults"
+          },
+          "benchmarkId": {
             "type": "string",
-            "example": "Amazon Athena ODBC (x64)",
-            "minLength": 1,
-            "description": "The Identifier property in the ODBC custom data type mapping file."
+            "nullable": true,
+            "description": "The benchmark ID"
           },
-          "bit": {
-            "type": "boolean",
-            "example": true,
-            "description": "The IsBit property in the ODBC custom data type mapping file."
+          "statusMessage": {
+            "type": "string",
+            "nullable": true,
+            "description": "Additional details about the benchmark status"
           },
-          "size": {
+          "benchmarkEndTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when the benchmark task completed or was cancelled"
+          },
+          "benchmarkStartTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when the benchmark task started execution"
+          },
+          "totalBytesRequested": {
             "type": "integer",
-            "format": "int32",
-            "default": 0,
-            "description": "The Size property in the ODBC custom data type mapping file."
-          },
-          "qlikDataType": {
-            "type": "string",
-            "example": "String",
-            "minLength": 1,
-            "description": "The QlikDataType property in the ODBC custom data type mapping file."
-          },
-          "nativeDataType": {
-            "type": "string",
-            "example": "varchar",
-            "minLength": 1,
-            "description": "The NativeDataType property in the ODBC custom data type mapping file."
+            "format": "int64",
+            "description": "The total bytes requested to be transferred during the benchmark"
           }
         },
         "additionalProperties": false
       },
-      "OdbcCustomDataTypeResponse": {
+      "GetBenchmarkStatusResults": {
         "type": "object",
         "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OdbcCustomDataType"
-            },
-            "nullable": true
+          "latency": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The latency in ms measured during data transmission"
           },
-          "errorMessage": {
-            "$ref": "#/components/schemas/ErrorResponse"
+          "throughput": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The data throughput in KB/s measured during data transmission"
+          },
+          "totalBytesTransferred": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The total number of bytes successfully transferred during data transmission"
+          },
+          "dataTransmissionEndTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission completed"
+          },
+          "dataTransmissionStartTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission start"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinkResponseObject": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true,
+            "description": "The URL to the related resource"
           }
         },
         "additionalProperties": false
@@ -1276,6 +1281,16 @@
         },
         "additionalProperties": false
       },
+      "RunBenchmarkResponse": {
+        "type": "object",
+        "properties": {
+          "benchmarkId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateConfigurationFlatFileRequest": {
         "type": "object",
         "properties": {
@@ -1290,32 +1305,6 @@
           }
         },
         "description": "The request to update a connector flat file",
-        "additionalProperties": false
-      },
-      "UpdateFileConnectorAllowedPathsRequest": {
-        "type": "object",
-        "properties": {
-          "fileConnectorAllowedPaths": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileConnectorAllowedPath"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateOdbcCustomTypeMappingsRequest": {
-        "type": "object",
-        "properties": {
-          "odbcCustomDataTypes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OdbcCustomDataType"
-            },
-            "nullable": true
-          }
-        },
         "additionalProperties": false
       }
     }

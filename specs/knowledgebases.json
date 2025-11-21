@@ -454,6 +454,112 @@
         }
       }
     },
+    "/api/v1/knowledgebases/{id}/actions/search": {
+      "post": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Search chunks from a knowledge base",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/searchResponse"
+                }
+              }
+            },
+            "description": "Chunks retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The request is in incorrect format"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Knowledgebase is not found."
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Method is not allowed."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Prompt processing error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the knowledgebase"
+          }
+        ],
+        "description": "Execute search with either `SIMPLE` or `FULL` mode. SIMPLE does semantic search while FULL will also do reranking and include keyword based chunks. Use topN to control number of chunks in response, max limit is 50. Default to 5.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/searchRequest"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/knowledgebases/{id}/datasources": {
       "post": {
         "tags": [
@@ -1556,6 +1662,37 @@
   "openapi": "3.0.0",
   "components": {
     "schemas": {
+      "chunk": {
+        "type": "object",
+        "required": [
+          "text",
+          "chunkMeta"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "LLM stands for Large Language Model",
+            "description": "Text content of the chunk"
+          },
+          "chunkMeta": {
+            "$ref": "#/components/schemas/kbChunkMeta"
+          },
+          "tfidfScore": {
+            "type": "number",
+            "example": 0.9,
+            "description": "Score from keyword search"
+          },
+          "searchSource": {
+            "type": "string",
+            "description": "search method for the chunk, e.g. `semantic search`, `keyword search` or `semantic and keyword search`"
+          },
+          "semanticScore": {
+            "type": "number",
+            "example": 0.63,
+            "description": "Similarity score from embedding match"
+          }
+        }
+      },
       "chunking": {
         "type": "object",
         "required": [
@@ -2184,6 +2321,37 @@
           }
         }
       },
+      "errorResponseCodeCopy": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Custom error codes\n* AE-1 - Internal processing error\n* AE-2 - Incorrect request\n* AE-3 - Authentication issue\n* AE-4 - Prompt is rejected\n* AE-5 - Resource is not found\n* AE-6 - API usage rate limit is exceeded\n* AE-7 - Method is not allowed\n"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      },
+      "errorResponseCopy": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/errorResponseCodeCopy",
+              "x-qlik-merge-conflict": true
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "example": "507f191e810c19729de860ea"
+          }
+        }
+      },
       "JSONPatch": {
         "type": "object",
         "required": [
@@ -2238,6 +2406,39 @@
           }
         ],
         "description": "An array of JSON Patch documents"
+      },
+      "kbChunkMeta": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "datasourceId",
+          "chunkId",
+          "source",
+          "knowledgeBaseId"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "source of chunk"
+          },
+          "chunkId": {
+            "type": "string",
+            "description": "chunkId"
+          },
+          "documentId": {
+            "type": "string",
+            "description": "documentId of chunk"
+          },
+          "datasourceId": {
+            "type": "string",
+            "description": "datasourceId of chunk"
+          },
+          "knowledgeBaseId": {
+            "type": "string",
+            "description": "knowledgeBaseId of chunk"
+          }
+        },
+        "description": "Metadata about the chunk"
       },
       "knowledgeBase": {
         "allOf": [
@@ -2601,6 +2802,48 @@
             "type": "string",
             "format": "uuid",
             "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d"
+          }
+        }
+      },
+      "searchRequest": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "topN": {
+            "type": "integer",
+            "example": 20,
+            "description": "Number of chunks to return in results."
+          },
+          "prompt": {
+            "type": "string",
+            "example": "What is LLM?",
+            "description": "Query text or question to search."
+          },
+          "searchMode": {
+            "enum": [
+              "SIMPLE",
+              "FULL"
+            ],
+            "type": "string",
+            "example": "SIMPLE",
+            "description": "Search mode to use.   Allowed values: `SIMPLE` and `FULL`.   Default: `SIMPLE`.\n"
+          }
+        }
+      },
+      "searchResponse": {
+        "type": "object",
+        "required": [
+          "chunks"
+        ],
+        "properties": {
+          "chunks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/chunk"
+            },
+            "description": "Retrieved document chunks"
           }
         }
       },
