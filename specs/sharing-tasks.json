@@ -1418,9 +1418,26 @@
             "type": "object",
             "properties": {},
             "description": "Session chart object definition"
+          },
+          "persistentBookmarkIncludeVariables": {
+            "type": "boolean",
+            "description": "Flag to configure the persistent bookmark to use variables.",
+            "x-qlik-stability": "stable",
+            "x-qlik-visibility": "public"
           }
         },
         "description": "If the template type is not \"chart\", this can be null. Otherwise, the following properties are required: appId, sheetId, objectId, widthPx, heightPx, language. The following properties are optional: outZoom, outDpi"
+      },
+      "CleanupStrategy": {
+        "enum": [
+          "noCleanup",
+          "removeOldBookmarks"
+        ],
+        "type": "string",
+        "default": "noCleanup",
+        "description": "A bookmark is considered old if its modification date is older than the app creation date.",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public"
       },
       "EmailAddressRecipientPersist": {
         "type": "object",
@@ -1688,6 +1705,12 @@
               },
               "description": "Soft property changes on charts"
             }
+          },
+          "persistentBookmarkIncludeVariables": {
+            "type": "boolean",
+            "description": "Flag to configure the persistent bookmark to use variables",
+            "x-qlik-stability": "stable",
+            "x-qlik-visibility": "public"
           }
         }
       },
@@ -2435,6 +2458,9 @@
           },
           "emailContent": {
             "$ref": "#/components/schemas/EmailComposition"
+          },
+          "cleanupStrategy": {
+            "$ref": "#/components/schemas/CleanupStrategy"
           },
           "retentionPolicy": {
             "$ref": "#/components/schemas/RetentionPolicy"
