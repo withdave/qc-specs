@@ -3233,6 +3233,47 @@
           "limit": 1000
         }
       }
+    },
+    "/api/v1/apps/validatescript": {
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScriptIssues"
+                }
+              }
+            },
+            "headers": {},
+            "description": "OK"
+          },
+          "403": {
+            "headers": {},
+            "description": "Forbidden"
+          }
+        },
+        "description": "Validates the script.",
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/Script"
+              }
+            }
+          },
+          "required": true,
+          "description": "Script to validate."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "locked",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
     }
   },
   "x-qlik-categories": [
@@ -6236,6 +6277,59 @@
             }
           }
         ]
+      },
+      "Script": {
+        "type": "object",
+        "properties": {
+          "script": {
+            "type": "string"
+          }
+        }
+      },
+      "ScriptIssue": {
+        "type": "object",
+        "properties": {
+          "Msg": {
+            "type": "string",
+            "description": "Error or warning string. What is the problem."
+          },
+          "Tab": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The index of the tab for the issue."
+          },
+          "Info": {
+            "type": "string",
+            "description": "Additional information like workarouds or clearifications."
+          },
+          "Line": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Line in the tab of the issue."
+          },
+          "Column": {
+            "type": "integer",
+            "format": "int32",
+            "description": "UTF-8 byte column of the issue."
+          }
+        }
+      },
+      "ScriptIssues": {
+        "type": "object",
+        "properties": {
+          "Errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScriptIssue"
+            }
+          },
+          "Warnings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScriptIssue"
+            }
+          }
+        }
       },
       "ScriptLogList": {
         "type": "object",
