@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.17",
+    "version": "1.0.18",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -3947,8 +3947,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -3958,8 +3957,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4067,8 +4065,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4078,8 +4075,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4097,6 +4093,113 @@
             "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/createAssistantWithAvatar"
+              }
+            }
+          }
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/assistants/{assistantId}/actions/search": {
+      "post": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Perform search on an assistant",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/searchResponse"
+                }
+              }
+            },
+            "description": "Chunks retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The request is in incorrect format"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Assistant is not found."
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Method is not allowed."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Prompt processing error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assistantId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID for the Assistant of interest"
+          }
+        ],
+        "description": "Perform search with either `SIMPLE` or `FULL` mode. SIMPLE does semantic search while FULL does semantic search, reranking and hybrid search. Use topN to control number of chunks in response, max limit is 50. Default to 5.\n",
+        "operationId": "searchAssistants",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/searchRequest"
               }
             }
           }
@@ -4132,8 +4235,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4143,8 +4245,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4154,8 +4255,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4207,8 +4307,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4218,8 +4317,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4229,8 +4327,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4291,8 +4388,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4302,8 +4398,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4313,8 +4408,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4421,8 +4515,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4432,8 +4525,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4443,8 +4535,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4505,8 +4596,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4516,8 +4606,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4527,8 +4616,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4603,8 +4691,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4614,8 +4701,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4625,8 +4711,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4689,8 +4774,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4700,8 +4784,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4711,8 +4794,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4789,8 +4871,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4800,8 +4881,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4811,8 +4891,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4886,8 +4965,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4897,8 +4975,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4908,8 +4985,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4983,8 +5059,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4994,8 +5069,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5005,8 +5079,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5141,8 +5214,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5152,8 +5224,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5163,8 +5234,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5225,8 +5295,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5236,8 +5305,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5247,8 +5315,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5302,8 +5369,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5313,8 +5379,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5324,8 +5389,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5335,8 +5399,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5346,8 +5409,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5420,8 +5482,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5431,8 +5492,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5442,8 +5502,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5520,7 +5579,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5530,7 +5590,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5540,7 +5601,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5550,7 +5612,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5567,7 +5630,7 @@
               "example": "507f191e810c19729de860ea"
             },
             "required": true,
-            "description": "The id of the Assistant containing requested Thread"
+            "description": "The ID of the Assistant containing requested Thread"
           },
           {
             "in": "path",
@@ -5578,7 +5641,7 @@
               "example": "507f191e810c19729de860ea"
             },
             "required": true,
-            "description": "The id of the Thread to retrieve"
+            "description": "The ID of the Thread to retrieve"
           }
         ],
         "description": "Execute prompt in synchronous non-streaming mode.",
@@ -5636,7 +5699,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5646,7 +5710,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5656,7 +5721,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5666,7 +5732,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5676,7 +5743,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5693,7 +5761,7 @@
               "example": "507f191e810c19729de860ea"
             },
             "required": true,
-            "description": "The id of the Assistant containing requested Thread"
+            "description": "The ID of the Assistant containing requested Thread"
           },
           {
             "in": "path",
@@ -5704,7 +5772,7 @@
               "example": "507f191e810c19729de860ea"
             },
             "required": true,
-            "description": "The id of the Thread to retrieve"
+            "description": "The ID of the Thread to retrieve"
           }
         ],
         "description": "Execute prompt in asynchronous streaming mode.",
@@ -5748,8 +5816,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5759,8 +5826,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5770,8 +5836,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5887,8 +5952,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5898,8 +5962,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5909,8 +5972,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5982,8 +6044,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5993,8 +6054,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6004,8 +6064,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6070,8 +6129,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6081,8 +6139,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6092,8 +6149,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6181,8 +6237,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6192,8 +6247,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6203,8 +6257,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6294,8 +6347,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6305,8 +6357,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6316,8 +6367,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6425,8 +6475,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6436,8 +6485,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6447,8 +6495,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6545,8 +6592,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6556,8 +6602,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6567,8 +6612,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6625,8 +6669,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6636,8 +6679,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6647,8 +6689,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6658,8 +6699,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6669,8 +6709,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6741,8 +6780,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6752,8 +6790,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6763,8 +6800,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -23064,6 +23100,296 @@
         }
       }
     },
+    "/api/v1/direct-access-agents/{agentId}/benchmarks": {
+      "post": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Start agent benchmark",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunBenchmarkResponse"
+                }
+              }
+            },
+            "description": "Benchmark task created successfully with a unique identifier."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The agent was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "501": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "All or part of the request has not yet been implemented."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "force",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Forces the benchmark to start regardless of the state of the agent. Does not override QCS resource limits. Use with caution."
+          },
+          {
+            "in": "query",
+            "name": "gigaBytesToTransfer",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            },
+            "description": "The volume of data in GB to transfer during the throughput measurement part of the benchmark."
+          }
+        ],
+        "description": "Starts a background benchmark task to measure the performance of a Direct Access agent. Use this endpoint to evaluate agent throughput and latency for capacity planning and performance optiization. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "operationId": "runBenchmark",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/direct-access-agents/{agentId}/benchmarks/{benchmarkId}": {
+      "get": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Get benchmark status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBenchmarkStatusResponse"
+                }
+              }
+            },
+            "description": "Benchmark status and performance metrics retrieved successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The benchmark was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "path",
+            "name": "benchmarkId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The benchmark ID"
+          }
+        ],
+        "description": "Retrieves the current status and progress of a running or completed benchmark task. Use this endpoint to monitor benchmark execution and retrieve performance metrics once the task is completed. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "operationId": "getBenchmarkStatus",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/v1/direct-access-agents/{agentId}/benchmarks/{benchmarkId}/cancel": {
+      "post": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Requests a cancellation on a running benchmark",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelBenchmarkResponse"
+                }
+              }
+            },
+            "description": "The cancellation was requested successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The benchmark was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "path",
+            "name": "benchmarkId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The benchmark ID"
+          }
+        ],
+        "description": "Requests a cancellation on a running benchmark by id for the specified agent. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "operationId": "cancelBenchmark",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/direct-access-agents/{agentId}/configurations": {
       "get": {
         "tags": [
@@ -23380,6 +23706,13 @@
             "in": "path",
             "name": "fileType",
             "schema": {
+              "enum": [
+                "CustomTypesMapping",
+                "PlainTextConfiguration",
+                "AllowedPaths",
+                "AllowedDrivers",
+                "AllowedDsns"
+              ],
               "type": "string"
             },
             "required": true,
@@ -23465,6 +23798,13 @@
             "in": "path",
             "name": "fileType",
             "schema": {
+              "enum": [
+                "CustomTypesMapping",
+                "PlainTextConfiguration",
+                "AllowedPaths",
+                "AllowedDrivers",
+                "AllowedDsns"
+              ],
               "type": "string"
             },
             "required": true,
@@ -23482,300 +23822,6 @@
             }
           },
           "description": "The contents of the file to be updated"
-        },
-        "x-qlik-stability": "stable",
-        "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
-        "x-qlik-tier": {
-          "tier": "2",
-          "limit": 100
-        }
-      }
-    },
-    "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/allowed-paths": {
-      "get": {
-        "tags": [
-          "direct-access-agent-configuration"
-        ],
-        "summary": "Get connector allowed paths configuration",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FileConnectorAllowedPathsResponse"
-                }
-              }
-            },
-            "description": "The list of configuration values from the file."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Configuration file not found."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "agentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The agent ID"
-          },
-          {
-            "in": "path",
-            "name": "connectorType",
-            "schema": {
-              "enum": [
-                "file-connector"
-              ],
-              "type": "string"
-            },
-            "required": true,
-            "description": "Please use `file-connector` when retrieving the allowed paths for the file connector."
-          }
-        ],
-        "description": "Retrieves the allowed paths settings for the File Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
-        "operationId": "getConnectorFileListAsync",
-        "x-qlik-stability": "stable",
-        "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
-        "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
-        }
-      },
-      "put": {
-        "tags": [
-          "direct-access-agent-configuration"
-        ],
-        "summary": "Set connector allowed paths configuration",
-        "responses": {
-          "204": {
-            "description": "Updated."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Bad request."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Configuration file not found."
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Conflict."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "agentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The agent id"
-          },
-          {
-            "in": "path",
-            "name": "connectorType",
-            "schema": {
-              "enum": [
-                "file-connector"
-              ],
-              "type": "string"
-            },
-            "required": true,
-            "description": "Please use `file-connector` when updating the allowed paths for the file connector."
-          }
-        ],
-        "description": "Completely replaces the contents of the allowed paths configuration file for the File Connector. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
-        "operationId": "putConnectorFlatFileConfigurationAsync",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateFileConnectorAllowedPathsRequest"
-              }
-            }
-          },
-          "description": "The contents of the file to be updated"
-        },
-        "x-qlik-stability": "stable",
-        "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
-        "x-qlik-tier": {
-          "tier": "2",
-          "limit": 100
-        }
-      }
-    },
-    "/api/v1/direct-access-agents/{agentId}/connectors/{connectorType}/files/custom-data-type-mappings": {
-      "get": {
-        "tags": [
-          "direct-access-agent-configuration"
-        ],
-        "summary": "Get connector type mapping configuration",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OdbcCustomDataTypeResponse"
-                }
-              }
-            },
-            "description": "The list of configuration values from the file."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Configuration file not found."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "agentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The agent ID."
-          },
-          {
-            "in": "path",
-            "name": "connectorType",
-            "schema": {
-              "enum": [
-                "odbc-connector"
-              ],
-              "type": "string"
-            },
-            "required": true,
-            "description": "The connector type. Must be `odbc-connector` for this endpoint."
-          }
-        ],
-        "description": "Retrieves the custom data type mapping settings for the Generic ODBC Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
-        "operationId": "getOdbcCustomTypeMappingsAsync",
-        "x-qlik-stability": "stable",
-        "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
-        "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
-        }
-      },
-      "put": {
-        "tags": [
-          "direct-access-agent-configuration"
-        ],
-        "summary": "Set connector type mapping configuration",
-        "responses": {
-          "204": {
-            "description": "Updated."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Bad request."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Configuration file not found."
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Conflict."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "agentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The agent ID."
-          },
-          {
-            "in": "path",
-            "name": "connectorType",
-            "schema": {
-              "enum": [
-                "odbc-connector"
-              ],
-              "type": "string"
-            },
-            "required": true,
-            "description": "The connector type. Must be `odbc-connector` for this endpoint."
-          }
-        ],
-        "description": "Completely replaces the contents of the custom data type mapping configuration file for the Generic ODBC connector. Partial updates are not supported. There are property naming differences between the API and the file contents. Use the API property format when making changes. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
-        "operationId": "putOdbcCustomTypeMappingsAsync",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateOdbcCustomTypeMappingsRequest"
-              }
-            }
-          },
-          "description": "The contents of the file to be updated."
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -30885,6 +30931,112 @@
           }
         ],
         "description": "Deletes a knowledgebase and all of its resources.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/knowledgebases/{id}/actions/search": {
+      "post": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Search chunks from a knowledge base",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/searchResponse"
+                }
+              }
+            },
+            "description": "Chunks retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The request is in incorrect format"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The user does not have privileges to perform the requested action."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Knowledgebase is not found."
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Method is not allowed."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "Prompt processing error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "507f191e810c19729de860ea"
+            },
+            "required": true,
+            "description": "The ID of the knowledgebase"
+          }
+        ],
+        "description": "Execute search with either `SIMPLE` or `FULL` mode. SIMPLE does semantic search while FULL will also do reranking and include keyword based chunks. Use topN to control number of chunks in response, max limit is 50. Default to 5.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/searchRequest"
+              }
+            }
+          }
+        },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [],
@@ -49285,7 +49437,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter resources by user that created it"
+            "description": "Filter resources by user that created it."
           },
           {
             "in": "query",
@@ -49293,7 +49445,7 @@
             "schema": {
               "type": "boolean"
             },
-            "description": "Filter resources by enabled true/false"
+            "description": "Filter resources by enabled true/false."
           },
           {
             "in": "query",
@@ -49301,7 +49453,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter resources by event-type/types, a single webhook item can have multiple event-types"
+            "description": "Filter resources by event-type/types, a single webhook item can have multiple event-types."
           },
           {
             "in": "query",
@@ -49309,7 +49461,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter resources by level that user has access to (either user or level)"
+            "description": "Filter resources by level that user has access to (either user or level)."
           },
           {
             "in": "query",
@@ -49320,7 +49472,7 @@
               "maximum": 100,
               "minimum": 1
             },
-            "description": "Maximum number of webhooks to retrieve"
+            "description": "Maximum number of webhooks to retrieve."
           },
           {
             "in": "query",
@@ -49328,7 +49480,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter resources by name (wildcard and case insensitive)"
+            "description": "Filter resources by name (wildcard and case insensitive)."
           },
           {
             "in": "query",
@@ -49336,7 +49488,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Cursor to the next page"
+            "description": "Cursor to the next page."
           },
           {
             "in": "query",
@@ -49349,7 +49501,7 @@
               ],
               "type": "string"
             },
-            "description": "Filter resources by origins, supports multiorigin"
+            "description": "Filter resources by origins, supports multiorigin."
           },
           {
             "in": "query",
@@ -49357,7 +49509,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter resources by user that owns it, only applicable for user level webhooks"
+            "description": "Filter resources by user that owns it, only applicable for user level webhooks."
           },
           {
             "in": "query",
@@ -49365,7 +49517,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Cursor to previous next page"
+            "description": "Cursor to the previous page."
           },
           {
             "in": "query",
@@ -49388,7 +49540,7 @@
               "type": "string",
               "default": "-createdAt"
             },
-            "description": "Field to sort by, prefix with -/+ to indicate order"
+            "description": "Field to sort by, prefix with -/+ to indicate order."
           },
           {
             "in": "query",
@@ -49396,7 +49548,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter resources by user that last updated the webhook"
+            "description": "Filter resources by user that last updated the webhook."
           },
           {
             "in": "query",
@@ -49404,7 +49556,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter resources by url (wildcard and case insensitive)"
+            "description": "Filter resources by URL (wildcard and case insensitive)."
           }
         ],
         "description": "Retrieves all webhooks entries for a tenant that the user has access to. Users assigned the `TenantAdmin` role can retrieve all webhooks. A user can have up to 150 webhooks at one time.",
@@ -49775,7 +49927,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter resources by event-type"
+            "description": "Filter resources by event-type."
           },
           {
             "in": "query",
@@ -49786,7 +49938,7 @@
               "maximum": 100,
               "minimum": 1
             },
-            "description": "Maximum number of deliveries to retrieve"
+            "description": "Maximum number of deliveries to retrieve."
           },
           {
             "in": "query",
@@ -49794,7 +49946,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Cursor to the next page"
+            "description": "Cursor to the next page."
           },
           {
             "in": "query",
@@ -49802,7 +49954,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Cursor to previous next page"
+            "description": "Cursor to the previous page."
           },
           {
             "in": "query",
@@ -49819,7 +49971,7 @@
               "type": "string",
               "default": "-triggeredAt"
             },
-            "description": "Field to sort by, prefix with -/+ to indicate order"
+            "description": "Field to sort by, prefix with -/+ to indicate order."
           },
           {
             "in": "query",
@@ -49831,7 +49983,7 @@
               ],
               "type": "string"
             },
-            "description": "Filter resources by status (success or fail)"
+            "description": "Filter resources by status (success or fail)."
           }
         ],
         "description": "Returns deliveries for a specific webhook. Delivery history is stored for 1 week.",
@@ -49946,7 +50098,7 @@
                 }
               }
             },
-            "description": "Not found"
+            "description": "Not found."
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
@@ -50373,15 +50525,15 @@
         "properties": {
           "code": {
             "type": "string",
-            "description": "The unique code for the error"
+            "description": "The unique code for the error."
           },
           "title": {
             "type": "string",
-            "description": "A summary of what went wrong"
+            "description": "A summary of what went wrong."
           },
           "detail": {
             "type": "string",
-            "description": "May be used to provide additional details"
+            "description": "May be used to provide additional details."
           }
         }
       },
@@ -50404,7 +50556,7 @@
         "properties": {
           "href": {
             "type": "string",
-            "description": "URL to a resource request"
+            "description": "URL to a resource request."
           }
         }
       },
@@ -53925,6 +54077,37 @@
           }
         }
       },
+      "chunk": {
+        "type": "object",
+        "required": [
+          "text",
+          "chunkMeta"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "LLM stands for Large Language Model",
+            "description": "Text content of the chunk"
+          },
+          "chunkMeta": {
+            "$ref": "#/components/schemas/kbChunkMeta"
+          },
+          "tfidfScore": {
+            "type": "number",
+            "example": 0.9,
+            "description": "Score from keyword search"
+          },
+          "searchSource": {
+            "type": "string",
+            "description": "search method for the chunk, e.g. `semantic search`, `keyword search` or `semantic and keyword search`"
+          },
+          "semanticScore": {
+            "type": "number",
+            "example": 0.63,
+            "description": "Similarity score from embedding match"
+          }
+        }
+      },
       "ChunksRefs": {
         "type": "object",
         "example": {
@@ -54340,7 +54523,8 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "Custom error codes\n* AE-1 - Internal processing error\n* AE-2 - Incorrect request\n* AE-3 - Authentication issue\n* AE-4 - Prompt is rejected\n* AE-5 - Resource is not found\n* AE-6 - API usage rate limit is exceeded\n* AE-7 - Method is not allowed\n"
           },
           "title": {
             "type": "string"
@@ -54720,6 +54904,39 @@
         ],
         "description": "An array of JSON Patch documents"
       },
+      "kbChunkMeta": {
+        "type": "object",
+        "required": [
+          "documentId",
+          "datasourceId",
+          "chunkId",
+          "source",
+          "knowledgeBaseId"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "source of chunk"
+          },
+          "chunkId": {
+            "type": "string",
+            "description": "chunkId"
+          },
+          "documentId": {
+            "type": "string",
+            "description": "documentId of chunk"
+          },
+          "datasourceId": {
+            "type": "string",
+            "description": "datasourceId of chunk"
+          },
+          "knowledgeBaseId": {
+            "type": "string",
+            "description": "knowledgeBaseId of chunk"
+          }
+        },
+        "description": "Metadata about the chunk"
+      },
       "Message": {
         "type": "object",
         "required": [
@@ -54948,6 +55165,48 @@
         "properties": {
           "countTotal": {
             "type": "integer"
+          }
+        }
+      },
+      "searchRequest": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "topN": {
+            "type": "integer",
+            "example": 20,
+            "description": "Number of chunks to return in results."
+          },
+          "prompt": {
+            "type": "string",
+            "example": "What is LLM?",
+            "description": "Query text or question to search."
+          },
+          "searchMode": {
+            "enum": [
+              "SIMPLE",
+              "FULL"
+            ],
+            "type": "string",
+            "example": "SIMPLE",
+            "description": "Search mode to use.   Allowed values: `SIMPLE` and `FULL`.   Default: `SIMPLE`.\n"
+          }
+        }
+      },
+      "searchResponse": {
+        "type": "object",
+        "required": [
+          "chunks"
+        ],
+        "properties": {
+          "chunks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/chunk"
+            },
+            "description": "Retrieved document chunks"
           }
         }
       },
@@ -64328,6 +64587,19 @@
         "type": "object",
         "description": "Request body for task validation"
       },
+      "CancelBenchmarkResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusUrl": {
+            "$ref": "#/components/schemas/LinkResponseObject"
+          }
+        },
+        "additionalProperties": false
+      },
       "ConfigurationLineBase": {
         "type": "object",
         "oneOf": [
@@ -64549,101 +64821,83 @@
         "type": "string",
         "description": "JSON string of error object"
       },
-      "FileConnectorAllowedPath": {
+      "GetBenchmarkStatusResponse": {
         "type": "object",
-        "required": [
-          "path"
-        ],
         "properties": {
-          "path": {
+          "status": {
             "type": "string",
-            "example": "\\\\\\\\Server\\\\Share\\\\example",
-            "minLength": 1,
-            "description": "The Path property in the File connector allowed paths file."
-          },
-          "spaces": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "Foo",
-              "Bar"
-            ],
             "nullable": true,
-            "description": "The Spaces property in the Odbc custom type mappings file."
-          }
-        },
-        "additionalProperties": false
-      },
-      "FileConnectorAllowedPathsResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileConnectorAllowedPath"
-            },
-            "nullable": true
+            "description": "The benchmark status"
           },
-          "errorMessage": {
-            "$ref": "#/components/schemas/ErrorResponse"
-          }
-        },
-        "additionalProperties": false
-      },
-      "OdbcCustomDataType": {
-        "type": "object",
-        "required": [
-          "id",
-          "nativeDataType",
-          "qlikDataType"
-        ],
-        "properties": {
-          "id": {
+          "results": {
+            "$ref": "#/components/schemas/GetBenchmarkStatusResults"
+          },
+          "benchmarkId": {
             "type": "string",
-            "example": "Amazon Athena ODBC (x64)",
-            "minLength": 1,
-            "description": "The Identifier property in the ODBC custom data type mapping file."
+            "nullable": true,
+            "description": "The benchmark ID"
           },
-          "bit": {
-            "type": "boolean",
-            "example": true,
-            "description": "The IsBit property in the ODBC custom data type mapping file."
+          "statusMessage": {
+            "type": "string",
+            "nullable": true,
+            "description": "Additional details about the benchmark status"
           },
-          "size": {
+          "benchmarkEndTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when the benchmark task completed or was cancelled"
+          },
+          "benchmarkStartTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when the benchmark task started execution"
+          },
+          "totalBytesRequested": {
             "type": "integer",
-            "format": "int32",
-            "default": 0,
-            "description": "The Size property in the ODBC custom data type mapping file."
-          },
-          "qlikDataType": {
-            "type": "string",
-            "example": "String",
-            "minLength": 1,
-            "description": "The QlikDataType property in the ODBC custom data type mapping file."
-          },
-          "nativeDataType": {
-            "type": "string",
-            "example": "varchar",
-            "minLength": 1,
-            "description": "The NativeDataType property in the ODBC custom data type mapping file."
+            "format": "int64",
+            "description": "The total bytes requested to be transferred during the benchmark"
           }
         },
         "additionalProperties": false
       },
-      "OdbcCustomDataTypeResponse": {
+      "GetBenchmarkStatusResults": {
         "type": "object",
         "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OdbcCustomDataType"
-            },
-            "nullable": true
+          "latency": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The latency in ms measured during data transmission"
           },
-          "errorMessage": {
-            "$ref": "#/components/schemas/ErrorResponse"
+          "throughput": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The data throughput in KB/s measured during data transmission"
+          },
+          "totalBytesTransferred": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The total number of bytes successfully transferred during data transmission"
+          },
+          "dataTransmissionEndTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission completed"
+          },
+          "dataTransmissionStartTime": {
+            "type": "string",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission start"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinkResponseObject": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true,
+            "description": "The URL to the related resource"
           }
         },
         "additionalProperties": false
@@ -64710,6 +64964,16 @@
         },
         "additionalProperties": false
       },
+      "RunBenchmarkResponse": {
+        "type": "object",
+        "properties": {
+          "benchmarkId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateConfigurationFlatFileRequest": {
         "type": "object",
         "properties": {
@@ -64724,32 +64988,6 @@
           }
         },
         "description": "The request to update a connector flat file",
-        "additionalProperties": false
-      },
-      "UpdateFileConnectorAllowedPathsRequest": {
-        "type": "object",
-        "properties": {
-          "fileConnectorAllowedPaths": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileConnectorAllowedPath"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateOdbcCustomTypeMappingsRequest": {
-        "type": "object",
-        "properties": {
-          "odbcCustomDataTypes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OdbcCustomDataType"
-            },
-            "nullable": true
-          }
-        },
         "additionalProperties": false
       },
       "KeyProvider": {
@@ -74071,7 +74309,9 @@
                 "has_target_leakage",
                 "feature_type_change_invalid",
                 "feature_type_change_failed",
-                "feature_type_change_successful"
+                "feature_type_change_successful",
+                "data_bias_detected",
+                "representation_bias_detected"
               ],
               "type": "string"
             },
@@ -78373,9 +78613,26 @@
             "type": "object",
             "properties": {},
             "description": "Session chart object definition"
+          },
+          "persistentBookmarkIncludeVariables": {
+            "type": "boolean",
+            "description": "Flag to configure the persistent bookmark to use variables.",
+            "x-qlik-stability": "stable",
+            "x-qlik-visibility": "public"
           }
         },
         "description": "If the template type is not \"chart\", this can be null. Otherwise, the following properties are required: appId, sheetId, objectId, widthPx, heightPx, language. The following properties are optional: outZoom, outDpi"
+      },
+      "CleanupStrategy": {
+        "enum": [
+          "noCleanup",
+          "removeOldBookmarks"
+        ],
+        "type": "string",
+        "default": "noCleanup",
+        "description": "A bookmark is considered old if its modification date is older than the app creation date.",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public"
       },
       "EmailAddressRecipientPersist": {
         "type": "object",
@@ -78564,6 +78821,12 @@
               },
               "description": "Soft property changes on charts"
             }
+          },
+          "persistentBookmarkIncludeVariables": {
+            "type": "boolean",
+            "description": "Flag to configure the persistent bookmark to use variables",
+            "x-qlik-stability": "stable",
+            "x-qlik-visibility": "public"
           }
         }
       },
@@ -79224,6 +79487,9 @@
           },
           "emailContent": {
             "$ref": "#/components/schemas/EmailComposition"
+          },
+          "cleanupStrategy": {
+            "$ref": "#/components/schemas/CleanupStrategy"
           },
           "retentionPolicy": {
             "$ref": "#/components/schemas/RetentionPolicy"
@@ -83392,7 +83658,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "The delivery's unique identifier"
+            "description": "The delivery's unique identifier."
           },
           "status": {
             "enum": [
@@ -83400,18 +83666,18 @@
               "fail"
             ],
             "type": "string",
-            "description": "The status of delivery"
+            "description": "The status of delivery."
           },
           "request": {
             "type": "object",
             "properties": {
               "url": {
                 "type": "string",
-                "description": "URL used for this delivery"
+                "description": "URL used for this delivery."
               },
               "body": {
                 "type": "object",
-                "description": "The sent body/payload of the delivery"
+                "description": "The sent body/payload of the delivery."
               },
               "headers": {
                 "type": "object",
@@ -83419,20 +83685,20 @@
                   "headerName": "headerValue",
                   "encryptedHeadersName": "**OMITTED**"
                 },
-                "description": "Headers sent for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\"",
+                "description": "Headers sent for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\".",
                 "additionalProperties": {
                   "type": "string"
                 }
               }
             },
-            "description": ""
+            "description": "Request details for the delivery."
           },
           "response": {
             "type": "object",
             "properties": {
               "body": {
                 "type": "string",
-                "description": "The received body of the delivery"
+                "description": "The received body of the delivery."
               },
               "headers": {
                 "type": "object",
@@ -83440,34 +83706,34 @@
                   "headerName": "headerValue",
                   "encryptedHeadersName": "**OMITTED**"
                 },
-                "description": "Headers received for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\"",
+                "description": "Headers received for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\".",
                 "additionalProperties": {
                   "type": "string"
                 }
               },
               "statusCode": {
                 "type": "number",
-                "description": "The HTTP status code of the response"
+                "description": "The HTTP status code of the response."
               }
             },
-            "description": ""
+            "description": "Response details for the delivery."
           },
           "eventType": {
             "type": "string",
-            "description": "The name of the triggering event-type"
+            "description": "The name of the triggering event-type."
           },
           "webhookId": {
             "type": "string",
-            "description": "The unique webhook identifier that the delivery is for"
+            "description": "The unique webhook identifier that the delivery is for."
           },
           "triggeredAt": {
             "type": "string",
             "format": "date-time",
-            "description": "The UTC timestamp when the delivery was triggered"
+            "description": "The UTC timestamp when the delivery was triggered."
           },
           "statusMessage": {
             "type": "string",
-            "description": "The status message of the delivery"
+            "description": "The status message of the delivery."
           }
         }
       },
@@ -83500,22 +83766,22 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the event type"
+            "description": "Name of the event type."
           },
           "title": {
             "type": "string",
-            "description": "Title of the event type"
+            "description": "Title of the event type."
           },
           "levels": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Specifies which levels that are supported for this event type"
+            "description": "Specifies which levels that are supported for this event type."
           },
           "description": {
             "type": "string",
-            "description": "Description of the event type"
+            "description": "Description of the event type."
           }
         }
       },
@@ -83540,17 +83806,17 @@
           "id": {
             "type": "string",
             "readOnly": true,
-            "description": "The webhook's unique identifier"
+            "description": "The webhook's unique identifier."
           },
           "url": {
             "type": "string",
             "maxLength": 2048,
-            "description": "Target URL for webhook HTTPS requests"
+            "description": "Target URL for webhook HTTPS requests."
           },
           "name": {
             "type": "string",
             "maxLength": 512,
-            "description": "The name for the webhook"
+            "description": "The name for the webhook."
           },
           "level": {
             "enum": [
@@ -83564,7 +83830,7 @@
           "filter": {
             "type": "string",
             "example": "id eq \"id123\" or spaceId eq \"spaceId123\" or spaceId eq \"spaceId456\" or topLevelResourceId eq \"id789\"",
-            "description": "Filter that should match for a webhook to be triggered.\nSupported common attribute names are 'id', 'spaceId' and 'topLevelResourceId', beside the common attributes the \"com.qlik.v1.app.reload.finished\" event also supports \"data.status\" that could be either \"ok\" or \"error\" but can't be used together with other event types.\nSupported attribute operators are 'eq' and 'ne'.\nSupported logical operators are 'and' and 'or'.\nNote that attribute values must be valid JSON strings, hence they're enclosed with double quotes\nFor more detailed information regarding the SCIM filter syntax (RFC7644) used please follow the link to external documentation.",
+            "description": "Filter that should match for a webhook to be triggered.\nSupported common attribute names are 'id', 'spaceId' and 'topLevelResourceId', beside the common attributes the \"com.qlik.v1.app.reload.finished\" event also supports \"data.status\" that could be either \"ok\" or \"error\" but can't be used together with other event types.\nSupported attribute operators are 'eq' and 'ne'.\nSupported logical operators are 'and' and 'or'.\nNote that attribute values must be valid JSON strings, hence they're enclosed with double quotes.\nFor more detailed information regarding the SCIM filter syntax (RFC7644) used please follow the link to external documentation.",
             "externalDocs": {
               "url": "https://datatracker.ietf.org/doc/html/rfc7644#section-3.4.2.2",
               "description": "More information about the SCIM filter syntax (RFC7644)"
@@ -83574,12 +83840,12 @@
             "type": "string",
             "maxLength": 64,
             "minLength": 32,
-            "description": "String used as secret for calculating HMAC hash sent as header"
+            "description": "String used as secret for calculating HMAC hash sent as header."
           },
           "enabled": {
             "type": "boolean",
             "default": false,
-            "description": "Whether the webhook is active and sending requests"
+            "description": "Whether the webhook is active and sending requests."
           },
           "headers": {
             "type": "object",
@@ -83593,19 +83859,19 @@
           },
           "ownerId": {
             "type": "string",
-            "description": "The id of the user that owns the webhook, only applicable for user level webhooks"
+            "description": "The id of the user that owns the webhook, only applicable for user level webhooks."
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
             "readOnly": true,
-            "description": "The UTC timestamp when the webhook was created"
+            "description": "The UTC timestamp when the webhook was created."
           },
           "updatedAt": {
             "type": "string",
             "format": "date-time",
             "readOnly": true,
-            "description": "The UTC timestamp when the webhook was last updated"
+            "description": "The UTC timestamp when the webhook was last updated."
           },
           "eventTypes": {
             "type": "array",
@@ -83617,22 +83883,22 @@
           "description": {
             "type": "string",
             "maxLength": 1024,
-            "description": "The reason for creating the webhook"
+            "description": "The reason for creating the webhook."
           },
           "disabledReason": {
             "type": "string",
             "readOnly": true,
-            "description": "The reason for the webhook to be disabled"
+            "description": "The reason for the webhook to be disabled."
           },
           "createdByUserId": {
             "type": "string",
             "readOnly": true,
-            "description": "The id of the user that created the webhook"
+            "description": "The id of the user that created the webhook."
           },
           "updatedByUserId": {
             "type": "string",
             "readOnly": true,
-            "description": "The id of the user that last updated the webhook"
+            "description": "The id of the user that last updated the webhook."
           },
           "encryptedHeaders": {
             "type": "object",
@@ -83647,7 +83913,12 @@
           "disabledReasonCode": {
             "type": "string",
             "readOnly": true,
-            "description": "The unique code for the reason"
+            "description": "The unique code for the reason."
+          },
+          "enableCloudEventDelivery": {
+            "type": "boolean",
+            "default": true,
+            "description": "If enabled the webhook will be sent as a CloudEvent, once enabled for a webhook it cannot be disabled."
           },
           "checkCertificateRevocation": {
             "type": "boolean",
@@ -83694,7 +83965,7 @@
               "replace"
             ],
             "type": "string",
-            "description": "The operation to be performed"
+            "description": "The operation to be performed."
           },
           "path": {
             "enum": [
@@ -83705,11 +83976,12 @@
               "/headers",
               "/enabled",
               "/secret",
-              "/encryptedHeaders"
+              "/encryptedHeaders",
+              "/enableCloudEventDelivery"
             ],
             "type": "string",
             "example": "/description",
-            "description": "The path for the given resource field to patch"
+            "description": "The path for the given resource field to patch."
           },
           "value": {
             "oneOf": [
@@ -83747,7 +84019,7 @@
                 ],
                 "type": "string",
                 "default": "api",
-                "description": "Indicates from where the webhook was created and its purpose"
+                "description": "Indicates from where the webhook was created and its purpose."
               }
             }
           }
@@ -83770,7 +84042,7 @@
                 "type": "string",
                 "default": "api",
                 "readOnly": true,
-                "description": "Indicates from where the webhook was created and its purpose"
+                "description": "Indicates from where the webhook was created and its purpose."
               }
             }
           }
@@ -83786,17 +84058,17 @@
           "id": {
             "type": "string",
             "readOnly": true,
-            "description": "The webhook's unique identifier"
+            "description": "The webhook's unique identifier."
           },
           "url": {
             "type": "string",
             "maxLength": 2048,
-            "description": "Target URL for webhook HTTPS requests"
+            "description": "Target URL for webhook HTTPS requests."
           },
           "name": {
             "type": "string",
             "maxLength": 512,
-            "description": "The name for the webhook"
+            "description": "The name for the webhook."
           },
           "level": {
             "enum": [
@@ -83810,7 +84082,7 @@
           "filter": {
             "type": "string",
             "example": "id eq \"id123\" or spaceId eq \"spaceId123\" or spaceId eq \"spaceId456\" or topLevelResourceId eq \"id789\"",
-            "description": "Filter that should match for a webhook to be triggered.\nSupported common attribute names are 'id', 'spaceId' and 'topLevelResourceId', beside the common attributes the \"com.qlik.v1.app.reload.finished\" event also supports \"data.status\" that could be either \"ok\" or \"error\" but can't be used together with other event types.\nSupported attribute operators are 'eq' and 'ne'.\nSupported logical operators are 'and' and 'or'.\nNote that attribute values must be valid JSON strings, hence they're enclosed with double quotes\nFor more detailed information regarding the SCIM filter syntax (RFC7644) used please follow the link to external documentation.",
+            "description": "Filter that should match for a webhook to be triggered.\nSupported common attribute names are 'id', 'spaceId' and 'topLevelResourceId', beside the common attributes the \"com.qlik.v1.app.reload.finished\" event also supports \"data.status\" that could be either \"ok\" or \"error\" but can't be used together with other event types.\nSupported attribute operators are 'eq' and 'ne'.\nSupported logical operators are 'and' and 'or'.\nNote that attribute values must be valid JSON strings, hence they're enclosed with double quotes.\nFor more detailed information regarding the SCIM filter syntax (RFC7644) used please follow the link to external documentation.",
             "externalDocs": {
               "url": "https://datatracker.ietf.org/doc/html/rfc7644#section-3.4.2.2",
               "description": "More information about the SCIM filter syntax (RFC7644)"
@@ -83820,7 +84092,7 @@
             "type": "string",
             "maxLength": 64,
             "minLength": 32,
-            "description": "String used as secret for calculating HMAC hash sent as header",
+            "description": "String used as secret for calculating HMAC hash sent as header.",
             "x-qlik-deprecated": true,
             "x-qlik-deprecated-sunset": "2025-11",
             "x-qlik-deprecated-description": "secret field in response will be removed to make it non-retrievable and secretKeyAdded field will provide status if the secret key is added or not"
@@ -83828,33 +84100,33 @@
           "enabled": {
             "type": "boolean",
             "default": false,
-            "description": "Whether the webhook is active and sending requests"
+            "description": "Whether the webhook is active and sending requests."
           },
           "headers": {
             "type": "object",
             "example": {
               "headerName": "headerValue"
             },
-            "description": "Additional headers in the post request",
+            "description": "Additional headers in the post request.",
             "additionalProperties": {
               "type": "string"
             }
           },
           "ownerId": {
             "type": "string",
-            "description": "The id of the user that owns the webhook, only applicable for user level webhooks"
+            "description": "The id of the user that owns the webhook, only applicable for user level webhooks."
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
             "readOnly": true,
-            "description": "The UTC timestamp when the webhook was created"
+            "description": "The UTC timestamp when the webhook was created."
           },
           "updatedAt": {
             "type": "string",
             "format": "date-time",
             "readOnly": true,
-            "description": "The UTC timestamp when the webhook was last updated"
+            "description": "The UTC timestamp when the webhook was last updated."
           },
           "eventTypes": {
             "type": "array",
@@ -83866,26 +84138,26 @@
           "description": {
             "type": "string",
             "maxLength": 1024,
-            "description": "The reason for creating the webhook"
+            "description": "The reason for creating the webhook."
           },
           "disabledReason": {
             "type": "string",
             "readOnly": true,
-            "description": "The reason for the webhook to be disabled"
+            "description": "The reason for the webhook to be disabled."
           },
           "secretKeyAdded": {
             "type": "boolean",
-            "description": "Provides status of the string used as secret for calculating HMAC hash sent as header is already added or not"
+            "description": "Provides status of the string used as secret for calculating HMAC hash sent as header is already added or not."
           },
           "createdByUserId": {
             "type": "string",
             "readOnly": true,
-            "description": "The id of the user that created the webhook"
+            "description": "The id of the user that created the webhook."
           },
           "updatedByUserId": {
             "type": "string",
             "readOnly": true,
-            "description": "The id of the user that last updated the webhook"
+            "description": "The id of the user that last updated the webhook."
           },
           "encryptedHeaders": {
             "type": "array",
@@ -83896,12 +84168,17 @@
               "header1",
               "header2"
             ],
-            "description": "Additional encrypted headers in the post request"
+            "description": "Additional encrypted headers in the post request."
           },
           "disabledReasonCode": {
             "type": "string",
             "readOnly": true,
-            "description": "The unique code for the reason"
+            "description": "The unique code for the reason."
+          },
+          "enableCloudEventDelivery": {
+            "type": "boolean",
+            "default": true,
+            "description": "If enabled the webhook will be sent as a CloudEvent, once enabled for a webhook it cannot be disabled."
           },
           "checkCertificateRevocation": {
             "type": "boolean",
