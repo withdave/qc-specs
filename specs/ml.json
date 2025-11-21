@@ -2607,6 +2607,15 @@
         },
         "parameters": [
           {
+            "in": "query",
+            "name": "experimentVersionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The optional experimentVersionId query parameter for profile-insights\nGET requests. When provided after a version has been trained, it gets\nthe profile insights snapshot used in previous versions rather than\nnew results.\n"
+          },
+          {
             "$ref": "#/components/parameters/dataSetId"
           },
           {
@@ -6170,9 +6179,17 @@
             "type": "boolean",
             "description": "Is this a CSV dataset > 1GB?"
           },
+          "sizeInBytes": {
+            "type": "integer",
+            "description": "Size of the profiled dataset in bytes."
+          },
           "numberOfRows": {
             "type": "number",
             "description": "Number of rows in the dataset.\n\nWhen isLargeCsv is true, this is an estimate since their metadata is\nbased on a sample rather than the full dataset.\n\nFor datasets over 1GB, multiply `rows` (this) by `columns` (features\nincluded in experiment version) to calculate total `cells` to\nensure it stays under your license limit. Large CSVs have a hard\n100M cell limit.\n"
+          },
+          "experimentVersionId": {
+            "type": "string",
+            "description": "Optional experiment version ID. When included, it indicates that\nthis dataset profile is a snapshot from a previous version.\n"
           },
           "defaultVersionConfig": {
             "type": "object",

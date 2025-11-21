@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.18",
+    "version": "1.0.19",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -3923,6 +3923,47 @@
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
+        }
+      }
+    },
+    "/api/v1/apps/validatescript": {
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScriptIssues"
+                }
+              }
+            },
+            "headers": {},
+            "description": "OK"
+          },
+          "403": {
+            "headers": {},
+            "description": "Forbidden"
+          }
+        },
+        "description": "Validates the script.",
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/Script"
+              }
+            }
+          },
+          "required": true,
+          "description": "Script to validate."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "locked",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
         }
       }
     },
@@ -36777,6 +36818,15 @@
         },
         "parameters": [
           {
+            "in": "query",
+            "name": "experimentVersionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The optional experimentVersionId query parameter for profile-insights\nGET requests. When provided after a version has been trained, it gets\nthe profile insights snapshot used in previous versions rather than\nnew results.\n"
+          },
+          {
             "$ref": "#/components/parameters/dataSetId"
           },
           {
@@ -53500,6 +53550,59 @@
             }
           }
         ]
+      },
+      "Script": {
+        "type": "object",
+        "properties": {
+          "script": {
+            "type": "string"
+          }
+        }
+      },
+      "ScriptIssue": {
+        "type": "object",
+        "properties": {
+          "Msg": {
+            "type": "string",
+            "description": "Error or warning string. What is the problem."
+          },
+          "Tab": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The index of the tab for the issue."
+          },
+          "Info": {
+            "type": "string",
+            "description": "Additional information like workarouds or clearifications."
+          },
+          "Line": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Line in the tab of the issue."
+          },
+          "Column": {
+            "type": "integer",
+            "format": "int32",
+            "description": "UTF-8 byte column of the issue."
+          }
+        }
+      },
+      "ScriptIssues": {
+        "type": "object",
+        "properties": {
+          "Errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScriptIssue"
+            }
+          },
+          "Warnings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScriptIssue"
+            }
+          }
+        }
       },
       "ScriptLogList": {
         "type": "object",
@@ -74369,9 +74472,17 @@
             "type": "boolean",
             "description": "Is this a CSV dataset > 1GB?"
           },
+          "sizeInBytes": {
+            "type": "integer",
+            "description": "Size of the profiled dataset in bytes."
+          },
           "numberOfRows": {
             "type": "number",
             "description": "Number of rows in the dataset.\n\nWhen isLargeCsv is true, this is an estimate since their metadata is\nbased on a sample rather than the full dataset.\n\nFor datasets over 1GB, multiply `rows` (this) by `columns` (features\nincluded in experiment version) to calculate total `cells` to\nensure it stays under your license limit. Large CSVs have a hard\n100M cell limit.\n"
+          },
+          "experimentVersionId": {
+            "type": "string",
+            "description": "Optional experiment version ID. When included, it indicates that\nthis dataset profile is a snapshot from a previous version.\n"
           },
           "defaultVersionConfig": {
             "type": "object",
