@@ -43,15 +43,6 @@
         "parameters": [
           {
             "in": "query",
-            "name": "resourceId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "**Required**. Filter tasks by its target resource ID. If not provided, request will fail with 400 (Bad Request).\n"
-          },
-          {
-            "in": "query",
             "name": "limit",
             "schema": {
               "type": "integer",
@@ -70,6 +61,15 @@
             },
             "required": false,
             "description": "The page cursor."
+          },
+          {
+            "in": "query",
+            "name": "resourceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter tasks by its target resource ID.\n"
           },
           {
             "in": "query",

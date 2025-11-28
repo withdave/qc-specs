@@ -804,7 +804,8 @@
               "properties": {
                 "name": {
                   "type": "string",
-                  "description": "User name"
+                  "description": "User name",
+                  "x-qlik-deprecated": true
                 },
                 "type": {
                   "type": "string",

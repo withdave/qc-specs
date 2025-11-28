@@ -266,7 +266,8 @@
               ],
               "type": "string"
             },
-            "description": "response content type"
+            "required": false,
+            "description": "Optional; only 'application/octet-stream' is supported."
           }
         ],
         "description": "Exports the specified data integration project.",
@@ -946,6 +947,109 @@
             }
           },
           "required": false
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/request-reload": {
+      "post": {
+        "tags": [
+          "data task actions"
+        ],
+        "summary": "Mark datasets for reload on next task run",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReloadRequestResponse"
+                }
+              }
+            },
+            "description": "Reload request registered."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
+            "required": true,
+            "description": "Data task ID."
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
+            "required": true,
+            "description": "Data project ID."
+          }
+        ],
+        "description": "Registers a request to reload the datasets associated with the specified data task. The reload does not occur immediately; it will take effect on the next scheduled or manual run of the task.\n",
+        "operationId": "reload_task",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReloadDiTaskReq"
+              },
+              "examples": {
+                "example": {
+                  "value": {
+                    "reloadStrategy": "COMPARE_AND_APPLY",
+                    "selectedDatasets": [
+                      {
+                        "datasetId": "dataset-123"
+                      }
+                    ]
+                  },
+                  "summary": "Reload selected datasets on next run"
+                }
+              }
+            }
+          },
+          "required": true
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -2161,6 +2265,45 @@
             "description": "Allow recreation of existing artifacts"
           }
         }
+      },
+      "ReloadDiTaskReq": {
+        "type": "object",
+        "properties": {
+          "reloadStrategy": {
+            "enum": [
+              "NONE",
+              "TRUNCATE",
+              "COMPARE_AND_APPLY"
+            ],
+            "type": "string",
+            "description": "Reload strategy (optional, applies to materialized SQL transformations and transformation flows tasks)"
+          },
+          "selectedDatasets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "datasetId": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Datasets to reload (optional, if omitted or empty, all datasets will be reloaded)."
+          }
+        }
+      },
+      "ReloadRequestResponse": {
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Always true when the server successfully registers the request."
+          }
+        },
+        "description": "Indicates whether the reload request was registered successfully."
       },
       "TaskSelectionList": {
         "type": "array",
