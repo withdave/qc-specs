@@ -363,6 +363,7 @@
                       "folderId": {
                         "type": "string",
                         "format": "uuid",
+                        "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
                         "nullable": true,
                         "description": "If the specified file or folder should be moved to become a a sub-item of an existing folder, this is the ID\r\nof this parent folder.  Any additional folder path that is present on the Name property will be created\r\nas a subfolder hierarchy of this folder.  If the FolderID is null, the file or folder specified in the\r\nName property (including any folder prefix on that name), will be created in the root of the space."
                       },
@@ -1455,6 +1456,7 @@
           },
           "deleteAllFromPersonalSpace": {
             "type": "boolean",
+            "example": true,
             "nullable": true,
             "description": "If specified, attempt to delete all of the datafiles from ther user's personal space."
           }
@@ -1471,6 +1473,7 @@
           "change_space"
         ],
         "type": "string",
+        "example": "Read",
         "description": "<p>Members:</p><ul></ul>"
       },
       "DataFileUploadResponse": {
@@ -1575,6 +1578,7 @@
           "contentUpdatedDate": {
             "type": "string",
             "format": "date-time",
+            "example": "2020-07-07T20:52:40.8534780Z",
             "nullable": true,
             "description": "If the data file's content was updated, this is the DateTime of the last content update."
           }
@@ -1623,6 +1627,7 @@
           "DF-026"
         ],
         "type": "string",
+        "example": "HTTP-200",
         "description": "Fine-grained error codes for data-files REST operations.  For operations which do not have a more fine-grained\r\nerror code, the error code is set to the HTTP status code.<p>Members:</p><ul><li><i>DF-001</i> - The page cursor passed as a parameter to the GET operation is invalid.</li><li><i>DF-002</i> - The sort specification passed as a parameter to the GET operation is invalid.</li><li><i>DF-003</i> - FolderPath and FolderId are mutually exclusive, they cannot both be passed as parameters.</li><li><i>DF-004</i> - The provided FolderPath must be in canonical form.</li><li><i>DF-005</i> - The specified parent folder cannot be found.</li><li><i>DF-006</i> - The specified owner cannot be found.</li><li><i>DF-007</i> - A connection corresponding to the specified space cannot be found.</li><li><i>DF-008</i> - THe specified ID must correspond to a folder, not a file.</li><li><i>DF-009</i> - The specified space cannot be found.</li><li><i>DF-010</i> - The specified file name contains an invalid file extension.</li><li><i>DF-011</i> - The specified file name is missing a file extension.</li><li><i>DF-012</i> - The specified temporary content file could not be found.</li><li><i>DF-013</i> - Access to the specified space is forbidden.</li><li><i>DF-014</i> - The specified connection cannot be found.</li><li><i>DF-015</i> - The provided filename must be in canonical form.</li><li><i>DF-016</i> - The datafile size quota for the given personal space has been exceeded.</li><li><i>DF-017</i> - The specified source file or folder could not be found.</li><li><i>DF-018</i> - The source and target of a datafile operation must either both be folders or both be files, but they are\n            not.</li><li><i>DF-019</i> - The specified target folder is a child of the specified source folder, which is not allowed.</li><li><i>DF-020</i> - The specified folder does not exist in the specified space.</li><li><i>DF-021</i> - The specified source file or folder is already locked.</li><li><i>DF-022</i> - The automatic creation of a missing parent folder failed.</li><li><i>DF-023</i> - An attempt to lock a parent folder of a given data file item failed.</li><li><i>DF-024</i> - The attempt to copy a source file or folder to a target failed.</li><li><i>DF-025</i> - The specified target file or folder is already locked.</li><li><i>DF-026</i> - The request results in the creation of a folder hierarchy which is beyond the max allowed folder\n            hierarchy depth.</li></ul>"
       },
       "ErrorResponse": {
@@ -1777,6 +1782,7 @@
           "-spaceId"
         ],
         "type": "string",
+        "example": "spaceId",
         "description": "<p>Members:</p><ul></ul>"
       },
       "GetDataFileInfosResponse": {
@@ -1818,6 +1824,7 @@
           "-baseName"
         ],
         "type": "string",
+        "example": "name",
         "description": "<p>Members:</p><ul></ul>"
       },
       "LinkResponse": {
@@ -1912,6 +1919,7 @@
           "replace"
         ],
         "type": "string",
+        "example": "merge",
         "description": "If a SourceId is specified, and a folder is being updated by this PUT operation, this specifies how the\r\nsource folder contents should be applied to the target folder, if the target folder is not empty.  'merge'\r\nimplies the contents of the source folder should be merged with the existing target contents.  That is, all\r\nexisting direct or indirect child items in the target folder are replaced by the same items in the source folder.\r\nAll existing items in the target folder that are not present in the source folder are left, as is, in the target.\r\n'replace' implies the contents of the source folder should replace the contents of the target folder.  That is,\r\nall direct or indirect items in the target folder are removed before the items from the source folder are copied\r\nover.  The resulting target folder only contains the items from the source folder.  If not specified, the default\r\nbehavior is 'merge'.<p>Members:</p><ul></ul>"
       },
       "QuotaResponse": {
@@ -1952,14 +1960,18 @@
           "allowedExtensions": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "example string",
+              "description": "The allowed file extensions on files that are uploaded."
             },
             "description": "The allowed file extensions on files that are uploaded."
           },
           "allowedInternalExtensions": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "example string",
+              "description": "The allowed file extensions for files that are only used internally by the system (and thus not typically\r\nshown to end users)."
             },
             "description": "The allowed file extensions for files that are only used internally by the system (and thus not typically\r\nshown to end users)."
           }

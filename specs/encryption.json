@@ -1000,7 +1000,7 @@
             "type": "string",
             "description": "Description of key provider entry."
           },
-          "keyProvider": {
+          "keyprovider": {
             "enum": [
               "AWS-KMS"
             ],
