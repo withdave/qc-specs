@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.20",
+    "version": "1.0.21",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -21867,7 +21867,8 @@
                 "value": "65424a71c11367914c1e659b"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Get a specific data integration project.",
@@ -21946,7 +21947,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           },
           {
             "in": "header",
@@ -22044,7 +22045,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Imports a data integration project from a `.zip` file.",
@@ -22132,7 +22133,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Prepares the data integration project and its tasks for execution.",
@@ -22213,7 +22214,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Validates the data integration project and its tasks.",
@@ -22289,7 +22290,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           },
           {
             "in": "query",
@@ -22378,7 +22379,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Updates the export variables for a specific data integration project.",
@@ -22455,7 +22456,7 @@
               }
             },
             "required": true,
-            "description": "Data project id"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Lists data tasks within a given data integration project.",
@@ -22523,7 +22524,7 @@
               }
             },
             "required": true,
-            "description": "Data task id"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -22537,7 +22538,7 @@
               }
             },
             "required": true,
-            "description": "Data project id"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Get a specific data task within a project.",
@@ -22610,7 +22611,7 @@
               }
             },
             "required": true,
-            "description": "Data task id"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -22624,7 +22625,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Prepares the specified data task for execution.",
@@ -22654,7 +22655,7 @@
         "tags": [
           "data task actions"
         ],
-        "summary": "Mark datasets for reload on next task run",
+        "summary": "Request dataset reload",
         "responses": {
           "200": {
             "content": {
@@ -22700,7 +22701,7 @@
               }
             },
             "required": true,
-            "description": "Data task ID."
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -22714,7 +22715,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID."
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Registers a request to reload the datasets associated with the specified data task. The reload does not occur immediately; it will take effect on the next scheduled or manual run of the task.\n",
@@ -22808,7 +22809,7 @@
               }
             },
             "required": true,
-            "description": "Data task ID"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -22822,7 +22823,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Validates the specified data task.",
@@ -22891,7 +22892,7 @@
               }
             },
             "required": true,
-            "description": "Data task id"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -22905,7 +22906,7 @@
               }
             },
             "required": true,
-            "description": "Data project id"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Start a data task on a data integration project.",
@@ -22965,7 +22966,8 @@
                 "value": "task-cYSY"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -22978,7 +22980,8 @@
                 "value": "65424a71c11367914c1e659b"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Stop a data task on a data integration project.",
@@ -23045,7 +23048,8 @@
                 "value": "task-cYSY"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -23058,7 +23062,8 @@
                 "value": "65424a71c11367914c1e659b"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Get the current runtime state of a data task",
@@ -23129,7 +23134,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID of the data task"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -23138,7 +23143,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID of the project"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Returns dataset-level runtime state for a data task",
@@ -23194,7 +23199,7 @@
               }
             },
             "required": true,
-            "description": "Action ID"
+            "description": "Identifier of the action."
           },
           {
             "in": "query",
@@ -52953,7 +52958,7 @@
           },
           "published": {
             "type": "boolean",
-            "description": "True if the app is published on-prem, distributed in QCS, false if not."
+            "description": "For Qlik Cloud, indicates whether the app has been distributed from client-managed, not whether it has been published. To determine\nif the app is published in Qlik Cloud, check for a non-empty value in the publishTime field. For client-managed, determines if the app is published."
           },
           "thumbnail": {
             "type": "string",
@@ -52975,7 +52980,7 @@
           "publishTime": {
             "type": "string",
             "format": "date-time",
-            "description": "The date and time when the app was published, empty if unpublished."
+            "description": "The date and time when the app was published, empty if unpublished. Use to determine if an app is published in Qlik Cloud."
           },
           "dynamicColor": {
             "type": "string",
@@ -53530,7 +53535,7 @@
           },
           "connection": {
             "type": "string",
-            "description": "The connecton name."
+            "description": "The connection name."
           },
           "nbrOfFields": {
             "type": "integer",
@@ -53790,7 +53795,7 @@
           },
           "Info": {
             "type": "string",
-            "description": "Additional information like workarouds or clearifications."
+            "description": "Additional information like workarounds or clarifications."
           },
           "Line": {
             "type": "integer",

@@ -5473,7 +5473,7 @@
           },
           "published": {
             "type": "boolean",
-            "description": "True if the app is published on-prem, distributed in QCS, false if not."
+            "description": "For Qlik Cloud, indicates whether the app has been distributed from client-managed, not whether it has been published. To determine\nif the app is published in Qlik Cloud, check for a non-empty value in the publishTime field. For client-managed, determines if the app is published."
           },
           "thumbnail": {
             "type": "string",
@@ -5495,7 +5495,7 @@
           "publishTime": {
             "type": "string",
             "format": "date-time",
-            "description": "The date and time when the app was published, empty if unpublished."
+            "description": "The date and time when the app was published, empty if unpublished. Use to determine if an app is published in Qlik Cloud."
           },
           "dynamicColor": {
             "type": "string",
@@ -6040,7 +6040,7 @@
           },
           "connection": {
             "type": "string",
-            "description": "The connecton name."
+            "description": "The connection name."
           },
           "nbrOfFields": {
             "type": "integer",
@@ -6300,7 +6300,7 @@
           },
           "Info": {
             "type": "string",
-            "description": "Additional information like workarouds or clearifications."
+            "description": "Additional information like workarounds or clarifications."
           },
           "Line": {
             "type": "integer",

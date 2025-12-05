@@ -176,7 +176,8 @@
                 "value": "65424a71c11367914c1e659b"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Get a specific data integration project.",
@@ -255,7 +256,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           },
           {
             "in": "header",
@@ -353,7 +354,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Imports a data integration project from a `.zip` file.",
@@ -441,7 +442,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Prepares the data integration project and its tasks for execution.",
@@ -522,7 +523,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Validates the data integration project and its tasks.",
@@ -598,7 +599,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           },
           {
             "in": "query",
@@ -687,7 +688,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Updates the export variables for a specific data integration project.",
@@ -764,7 +765,7 @@
               }
             },
             "required": true,
-            "description": "Data project id"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Lists data tasks within a given data integration project.",
@@ -832,7 +833,7 @@
               }
             },
             "required": true,
-            "description": "Data task id"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -846,7 +847,7 @@
               }
             },
             "required": true,
-            "description": "Data project id"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Get a specific data task within a project.",
@@ -919,7 +920,7 @@
               }
             },
             "required": true,
-            "description": "Data task id"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -933,7 +934,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Prepares the specified data task for execution.",
@@ -963,7 +964,7 @@
         "tags": [
           "data task actions"
         ],
-        "summary": "Mark datasets for reload on next task run",
+        "summary": "Request dataset reload",
         "responses": {
           "200": {
             "content": {
@@ -1009,7 +1010,7 @@
               }
             },
             "required": true,
-            "description": "Data task ID."
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -1023,7 +1024,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID."
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Registers a request to reload the datasets associated with the specified data task. The reload does not occur immediately; it will take effect on the next scheduled or manual run of the task.\n",
@@ -1117,7 +1118,7 @@
               }
             },
             "required": true,
-            "description": "Data task ID"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -1131,7 +1132,7 @@
               }
             },
             "required": true,
-            "description": "Data project ID"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Validates the specified data task.",
@@ -1200,7 +1201,7 @@
               }
             },
             "required": true,
-            "description": "Data task id"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -1214,7 +1215,7 @@
               }
             },
             "required": true,
-            "description": "Data project id"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Start a data task on a data integration project.",
@@ -1274,7 +1275,8 @@
                 "value": "task-cYSY"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -1287,7 +1289,8 @@
                 "value": "65424a71c11367914c1e659b"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Stop a data task on a data integration project.",
@@ -1354,7 +1357,8 @@
                 "value": "task-cYSY"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -1367,7 +1371,8 @@
                 "value": "65424a71c11367914c1e659b"
               }
             },
-            "required": true
+            "required": true,
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Get the current runtime state of a data task",
@@ -1438,7 +1443,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID of the data task"
+            "description": "Identifier of the data task."
           },
           {
             "in": "path",
@@ -1447,7 +1452,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID of the project"
+            "description": "Identifier of the data project."
           }
         ],
         "description": "Returns dataset-level runtime state for a data task",
@@ -1503,7 +1508,7 @@
               }
             },
             "required": true,
-            "description": "Action ID"
+            "description": "Identifier of the action."
           },
           {
             "in": "query",
