@@ -829,6 +829,375 @@
           "limit": 100
         }
       }
+    },
+    "/api/v1/direct-access-agents/{agentId}/connectors/file-connector/files/allowed-paths": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get connector allowed paths configuration",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileConnectorAllowedPathsResponse"
+                }
+              }
+            },
+            "description": "The list of configuration values from the file."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          }
+        ],
+        "description": "Retrieves the allowed paths settings for the File Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
+        "operationId": "getConnectorFileListAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Set connector allowed paths configuration",
+        "responses": {
+          "204": {
+            "description": "Updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent id"
+          }
+        ],
+        "description": "Completely replaces the contents of the allowed paths configuration file for the File Connector. Partial updates are not supported. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.6+.",
+        "operationId": "putConnectorFlatFileConfigurationAsync",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFileConnectorAllowedPathsRequest"
+              }
+            }
+          },
+          "description": "The contents of the file to be updated"
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/direct-access-agents/{agentId}/connectors/odbc-connector/files/custom-data-type-mappings": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get connector type mapping configuration",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdbcCustomDataTypeResponse"
+                }
+              }
+            },
+            "description": "The list of configuration values from the file."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          }
+        ],
+        "description": "Retrieves the custom data type mapping settings for the Generic ODBC Connector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
+        "operationId": "getOdbcCustomTypeMappingsAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Set connector type mapping configuration",
+        "responses": {
+          "204": {
+            "description": "Updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          }
+        ],
+        "description": "Completely replaces the contents of the custom data type mapping configuration file for the Generic ODBC connector. Partial updates are not supported. There are property naming differences between the API and the file contents. Use the API property format when making changes. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.5+.",
+        "operationId": "putOdbcCustomTypeMappingsAsync",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOdbcCustomTypeMappingsRequest"
+              }
+            }
+          },
+          "description": "The contents of the file to be updated."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/direct-access-agents/{agentId}/tools/metrics-collector/configuration": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get metrics collector settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricsCollectorSettingsApiResponseConnectorConfigurationResponse"
+                }
+              }
+            },
+            "description": "The list of configuration values from the file."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          }
+        ],
+        "description": "Retrieves the settings for the metrics collector. Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.9+.",
+        "operationId": "getMetricsCollectorSettingsAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Set metrics collector settings",
+        "responses": {
+          "204": {
+            "description": "Updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID."
+          }
+        ],
+        "description": "Completely replaces the contents of the metrics collector settings configuration file. Partial updates are not supported.  Requestor must be assigned the `TenantAdmin` role. Available in Direct Access Gateway V1.7.9+.",
+        "operationId": "putMetricsCollectorSettingsAsync",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMetricsCollectorSettingsRequest"
+              }
+            }
+          },
+          "description": "The contents of the file to be updated."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
     }
   },
   "x-qlik-categories": [],
@@ -1104,6 +1473,49 @@
         },
         "additionalProperties": false
       },
+      "FileConnectorAllowedPath": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "example": "\\\\\\\\Server\\\\Share\\\\example",
+            "minLength": 1,
+            "description": "The Path property in the File connector allowed paths file."
+          },
+          "spaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Foo",
+              "Bar"
+            ],
+            "nullable": true,
+            "description": "The Spaces property in the Odbc custom type mappings file."
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileConnectorAllowedPathsResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileConnectorAllowedPath"
+            },
+            "nullable": true
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "additionalProperties": false
+      },
       "GetBenchmarkStatusResponse": {
         "type": "object",
         "properties": {
@@ -1181,6 +1593,196 @@
             "type": "string",
             "nullable": true,
             "description": "The URL to the related resource"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MetricsCollectorConnectorConfigurationApiResponse": {
+        "type": "object",
+        "required": [
+          "metricsCollectionEnabled",
+          "scrapeIntervalSeconds"
+        ],
+        "properties": {
+          "scrapeIntervalSeconds": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Frequency in seconds at which metrics are collected from this connector."
+          },
+          "metricsCollectionEnabled": {
+            "type": "boolean",
+            "description": "Indicates whether metrics collection is enabled for this connector."
+          }
+        },
+        "additionalProperties": false
+      },
+      "MetricsCollectorConnectorConfigurationsApiResponse": {
+        "type": "object",
+        "properties": {
+          "fileConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorConnectorConfigurationApiResponse"
+          },
+          "odbcConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorConnectorConfigurationApiResponse"
+          },
+          "restConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorConnectorConfigurationApiResponse"
+          },
+          "systemMetrics": {
+            "$ref": "#/components/schemas/MetricsCollectorConnectorConfigurationApiResponse"
+          },
+          "connectorAgent": {
+            "$ref": "#/components/schemas/MetricsCollectorConnectorConfigurationApiResponse"
+          },
+          "sapBwConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorConnectorConfigurationApiResponse"
+          },
+          "sapSqlConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorConnectorConfigurationApiResponse"
+          },
+          "sapPackageConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorConnectorConfigurationApiResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MetricsCollectorIndividualConnectorConfigurationRequest": {
+        "type": "object",
+        "required": [
+          "metricsCollectionEnabled",
+          "scrapeIntervalSeconds"
+        ],
+        "properties": {
+          "scrapeIntervalSeconds": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Frequency in seconds at which metrics are collected from this connector."
+          },
+          "metricsCollectionEnabled": {
+            "type": "boolean",
+            "description": "Indicates whether metrics collection is enabled for this connector."
+          }
+        },
+        "additionalProperties": false
+      },
+      "MetricsCollectorSettings": {
+        "type": "object",
+        "required": [
+          "baseScrapeIntervalSeconds",
+          "dataRetentionCheckIntervalMinutes",
+          "enabled",
+          "localDataRetentionDays",
+          "port"
+        ],
+        "properties": {
+          "port": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The port number that the metrics collector API will run on.\nThis must match the port that the SYSTEM connector runs on to enable network metrics collection."
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Indicates whether the metrics collector is enabled."
+          },
+          "localDataRetentionDays": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The number of days to retain local data."
+          },
+          "baseScrapeIntervalSeconds": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The base interval in seconds for the metrics collection loop.\nThis defines how frequently the collector checks whether to scrape each connector, not the interval at which each connector is scraped. Must be equal to or less than the lowest individual connector scrape interval."
+          },
+          "localDatabaseFileLocation": {
+            "type": "string",
+            "nullable": true,
+            "description": "The file location for the local metrics database. If not specified, defaults to `C:\\ProgramData\\Qlik\\Gateway\\tmp`."
+          },
+          "dataRetentionCheckIntervalMinutes": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The interval in minutes the metrics collector checks for and deletes old data."
+          }
+        },
+        "additionalProperties": false
+      },
+      "MetricsCollectorSettingsApiResponse": {
+        "type": "object",
+        "properties": {
+          "connectorConfigurations": {
+            "$ref": "#/components/schemas/MetricsCollectorConnectorConfigurationsApiResponse"
+          },
+          "metricsCollectorSettings": {
+            "$ref": "#/components/schemas/MetricsCollectorSettings"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MetricsCollectorSettingsApiResponseConnectorConfigurationResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/MetricsCollectorSettingsApiResponse"
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OdbcCustomDataType": {
+        "type": "object",
+        "required": [
+          "id",
+          "nativeDataType",
+          "qlikDataType"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "Amazon Athena ODBC (x64)",
+            "minLength": 1,
+            "description": "The Identifier property in the ODBC custom data type mapping file."
+          },
+          "bit": {
+            "type": "boolean",
+            "example": true,
+            "description": "The IsBit property in the ODBC custom data type mapping file."
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0,
+            "description": "The Size property in the ODBC custom data type mapping file."
+          },
+          "qlikDataType": {
+            "type": "string",
+            "example": "String",
+            "minLength": 1,
+            "description": "The QlikDataType property in the ODBC custom data type mapping file."
+          },
+          "nativeDataType": {
+            "type": "string",
+            "example": "varchar",
+            "minLength": 1,
+            "description": "The NativeDataType property in the ODBC custom data type mapping file."
+          }
+        },
+        "additionalProperties": false
+      },
+      "OdbcCustomDataTypeResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OdbcCustomDataType"
+            },
+            "nullable": true
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorResponse"
           }
         },
         "additionalProperties": false
@@ -1305,6 +1907,140 @@
           }
         },
         "description": "The request to update a connector flat file",
+        "additionalProperties": false
+      },
+      "UpdateFileConnectorAllowedPathsRequest": {
+        "type": "object",
+        "properties": {
+          "fileConnectorAllowedPaths": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileConnectorAllowedPath"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateMetricsCollectorConnectorConfigurationsRequest": {
+        "type": "object",
+        "required": [
+          "connectorAgent",
+          "fileConnector",
+          "odbcConnector",
+          "restConnector",
+          "sapBwConnector",
+          "sapPackageConnector",
+          "sapSqlConnector",
+          "systemMetrics"
+        ],
+        "properties": {
+          "fileConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorIndividualConnectorConfigurationRequest"
+          },
+          "odbcConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorIndividualConnectorConfigurationRequest"
+          },
+          "restConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorIndividualConnectorConfigurationRequest"
+          },
+          "systemMetrics": {
+            "$ref": "#/components/schemas/MetricsCollectorIndividualConnectorConfigurationRequest"
+          },
+          "connectorAgent": {
+            "$ref": "#/components/schemas/MetricsCollectorIndividualConnectorConfigurationRequest"
+          },
+          "sapBwConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorIndividualConnectorConfigurationRequest"
+          },
+          "sapSqlConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorIndividualConnectorConfigurationRequest"
+          },
+          "sapPackageConnector": {
+            "$ref": "#/components/schemas/MetricsCollectorIndividualConnectorConfigurationRequest"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateMetricsCollectorSettings": {
+        "type": "object",
+        "required": [
+          "baseScrapeIntervalSeconds",
+          "dataRetentionCheckIntervalMinutes",
+          "enabled",
+          "localDatabaseFileLocation",
+          "localDataRetentionDays",
+          "port"
+        ],
+        "properties": {
+          "port": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 65535,
+            "minimum": 1,
+            "description": "The port number that the metrics collector API will run on.\nThis must match the port that the SYSTEM connector runs on to enable network metrics collection."
+          },
+          "enabled": {
+            "type": "boolean",
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Indicates whether the metrics collector is enabled."
+          },
+          "localDataRetentionDays": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647,
+            "minimum": 1,
+            "description": "The number of days to retain local data."
+          },
+          "baseScrapeIntervalSeconds": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647,
+            "minimum": 1,
+            "description": "The base interval in seconds for the metrics collection loop.\nThis defines how frequently the collector checks whether to scrape each connector, not the interval at which each connector is scraped. Must be equal to or less than the lowest individual connector scrape interval."
+          },
+          "localDatabaseFileLocation": {
+            "type": "string",
+            "description": "The file location for the local metrics database. If not specified, defaults to `C:\\ProgramData\\Qlik\\Gateway\\tmp`."
+          },
+          "dataRetentionCheckIntervalMinutes": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647,
+            "minimum": 1,
+            "description": "The interval in minutes the metrics collector checks for and deletes old data."
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateMetricsCollectorSettingsRequest": {
+        "type": "object",
+        "required": [
+          "connectorConfigurations",
+          "metricsCollectorSettings"
+        ],
+        "properties": {
+          "connectorConfigurations": {
+            "$ref": "#/components/schemas/UpdateMetricsCollectorConnectorConfigurationsRequest"
+          },
+          "metricsCollectorSettings": {
+            "$ref": "#/components/schemas/UpdateMetricsCollectorSettings"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateOdbcCustomTypeMappingsRequest": {
+        "type": "object",
+        "properties": {
+          "odbcCustomDataTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OdbcCustomDataType"
+            },
+            "nullable": true
+          }
+        },
         "additionalProperties": false
       }
     }

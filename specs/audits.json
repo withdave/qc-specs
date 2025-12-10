@@ -423,7 +423,7 @@
             "description": "The JWT is used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
           }
         ],
-        "description": "Retrieves audit events from long term storage. Finds and returns audit events from the archive, formatted as a JSON array, for the given date and tenant (in JWT). Archived events are not removed.",
+        "description": "Retrieves audit events from long-term storage. Returns all archived audit events for the specified date and tenant, formatted as a JSON array.\nArchived events are retained for the full lifetime of the tenant, and are not removed or size-limited.\n",
         "operationId": "archive",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
