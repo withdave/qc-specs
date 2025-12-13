@@ -1220,6 +1220,16 @@
         ],
         "description": "Start a data task on a data integration project.",
         "operationId": "start_data_task",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartTaskReq"
+              }
+            }
+          },
+          "required": false
+        },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-categories": [
@@ -2309,6 +2319,24 @@
           }
         },
         "description": "Indicates whether the reload request was registered successfully."
+      },
+      "StartTaskReq": {
+        "type": "object",
+        "properties": {
+          "option": {
+            "enum": [
+              "PROCESS_CHANGES_FROM_TIMESTAMP",
+              "PROCESS_CHANGES_FROM_POSITION",
+              "RECOVER_USING_LOCALLY_STORED_CHECKPOINT"
+            ],
+            "type": "string",
+            "description": "Task run option for the task (optional, applies to Replication tasks only)."
+          },
+          "processChangesFrom": {
+            "type": "string",
+            "description": "The value indicating where to resume the process, either a timestamp or an offset depending on the run option (optional, applies to Replication tasks only)."
+          }
+        }
       },
       "TaskSelectionList": {
         "type": "array",
