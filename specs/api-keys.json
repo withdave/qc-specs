@@ -841,13 +841,12 @@
           },
           "path": {
             "enum": [
-              "/api_keys_enabled",
               "/max_api_key_expiry",
               "/max_keys_per_user",
               "/scim_externalClient_expiry"
             ],
             "type": "string",
-            "description": "The path for the given resource field to patch. The '/api_keys_enabled' option is deprecated and will be removed in a future release."
+            "description": "The path for the given resource field to patch."
           },
           "value": {
             "description": "The value to be used for this operation."
@@ -887,12 +886,6 @@
       "ApiKeysConfig": {
         "type": "object",
         "properties": {
-          "api_keys_enabled": {
-            "type": "boolean",
-            "default": false,
-            "description": "Enables or disables user API key functionality for the specified tenant.",
-            "x-qlik-deprecated": true
-          },
           "max_keys_per_user": {
             "type": "number",
             "default": 5,
@@ -922,8 +915,8 @@
         "example": [
           {
             "op": "replace",
-            "path": "/api_keys_enabled",
-            "value": true
+            "path": "/max_keys_per_user",
+            "value": 10
           }
         ]
       },
