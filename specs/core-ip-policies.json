@@ -1,0 +1,981 @@
+{
+  "info": {
+    "title": "core/ip-policies",
+    "version": ""
+  },
+  "paths": {
+    "/api/core/ip-policies": {
+      "get": {
+        "tags": [
+          "iam-resources"
+        ],
+        "summary": "List IP policies",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListIPPoliciesResult"
+                }
+              }
+            },
+            "description": "IP policies retrieved successfully. The response includes an array of IP policies and pagination links."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request parameters for querying IP policies."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT is invalid or not provided."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "schema": {
+              "type": "string"
+            },
+            "description": "A comma-separated list of fields to limit in the response."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://datatracker.ietf.org/doc/rfc7644/) for the syntax. All conditional statements within this query parameter are case insensitive.\n\nfield \"enabled\" supports following operators: eq\n\nfield \"id\" supports following operators: eq, ne\n\nfield \"name\" supports following operators: eq, co\n\nfield \"tenantId\" supports following operators: eq\n"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The number of IP policies to retrieve.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "omitempty,max=100,min=1"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string",
+              "example": "a435jfb2"
+            },
+            "description": "The page cursor. Takes precedence over other parameters."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "enabled",
+                "+enabled",
+                "-enabled",
+                "createdAt",
+                "+createdAt",
+                "-createdAt",
+                "updatedAt",
+                "+updatedAt",
+                "-updatedAt",
+                "name",
+                "+name",
+                "-name"
+              ],
+              "type": "string"
+            },
+            "description": "Optional resource field name to sort on, eg. name. Can be prefixed with +/- to determine order, defaults to (+) ascending.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "omitempty,oneof=enabled +enabled -enabled createdAt +createdAt -createdAt updatedAt +updatedAt -updatedAt name +name -name"
+            }
+          },
+          {
+            "in": "query",
+            "name": "totalResults",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Determines whether to return a count of the total records matched in the query. Defaults to false."
+          }
+        ],
+        "description": "Returns a list of IP policies present in the tenant. The user must be assigned the `TenantAdmin` role.",
+        "operationId": "getIPPolicies",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "iam-resources"
+        ],
+        "summary": "Create an IP policy",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IPPolicyResource"
+                }
+              }
+            },
+            "description": "Request successfully completed."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request body."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "IP Policy ID not found or Invalid format."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          }
+        },
+        "description": "Creates a new IPv4 IP policy in the tenant. If this is the first enabled policy, IP allowlisting will be enabled and access via other IP addresses will be blocked. The user's IP address must be present in at least one policy if allowlisting is enabled. The user must be assigned the `TenantAdmin` role. IPv6 IP addresses are not currently supported.",
+        "operationId": "createIPPolicy",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIPPolicy"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/core/ip-policies/{id}": {
+      "get": {
+        "tags": [
+          "iam-resources"
+        ],
+        "summary": "Get an IP policy",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IPPolicyResource"
+                }
+              }
+            },
+            "description": "Request successfully completed."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT is invalid or not provided."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "IP Policy ID not found or Invalid format."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The IP policy unique identifier"
+          }
+        ],
+        "description": "Retrieves details for a specific IP policy by policy ID.",
+        "operationId": "getIPPolicyByID",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "iam-resources"
+        ],
+        "summary": "Update an IP policy",
+        "responses": {
+          "204": {
+            "description": "IP policy updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request body."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT is invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Access Denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "IP policy ID not found or Invalid format."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier for the IP policy."
+          }
+        ],
+        "description": "Updates the IP policy. If this is the first enabled policy in the tenant, IP allowlisting will be enabled and access via other IP addresses will be blocked. The user's IP address must be present in at least one policy if allowlisting is enabled. The user must be assigned the `TenantAdmin` role.",
+        "operationId": "updateIPPolicyByID",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JSONPatchArray"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "iam-resources"
+        ],
+        "summary": "Delete an IP policy",
+        "responses": {
+          "204": {
+            "description": "IP policy deleted successfully."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT is invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Access Denied."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "IP policy ID not found or Invalid format."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier for the IP policy."
+          }
+        ],
+        "description": "Deletes an IP policy by ID. If this is the last enabled policy in the tenant, IP allowlisting will be disabled and access will be permitted via all IP addresses. The user's IP address must be present in at least one other policy if allowlisting is enabled. The user must be assigned the `TenantAdmin` role.",
+        "operationId": "deleteIPPolicyByID",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "CreateIPPolicy": {
+        "type": "object",
+        "required": [
+          "allowedIps"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Allow access from office IP addresses.",
+            "description": "The descriptive name for the IP policy.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "required,max=1000,min=1"
+            }
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false,
+            "example": true,
+            "description": "Indicates whether the IP policy is enabled."
+          },
+          "allowedIps": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "61.254.213.0/24",
+              "description": "An IPv4 address or IPv4 CIDR range to allow."
+            },
+            "example": [
+              "61.254.213.0/24",
+              "22.46.216.142"
+            ],
+            "description": "An array of allowed IP IPv4 addresses, either as plain IP addresses, or as CIDR ranges.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "required,max=100,min=1,unique,dive,cidrv4|ipv4"
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON Pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          }
+        },
+        "description": "An error object describing the error."
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "CODE-10402",
+              "title": "Not Found"
+            }
+          ],
+          "traceId": "0000000000000000200ba0714061b982"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "An array of errors related to the operation."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique identifier for tracing the error."
+          }
+        },
+        "description": "The error response object describing the error from the handling of an HTTP request."
+      },
+      "IPPolicyListItem": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "description": "The unique identifier for the IP policy.",
+            "x-qlik-filterable": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Allow access from office IP addresses.",
+            "description": "The descriptive name for the IP policy.",
+            "x-qlik-filterable": true
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the IP policy is enabled."
+          },
+          "editable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the IP policy can be updated."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "644fd58b846d649c82eba436",
+            "description": "The tenant unique identifier associated with the given IP policy.",
+            "x-qlik-filterable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-03-21T17:32:28Z",
+            "description": "The timestamp for when the resource was created.",
+            "x-qlik-filterable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "507f191e810c19729de860ea",
+            "description": "The user ID of the user who created the IP policy."
+          },
+          "deletable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the IP policy can be deleted."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-03-22T10:01:02Z",
+            "description": "The timestamp for when the resource was last updated.",
+            "x-qlik-filterable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "example": "507f191e810c19729de860ea",
+            "description": "The user ID of the user who last updated the IP policy."
+          },
+          "allowedIps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "61.254.213.0/24",
+              "22.46.216.142"
+            ],
+            "description": "An array of allowed IP addresses."
+          },
+          "toggleable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the IP policy can be enabled/disabled."
+          }
+        }
+      },
+      "IPPolicyResource": {
+        "type": "object",
+        "required": [
+          "id",
+          "tenantId",
+          "name",
+          "enabled",
+          "editable",
+          "deletable",
+          "toggleable",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy",
+          "allowedIps"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "x-go-name": "ID",
+            "description": "The unique identifier for the IP policy.",
+            "x-qlik-filterable": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Allow access from office IP addresses.",
+            "description": "The descriptive name for the IP policy.",
+            "x-qlik-filterable": true
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the IP policy is enabled."
+          },
+          "editable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the IP policy can be updated."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "644fd58b846d649c82eba436",
+            "x-go-name": "TenantID",
+            "description": "The tenant unique identifier associated with the given IP policy.",
+            "x-qlik-filterable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-03-21T17:32:28Z",
+            "description": "The timestamp for when the IP policy was created.",
+            "x-qlik-filterable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "507f191e810c19729de860ea",
+            "description": "The user ID of the user who created the IP policy."
+          },
+          "deletable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the IP policy can be deleted."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-03-22T10:01:02Z",
+            "description": "The timestamp for when the IP policy was last updated.",
+            "x-qlik-filterable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "example": "507f191e810c19729de860ea",
+            "description": "The user ID of the user who last updated the IP policy."
+          },
+          "allowedIps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "61.254.213.0/24",
+              "22.46.216.142"
+            ],
+            "x-go-name": "AllowedIPs",
+            "description": "An array of allowed public IPv4 addresses."
+          },
+          "toggleable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the IP policy can be enabled/disabled.."
+          }
+        }
+      },
+      "JSONPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "required,oneof=replace"
+            }
+          },
+          "path": {
+            "enum": [
+              "/enabled",
+              "/name",
+              "/allowedIps"
+            ],
+            "type": "string",
+            "description": "A JSON Pointer.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "required,oneof=/enabled /name /allowedIps"
+            }
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "x-go-type": "any",
+            "description": "The value to be used for this operation."
+          }
+        },
+        "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "JSONPatchArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/JSONPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": "New name"
+          },
+          {
+            "op": "replace",
+            "path": "/allowedIps",
+            "value": [
+              "61.254.213.0/24",
+              "22.46.216.142"
+            ]
+          },
+          {
+            "op": "replace",
+            "path": "/enabled",
+            "value": true
+          }
+        ],
+        "description": "An array of JSON Patch documents"
+      },
+      "Link": {
+        "type": "object",
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://mytenant.us.qlikcloud.com/api/core/ip-policies?page=QaFdFYW6pImZvRgFaDyB1UffNgfs4mRd"
+          }
+        },
+        "description": "A link"
+      },
+      "Links": {
+        "type": "object",
+        "required": [
+          "self"
+        ],
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          }
+        },
+        "description": "Contains pagination links. self is a link to the current results page, next is a link to the next results page and prev is a link to the previous results page"
+      },
+      "ListIPPoliciesResult": {
+        "type": "object",
+        "required": [
+          "links",
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IPPolicyListItem"
+            },
+            "description": "An array of IP policies."
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "totalResults": {
+            "type": "integer",
+            "description": "Indicates the total number of matching documents. Will only be returned if the query parameter \"totalResults\" is true."
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}
