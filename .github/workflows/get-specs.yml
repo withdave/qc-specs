@@ -1,6 +1,5 @@
 name: Update API specs
 
-
 on:
   schedule:
     - cron: "0 0 * * *"
@@ -76,21 +75,28 @@ jobs:
             fi
             
             for url in $api_urls; do
-              api_name=$(echo "$url" | sed -E 's|.*/([^/]+)/?$|\1|')
+              # Extract everything after /apis/rest/ to support namespaced APIs
+              api_path=$(echo "$url" | sed -E 's|^https://qlik.dev/apis/rest/||' | sed 's|/$||')
+              
+              # Extract just the last part for the exclusion check
+              api_name=$(echo "$api_path" | sed -E 's|.*/([^/]+)$|\1|')
               
               [[ "$api_name" == "rate-limiting" || "$api_name" == "pagination-sorting-filtering" || "$api_name" == "rest" ]] && continue
               
-              echo "Processing API: $api_name"
-              spec_url="https://qlik.dev/specs/rest/$api_name.json"
+              # Convert path to filename by replacing / with -
+              filename=$(echo "$api_path" | tr '/' '-')
+              
+              echo "Processing API: $api_path"
+              spec_url="https://qlik.dev/specs/rest/$api_path.json"
               echo "Processing API URL: $spec_url"
-              response_code=$(curl -s -o "specs/$api_name.json" -w "%{http_code}" "$spec_url")
-              downloaded_specs["$api_name.json"]=1
+              response_code=$(curl -s -o "specs/$filename.json" -w "%{http_code}" "$spec_url")
+              downloaded_specs["$filename.json"]=1
               
               if [[ "$response_code" == "200" ]]; then
                 echo "✅ $spec_url found (HTTP $response_code)"
               else
                 echo "❌ $spec_url not found (HTTP $response_code)"
-                rm -f "specs/$api_name.json"
+                rm -f "specs/$filename.json"
               fi
             done
           done
