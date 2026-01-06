@@ -195,7 +195,7 @@
             "description": "The volume of data in GB to transfer during the throughput measurement part of the benchmark."
           }
         ],
-        "description": "Starts a background benchmark task to measure the performance of a Direct Access agent. Use this endpoint to evaluate agent throughput and latency for capacity planning and performance optiization. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "description": "Starts a background benchmark task to measure the performance of a Direct Access agent. Use this endpoint to evaluate agent throughput and latency for capacity planning and performance optimization. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
         "operationId": "runBenchmark",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -835,7 +835,7 @@
         "tags": [
           "direct-access-agent-configuration"
         ],
-        "summary": "Get connector allowed paths configuration",
+        "summary": "Get file connector allowed paths configuration",
         "responses": {
           "200": {
             "content": {
@@ -1920,6 +1920,7 @@
             "nullable": true
           }
         },
+        "description": "The request to update file connector allowed paths configuration",
         "additionalProperties": false
       },
       "UpdateMetricsCollectorConnectorConfigurationsRequest": {
