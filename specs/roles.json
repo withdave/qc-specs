@@ -806,7 +806,7 @@
           },
           "name": {
             "type": "string",
-            "example": "Developer",
+            "example": "My Custom Role",
             "description": "The name of the role.",
             "x-qlik-filterable": true
           },
@@ -816,7 +816,7 @@
               "custom"
             ],
             "type": "string",
-            "example": "default",
+            "example": "custom",
             "description": "The type of role.",
             "x-qlik-filterable": true
           },
@@ -826,7 +826,7 @@
               "user"
             ],
             "type": "string",
-            "example": "admin",
+            "example": "user",
             "description": "The level of access associated to the role.",
             "x-qlik-filterable": true
           },
@@ -897,7 +897,7 @@
           },
           "description": {
             "type": "string",
-            "example": "Grants permission to generate API keys",
+            "example": "Grants permission to edit resource 'foo'",
             "description": "Descriptive text for the role.",
             "x-qlik-filterable": true
           },

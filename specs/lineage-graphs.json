@@ -408,7 +408,7 @@
         "tags": [
           "impact"
         ],
-        "summary": "Get all levels of requested root node",
+        "summary": "Get impact sources",
         "responses": {
           "200": {
             "content": {
@@ -965,7 +965,7 @@
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Create first generation upstream direct lineage\n",
+        "summary": "Get lineage overview\n",
         "responses": {
           "200": {
             "content": {
@@ -1140,6 +1140,7 @@
         "properties": {
           "id": {
             "type": "string",
+            "example": "1",
             "nullable": true,
             "description": "The index of edges. This is only used in the POST request."
           },
@@ -1199,7 +1200,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -1227,7 +1229,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -1255,7 +1258,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -1269,6 +1273,26 @@
           "title": {
             "type": "string",
             "example": "Too many requests"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-429"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Too Many Requests"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "User rate limited."
+                }
+              }
+            }
           }
         }
       },
@@ -1287,7 +1311,7 @@
                 "meta": {
                   "type": "object",
                   "example": "{\"id\":\"e5c651d5-1198-45a2-be5d-f016cee0baf5\"}",
-                  "description": "The meta contains additional inforomation when requests fail due to internal errors."
+                  "description": "The meta contains additional information when requests fail due to internal errors."
                 },
                 "title": {
                   "type": "string",
@@ -1301,7 +1325,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -1329,7 +1354,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -1337,7 +1363,8 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": "string"
+            "type": "string",
+            "example": "RESOURCE"
           },
           "edges": {
             "type": "array",
@@ -1347,6 +1374,7 @@
           },
           "label": {
             "type": "string",
+            "example": "Sales Data",
             "description": "Label string for this graph."
           },
           "nodes": {
@@ -1354,6 +1382,7 @@
           },
           "directed": {
             "type": "boolean",
+            "example": true,
             "description": "Returns true if the graph is directed."
           },
           "metadata": {
@@ -1361,10 +1390,12 @@
             "properties": {
               "total": {
                 "type": "integer",
+                "example": 1,
                 "description": "The total number of nodes retrieved in this graph."
               },
               "createdAt": {
                 "type": "string",
+                "example": "2023-10-05T14:48:00.000Z",
                 "description": "The date and time when the graph is created."
               },
               "producerId": {
@@ -1373,7 +1404,8 @@
                 "description": "The id (QRI) of the graph producer."
               },
               "specVersion": {
-                "type": "string"
+                "type": "string",
+                "example": 1
               },
               "producerType": {
                 "type": "string",
@@ -1398,7 +1430,8 @@
           "graphs": {
             "$ref": "#/components/schemas/graphs"
           }
-        }
+        },
+        "description": "Populating graph property on single level request and graphs property on multi level requests."
       },
       "graphResponse": {
         "type": "object",
@@ -1442,6 +1475,7 @@
           },
           "tableLabel": {
             "type": "string",
+            "example": "Sales Table",
             "nullable": true,
             "description": "Table level label"
           },
@@ -1453,6 +1487,7 @@
           },
           "resourceLabel": {
             "type": "string",
+            "example": "Sales Data",
             "nullable": true,
             "description": "Resource level label"
           }
@@ -1491,9 +1526,11 @@
       },
       "node": {
         "type": "object",
+        "example": "{\"label\":\"a\",\"metadata\":{\"id\":\"qri:app:sense://3634fc0d-273d-429e-8d0b-1b4b1b66a1f2\",\"subtype\":\"PROCESSOR\",\"type\":\"DA_APP\",\"filePath\":\"example.qvd\"}}",
         "properties": {
           "label": {
             "type": "string",
+            "example": "example.qvd",
             "description": "Name label of the node."
           },
           "metadata": {

@@ -959,6 +959,101 @@
         }
       }
     },
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/recreate-datasets": {
+      "post": {
+        "tags": [
+          "data task actions"
+        ],
+        "summary": "Recreate task datasets",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncActionRsp"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/AsyncActionLocation"
+              }
+            },
+            "description": "Started recreating datasets"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task or project not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data task."
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data project."
+          }
+        ],
+        "description": "Recreates datasets in the specified data task.",
+        "operationId": "recreate_task_datasets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecreateTaskDatasetsReq"
+              }
+            }
+          },
+          "required": false
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/request-reload": {
       "post": {
         "tags": [
@@ -1847,6 +1942,34 @@
             "type": "string",
             "description": "Id of the dataset"
           },
+          "streaming": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "QUEUED",
+                  "RUNNING",
+                  "ERROR"
+                ],
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "parseIssueCount": {
+                "type": "number",
+                "description": "Number of records that had parsing issues"
+              },
+              "recordsWrittenCount": {
+                "type": "number",
+                "description": "Total number of records written to the dataset"
+              },
+              "recordsFilteredCount": {
+                "type": "number",
+                "description": "Total number of records filtered out and not written to the dataset"
+              }
+            }
+          },
           "sourceName": {
             "type": "string",
             "description": "Original name of the dataset, relevant only for data movement tasks"
@@ -2012,6 +2135,31 @@
             "format": "date-time",
             "description": "Timestamp indicating when the task instance started"
           },
+          "streaming": {
+            "type": "object",
+            "properties": {
+              "latency": {
+                "type": "string",
+                "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+              },
+              "errorCount": {
+                "type": "number",
+                "description": "Number of streaming datasets that have encountered errors"
+              },
+              "queuedCount": {
+                "type": "number",
+                "description": "Number of streaming datasets that are queued"
+              },
+              "runningCount": {
+                "type": "number",
+                "description": "Number of streaming datasets that are currently running"
+              },
+              "totalProcessedCount": {
+                "type": "number",
+                "description": "Total number of records processed"
+              }
+            }
+          },
           "lastBatchOfChanges": {
             "type": "object",
             "properties": {
@@ -2104,7 +2252,9 @@
           "KNOWLEDGE_MART",
           "FILE_BASED_KNOWLEDGE_MART",
           "LAKEHOUSE_STORAGE",
-          "LAKEHOUSE_MIRROR"
+          "LAKEHOUSE_MIRROR",
+          "STREAMING_LAKE_LANDING",
+          "STREAMING_TRANSFORM"
         ],
         "type": "string",
         "x-enum-varnames": [
@@ -2119,7 +2269,9 @@
           "KNOWLEDGE_MART",
           "FILE_BASED_KNOWLEDGE_MART",
           "LAKEHOUSE_STORAGE",
-          "LAKEHOUSE_MIRROR"
+          "LAKEHOUSE_MIRROR",
+          "STREAMING_LAKE_LANDING",
+          "STREAMING_TRANSFORM"
         ]
       },
       "DiProjectItemRsp": {
@@ -2280,6 +2432,10 @@
             "description": "Allow recreation of existing artifacts"
           }
         }
+      },
+      "RecreateTaskDatasetsReq": {
+        "type": "object",
+        "description": "Request body to recreate task datasets."
       },
       "ReloadDiTaskReq": {
         "type": "object",

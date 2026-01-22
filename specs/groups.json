@@ -908,7 +908,7 @@
             },
             "name": {
               "type": "string",
-              "example": "Developer",
+              "example": "A Custom Role",
               "readOnly": true,
               "description": "The role name"
             },
@@ -918,7 +918,7 @@
                 "custom"
               ],
               "type": "string",
-              "example": "default",
+              "example": "custom",
               "readOnly": true,
               "description": "The type of role"
             },
@@ -928,7 +928,7 @@
                 "user"
               ],
               "type": "string",
-              "example": "admin",
+              "example": "user",
               "readOnly": true,
               "description": "The role level"
             }
@@ -1245,7 +1245,7 @@
           "status": "active",
           "assignedRoles": [
             {
-              "name": "Developer"
+              "name": "A Custom Role"
             }
           ]
         },
