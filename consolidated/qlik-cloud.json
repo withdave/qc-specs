@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.27",
+    "version": "1.0.28",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -2068,15 +2068,6 @@
             "description": "Identifier of the app"
           },
           {
-            "in": "path",
-            "name": "reloadId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Identifier of the reload. Use empty reloadId to get all reloads."
-          },
-          {
             "in": "query",
             "name": "includeSkipStoreReloads",
             "schema": {
@@ -2091,9 +2082,17 @@
               "type": "string"
             },
             "description": "Maximum number of records to return from this request. Default: 100"
+          },
+          {
+            "in": "query",
+            "name": "reloadId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the reload. Use empty reloadId to get all reloads."
           }
         ],
-        "description": "Retrieves the app reload metadata list.\nReload metadata contains reload information, including reload id, duration, endtime and lineage load info.",
+        "description": "Retrieves the app reload metadata list.\nReload metadata contains reload information, including reload id, duration, endtime and lineage load info. Data is available for the last 10 reloads of an application.",
         "x-qlik-access-control": [
           "read"
         ],
@@ -8257,7 +8256,10 @@
                 "-lastRunAt",
                 "-lastRunStatus",
                 "+duration",
-                "-duration"
+                "-duration",
+                "maxConcurrentRuns",
+                "+maxConcurrentRuns",
+                "-maxConcurrentRuns"
               ],
               "type": "string",
               "default": "id",
@@ -23125,6 +23127,101 @@
         }
       }
     },
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/recreate-datasets": {
+      "post": {
+        "tags": [
+          "data task actions"
+        ],
+        "summary": "Recreate task datasets",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncActionRsp"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/AsyncActionLocation"
+              }
+            },
+            "description": "Started recreating datasets"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task or project not found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data task."
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data project."
+          }
+        ],
+        "description": "Recreates datasets in the specified data task.",
+        "operationId": "recreate_task_datasets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecreateTaskDatasetsReq"
+              }
+            }
+          },
+          "required": false
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/actions/request-reload": {
       "post": {
         "tags": [
@@ -34383,7 +34480,7 @@
         "tags": [
           "impact"
         ],
-        "summary": "Get all levels of requested root node",
+        "summary": "Get impact sources",
         "responses": {
           "200": {
             "content": {
@@ -34940,7 +35037,7 @@
         "tags": [
           "lineage-graphs"
         ],
-        "summary": "Create first generation upstream direct lineage\n",
+        "summary": "Get lineage overview\n",
         "responses": {
           "200": {
             "content": {
@@ -56066,7 +56163,7 @@
             "path": "/assignedRoles",
             "value": [
               {
-                "name": "Developer"
+                "name": "My Custom Role"
               }
             ]
           },
@@ -57330,6 +57427,13 @@
           },
           "description": {
             "type": "string"
+          },
+          "maxConcurrentRuns": {
+            "type": "integer",
+            "default": 1,
+            "example": 10,
+            "minimum": 1,
+            "description": "Maximum number of concurrent runs allowed for this automation. The maximum value is defined in automations settings."
           }
         }
       },
@@ -57466,6 +57570,12 @@
             "type": "string",
             "example": "aZXuEogT9X3le0k0WXMBnzuYKq4xRlkDnurjs8NVhEAAW1BYx8C1PpIl3ielgRb1",
             "readOnly": true
+          },
+          "maxConcurrentRuns": {
+            "type": "integer",
+            "example": 10,
+            "readOnly": true,
+            "description": "Maximum number of concurrent runs allowed for this automation."
           }
         }
       },
@@ -57487,6 +57597,13 @@
           },
           "description": {
             "type": "string"
+          },
+          "maxConcurrentRuns": {
+            "type": "integer",
+            "default": 1,
+            "example": 10,
+            "minimum": 1,
+            "description": "Maximum number of concurrent runs allowed for this automation. The maximum value is defined in automations settings."
           }
         }
       },
@@ -57645,6 +57762,12 @@
             "type": "string",
             "example": "aZXuEogT9X3le0k0WXMBnzuYKq4xRlkDnurjs8NVhEAAW1BYx8C1PpIl3ielgRb1",
             "readOnly": true
+          },
+          "maxConcurrentRuns": {
+            "type": "integer",
+            "example": 10,
+            "readOnly": true,
+            "description": "Maximum number of concurrent runs allowed for automation."
           }
         }
       },
@@ -57685,10 +57808,6 @@
             "format": "uuid",
             "example": "d452d100-9b0b-11ec-b199-8323e1031c3e",
             "readOnly": true
-          },
-          "inputs": {
-            "type": "object",
-            "x-qlik-stability": "private"
           },
           "context": {
             "enum": [
@@ -58141,6 +58260,10 @@
           "status": {
             "type": "number",
             "description": "The HTTP status code."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "The active traceId."
           }
         },
         "description": "An error object."
@@ -64907,6 +65030,11 @@
           "qriDefinition": {
             "$ref": "#/components/schemas/QriDefinition"
           },
+          "dataSourceType": {
+            "type": "string",
+            "example": "connector",
+            "description": "Type of datasource"
+          },
           "dataLoadUrlOverride": {
             "type": "string",
             "example": "ml-endpoints:50055",
@@ -65610,6 +65738,34 @@
             "type": "string",
             "description": "Id of the dataset"
           },
+          "streaming": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "QUEUED",
+                  "RUNNING",
+                  "ERROR"
+                ],
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "parseIssueCount": {
+                "type": "number",
+                "description": "Number of records that had parsing issues"
+              },
+              "recordsWrittenCount": {
+                "type": "number",
+                "description": "Total number of records written to the dataset"
+              },
+              "recordsFilteredCount": {
+                "type": "number",
+                "description": "Total number of records filtered out and not written to the dataset"
+              }
+            }
+          },
           "sourceName": {
             "type": "string",
             "description": "Original name of the dataset, relevant only for data movement tasks"
@@ -65775,6 +65931,31 @@
             "format": "date-time",
             "description": "Timestamp indicating when the task instance started"
           },
+          "streaming": {
+            "type": "object",
+            "properties": {
+              "latency": {
+                "type": "string",
+                "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
+              },
+              "errorCount": {
+                "type": "number",
+                "description": "Number of streaming datasets that have encountered errors"
+              },
+              "queuedCount": {
+                "type": "number",
+                "description": "Number of streaming datasets that are queued"
+              },
+              "runningCount": {
+                "type": "number",
+                "description": "Number of streaming datasets that are currently running"
+              },
+              "totalProcessedCount": {
+                "type": "number",
+                "description": "Total number of records processed"
+              }
+            }
+          },
           "lastBatchOfChanges": {
             "type": "object",
             "properties": {
@@ -65867,7 +66048,9 @@
           "KNOWLEDGE_MART",
           "FILE_BASED_KNOWLEDGE_MART",
           "LAKEHOUSE_STORAGE",
-          "LAKEHOUSE_MIRROR"
+          "LAKEHOUSE_MIRROR",
+          "STREAMING_LAKE_LANDING",
+          "STREAMING_TRANSFORM"
         ],
         "type": "string",
         "x-enum-varnames": [
@@ -65882,7 +66065,9 @@
           "KNOWLEDGE_MART",
           "FILE_BASED_KNOWLEDGE_MART",
           "LAKEHOUSE_STORAGE",
-          "LAKEHOUSE_MIRROR"
+          "LAKEHOUSE_MIRROR",
+          "STREAMING_LAKE_LANDING",
+          "STREAMING_TRANSFORM"
         ]
       },
       "DiProjectItemRsp": {
@@ -66008,6 +66193,10 @@
             "description": "Allow recreation of existing artifacts"
           }
         }
+      },
+      "RecreateTaskDatasetsReq": {
+        "type": "object",
+        "description": "Request body to recreate task datasets."
       },
       "ReloadDiTaskReq": {
         "type": "object",
@@ -68799,7 +68988,7 @@
             },
             "name": {
               "type": "string",
-              "example": "Developer",
+              "example": "My Custom Role",
               "readOnly": true,
               "description": "The role name",
               "x-qlik-filterable": true
@@ -68810,7 +68999,7 @@
                 "custom"
               ],
               "type": "string",
-              "example": "default",
+              "example": "custom",
               "readOnly": true,
               "description": "The type of role"
             },
@@ -69056,7 +69245,7 @@
           "status": "active",
           "assignedRoles": [
             {
-              "name": "Developer"
+              "name": "A Custom Role"
             }
           ]
         },
@@ -72649,6 +72838,7 @@
         "properties": {
           "id": {
             "type": "string",
+            "example": "1",
             "nullable": true,
             "description": "The index of edges. This is only used in the POST request."
           },
@@ -72708,7 +72898,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -72736,7 +72927,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -72764,7 +72956,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -72778,6 +72971,26 @@
           "title": {
             "type": "string",
             "example": "Too many requests"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-429"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Too Many Requests"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "User rate limited."
+                }
+              }
+            }
           }
         }
       },
@@ -72796,7 +73009,7 @@
                 "meta": {
                   "type": "object",
                   "example": "{\"id\":\"e5c651d5-1198-45a2-be5d-f016cee0baf5\"}",
-                  "description": "The meta contains additional inforomation when requests fail due to internal errors."
+                  "description": "The meta contains additional information when requests fail due to internal errors."
                 },
                 "title": {
                   "type": "string",
@@ -72810,7 +73023,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -72838,7 +73052,8 @@
             }
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "example": "e5c651d5-1198-45a2-be5d-f016cee0baf5"
           }
         }
       },
@@ -72846,7 +73061,8 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": "string"
+            "type": "string",
+            "example": "RESOURCE"
           },
           "edges": {
             "type": "array",
@@ -72856,6 +73072,7 @@
           },
           "label": {
             "type": "string",
+            "example": "Sales Data",
             "description": "Label string for this graph."
           },
           "nodes": {
@@ -72863,6 +73080,7 @@
           },
           "directed": {
             "type": "boolean",
+            "example": true,
             "description": "Returns true if the graph is directed."
           },
           "metadata": {
@@ -72870,10 +73088,12 @@
             "properties": {
               "total": {
                 "type": "integer",
+                "example": 1,
                 "description": "The total number of nodes retrieved in this graph."
               },
               "createdAt": {
                 "type": "string",
+                "example": "2023-10-05T14:48:00.000Z",
                 "description": "The date and time when the graph is created."
               },
               "producerId": {
@@ -72882,7 +73102,8 @@
                 "description": "The id (QRI) of the graph producer."
               },
               "specVersion": {
-                "type": "string"
+                "type": "string",
+                "example": 1
               },
               "producerType": {
                 "type": "string",
@@ -72907,7 +73128,8 @@
           "graphs": {
             "$ref": "#/components/schemas/graphs"
           }
-        }
+        },
+        "description": "Populating graph property on single level request and graphs property on multi level requests."
       },
       "graphResponse": {
         "type": "object",
@@ -72951,6 +73173,7 @@
           },
           "tableLabel": {
             "type": "string",
+            "example": "Sales Table",
             "nullable": true,
             "description": "Table level label"
           },
@@ -72962,6 +73185,7 @@
           },
           "resourceLabel": {
             "type": "string",
+            "example": "Sales Data",
             "nullable": true,
             "description": "Resource level label"
           }
@@ -73000,9 +73224,11 @@
       },
       "node": {
         "type": "object",
+        "example": "{\"label\":\"a\",\"metadata\":{\"id\":\"qri:app:sense://3634fc0d-273d-429e-8d0b-1b4b1b66a1f2\",\"subtype\":\"PROCESSOR\",\"type\":\"DA_APP\",\"filePath\":\"example.qvd\"}}",
         "properties": {
           "label": {
             "type": "string",
+            "example": "example.qvd",
             "description": "Name label of the node."
           },
           "metadata": {
@@ -79059,7 +79285,7 @@
         "properties": {
           "code": {
             "type": "string",
-            "description": "The unique code for the error\n\n- \"REP-400000\" Bad request. The server could not understand the request due to invalid syntax.\n- \"REP-400008\" Selections error.\n- \"REP-400009\" Maximum 16384 columns limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of columns you can download.\n- \"REP-400010\" Maximum 1048566 rows limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of rows you can download.\n- \"REP-400011\" The size of the downloaded Excel file exceed 100 MB limit. Download data in a visualization can't generate an .xlsx file due to limitations to the amount of data you can download.\n- \"REP-400015\" Bad request in enigma request. The patch value has invalid JSON format.\n- \"REP-401000\" Unauthorized. The client must authenticate itself to get the requested response.\n- \"REP-401001\" Unauthorized, bad JWT.\n- \"REP-403000\" Forbidden. The client does not have access rights to the content.\n- \"REP-403001\" App forbidden, the user does not have read permission on the app.\n- \"REP-403002\" Chart type not supported.\n- \"REP-404000\" Not found. The server can not find the requested resource.\n- \"REP-404001\" App not found, the app does not exist or it has been deleted.\n- \"REP-404002\" Chart not found, the chart does not exist or it has been deleted.\n- \"REP-404003\" Sheet not found, the sheet does not exist or it has been deleted or it is unavailable.\n- \"REP-404004\" Story not found, the story does not exist or it has been deleted or it is unavailable.\n- \"REP-429000\" Too many request. The user has sent too many requests in a given amount of time (\"rate limiting\").\n- \"REP-429012\" Exceeded max session tenant quota. A tenant has opened too many different sessions at the same time.\n- \"REP-429014\" The export could not be completed within the requested deadline.\n- \"REP-429016\" Exceeded max session tenant quota per day.\n- \"REP-500000\" Fail to resolve resource.\n- \"REP-500006\" Fail to get report session parameters.\n- \"REP-503005\" Engine unavailable, qix-sessions error no engines available.\n- \"REP-503013\" Session unavailable. The engine session used to create the report is unavailable.\n- \"REP-500100\" Image rendering generic error on Sense client.\n- \"REP-500101\" Image rendering could not set cookies error on Sense client.\n- \"REP-400102\" Image rendering invalid strategy error on Sense client.\n- \"REP-500103\" Image rendering JS timeout error on Sense client.\n- \"REP-500104\" Image rendering load URL timeout error on Sense client.\n- \"REP-500105\" Image rendering max paint attempts exceeded error on Sense client.\n- \"REP-500106\" Image rendering max JS attempts exceeded error on Sense client.\n- \"REP-500107\" Image rendering render timeout error on Sense client.\n- \"REP-500108\" Image rendering JS failure due to timeout error on Sense client.\n- \"REP-500109\" Image rendering generic JS failure error on Sense client.\n- \"REP-400029\" Reload Entitlement Limit Reached.\n- \"REP-409046\" Report aborted due to app reload.\n- \"REP-500047\" Error setting GroupState.\n- \"REP-403048\" Forbidden. User does not have permission to export the report (access control usePermission)\n- \"REP-422051\" There is no report to produce due to empty dataset or missing fields (the measure/dimension was removed or omitted in Section Access)\n- \"REP-500014\" The app did not open within 10 minutes.\n- \"REP-400017\" Static App size exceeded.\n- \"REP-400018\" Excel string length exceeded.\n- \"REP-403019\" Export is not available for app with enabled directQuery feature.\n- \"REP-409001\" App conflict.\n- \"REP-503001\" Rest Engine Error.\n- \"REP-400020\" Invalid Issuer.\n- \"REP-400028\" Invalid Tags.\n- \"REP-409021\" Reload timestamp constraint not met.\n- \"REP-429022\" Enigma generic abort.\n- \"REP-500023\" Validate Report Request Tags failure.\n- \"REP-400024\" Cannot extract claims from JWT.\n- \"REP-403025\" No entitlement to perform the operation.\n- \"REP-403026\" No entitlement to perform the operation. Export capability is off.\n- \"REP-403027\" Object without Hypercube or unsupported object type.\n- \"REP-422030\" Apply variables error.\n- \"REP-500200\" Report Generator error.\n- \"REP-400035\" Multiple selections detected in a field having OneAndOnlyone attribute.\n- \"REP-400036\" No selection detected in a field having OneAndOnlyone attribute.\n- \"REP-400037\" Max number of images exceeded in a report.\n- \"REP-400038\" Max number of nested levels exceeded in report.\n- \"REP-400039\" Max number of objects exceeded in a report.\n- \"REP-400040\" Max number of templates exceeded in a report.\n- \"REP-400041\" Unsupported dimension type for level tag.\n- \"REP-500240\" Engine Global generic closure error.\n- \"REP-500260\" Engine Websocket generic closure error.\n- \"REP-500280\" Engine proxy generic closure error.\n- \"REP-400240\" Engine Client Global generic closure error\n- \"REP-400260\" Engine Client generic closure error.\n- \"REP-400280\" Engine Client proxy generic closure error.\n- \"REP-500045\" Failure setting Bookmark timestamp.\n- \"REP-400050\" Error retrieving outputs.\n- \"REP-400052\" Report Request Aborted from internal error.\n- \"REP-500053\" Unexpected number of generated cycle reports.\n- \"REP-400054\" The number of generated cycle reports exceeds the maximum allowed.\n- \"REP-400055\" Export options not allowed for this object.\n- \"REP-400057\" The sense object has an empty GenericType.\n- \"REP-500059\" The App is corrupt.\n- \"REP-503060\" Engine Service unavailable.\n- \"REP-500061\" Engine Memory limit reached.\n"
+            "description": "The unique code for the error\n\n- \"REP-400000\" Bad request. The server could not understand the request due to invalid syntax.\n- \"REP-400008\" Selections error.\n- \"REP-400009\" Maximum 16384 columns limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of columns you can download.\n- \"REP-400010\" Maximum 1048566 rows limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of rows you can download.\n- \"REP-400011\" The size of the downloaded Excel file exceed 100 MB limit. Download data in a visualization can't generate an .xlsx file due to limitations to the amount of data you can download.\n- \"REP-400015\" Bad request in enigma request. The patch value has invalid JSON format.\n- \"REP-400017\" Static App size exceeded.\n- \"REP-400018\" Excel string length exceeded.\n- \"REP-400020\" Invalid Issuer.\n- \"REP-400024\" Cannot extract claims from JWT.\n- \"REP-400028\" Invalid Tags.\n- \"REP-400029\" Reload Entitlement Limit Reached.\n- \"REP-400035\" Multiple selections detected in a field having OneAndOnlyone attribute.\n- \"REP-400036\" No selection detected in a field having OneAndOnlyone attribute.\n- \"REP-400037\" Max number of images exceeded in a report.\n- \"REP-400038\" Max number of nested levels exceeded in report.\n- \"REP-400039\" Max number of objects exceeded in a report.\n- \"REP-400040\" Max number of templates exceeded in a report.\n- \"REP-400041\" Unsupported dimension type for level tag.\n- \"REP-400050\" Error retrieving outputs.\n- \"REP-400052\" Report Request Aborted from internal error.\n- \"REP-400054\" The number of generated cycle reports exceeds the maximum allowed.\n- \"REP-400055\" Export options not allowed for this object.\n- \"REP-400057\" The sense object has an empty GenericType.\n- \"REP-400102\" Image rendering invalid strategy error on Sense client.\n- \"REP-400240\" Engine Client Global generic closure error\n- \"REP-400260\" Engine Client generic closure error.\n- \"REP-400280\" Engine Client proxy generic closure error.\n- \"REP-401000\" Unauthorized. The client must authenticate itself to get the requested response.\n- \"REP-401001\" Unauthorized, bad JWT.\n- \"REP-403000\" Forbidden. The client does not have access rights to the content.\n- \"REP-403001\" App forbidden, the user does not have read permission on the app.\n- \"REP-403002\" Chart type not supported.\n- \"REP-403019\" Export is not available for app with enabled directQuery feature.\n- \"REP-403025\" No entitlement to perform the operation.\n- \"REP-403026\" No entitlement to perform the operation. Export capability is off.\n- \"REP-403027\" Object without Hypercube or unsupported object type.\n- \"REP-403048\" Forbidden. User does not have permission to export the report (access control usePermission)\n- \"REP-404000\" Not found. The server can not find the requested resource.\n- \"REP-404001\" App not found, the app does not exist or it has been deleted.\n- \"REP-404002\" Chart not found, the chart does not exist or it has been deleted.\n- \"REP-404003\" Sheet not found, the sheet does not exist or it has been deleted or it is unavailable.\n- \"REP-404004\" Story not found, the story does not exist or it has been deleted or it is unavailable.\n- \"REP-409001\" App conflict.\n- \"REP-409021\" Reload timestamp constraint not met.\n- \"REP-409046\" Report aborted due to app reload.\n- \"REP-422030\" Apply variables error.\n- \"REP-422051\" There is no report to produce due to empty dataset or missing fields (the measure/dimension was removed or omitted in Section Access)\n- \"REP-429000\" Too many request. The user has sent too many requests in a given amount of time (\"rate limiting\").\n- \"REP-429012\" Exceeded max session tenant quota. A tenant has opened too many different sessions at the same time.\n- \"REP-429014\" The export could not be completed within the requested deadline.\n- \"REP-429016\" Exceeded max session tenant quota per day.\n- \"REP-429022\" Enigma generic abort.\n- \"REP-500000\" Fail to resolve resource.\n- \"REP-500006\" Fail to get report session parameters.\n- \"REP-500014\" The app did not open within 10 minutes.\n- \"REP-500023\" Validate Report Request Tags failure.\n- \"REP-500045\" Failure setting Bookmark timestamp.\n- \"REP-500047\" Error setting GroupState.\n- \"REP-500053\" Unexpected number of generated cycle reports.\n- \"REP-500059\" The App is corrupt.\n- \"REP-500061\" Engine Memory limit reached.\n- \"REP-500100\" Image rendering generic error on Sense client.\n- \"REP-500101\" Image rendering could not set cookies error on Sense client.\n- \"REP-500103\" Image rendering JS timeout error on Sense client.\n- \"REP-500104\" Image rendering load URL timeout error on Sense client.\n- \"REP-500105\" Image rendering max paint attempts exceeded error on Sense client.\n- \"REP-500106\" Image rendering max JS attempts exceeded error on Sense client.\n- \"REP-500107\" Image rendering render timeout error on Sense client.\n- \"REP-500108\" Image rendering JS failure due to timeout error on Sense client.\n- \"REP-500109\" Image rendering generic JS failure error on Sense client.\n- \"REP-500200\" Report Generator error.\n- \"REP-500240\" Engine Global generic closure error.\n- \"REP-500260\" Engine Websocket generic closure error.\n- \"REP-500280\" Engine proxy generic closure error.\n- \"REP-503001\" Rest Engine Error.\n- \"REP-503005\" Engine unavailable, qix-sessions error no engines available.\n- \"REP-503013\" Session unavailable. The engine session used to create the report is unavailable.\n- \"REP-503060\" Engine Service unavailable.\n"
           },
           "meta": {
             "$ref": "#/components/schemas/MetaExportError"
@@ -80329,7 +80555,7 @@
           },
           "name": {
             "type": "string",
-            "example": "Developer",
+            "example": "My Custom Role",
             "description": "The name of the role.",
             "x-qlik-filterable": true
           },
@@ -80339,7 +80565,7 @@
               "custom"
             ],
             "type": "string",
-            "example": "default",
+            "example": "custom",
             "description": "The type of role.",
             "x-qlik-filterable": true
           },
@@ -80349,7 +80575,7 @@
               "user"
             ],
             "type": "string",
-            "example": "admin",
+            "example": "user",
             "description": "The level of access associated to the role.",
             "x-qlik-filterable": true
           },
@@ -80420,7 +80646,7 @@
           },
           "description": {
             "type": "string",
-            "example": "Grants permission to generate API keys",
+            "example": "Grants permission to edit resource 'foo'",
             "description": "Descriptive text for the role.",
             "x-qlik-filterable": true
           },
@@ -84754,7 +84980,7 @@
           "properties": {
             "name": {
               "type": "string",
-              "example": "Developers",
+              "example": "My Custom Group",
               "description": "The name of the group"
             },
             "providerType": {
@@ -84770,7 +84996,7 @@
         },
         "example": [
           {
-            "name": "Developers",
+            "name": "My Custom Group",
             "providerType": "custom"
           }
         ],
@@ -84935,6 +85161,7 @@
       "RefNames": {
         "type": "array",
         "items": {
+          "type": "object",
           "required": [
             "name"
           ],
@@ -85134,7 +85361,7 @@
           "tenantId": "q3VRZ4YMixRaLKEPhkZWM-XMIDN7cO8f",
           "assignedRoles": [
             {
-              "name": "Developer"
+              "name": "My Custom Role"
             }
           ]
         },
