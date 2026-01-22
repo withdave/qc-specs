@@ -604,6 +604,11 @@
           "qriDefinition": {
             "$ref": "#/components/schemas/QriDefinition"
           },
+          "dataSourceType": {
+            "type": "string",
+            "example": "connector",
+            "description": "Type of datasource"
+          },
           "dataLoadUrlOverride": {
             "type": "string",
             "example": "ml-endpoints:50055",

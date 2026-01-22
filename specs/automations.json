@@ -113,7 +113,10 @@
                 "-lastRunAt",
                 "-lastRunStatus",
                 "+duration",
-                "-duration"
+                "-duration",
+                "maxConcurrentRuns",
+                "+maxConcurrentRuns",
+                "-maxConcurrentRuns"
               ],
               "type": "string",
               "default": "id",
@@ -1491,6 +1494,13 @@
           },
           "description": {
             "type": "string"
+          },
+          "maxConcurrentRuns": {
+            "type": "integer",
+            "default": 1,
+            "example": 10,
+            "minimum": 1,
+            "description": "Maximum number of concurrent runs allowed for this automation. The maximum value is defined in automations settings."
           }
         }
       },
@@ -1627,6 +1637,12 @@
             "type": "string",
             "example": "aZXuEogT9X3le0k0WXMBnzuYKq4xRlkDnurjs8NVhEAAW1BYx8C1PpIl3ielgRb1",
             "readOnly": true
+          },
+          "maxConcurrentRuns": {
+            "type": "integer",
+            "example": 10,
+            "readOnly": true,
+            "description": "Maximum number of concurrent runs allowed for this automation."
           }
         }
       },
@@ -1648,6 +1664,13 @@
           },
           "description": {
             "type": "string"
+          },
+          "maxConcurrentRuns": {
+            "type": "integer",
+            "default": 1,
+            "example": 10,
+            "minimum": 1,
+            "description": "Maximum number of concurrent runs allowed for this automation. The maximum value is defined in automations settings."
           }
         }
       },
@@ -1806,6 +1829,12 @@
             "type": "string",
             "example": "aZXuEogT9X3le0k0WXMBnzuYKq4xRlkDnurjs8NVhEAAW1BYx8C1PpIl3ielgRb1",
             "readOnly": true
+          },
+          "maxConcurrentRuns": {
+            "type": "integer",
+            "example": 10,
+            "readOnly": true,
+            "description": "Maximum number of concurrent runs allowed for automation."
           }
         }
       },
@@ -1900,10 +1929,6 @@
             "format": "uuid",
             "example": "d452d100-9b0b-11ec-b199-8323e1031c3e",
             "readOnly": true
-          },
-          "inputs": {
-            "type": "object",
-            "x-qlik-stability": "private"
           },
           "context": {
             "enum": [

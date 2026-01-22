@@ -995,8 +995,8 @@
           "assignedRoles": [
             {
               "id": "60804cf8a77b649c66733f65",
-              "name": "Developer",
-              "type": "default",
+              "name": "My Custom Role",
+              "type": "custom",
               "level": "user"
             }
           ],
@@ -1053,7 +1053,7 @@
           "properties": {
             "name": {
               "type": "string",
-              "example": "Developers",
+              "example": "My Custom Group",
               "description": "The name of the group"
             },
             "providerType": {
@@ -1069,7 +1069,7 @@
         },
         "example": [
           {
-            "name": "Developers",
+            "name": "My Custom Group",
             "providerType": "custom"
           }
         ],
@@ -1094,7 +1094,7 @@
             },
             "name": {
               "type": "string",
-              "example": "Developer",
+              "example": "My Custom Role",
               "readOnly": true,
               "description": "The role name",
               "x-qlik-filterable": true
@@ -1105,7 +1105,7 @@
                 "custom"
               ],
               "type": "string",
-              "example": "default",
+              "example": "custom",
               "readOnly": true,
               "description": "The type of role"
             },
@@ -1413,7 +1413,7 @@
             "path": "/assignedRoles",
             "value": [
               {
-                "name": "Developer"
+                "name": "My Custom Role"
               }
             ]
           },
@@ -1481,6 +1481,7 @@
       "RefNames": {
         "type": "array",
         "items": {
+          "type": "object",
           "required": [
             "name"
           ],
@@ -1680,7 +1681,7 @@
           "tenantId": "q3VRZ4YMixRaLKEPhkZWM-XMIDN7cO8f",
           "assignedRoles": [
             {
-              "name": "Developer"
+              "name": "My Custom Role"
             }
           ]
         },

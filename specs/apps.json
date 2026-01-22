@@ -1376,15 +1376,6 @@
             "description": "Identifier of the app"
           },
           {
-            "in": "path",
-            "name": "reloadId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Identifier of the reload. Use empty reloadId to get all reloads."
-          },
-          {
             "in": "query",
             "name": "includeSkipStoreReloads",
             "schema": {
@@ -1399,9 +1390,17 @@
               "type": "string"
             },
             "description": "Maximum number of records to return from this request. Default: 100"
+          },
+          {
+            "in": "query",
+            "name": "reloadId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the reload. Use empty reloadId to get all reloads."
           }
         ],
-        "description": "Retrieves the app reload metadata list.\nReload metadata contains reload information, including reload id, duration, endtime and lineage load info.",
+        "description": "Retrieves the app reload metadata list.\nReload metadata contains reload information, including reload id, duration, endtime and lineage load info. Data is available for the last 10 reloads of an application.",
         "x-qlik-access-control": [
           "read"
         ],
