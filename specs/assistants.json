@@ -2969,19 +2969,6 @@
             "example": "Assistant for Sales activities",
             "description": "The title of the assistant."
           },
-          "appIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "example": [
-              "507f191e810c19729de860ea",
-              "607f191e810c19729de860eb"
-            ],
-            "readOnly": true,
-            "description": "List of app IDs associated with the assistant. This field is automatically derived from the app tools added to the assistant."
-          },
           "ownerId": {
             "type": "string",
             "format": "uuid",
