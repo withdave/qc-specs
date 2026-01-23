@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.28",
+    "version": "1.0.29",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -19341,6 +19341,1069 @@
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
+        }
+      }
+    },
+    "/api/data-governance/data-products": {
+      "post": {
+        "tags": [
+          "data-product"
+        ],
+        "summary": "Create a data product",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataProductResponse"
+                }
+              }
+            },
+            "description": "Data product created successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "description": "Creates a new data product with specified metadata, datasets, and governance information.\nUse this endpoint to package related datasets into a governed, discoverable asset.\nRequires create permissions in the target space.\n",
+        "operationId": "createDataProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDataProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/data-products/{dataProductId}": {
+      "get": {
+        "tags": [
+          "data-product"
+        ],
+        "summary": "Get a data product",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataProductResponse"
+                }
+              }
+            },
+            "description": "Data product details retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          }
+        ],
+        "description": "Retrieves the details of the specified data product, including name, description, associated datasets, key contacts, and activation status.\nRequires read access to the Data Product.\n",
+        "operationId": "getDataProduct",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "data-product"
+        ],
+        "summary": "Update a data product",
+        "responses": {
+          "204": {
+            "description": "Data product updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          }
+        ],
+        "description": "Partially updates an existing data product using JSON Patch operations.\nUse this endpoint to modify properties such as name, description, datasets, tags, or key contacts.\nChanges are tracked in the data product changelog.\n",
+        "operationId": "patchDataProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchDataProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "data-product"
+        ],
+        "summary": "Delete a data product",
+        "responses": {
+          "204": {
+            "description": "Data product deleted successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          }
+        ],
+        "description": "Permanently removes a data product from the tenant.\nThis action cannot be undone and does not affect the underlying datasets.\nRequires delete permissions for the data product.\n",
+        "operationId": "deleteDataProduct",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/data-products/{dataProductId}/actions/activate": {
+      "post": {
+        "tags": [
+          "data-product-activation"
+        ],
+        "summary": "Activate a data product",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataProductResponse"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          }
+        ],
+        "description": "Activates a data product for publishing and consumption.\nOnce activated, the data product becomes discoverable and accessible to authorized users.\nRequires publish permissions and valid data product configuration.\n",
+        "operationId": "activateDataProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateDataProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/data-products/{dataProductId}/actions/deactivate": {
+      "post": {
+        "tags": [
+          "data-product-activation"
+        ],
+        "summary": "Deactivate a data product",
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          }
+        ],
+        "description": "Deactivates a data product, preventing it from being consumed by other services or users.",
+        "operationId": "deactivateDataProduct",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/data-products/{dataProductId}/actions/export-documentation": {
+      "get": {
+        "tags": [
+          "data-product"
+        ],
+        "summary": "Export data product documentation",
+        "responses": {
+          "200": {
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "# Data product Dataproduct-name"
+              }
+            },
+            "description": "Documentation exported successfully in Markdown format."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "MIME type isn't supported."
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported output format requested."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          }
+        ],
+        "description": "Exports data product documentation in Markdown format.\nUse this endpoint to generate documentation for sharing or archiving.\nRequires read access to the data product.\n",
+        "operationId": "getDataProductDoc",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/data-governance/data-products/{dataProductId}/actions/move": {
+      "post": {
+        "tags": [
+          "data-product"
+        ],
+        "summary": "Move a data product",
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          }
+        ],
+        "description": "Moves a data product from its current space to a different space.\nUse this endpoint to reorganize data products across workspaces or governance domains.\nRequires delete permissions in the source space and create permissions in the target space.\n",
+        "operationId": "moveDataProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveDataProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/data-products/{dataProductId}/changelogs": {
+      "get": {
+        "tags": [
+          "data-product-changelog"
+        ],
+        "summary": "Get data product changelogs",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataProductChangelogResponse"
+                }
+              }
+            },
+            "description": "OK response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The input request conflicts with the current state of the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          },
+          {
+            "$ref": "#/components/parameters/PageOptionalInQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitOptionalInQuery"
+          },
+          {
+            "$ref": "#/components/parameters/SortOptionalInQuery"
+          }
+        ],
+        "description": "Retrieves a paginated history of all notable changes made to a data product.\nEach changelog entry captures the operation type, affected property, and timestamp.\nUse this endpoint to track the history of changes or data product evolution over time.\n",
+        "operationId": "getDataProductChangelog",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/data-governance/data-products/actions/generate-provider-url": {
+      "post": {
+        "tags": [
+          "data-product-generate-provider-url"
+        ],
+        "summary": "Generate provider URL",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateProviderUrlResponse"
+                }
+              }
+            },
+            "description": "OK response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataSetIdInQuery"
+          }
+        ],
+        "description": "Generates a URL to access a third-party provider's user interface.\nUse this endpoint to integrate external services with your data product.\n",
+        "operationId": "generateProviderUiUrl",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
         }
       }
     },
@@ -55232,19 +56295,6 @@
             "example": "Assistant for Sales activities",
             "description": "The title of the assistant."
           },
-          "appIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "example": [
-              "507f191e810c19729de860ea",
-              "607f191e810c19729de860eb"
-            ],
-            "readOnly": true,
-            "description": "List of app IDs associated with the assistant. This field is automatically derived from the app tools added to the assistant."
-          },
           "ownerId": {
             "type": "string",
             "format": "uuid",
@@ -63978,6 +65028,498 @@
           }
         },
         "additionalProperties": false
+      },
+      "ActivateDataProductRequest": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "ExampleDataProductName",
+            "maxLength": 200,
+            "description": "Name of the data product to activate."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "example",
+              "description": "List of tags for the data product."
+            },
+            "maxItems": 50
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "ExampleSpaceId",
+            "description": "Unique identifier of the space."
+          },
+          "description": {
+            "type": "string",
+            "example": "This is an example data product.",
+            "maxLength": 1024,
+            "description": "A description of the data product.",
+            "x-size-message": "The description should be set with a maximal length of 1024 characters"
+          }
+        }
+      },
+      "ArrayOfUniqueStrings": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "nullable": true
+      },
+      "ChangelogOperation": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "enum": [
+              "/name",
+              "/description",
+              "/spaceId",
+              "/datasetIds",
+              "/glossaryIds",
+              "/readMe",
+              "/keyContacts",
+              "/tags",
+              "/activatedOn",
+              "/apiConsumableDatasetIds"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string",
+                "nullable": true,
+                "description": "Value is expected to be null or a string if the path is either /name, /description, /readMe or /spaceId."
+              },
+              {
+                "$ref": "#/components/schemas/ArrayOfUniqueStrings"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "nullable": true,
+                "description": "value is expected to be null or an array of object if the path is /keyContacts."
+              }
+            ]
+          },
+          "operator": {
+            "enum": [
+              "replace",
+              "add",
+              "remove"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "CreateDataProductRequest": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "ExampleDataProductName",
+            "pattern": "^(\\S.*\\S|\\S)*$",
+            "maxLength": 200,
+            "minLength": 1,
+            "description": "Display name of the data product."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "example",
+              "description": "Individual tag for the data product."
+            },
+            "example": [
+              "exampleTag1",
+              "exampleTag2"
+            ],
+            "description": "List of tags for the data product.",
+            "x-field-extra-annotation": "@jakarta.validation.constraints.Size(max = 50, message = \"tags: must contain at most {max} items\")"
+          },
+          "readMe": {
+            "type": "string",
+            "example": "This is an example readme for the Data Product.",
+            "maxLength": 100000,
+            "description": "A readme of the Data Product.",
+            "x-size-message": "The readMe must be set with a maximal length of 100000 characters"
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "ExampleSpaceId",
+            "description": "Unique identifier of the space."
+          },
+          "description": {
+            "type": "string",
+            "example": "This is an example Data Product.",
+            "maxLength": 1024,
+            "description": "A description of the Data Product.",
+            "x-size-message": "The description should be set with a maximal length of 1024 characters"
+          },
+          "keyContacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyContact"
+            },
+            "example": [
+              {
+                "role": "Data Steward",
+                "userId": "exampleUserId"
+              }
+            ],
+            "maxItems": 100,
+            "description": "List of key contacts for the data product."
+          }
+        },
+        "description": "Request payload for creating a data product.\n"
+      },
+      "DataProductChangelog": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangelogOperation"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-03-20T09:12:28Z",
+            "description": "Timestamp when this changelog entry was created in ISO 8601 format."
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Identifier of the user who made these changes."
+          }
+        }
+      },
+      "DataProductChangelogResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataProductChangelog"
+            },
+            "required": [
+              "id",
+              "changes"
+            ]
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "DataProductResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "tenantId",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "qri": {
+            "type": "string",
+            "description": "Qlik Resource Identifier (QRI) uniquely identifying the data product across the platform."
+          },
+          "name": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mainId": {
+            "type": "string",
+            "description": "Primary identifier used for main data product reference."
+          },
+          "readMe": {
+            "type": "string",
+            "description": "Documentation in Markdown format providing detailed information about the data product."
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "Identifier of the user who owns the data product and is responsible for governance."
+          },
+          "quality": {
+            "$ref": "#/components/schemas/Quality"
+          },
+          "spaceId": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "activated": {
+            "type": "boolean",
+            "description": "Indicates whether the data product is currently activated for consumption."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-03-20T09:12:28Z",
+            "description": "Timestamp when the data product was created in ISO 8601 format."
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Identifier of the user who created the data product."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-03-20T09:12:28Z",
+            "description": "Timestamp of the most recent update in ISO 8601 format."
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "Identifier of the user who last updated the data product."
+          },
+          "datasetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "trustScore": {
+            "$ref": "#/components/schemas/TrustScore"
+          },
+          "activatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-03-20T09:12:28Z",
+            "description": "Timestamp when the data product was most recently activated in ISO 8601 format."
+          },
+          "activatedOn": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of target environments or platforms where the data product is activated."
+          },
+          "description": {
+            "type": "string"
+          },
+          "glossaryIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "keyContacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyContact"
+            }
+          },
+          "apiConsumableDatasetIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "List of dataset IDs for which API consumption is enabled"
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "GenerateProviderUrlResponse": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string"
+          }
+        }
+      },
+      "KeyContact": {
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "example": "Data Steward",
+            "maxLength": 200,
+            "description": "Role of the key contact in the Data Product."
+          },
+          "userId": {
+            "type": "string",
+            "example": "exampleUserId",
+            "description": "Unique identifier of the user."
+          }
+        },
+        "description": "Represents a designated contact person for a data product, optionally with their role.\n"
+      },
+      "MoveDataProductRequest": {
+        "type": "object",
+        "required": [
+          "spaceId"
+        ],
+        "properties": {
+          "spaceId": {
+            "type": "string",
+            "example": "exampleSpaceId",
+            "description": "Unique identifier of the space."
+          }
+        }
+      },
+      "PatchDataProductRequest": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "op",
+            "path"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string"
+            },
+            "path": {
+              "enum": [
+                "/name",
+                "/description",
+                "/datasetIds",
+                "/glossaryIds",
+                "/readMe",
+                "/keyContacts",
+                "/tags",
+                "/apiConsumableDatasetIds"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Value is expected to be null or a string if the path is either /name, /description, or /readMe"
+                },
+                {
+                  "$ref": "#/components/schemas/ArrayOfUniqueStrings"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "nullable": true,
+                  "description": "Value is expected to be null or an array of object if the path is /keyContacts"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "Quality": {
+        "type": "object",
+        "required": [
+          "validity",
+          "completeness"
+        ],
+        "properties": {
+          "validity": {
+            "type": "number",
+            "format": "float"
+          },
+          "completeness": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "TrustScore": {
+        "type": "object",
+        "required": [
+          "score",
+          "applicableDatasets"
+        ],
+        "properties": {
+          "score": {
+            "type": "number",
+            "format": "float"
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TrustScoreDimension"
+            }
+          },
+          "previousScore": {
+            "type": "number",
+            "format": "float"
+          },
+          "applicableDatasets": {
+            "type": "number",
+            "format": "int32"
+          }
+        }
+      },
+      "TrustScoreDimension": {
+        "type": "object",
+        "required": [
+          "id",
+          "applicableDatasets"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number",
+            "format": "float"
+          },
+          "previousScore": {
+            "type": "number",
+            "format": "float"
+          },
+          "applicableDatasets": {
+            "type": "number",
+            "format": "int32"
+          }
+        }
       },
       "ComputationResponse": {
         "type": "object",
