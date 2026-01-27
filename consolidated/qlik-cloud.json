@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.29",
+    "version": "1.0.30",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -2240,6 +2240,19 @@
           },
           {
             "in": "query",
+            "name": "loadType",
+            "schema": {
+              "enum": [
+                "interactive",
+                "batch"
+              ],
+              "type": "string",
+              "default": "interactive"
+            },
+            "description": "Load type expressing the kind of request, eg. interactive for report requests from the Web UI, batch for scheduled report generation."
+          },
+          {
+            "in": "query",
             "name": "page",
             "schema": {
               "type": "string",
@@ -2511,6 +2524,19 @@
             },
             "required": true,
             "description": "The filter id identifier (bookmarkId)."
+          },
+          {
+            "in": "query",
+            "name": "loadType",
+            "schema": {
+              "enum": [
+                "interactive",
+                "batch"
+              ],
+              "type": "string",
+              "default": "interactive"
+            },
+            "description": "Load type expressing the kind of request, eg. interactive for report requests from the Web UI, batch for scheduled report generation."
           }
         ],
         "operationId": "filtersGet",
@@ -49094,7 +49120,7 @@
             "description": "Unexpected error."
           }
         },
-        "description": "Patch the email configuration for the tenant.",
+        "description": "Patches the email configuration for the tenant. This endpoint is deprecated, use `PUT /transports/email-config` to replace the entire configuration instead.",
         "operationId": "patchEmailConfig",
         "requestBody": {
           "content": {
@@ -49127,7 +49153,7 @@
         "summary": "Update email configuration",
         "responses": {
           "204": {
-            "description": "Success."
+            "description": "Email configuration validated and saved successfully.\n- For \"BasicAuth\": Connection to the email server verified with provided credentials.\n- For \"Microsoft365\": Authentication token successfully retrieved with provided credentials.\n"
           },
           "400": {
             "content": {
@@ -49160,7 +49186,7 @@
             "description": "Unexpected error."
           }
         },
-        "description": "Create or replace the email configuration for the tenant.",
+        "description": "Creates or replaces the email configuration for the tenant. Validation of the configuration is done as part of the request.\n",
         "operationId": "putEmailConfig",
         "requestBody": {
           "content": {
@@ -86114,7 +86140,8 @@
             "example": "smtp.company.com",
             "description": "domain name or IP address of SMTP server"
           }
-        }
+        },
+        "description": "SMTP basic authentication configuration. Provides server address, credentials, and sender information for standard SMTP email delivery."
       },
       "putEmailConfig": {
         "type": "object",
@@ -86163,7 +86190,8 @@
             "example": "12345678-1234-1234-1234-123456789012",
             "description": "Microsoft365 tenant identifier"
           }
-        }
+        },
+        "description": "Microsoft 365 authentication configuration. Provides OAuth credentials and tenant information for Microsoft 365 email delivery."
       },
       "SendTestMailConfigNotFoundError": {
         "type": "object",
