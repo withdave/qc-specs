@@ -1548,6 +1548,19 @@
           },
           {
             "in": "query",
+            "name": "loadType",
+            "schema": {
+              "enum": [
+                "interactive",
+                "batch"
+              ],
+              "type": "string",
+              "default": "interactive"
+            },
+            "description": "Load type expressing the kind of request, eg. interactive for report requests from the Web UI, batch for scheduled report generation."
+          },
+          {
+            "in": "query",
             "name": "page",
             "schema": {
               "type": "string",
@@ -1819,6 +1832,19 @@
             },
             "required": true,
             "description": "The filter id identifier (bookmarkId)."
+          },
+          {
+            "in": "query",
+            "name": "loadType",
+            "schema": {
+              "enum": [
+                "interactive",
+                "batch"
+              ],
+              "type": "string",
+              "default": "interactive"
+            },
+            "description": "Load type expressing the kind of request, eg. interactive for report requests from the Web UI, batch for scheduled report generation."
           }
         ],
         "operationId": "filtersGet",
