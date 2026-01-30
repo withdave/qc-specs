@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.30",
+    "version": "1.0.31",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -21,6 +21,232 @@
     }
   ],
   "paths": {
+    "/api/analytics/change-stores": {
+      "get": {
+        "tags": [
+          "change-stores"
+        ],
+        "summary": "Get change-stores",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetChangeStoresResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JWTAuthHeader"
+          },
+          {
+            "$ref": "#/components/parameters/PageParam"
+          },
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/FilterParamChangeStores"
+          },
+          {
+            "$ref": "#/components/parameters/SortParamChangeStores"
+          },
+          {
+            "$ref": "#/components/parameters/SpaceIdParam"
+          }
+        ],
+        "description": "Returns a list of change-stores, accessible to the user.",
+        "operationId": "listChangeStores",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/change-stores/{storeId}": {
+      "get": {
+        "tags": [
+          "change-stores"
+        ],
+        "summary": "Get a change store",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetChangeStoreByIdResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JWTAuthHeader"
+          },
+          {
+            "$ref": "#/components/parameters/StoreId"
+          }
+        ],
+        "description": "Returns detailed information about a specific change store, such as its configuration and associated charts.",
+        "operationId": "getChangeStoreById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/change-stores/{storeId}/changes": {
+      "get": {
+        "tags": [
+          "changes"
+        ],
+        "summary": "Get changes",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetChangesResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JWTAuthHeader"
+          },
+          {
+            "$ref": "#/components/parameters/StoreId"
+          },
+          {
+            "$ref": "#/components/parameters/PageParam"
+          },
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/FilterParamChanges"
+          },
+          {
+            "$ref": "#/components/parameters/SortParamChanges"
+          }
+        ],
+        "description": "Returns a list of changes within the specified change-store.",
+        "operationId": "listChanges",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/change-stores/{storeId}/changes/tabular-views": {
+      "get": {
+        "tags": [
+          "changes"
+        ],
+        "summary": "Get rows in tabular view",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetChangesTabularViewResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "expandRow",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "When set to true, the records returned by this endpoint will include the latest change (if available) for each editable column in the record. This parameter should be used in combination with a filter on updatedAt for use cases that require all editable columns to be included in each response."
+          },
+          {
+            "$ref": "#/components/parameters/JWTAuthHeader"
+          },
+          {
+            "$ref": "#/components/parameters/StoreId"
+          },
+          {
+            "$ref": "#/components/parameters/PageParam"
+          },
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/FilterParamChanges"
+          }
+        ],
+        "description": "Returns changes in tabular format, showing modified rows with optional expansion to include all columns.",
+        "operationId": "getTabularViewChanges",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/v1/api-keys": {
       "get": {
         "tags": [
@@ -39519,6 +39745,16 @@
         ],
         "summary": "Update an OAuth client",
         "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthClientPatchResponse"
+                }
+              }
+            },
+            "description": "Accepted - Client secret was generated"
+          },
           "204": {
             "description": "No Content"
           },
@@ -39552,7 +39788,7 @@
             "description": "The unique identifier for the OAuth client"
           }
         ],
-        "description": "Updates the specified OAuth client.",
+        "description": "Updates the specified OAuth client. Returns 202 Accepted with a client secret in the response body if a client secret is generated during the update (e.g., when adding client_secret to allowedAuthMethods). Otherwise returns 204 No Content.",
         "operationId": "patchOAuthClient",
         "requestBody": {
           "content": {
@@ -52515,6 +52751,326 @@
   },
   "components": {
     "schemas": {
+      "CellKey": {
+        "type": "object",
+        "required": [
+          "rowKey",
+          "columnId"
+        ],
+        "properties": {
+          "rowKey": {
+            "$ref": "#/components/schemas/RowKey"
+          },
+          "columnId": {
+            "type": "string",
+            "example": "690b5975fddd52c0fba8dd10",
+            "description": "The id of the column."
+          }
+        }
+      },
+      "Change": {
+        "type": "object",
+        "example": {
+          "meta": {
+            "tenantId": "tenant123",
+            "createdAt": "2023-01-01T12:00:00Z",
+            "createdBy": "user123"
+          },
+          "committed": true,
+          "columnValue": "100"
+        },
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "example": "tenant123",
+            "description": "The tenant id."
+          },
+          "cellValue": {
+            "type": "string",
+            "description": "The value of the cell."
+          },
+          "committed": {
+            "type": "boolean",
+            "description": "Whether the change has been committed."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-01-01T12:00:00Z",
+            "description": "The time when a user starts typing in a cell and the row becomes locked.\n"
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "user123",
+            "description": "The id of the user who created the change."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-01-01T12:00:00Z",
+            "description": "The time when an update to the change has been done.\nExamples of when this value is updated:\n- User starts typing in a cell, locking the row.\n- User edits an unsaved change.\n- User saves the change.\n"
+          }
+        }
+      },
+      "ChangeStore": {
+        "type": "object",
+        "properties": {
+          "usedBy": {
+            "$ref": "#/components/schemas/UsedByArray"
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The space id where the change store is located."
+          },
+          "storeId": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The id of the change store."
+          },
+          "tenantId": {
+            "type": "string",
+            "example": "tenant789",
+            "description": "The tenant id the change store belongs to."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-05-20T20:39:39Z",
+            "description": "The time when the change store was created."
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "user123",
+            "description": "The id of the user who created the change store."
+          },
+          "storeName": {
+            "type": "string",
+            "example": "My Change Store",
+            "description": "The name of the change store."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-05-20T20:54:03Z",
+            "description": "The time when the change store was last updated."
+          },
+          "primaryKey": {
+            "$ref": "#/components/schemas/PrimaryKey"
+          },
+          "referenceId": {
+            "$ref": "#/components/schemas/ReferenceId"
+          },
+          "publishRefId": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The publish reference id used to map stores across published apps/spaces."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The unique code for the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of what went wrong."
+          },
+          "detail": {
+            "type": "string",
+            "description": "May be used to provide additional details."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A way to trace the source of the error."
+          }
+        }
+      },
+      "GetChangesData": {
+        "type": "object",
+        "properties": {
+          "cellKey": {
+            "$ref": "#/components/schemas/CellKey"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Change"
+            }
+          },
+          "columnName": {
+            "type": "string",
+            "example": "price",
+            "description": "The name of the column."
+          }
+        }
+      },
+      "ListDefaultData": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "example": 10
+          },
+          "currentPageCount": {
+            "type": "integer",
+            "example": 2
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "https://example.org/api/analytics/change-stores?page=<next-cursor>"
+                  }
+                }
+              },
+              "prev": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "https://example.org/api/analytics/change-stores?page=<previous-cursor>"
+                  }
+                }
+              },
+              "self": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "https://example.org/api/analytics/change-stores?page=<self-cursor>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PrimaryKey": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": "product",
+          "description": "The name of a primary key column."
+        },
+        "example": [
+          "product",
+          "region"
+        ],
+        "description": "The list of primary key columns for the change store."
+      },
+      "ReferenceId": {
+        "type": "string",
+        "example": "6835b0135cf7147c01979e5d",
+        "description": "The reference id used to identify related editable-columns or change stores."
+      },
+      "RowKey": {
+        "type": "object",
+        "example": {
+          "product": "table"
+        },
+        "description": "A map of row keys.",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "TabularView": {
+        "type": "object",
+        "example": {
+          "data": [
+            {
+              "Color": "red",
+              "Price": "200",
+              "Product": "table",
+              "updatedAt": "2023-10-01T12:00:00Z",
+              "updatedBy": "abc123"
+            },
+            {
+              "Color": "green",
+              "Price": "100",
+              "Product": "chair",
+              "updatedAt": "2023-10-01T13:00:00Z"
+            }
+          ]
+        },
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2023-10-01T12:00:00Z",
+                  "description": "The timestamp when the row was last updated."
+                },
+                "updatedBy": {
+                  "type": "string",
+                  "example": "abc123",
+                  "description": "The user id that performed the latest update in the row (corresponds to updatedAt)."
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "UsedBy": {
+        "type": "object",
+        "required": [
+          "appId",
+          "chartId"
+        ],
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "af604296-14f6-48c2-8bac-12ce49ba83cc",
+            "description": "The id of the app."
+          },
+          "chartId": {
+            "type": "string",
+            "example": "chartId",
+            "description": "The id of the chart."
+          }
+        }
+      },
+      "UsedByArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UsedBy"
+        },
+        "description": "List of chart/app references."
+      },
       "api-key-page": {
         "type": "object",
         "required": [
@@ -52836,27 +53392,6 @@
             "type": "string",
             "format": "uid",
             "description": "The id of the user who created the key."
-          }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "required": [
-          "code",
-          "title"
-        ],
-        "properties": {
-          "code": {
-            "type": "string",
-            "description": "The unique code for the error."
-          },
-          "title": {
-            "type": "string",
-            "description": "A summary of what went wrong."
-          },
-          "detail": {
-            "type": "string",
-            "description": "May be used to provide additional details."
           }
         }
       },
@@ -57929,21 +58464,6 @@
           "eventTypeVersion": {
             "type": "string",
             "description": "The version of the event type."
-          }
-        }
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Error"
-            }
-          },
-          "traceId": {
-            "type": "string",
-            "description": "A way to trace the source of the error."
           }
         }
       },
@@ -78552,6 +79072,75 @@
         },
         "description": "Response schema for reading a connection config"
       },
+      "JWK": {
+        "type": "object",
+        "required": [
+          "kty",
+          "use",
+          "alg",
+          "kid"
+        ],
+        "properties": {
+          "e": {
+            "type": "string",
+            "example": "AQAB",
+            "description": "Exponent for RSA keys"
+          },
+          "n": {
+            "type": "string",
+            "example": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx",
+            "description": "Modulus for RSA keys"
+          },
+          "x": {
+            "type": "string",
+            "example": "WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGl96oc0CWuis",
+            "description": "X coordinate for EC keys"
+          },
+          "y": {
+            "type": "string",
+            "example": "y77t-RvAHRKTsSGdIYUfweuOvwrvDD-Q3Hv5J0fSKbE",
+            "description": "Y coordinate for EC keys"
+          },
+          "alg": {
+            "enum": [
+              "RS256",
+              "RS512",
+              "ES384"
+            ],
+            "type": "string",
+            "example": "RS256",
+            "description": "Algorithm intended for use with the key"
+          },
+          "crv": {
+            "type": "string",
+            "example": "P-384",
+            "description": "Curve for EC keys"
+          },
+          "kid": {
+            "type": "string",
+            "example": "key-1",
+            "description": "Key ID"
+          },
+          "kty": {
+            "enum": [
+              "RSA",
+              "EC"
+            ],
+            "type": "string",
+            "example": "RSA",
+            "description": "Key type (e.g., RSA, EC)"
+          },
+          "use": {
+            "enum": [
+              "sig"
+            ],
+            "type": "string",
+            "example": "sig",
+            "description": "Intended use of the key (typically \"sig\" for signature)"
+          }
+        },
+        "description": "JSON Web Key (JWK) for the public key used to verify the signature of a client assertion JWT"
+      },
       "OAuthClientAdminListItem": {
         "type": "object",
         "allOf": [
@@ -78569,6 +79158,13 @@
             "maxLength": 512,
             "description": "Client application id"
           },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication"
+          },
           "redirectUris": {
             "type": "array",
             "items": {
@@ -78578,6 +79174,9 @@
               "uniqueItems": true
             },
             "description": "List of allowed redirect URIs for login"
+          },
+          "clientSecrets": {
+            "$ref": "#/components/schemas/ClientSecrets"
           },
           "allowedOrigins": {
             "type": "array",
@@ -78591,6 +79190,17 @@
           },
           "connectionConfig": {
             "$ref": "#/components/schemas/ConnectionConfigReadResponse"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Schema for a OAuth client when listing as an admin user"
@@ -78636,6 +79246,13 @@
             "maxLength": 512,
             "description": "Client application id"
           },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication"
+          },
           "redirectUris": {
             "type": "array",
             "items": {
@@ -78658,6 +79275,17 @@
               "uniqueItems": true
             },
             "description": "List of allowed origins for client"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Response schema for reading an OAuth client as an admin user"
@@ -78717,6 +79345,13 @@
             "readOnly": true,
             "description": "Is set if client disabled"
           },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication"
+          },
           "description": {
             "type": "string",
             "maxLength": 4096,
@@ -78736,6 +79371,49 @@
             },
             "description": "List of allowed scopes for this client. For a full list of scopes see [qlik.dev/authenticate/oauth/scopes/](https://qlik.dev/authenticate/oauth/scopes/)."
           },
+          "clientSecrets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "hint"
+              ],
+              "properties": {
+                "hint": {
+                  "type": "string",
+                  "maxLength": 5,
+                  "description": "Hint of a client application secret"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2025-12-03T14:59:46.331Z",
+                  "description": "The timestamp for when the client-secret record was created."
+                },
+                "createdBy": {
+                  "type": "string",
+                  "description": "The identifier for the user that created the client-secret record."
+                }
+              }
+            },
+            "readOnly": true,
+            "description": "Hints of any client application secrets"
+          },
+          "connectionConfig": {
+            "type": "object",
+            "properties": {
+              "consentMethod": {
+                "enum": [
+                  "required",
+                  "trusted"
+                ],
+                "type": "string",
+                "example": "required",
+                "description": "Specifies the consent method for the connection."
+              }
+            },
+            "description": "Optional settings for configuring the client connection."
+          },
           "allowedGrantTypes": {
             "type": "array",
             "items": {
@@ -78746,6 +79424,17 @@
               "type": "string"
             },
             "description": "Allowed grant types, only for use with appType: 'web'"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Base schema for OAuth client requests and responses"
@@ -78782,6 +79471,13 @@
             "type": "string",
             "maxLength": 512,
             "description": "Client application name"
+          },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication (required when using private_key_jwt)"
           },
           "description": {
             "type": "string",
@@ -78840,6 +79536,18 @@
               "type": "string"
             },
             "description": "Allowed grant types, only for use with appType: 'web'"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string",
+              "description": "An authentication method for the client"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Request schema for OAuth client creation"
@@ -78861,6 +79569,13 @@
             "readOnly": true,
             "maxLength": 512,
             "description": "Client application id"
+          },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication"
           },
           "clientSecret": {
             "type": "string",
@@ -78887,6 +79602,17 @@
               "uniqueItems": true
             },
             "description": "List of allowed redirect URIs for login"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Response schema for OAuth client creation"
@@ -78909,6 +79635,20 @@
           }
         },
         "description": "Response schema for listing OAuth clients"
+      },
+      "OAuthClientPatchResponse": {
+        "type": "object",
+        "required": [
+          "clientSecret"
+        ],
+        "properties": {
+          "clientSecret": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The generated client application secret"
+          }
+        },
+        "description": "Response schema for PATCH /oauth-clients when a client secret is generated"
       },
       "OAuthClientPublishResponse": {
         "type": "object",
@@ -79004,7 +79744,9 @@
               "/logoUri",
               "/redirectUris",
               "/allowedScopes",
-              "/allowedGrantTypes"
+              "/allowedGrantTypes",
+              "/publicKeys",
+              "/allowedAuthMethods"
             ],
             "type": "string",
             "description": "The path for the given resource field to patch"
@@ -79182,6 +79924,16 @@
             "maxLength": 128,
             "minLength": 43,
             "description": "Required when grant_type is \"authorization_code\". The code verifier to verify original code challenge created by the client. It must be between 43 and 128 characters long and consists of [A-Z] / [a-z] / [0-9] / \"-\" / \".\" / \"_\" / \"~\""
+          },
+          "client_assertion": {
+            "type": "string",
+            "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJteS1jbGllbnQtaWQiLCJzdWIiOiJteS1jbGllbnQtaWQiLCJhdWQiOiJodHRwczovL215LXRlbmFudC51cy5xbGlrY2xvdWQuY29tL29hdXRoL3Rva2VuIiwiZXhwIjoxNzM3MTIwMDAwLCJpYXQiOjE3MzcxMTk0MDAsImp0aSI6ImU1Zjg0ZGE3LWI0YzMtNGE5Yi04ZjFlLTNhMmIxYzRkNWU2ZiJ9.kR7Y5tz9Xm3KpwF8jH2vQ4nL9sA6bC1dE8fG0hI3jK5mN7oP9qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT2uV4wX6yZ8aB0cD2eF4gH6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8",
+            "description": "JWT used for client authentication instead of client_secret."
+          },
+          "client_assertion_type": {
+            "type": "string",
+            "example": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "description": "Assertion type for JWT client assertion."
           }
         }
       },
@@ -79212,6 +79964,16 @@
           "client_secret": {
             "type": "string",
             "description": "The client secret."
+          },
+          "client_assertion": {
+            "type": "string",
+            "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJteS1jbGllbnQtaWQiLCJzdWIiOiJteS1jbGllbnQtaWQiLCJhdWQiOiJodHRwczovL215LXRlbmFudC51cy5xbGlrY2xvdWQuY29tL29hdXRoL3Rva2VuIiwiZXhwIjoxNzM3MTIwMDAwLCJpYXQiOjE3MzcxMTk0MDAsImp0aSI6ImU1Zjg0ZGE3LWI0YzMtNGE5Yi04ZjFlLTNhMmIxYzRkNWU2ZiJ9.kR7Y5tz9Xm3KpwF8jH2vQ4nL9sA6bC1dE8fG0hI3jK5mN7oP9qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT2uV4wX6yZ8aB0cD2eF4gH6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8",
+            "description": "JWT used for client authentication instead of client_secret."
+          },
+          "client_assertion_type": {
+            "type": "string",
+            "example": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "description": "Assertion type for JWT client assertion."
           }
         }
       },
@@ -79236,6 +79998,16 @@
           "refresh_token": {
             "type": "string",
             "description": "The refresh token to use."
+          },
+          "client_assertion": {
+            "type": "string",
+            "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJteS1jbGllbnQtaWQiLCJzdWIiOiJteS1jbGllbnQtaWQiLCJhdWQiOiJodHRwczovL215LXRlbmFudC51cy5xbGlrY2xvdWQuY29tL29hdXRoL3Rva2VuIiwiZXhwIjoxNzM3MTIwMDAwLCJpYXQiOjE3MzcxMTk0MDAsImp0aSI6ImU1Zjg0ZGE3LWI0YzMtNGE5Yi04ZjFlLTNhMmIxYzRkNWU2ZiJ9.kR7Y5tz9Xm3KpwF8jH2vQ4nL9sA6bC1dE8fG0hI3jK5mN7oP9qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT2uV4wX6yZ8aB0cD2eF4gH6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8",
+            "description": "JWT used for client authentication instead of client_secret."
+          },
+          "client_assertion_type": {
+            "type": "string",
+            "example": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "description": "Assertion type for JWT client assertion."
           }
         }
       },
@@ -79397,6 +80169,16 @@
           "client_secret": {
             "type": "string",
             "description": "The client secret."
+          },
+          "client_assertion": {
+            "type": "string",
+            "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJteS1jbGllbnQtaWQiLCJzdWIiOiJteS1jbGllbnQtaWQiLCJhdWQiOiJodHRwczovL215LXRlbmFudC51cy5xbGlrY2xvdWQuY29tL29hdXRoL3Rva2VuIiwiZXhwIjoxNzM3MTIwMDAwLCJpYXQiOjE3MzcxMTk0MDAsImp0aSI6ImU1Zjg0ZGE3LWI0YzMtNGE5Yi04ZjFlLTNhMmIxYzRkNWU2ZiJ9.kR7Y5tz9Xm3KpwF8jH2vQ4nL9sA6bC1dE8fG0hI3jK5mN7oP9qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT2uV4wX6yZ8aB0cD2eF4gH6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8",
+            "description": "JWT used for client authentication instead of client_secret."
+          },
+          "client_assertion_type": {
+            "type": "string",
+            "example": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "description": "Assertion type for JWT client assertion."
           }
         }
       },
