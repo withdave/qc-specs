@@ -1,0 +1,918 @@
+{
+  "info": {
+    "title": "analytics/change-stores",
+    "version": ""
+  },
+  "paths": {
+    "/api/analytics/change-stores": {
+      "get": {
+        "tags": [
+          "change-stores"
+        ],
+        "summary": "Get change-stores",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetChangeStoresResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JWTAuthHeader"
+          },
+          {
+            "$ref": "#/components/parameters/PageParam"
+          },
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/FilterParamChangeStores"
+          },
+          {
+            "$ref": "#/components/parameters/SortParamChangeStores"
+          },
+          {
+            "$ref": "#/components/parameters/SpaceIdParam"
+          }
+        ],
+        "description": "Returns a list of change-stores, accessible to the user.",
+        "operationId": "listChangeStores",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/change-stores/{storeId}": {
+      "get": {
+        "tags": [
+          "change-stores"
+        ],
+        "summary": "Get a change store",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetChangeStoreByIdResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JWTAuthHeader"
+          },
+          {
+            "$ref": "#/components/parameters/StoreId"
+          }
+        ],
+        "description": "Returns detailed information about a specific change store, such as its configuration and associated charts.",
+        "operationId": "getChangeStoreById",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/change-stores/{storeId}/changes": {
+      "get": {
+        "tags": [
+          "changes"
+        ],
+        "summary": "Get changes",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetChangesResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JWTAuthHeader"
+          },
+          {
+            "$ref": "#/components/parameters/StoreId"
+          },
+          {
+            "$ref": "#/components/parameters/PageParam"
+          },
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/FilterParamChanges"
+          },
+          {
+            "$ref": "#/components/parameters/SortParamChanges"
+          }
+        ],
+        "description": "Returns a list of changes within the specified change-store.",
+        "operationId": "listChanges",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/change-stores/{storeId}/changes/tabular-views": {
+      "get": {
+        "tags": [
+          "changes"
+        ],
+        "summary": "Get rows in tabular view",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetChangesTabularViewResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "expandRow",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "When set to true, the records returned by this endpoint will include the latest change (if available) for each editable column in the record. This parameter should be used in combination with a filter on updatedAt for use cases that require all editable columns to be included in each response."
+          },
+          {
+            "$ref": "#/components/parameters/JWTAuthHeader"
+          },
+          {
+            "$ref": "#/components/parameters/StoreId"
+          },
+          {
+            "$ref": "#/components/parameters/PageParam"
+          },
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/FilterParamChanges"
+          }
+        ],
+        "description": "Returns changes in tabular format, showing modified rows with optional expansion to include all columns.",
+        "operationId": "getTabularViewChanges",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "parameters": {
+      "FilterParamChanges": {
+        "in": "query",
+        "name": "filter",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "createdBy": {
+            "value": "createdBy eq \"6900ba43dff989b49c63cbe8\"",
+            "summary": "Filter by createdBy"
+          },
+          "committedChanges": {
+            "value": "committed eq \"true\"",
+            "summary": "Filter by committed changes"
+          },
+          "logicalExpression": {
+            "value": "committed eq \"true\" and updatedAt gt \"2025-11-06T13:11:07Z\"",
+            "summary": "Filter by logical expression"
+          },
+          "changesUpdatedAfter": {
+            "value": "updatedAt gt \"2025-11-06T13:11:07Z\"",
+            "summary": "Filter changes updated after timestamp"
+          }
+        },
+        "required": false,
+        "description": "A SCIM filter expression used to filter the result.\nThe filter parameter allows complex logical expressions using comparison operators and grouping.\n- **Supported attributes:** `committed`, `cellKey.columnId`, `columnId`, `createdBy`, `createdAt`, `updatedAt`\n- **Supported operators:** `eq`, `ne`, `co`, `sw`, `ew`, `pr`, `gt`, `ge`, `lt`, `le`  \n- **Logical operators:** `and`, `or`, `not`\n"
+      },
+      "FilterParamChangeStores": {
+        "in": "query",
+        "name": "filter",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "createdBy": {
+            "value": "createdBy eq \"6900ba43dff989b49c63cbe8\"",
+            "summary": "Filter by createdBy"
+          },
+          "logicalExpression": {
+            "value": "usedBy.appId pr and referenceId eq \"690c9e193e5b3a66a93bfe46\" and (storeName co \"store\" or primaryKey eq \"Dim2\")",
+            "summary": "Filter by logical expression"
+          },
+          "storeNameContains": {
+            "value": "storeName co \"store\"",
+            "summary": "Filter by storeName containing text"
+          },
+          "usedByAppIdPresent": {
+            "value": "usedBy.appId pr",
+            "summary": "Filter by usedBy.appId being present"
+          }
+        },
+        "required": false,
+        "description": "A SCIM filter expression used to filter the result.\nThe filter parameter allows complex logical expressions using comparison operators and grouping.\n- **Supported attributes:** `storeName`, `storeId`, `referenceId`, `usedBy.appId`, `primaryKey`\n- **Supported operators:** `eq`, `ne`, `co`, `sw`, `ew`, `pr`, `gt`, `ge`, `lt`, `le`  \n- **Logical operators:** `and`, `or`, `not`\n"
+      },
+      "JWTAuthHeader": {
+        "in": "header",
+        "name": "Authorization",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "The JWT used for authentication. Send the JWT in the AuthRequest header using the Bearer schema."
+      },
+      "LimitParam": {
+        "in": "query",
+        "name": "limit",
+        "schema": {
+          "type": "integer",
+          "maximum": 100
+        },
+        "example": 100,
+        "required": false,
+        "description": "Defines the size of each paged result (maximum 100)."
+      },
+      "PageParam": {
+        "in": "query",
+        "name": "page",
+        "schema": {
+          "type": "string"
+        },
+        "example": "1a2b3c",
+        "required": false,
+        "description": "Used for cursor-based pagination."
+      },
+      "SortParamChanges": {
+        "in": "query",
+        "name": "sort",
+        "schema": {
+          "type": "string",
+          "pattern": "^[+-]?(createdAt|updatedAt|cellKey)$"
+        },
+        "example": "+createdAt",
+        "description": "Sort results by a field, with optional + (asc) or - (desc) prefix"
+      },
+      "SortParamChangeStores": {
+        "in": "query",
+        "name": "sort",
+        "schema": {
+          "type": "string",
+          "pattern": "^[+-]?(storeName)$"
+        },
+        "example": "+storeName",
+        "description": "Sort results by a field, with optional + (asc) or - (desc) prefix"
+      },
+      "SpaceIdParam": {
+        "in": "query",
+        "name": "spaceId",
+        "schema": {
+          "type": "string"
+        },
+        "example": "personal",
+        "required": true,
+        "description": "The space ID to filter change stores by. This parameter is required.\nFor personal spaces, use \"personal\".\nFor shared spaces, use the actual space ID, e.g. \"690b584c5a8011de9079828e\".\n"
+      },
+      "StoreId": {
+        "in": "path",
+        "name": "storeId",
+        "schema": {
+          "type": "string"
+        },
+        "example": "507f1f77bcf86cd799439011",
+        "required": true,
+        "description": "The id of the change store."
+      }
+    },
+    "responses": {
+      "BadRequestResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Bad Request"
+      },
+      "ForbiddenResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Forbidden"
+      },
+      "GetChangesResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ListDefaultData"
+                },
+                {
+                  "$ref": "#/components/schemas/Pagination"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GetChangesData"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "description": "Changes response."
+      },
+      "GetChangesTabularViewResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ListDefaultData"
+                },
+                {
+                  "$ref": "#/components/schemas/Pagination"
+                },
+                {
+                  "$ref": "#/components/schemas/TabularView"
+                }
+              ]
+            }
+          }
+        },
+        "description": "Returns change-store values in tabular format."
+      },
+      "GetChangeStoreByIdResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "example": {
+                "data": {
+                  "usedBy": [
+                    {
+                      "appId": "af604296-14f6-48c2-8bac-12ce49ba83cc",
+                      "chartId": "chartId"
+                    }
+                  ],
+                  "spaceId": "456",
+                  "storeId": "123",
+                  "tenantId": "tenant789",
+                  "storeName": "My Change Store",
+                  "primaryKey": [
+                    "product",
+                    "region"
+                  ],
+                  "publishRefId": "6835b0135cf7147c01979e5d"
+                }
+              },
+              "properties": {
+                "data": {
+                  "$ref": "#/components/schemas/ChangeStore"
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns a specific change store."
+      },
+      "GetChangeStoresResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ListDefaultData"
+                },
+                {
+                  "$ref": "#/components/schemas/Pagination"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ChangeStore"
+                      }
+                    }
+                  }
+                }
+              ],
+              "example": {
+                "data": [
+                  {
+                    "usedBy": [
+                      {
+                        "appId": "af604296-14f6-48c2-8bac-12ce49ba83cc",
+                        "chartId": "chartId"
+                      }
+                    ],
+                    "spaceId": "456",
+                    "storeId": "123",
+                    "tenantId": "tenant789",
+                    "storeName": "My Change Store",
+                    "primaryKey": [
+                      "product",
+                      "region"
+                    ],
+                    "publishRefId": "6835b0135cf7147c01979e5d"
+                  },
+                  {
+                    "usedBy": [
+                      {
+                        "appId": "af604296-14f6-48c2-8bac-12ce49ba83cc",
+                        "chartId": "chartId2"
+                      }
+                    ],
+                    "spaceId": "457",
+                    "storeId": "124",
+                    "tenantId": "tenant790",
+                    "storeName": "Another Change Store",
+                    "primaryKey": [
+                      "category",
+                      "region"
+                    ],
+                    "publishRefId": "6835b0135cf7147c01979e5d"
+                  }
+                ],
+                "links": {
+                  "next": {
+                    "href": "https://example.org/api/analytics/change-stores?page=2"
+                  },
+                  "prev": {
+                    "href": "https://example.org/api/analytics/change-stores?page=1"
+                  },
+                  "self": {
+                    "href": "https://example.org/api/analytics/change-stores?page=1"
+                  }
+                },
+                "totalCount": 10,
+                "currentPageCount": 2
+              }
+            }
+          }
+        },
+        "description": "Returns a list of change stores."
+      },
+      "InternalServerErrorResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Internal Server Error"
+      },
+      "NotFoundResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Not found"
+      },
+      "UnauthorizedResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      }
+    },
+    "schemas": {
+      "CellKey": {
+        "type": "object",
+        "required": [
+          "rowKey",
+          "columnId"
+        ],
+        "properties": {
+          "rowKey": {
+            "$ref": "#/components/schemas/RowKey"
+          },
+          "columnId": {
+            "type": "string",
+            "example": "690b5975fddd52c0fba8dd10",
+            "description": "The id of the column."
+          }
+        }
+      },
+      "Change": {
+        "type": "object",
+        "example": {
+          "meta": {
+            "tenantId": "tenant123",
+            "createdAt": "2023-01-01T12:00:00Z",
+            "createdBy": "user123"
+          },
+          "committed": true,
+          "columnValue": "100"
+        },
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "example": "tenant123",
+            "description": "The tenant id."
+          },
+          "cellValue": {
+            "type": "string",
+            "description": "The value of the cell."
+          },
+          "committed": {
+            "type": "boolean",
+            "description": "Whether the change has been committed."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-01-01T12:00:00Z",
+            "description": "The time when a user starts typing in a cell and the row becomes locked.\n"
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "user123",
+            "description": "The id of the user who created the change."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-01-01T12:00:00Z",
+            "description": "The time when an update to the change has been done.\nExamples of when this value is updated:\n- User starts typing in a cell, locking the row.\n- User edits an unsaved change.\n- User saves the change.\n"
+          }
+        }
+      },
+      "ChangeStore": {
+        "type": "object",
+        "properties": {
+          "usedBy": {
+            "$ref": "#/components/schemas/UsedByArray"
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The space id where the change store is located."
+          },
+          "storeId": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The id of the change store."
+          },
+          "tenantId": {
+            "type": "string",
+            "example": "tenant789",
+            "description": "The tenant id the change store belongs to."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-05-20T20:39:39Z",
+            "description": "The time when the change store was created."
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "user123",
+            "description": "The id of the user who created the change store."
+          },
+          "storeName": {
+            "type": "string",
+            "example": "My Change Store",
+            "description": "The name of the change store."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-05-20T20:54:03Z",
+            "description": "The time when the change store was last updated."
+          },
+          "primaryKey": {
+            "$ref": "#/components/schemas/PrimaryKey"
+          },
+          "referenceId": {
+            "$ref": "#/components/schemas/ReferenceId"
+          },
+          "publishRefId": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The publish reference id used to map stores across published apps/spaces."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "FOO-123",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "example": "You don't have permission to view this resource.",
+            "description": "Description of the error."
+          },
+          "detail": {
+            "type": "string",
+            "example": "This resource requires app read privileges.",
+            "description": "Extra information about the error."
+          }
+        },
+        "description": "An error object."
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "list of errors"
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "GetChangesData": {
+        "type": "object",
+        "properties": {
+          "cellKey": {
+            "$ref": "#/components/schemas/CellKey"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Change"
+            }
+          },
+          "columnName": {
+            "type": "string",
+            "example": "price",
+            "description": "The name of the column."
+          }
+        }
+      },
+      "ListDefaultData": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "example": 10
+          },
+          "currentPageCount": {
+            "type": "integer",
+            "example": 2
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "https://example.org/api/analytics/change-stores?page=<next-cursor>"
+                  }
+                }
+              },
+              "prev": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "https://example.org/api/analytics/change-stores?page=<previous-cursor>"
+                  }
+                }
+              },
+              "self": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "https://example.org/api/analytics/change-stores?page=<self-cursor>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PrimaryKey": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": "product",
+          "description": "The name of a primary key column."
+        },
+        "example": [
+          "product",
+          "region"
+        ],
+        "description": "The list of primary key columns for the change store."
+      },
+      "ReferenceId": {
+        "type": "string",
+        "example": "6835b0135cf7147c01979e5d",
+        "description": "The reference id used to identify related editable-columns or change stores."
+      },
+      "RowKey": {
+        "type": "object",
+        "example": {
+          "product": "table"
+        },
+        "description": "A map of row keys.",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "TabularView": {
+        "type": "object",
+        "example": {
+          "data": [
+            {
+              "Color": "red",
+              "Price": "200",
+              "Product": "table",
+              "updatedAt": "2023-10-01T12:00:00Z",
+              "updatedBy": "abc123"
+            },
+            {
+              "Color": "green",
+              "Price": "100",
+              "Product": "chair",
+              "updatedAt": "2023-10-01T13:00:00Z"
+            }
+          ]
+        },
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2023-10-01T12:00:00Z",
+                  "description": "The timestamp when the row was last updated."
+                },
+                "updatedBy": {
+                  "type": "string",
+                  "example": "abc123",
+                  "description": "The user id that performed the latest update in the row (corresponds to updatedAt)."
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "UsedBy": {
+        "type": "object",
+        "required": [
+          "appId",
+          "chartId"
+        ],
+        "properties": {
+          "appId": {
+            "type": "string",
+            "example": "af604296-14f6-48c2-8bac-12ce49ba83cc",
+            "description": "The id of the app."
+          },
+          "chartId": {
+            "type": "string",
+            "example": "chartId",
+            "description": "The id of the chart."
+          }
+        }
+      },
+      "UsedByArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UsedBy"
+        },
+        "description": "List of chart/app references."
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}
