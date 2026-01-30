@@ -247,6 +247,16 @@
         ],
         "summary": "Update an OAuth client",
         "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthClientPatchResponse"
+                }
+              }
+            },
+            "description": "Accepted - Client secret was generated"
+          },
           "204": {
             "description": "No Content"
           },
@@ -280,7 +290,7 @@
             "description": "The unique identifier for the OAuth client"
           }
         ],
-        "description": "Updates the specified OAuth client.",
+        "description": "Updates the specified OAuth client. Returns 202 Accepted with a client secret in the response body if a client secret is generated during the update (e.g., when adding client_secret to allowedAuthMethods). Otherwise returns 204 No Content.",
         "operationId": "patchOAuthClient",
         "requestBody": {
           "content": {
@@ -905,6 +915,75 @@
           }
         }
       },
+      "JWK": {
+        "type": "object",
+        "required": [
+          "kty",
+          "use",
+          "alg",
+          "kid"
+        ],
+        "properties": {
+          "e": {
+            "type": "string",
+            "example": "AQAB",
+            "description": "Exponent for RSA keys"
+          },
+          "n": {
+            "type": "string",
+            "example": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx",
+            "description": "Modulus for RSA keys"
+          },
+          "x": {
+            "type": "string",
+            "example": "WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGl96oc0CWuis",
+            "description": "X coordinate for EC keys"
+          },
+          "y": {
+            "type": "string",
+            "example": "y77t-RvAHRKTsSGdIYUfweuOvwrvDD-Q3Hv5J0fSKbE",
+            "description": "Y coordinate for EC keys"
+          },
+          "alg": {
+            "enum": [
+              "RS256",
+              "RS512",
+              "ES384"
+            ],
+            "type": "string",
+            "example": "RS256",
+            "description": "Algorithm intended for use with the key"
+          },
+          "crv": {
+            "type": "string",
+            "example": "P-384",
+            "description": "Curve for EC keys"
+          },
+          "kid": {
+            "type": "string",
+            "example": "key-1",
+            "description": "Key ID"
+          },
+          "kty": {
+            "enum": [
+              "RSA",
+              "EC"
+            ],
+            "type": "string",
+            "example": "RSA",
+            "description": "Key type (e.g., RSA, EC)"
+          },
+          "use": {
+            "enum": [
+              "sig"
+            ],
+            "type": "string",
+            "example": "sig",
+            "description": "Intended use of the key (typically \"sig\" for signature)"
+          }
+        },
+        "description": "JSON Web Key (JWK) for the public key used to verify the signature of a client assertion JWT"
+      },
       "Link": {
         "type": "object",
         "required": [
@@ -949,6 +1028,13 @@
             "maxLength": 512,
             "description": "Client application id"
           },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication"
+          },
           "redirectUris": {
             "type": "array",
             "items": {
@@ -958,6 +1044,9 @@
               "uniqueItems": true
             },
             "description": "List of allowed redirect URIs for login"
+          },
+          "clientSecrets": {
+            "$ref": "#/components/schemas/ClientSecrets"
           },
           "allowedOrigins": {
             "type": "array",
@@ -971,6 +1060,17 @@
           },
           "connectionConfig": {
             "$ref": "#/components/schemas/ConnectionConfigReadResponse"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Schema for a OAuth client when listing as an admin user"
@@ -1016,6 +1116,13 @@
             "maxLength": 512,
             "description": "Client application id"
           },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication"
+          },
           "redirectUris": {
             "type": "array",
             "items": {
@@ -1038,6 +1145,17 @@
               "uniqueItems": true
             },
             "description": "List of allowed origins for client"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Response schema for reading an OAuth client as an admin user"
@@ -1097,6 +1215,13 @@
             "readOnly": true,
             "description": "Is set if client disabled"
           },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication"
+          },
           "description": {
             "type": "string",
             "maxLength": 4096,
@@ -1116,6 +1241,49 @@
             },
             "description": "List of allowed scopes for this client. For a full list of scopes see [qlik.dev/authenticate/oauth/scopes/](https://qlik.dev/authenticate/oauth/scopes/)."
           },
+          "clientSecrets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "hint"
+              ],
+              "properties": {
+                "hint": {
+                  "type": "string",
+                  "maxLength": 5,
+                  "description": "Hint of a client application secret"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2025-12-03T14:59:46.331Z",
+                  "description": "The timestamp for when the client-secret record was created."
+                },
+                "createdBy": {
+                  "type": "string",
+                  "description": "The identifier for the user that created the client-secret record."
+                }
+              }
+            },
+            "readOnly": true,
+            "description": "Hints of any client application secrets"
+          },
+          "connectionConfig": {
+            "type": "object",
+            "properties": {
+              "consentMethod": {
+                "enum": [
+                  "required",
+                  "trusted"
+                ],
+                "type": "string",
+                "example": "required",
+                "description": "Specifies the consent method for the connection."
+              }
+            },
+            "description": "Optional settings for configuring the client connection."
+          },
           "allowedGrantTypes": {
             "type": "array",
             "items": {
@@ -1126,6 +1294,17 @@
               "type": "string"
             },
             "description": "Allowed grant types, only for use with appType: 'web'"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Base schema for OAuth client requests and responses"
@@ -1162,6 +1341,13 @@
             "type": "string",
             "maxLength": 512,
             "description": "Client application name"
+          },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication (required when using private_key_jwt)"
           },
           "description": {
             "type": "string",
@@ -1220,6 +1406,18 @@
               "type": "string"
             },
             "description": "Allowed grant types, only for use with appType: 'web'"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string",
+              "description": "An authentication method for the client"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Request schema for OAuth client creation"
@@ -1241,6 +1439,13 @@
             "readOnly": true,
             "maxLength": 512,
             "description": "Client application id"
+          },
+          "publicKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "description": "List of public keys for JWT authentication"
           },
           "clientSecret": {
             "type": "string",
@@ -1267,6 +1472,17 @@
               "uniqueItems": true
             },
             "description": "List of allowed redirect URIs for login"
+          },
+          "allowedAuthMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "client_secret",
+                "private_key_jwt"
+              ],
+              "type": "string"
+            },
+            "description": "List of allowed authentication methods for the client"
           }
         },
         "description": "Response schema for OAuth client creation"
@@ -1289,6 +1505,20 @@
           }
         },
         "description": "Response schema for listing OAuth clients"
+      },
+      "OAuthClientPatchResponse": {
+        "type": "object",
+        "required": [
+          "clientSecret"
+        ],
+        "properties": {
+          "clientSecret": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The generated client application secret"
+          }
+        },
+        "description": "Response schema for PATCH /oauth-clients when a client secret is generated"
       },
       "OAuthClientPublishResponse": {
         "type": "object",
@@ -1384,7 +1614,9 @@
               "/logoUri",
               "/redirectUris",
               "/allowedScopes",
-              "/allowedGrantTypes"
+              "/allowedGrantTypes",
+              "/publicKeys",
+              "/allowedAuthMethods"
             ],
             "type": "string",
             "description": "The path for the given resource field to patch"

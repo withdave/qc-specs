@@ -410,6 +410,16 @@
             "maxLength": 128,
             "minLength": 43,
             "description": "Required when grant_type is \"authorization_code\". The code verifier to verify original code challenge created by the client. It must be between 43 and 128 characters long and consists of [A-Z] / [a-z] / [0-9] / \"-\" / \".\" / \"_\" / \"~\""
+          },
+          "client_assertion": {
+            "type": "string",
+            "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJteS1jbGllbnQtaWQiLCJzdWIiOiJteS1jbGllbnQtaWQiLCJhdWQiOiJodHRwczovL215LXRlbmFudC51cy5xbGlrY2xvdWQuY29tL29hdXRoL3Rva2VuIiwiZXhwIjoxNzM3MTIwMDAwLCJpYXQiOjE3MzcxMTk0MDAsImp0aSI6ImU1Zjg0ZGE3LWI0YzMtNGE5Yi04ZjFlLTNhMmIxYzRkNWU2ZiJ9.kR7Y5tz9Xm3KpwF8jH2vQ4nL9sA6bC1dE8fG0hI3jK5mN7oP9qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT2uV4wX6yZ8aB0cD2eF4gH6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8",
+            "description": "JWT used for client authentication instead of client_secret."
+          },
+          "client_assertion_type": {
+            "type": "string",
+            "example": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "description": "Assertion type for JWT client assertion."
           }
         }
       },
@@ -440,6 +450,16 @@
           "client_secret": {
             "type": "string",
             "description": "The client secret."
+          },
+          "client_assertion": {
+            "type": "string",
+            "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJteS1jbGllbnQtaWQiLCJzdWIiOiJteS1jbGllbnQtaWQiLCJhdWQiOiJodHRwczovL215LXRlbmFudC51cy5xbGlrY2xvdWQuY29tL29hdXRoL3Rva2VuIiwiZXhwIjoxNzM3MTIwMDAwLCJpYXQiOjE3MzcxMTk0MDAsImp0aSI6ImU1Zjg0ZGE3LWI0YzMtNGE5Yi04ZjFlLTNhMmIxYzRkNWU2ZiJ9.kR7Y5tz9Xm3KpwF8jH2vQ4nL9sA6bC1dE8fG0hI3jK5mN7oP9qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT2uV4wX6yZ8aB0cD2eF4gH6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8",
+            "description": "JWT used for client authentication instead of client_secret."
+          },
+          "client_assertion_type": {
+            "type": "string",
+            "example": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "description": "Assertion type for JWT client assertion."
           }
         }
       },
@@ -464,6 +484,16 @@
           "refresh_token": {
             "type": "string",
             "description": "The refresh token to use."
+          },
+          "client_assertion": {
+            "type": "string",
+            "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJteS1jbGllbnQtaWQiLCJzdWIiOiJteS1jbGllbnQtaWQiLCJhdWQiOiJodHRwczovL215LXRlbmFudC51cy5xbGlrY2xvdWQuY29tL29hdXRoL3Rva2VuIiwiZXhwIjoxNzM3MTIwMDAwLCJpYXQiOjE3MzcxMTk0MDAsImp0aSI6ImU1Zjg0ZGE3LWI0YzMtNGE5Yi04ZjFlLTNhMmIxYzRkNWU2ZiJ9.kR7Y5tz9Xm3KpwF8jH2vQ4nL9sA6bC1dE8fG0hI3jK5mN7oP9qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT2uV4wX6yZ8aB0cD2eF4gH6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8",
+            "description": "JWT used for client authentication instead of client_secret."
+          },
+          "client_assertion_type": {
+            "type": "string",
+            "example": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "description": "Assertion type for JWT client assertion."
           }
         }
       },
@@ -625,6 +655,16 @@
           "client_secret": {
             "type": "string",
             "description": "The client secret."
+          },
+          "client_assertion": {
+            "type": "string",
+            "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJteS1jbGllbnQtaWQiLCJzdWIiOiJteS1jbGllbnQtaWQiLCJhdWQiOiJodHRwczovL215LXRlbmFudC51cy5xbGlrY2xvdWQuY29tL29hdXRoL3Rva2VuIiwiZXhwIjoxNzM3MTIwMDAwLCJpYXQiOjE3MzcxMTk0MDAsImp0aSI6ImU1Zjg0ZGE3LWI0YzMtNGE5Yi04ZjFlLTNhMmIxYzRkNWU2ZiJ9.kR7Y5tz9Xm3KpwF8jH2vQ4nL9sA6bC1dE8fG0hI3jK5mN7oP9qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT2uV4wX6yZ8aB0cD2eF4gH6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8",
+            "description": "JWT used for client authentication instead of client_secret."
+          },
+          "client_assertion_type": {
+            "type": "string",
+            "example": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "description": "Assertion type for JWT client assertion."
           }
         }
       }
