@@ -392,6 +392,20 @@
         "summary": "Download theme as an archive",
         "responses": {
           "200": {
+            "content": {
+              "application/zip": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
             "description": "OK. Theme exists. Returns the theme archive."
           },
           "403": {

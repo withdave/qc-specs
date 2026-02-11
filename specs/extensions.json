@@ -392,6 +392,20 @@
         "summary": "Download extension as an archive",
         "responses": {
           "200": {
+            "content": {
+              "application/zip": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
             "description": "OK. Extension exists. Returns the extension archive."
           },
           "403": {
