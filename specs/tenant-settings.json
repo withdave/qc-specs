@@ -1,0 +1,861 @@
+{
+  "info": {
+    "title": "tenant-settings",
+    "version": ""
+  },
+  "paths": {
+    "/api/v1/tenant-settings": {
+      "get": {
+        "tags": [
+          "tenant-settings"
+        ],
+        "summary": "Get tenant settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantSettingsDefinition"
+                }
+              }
+            },
+            "description": "Tenant settings retrieval was successful."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Retrieves tenant settings associated with the tenant ID specified in JWT. This is access controlled by the permission admin.tenant-settings:read.",
+        "operationId": "getTenantSettings",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "tenant-settings"
+        ],
+        "summary": "Create tenant settings",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantSettingsDefinition"
+                }
+              }
+            },
+            "description": "The tenant settings have been successfully created."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Creates a new tenant settings entry for the tenant ID specified in the JWT. This is access controlled by the permission admin.tenant-settings:create.",
+        "operationId": "createTenantSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantSettingsCreateDefinition"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "patch": {
+        "tags": [
+          "tenant-settings"
+        ],
+        "summary": "Update tenant settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantSettingsDefinition"
+                }
+              }
+            },
+            "description": "The tenant settings have been successfully updated."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Tenant settings for this tenant do not exist."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Updates existing tenant settings. This is access controlled by the permission admin.tenant-settings:update.",
+        "operationId": "updateTenantSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "tenant-settings"
+        ],
+        "summary": "Delete tenant settings",
+        "responses": {
+          "204": {
+            "description": "The tenant settings have been successfully deleted."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Tenant settings for tenant ID do not exist."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Deletes the tenant settings associated with the tenant ID specified in JWT. This is access controlled by the permission admin.tenant-settings:delete.",
+        "operationId": "deleteTenantSettings",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/tenant-settings/actions/toggle-cross-region-data-processing": {
+      "post": {
+        "tags": [
+          "tenant-settings"
+        ],
+        "summary": "Toggle cross-region data processing",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantSettingsDefinition"
+                }
+              }
+            },
+            "description": "The cross region inference setting has been successfully updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Bad Request. The request is incorrect."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized. The user is not authorized to access the service."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden. You don't have sufficient permissions to access this resource."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Sets the cross region inference setting for the tenant. Creates tenant settings if none exist, or updates existing settings. This is access controlled by the permission admin.tenant-settings:update.\nWhen cross-region processing is required, you must include an additional header x-qlik-consent-verified: true in your API requests to confirm that you have the authority to enable this feature and accept the associated terms.\n",
+        "operationId": "toggleCrossRegionalDataProcessing",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetCrossRegionDataProcessing"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/tenant-settings/start-pages": {
+      "get": {
+        "tags": [
+          "tenant-settings"
+        ],
+        "summary": "Get start pages",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantStartPagesResponse"
+                }
+              }
+            },
+            "description": "Tenant settings start pages retrieval was successful."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Retrieves start pages for the tenant settings.",
+        "operationId": "getTenantSettingsStartPages",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "x-qlik-categories": [],
+  "openapi": "3.0.0",
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse400"
+            }
+          }
+        },
+        "description": "Bad Request"
+      },
+      "Forbidden": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse403"
+            }
+          }
+        },
+        "description": "Forbidden"
+      },
+      "InternalServerError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse500"
+            }
+          }
+        },
+        "description": "Internal Server Error"
+      },
+      "Unauthorized": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse401"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      }
+    },
+    "schemas": {
+      "CustomizeNoAccess": {
+        "type": "object",
+        "required": [
+          "linkEnabled"
+        ],
+        "properties": {
+          "linkUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "message": {
+            "type": "string"
+          },
+          "linkLabel": {
+            "type": "string"
+          },
+          "linkEnabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "readOnly": true,
+                  "description": "Error code."
+                },
+                "title": {
+                  "type": "string",
+                  "readOnly": true,
+                  "description": "Error cause."
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse400": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-400"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The request is incorrect."
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse401": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-401"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "The user is not authorized to access the service."
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse403": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-403"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Forbidden"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "You don't have sufficient permissions to access this resource."
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 403
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse500": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "HTTP-500"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "Something went wrong in the server."
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 500
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "JSONPatchRequestAddReplaceTest": {
+        "type": "object",
+        "required": [
+          "value",
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "add",
+              "replace",
+              "test"
+            ],
+            "type": "string",
+            "description": "The operation to perform."
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON Pointer path."
+          },
+          "value": {
+            "description": "The value to add, replace or test."
+          }
+        },
+        "additionalProperties": false
+      },
+      "JSONPatchRequestMoveCopy": {
+        "type": "object",
+        "required": [
+          "from",
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "move",
+              "copy"
+            ],
+            "type": "string",
+            "description": "The operation to perform."
+          },
+          "from": {
+            "type": "string",
+            "description": "A JSON Pointer path."
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON Pointer path."
+          }
+        },
+        "additionalProperties": false
+      },
+      "JSONPatchRequestRemove": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "remove"
+            ],
+            "type": "string",
+            "description": "The operation to perform."
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON Pointer path."
+          }
+        },
+        "additionalProperties": false
+      },
+      "PatchRequest": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/JSONPatchRequestAddReplaceTest"
+            },
+            {
+              "$ref": "#/components/schemas/JSONPatchRequestRemove"
+            },
+            {
+              "$ref": "#/components/schemas/JSONPatchRequestMoveCopy"
+            }
+          ]
+        }
+      },
+      "ReleaseCadenceConfig": {
+        "enum": [
+          "monthly",
+          "continuous"
+        ],
+        "type": "string",
+        "description": "Set the release cadence"
+      },
+      "SetCrossRegionDataProcessing": {
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/SetCrossRegionDataProcessingConfig"
+          }
+        },
+        "description": "Set to true to enable cross-region inference, false to disable. Defaults to false."
+      },
+      "SetCrossRegionDataProcessingConfig": {
+        "type": "boolean",
+        "description": "Set to true to enable cross-region inference, false to disable."
+      },
+      "StartPage": {
+        "enum": [
+          "analytics-hub",
+          "data-integration-hub",
+          "management-console"
+        ],
+        "type": "string"
+      },
+      "StartPageConfigConsole": {
+        "type": "object",
+        "properties": {
+          "route": {
+            "enum": [
+              "/console"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "enum": [
+              "management-console"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "StartPageConfigCreationHub": {
+        "type": "object",
+        "properties": {
+          "route": {
+            "enum": [
+              "/analytics"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "enum": [
+              "analytics-creation-hub"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "StartPageConfigHub": {
+        "type": "object",
+        "properties": {
+          "route": {
+            "enum": [
+              "/insights"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "enum": [
+              "analytics-hub"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "StartPageConfigQdi": {
+        "type": "object",
+        "properties": {
+          "route": {
+            "enum": [
+              "/qdi"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "enum": [
+              "data-integration-hub"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "TenantSettingsCreateDefinition": {
+        "type": "object",
+        "properties": {
+          "customizeNoAccess": {
+            "$ref": "#/components/schemas/CustomizeNoAccess"
+          },
+          "preferredStartPage": {
+            "$ref": "#/components/schemas/StartPage"
+          }
+        },
+        "description": "Create a new tenant settings entry for the tenant ID specified in the JWT. At least one of preferredStartPage or customizeNoAccess must be provided."
+      },
+      "TenantSettingsDefinition": {
+        "type": "object",
+        "required": [
+          "id",
+          "tenantId",
+          "createdBy",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "userId of the user who created the settings"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "userId of the user who last modified the settings"
+          },
+          "releaseCadence": {
+            "$ref": "#/components/schemas/ReleaseCadenceConfig"
+          },
+          "customizeNoAccess": {
+            "$ref": "#/components/schemas/CustomizeNoAccess"
+          },
+          "preferredStartPage": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StartPageConfigHub"
+              },
+              {
+                "$ref": "#/components/schemas/StartPageConfigCreationHub"
+              },
+              {
+                "$ref": "#/components/schemas/StartPageConfigQdi"
+              },
+              {
+                "$ref": "#/components/schemas/StartPageConfigConsole"
+              }
+            ]
+          },
+          "crossRegionDataProcessing": {
+            "$ref": "#/components/schemas/SetCrossRegionDataProcessingConfig"
+          }
+        }
+      },
+      "TenantStartPagesResponse": {
+        "type": "object",
+        "required": [
+          "defaultValue",
+          "values"
+        ],
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/StartPageConfigHub"
+                },
+                {
+                  "$ref": "#/components/schemas/StartPageConfigCreationHub"
+                },
+                {
+                  "$ref": "#/components/schemas/StartPageConfigQdi"
+                }
+              ]
+            }
+          },
+          "defaultValue": {
+            "enum": [
+              "analytics-hub"
+            ],
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}
