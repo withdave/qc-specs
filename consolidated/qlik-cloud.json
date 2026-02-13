@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.32",
+    "version": "1.0.33",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -2059,6 +2059,119 @@
           "external/manage",
           "external/build"
         ],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/apps/{appId}/placement": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Placement"
+                }
+              }
+            },
+            "headers": {},
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Identifier of the app"
+          }
+        ],
+        "description": "Retrieves the app size override for an app.",
+        "x-qlik-access-control": [
+          "read"
+        ],
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "locked",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {}
+            },
+            "headers": {},
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Identifier of the app"
+          }
+        ],
+        "description": "Sets the app size override for an app.",
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineSize"
+              }
+            }
+          },
+          "required": true,
+          "description": "The override information to be used for app placement."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "locked",
+        "x-qlik-categories": [],
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {}
+            },
+            "headers": {},
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Identifier of the app"
+          }
+        ],
+        "description": "Removes the app size override for an app.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "locked",
+        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -42174,6 +42287,13 @@
         "summary": "Cancel a reload",
         "responses": {
           "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReloadStatus"
+                }
+              }
+            },
             "description": "Reload is being cancelled."
           },
           "204": {
@@ -54687,6 +54807,55 @@
           }
         }
       },
+      "EngineGBSize": {
+        "type": "string",
+        "oneOf": [
+          {
+            "title": "0",
+            "description": "EngineSize_NoOverride",
+            "x-qlik-const": 0
+          },
+          {
+            "title": "40",
+            "description": "EngineSize_40GB",
+            "x-qlik-const": 1
+          },
+          {
+            "title": "60",
+            "description": "EngineSize_60GB",
+            "x-qlik-const": 2
+          },
+          {
+            "title": "80",
+            "description": "EngineSize_80GB",
+            "x-qlik-const": 3
+          },
+          {
+            "title": "120",
+            "description": "EngineSize_120GB",
+            "x-qlik-const": 4
+          },
+          {
+            "title": "160",
+            "description": "EngineSize_160GB",
+            "x-qlik-const": 5
+          },
+          {
+            "title": "200",
+            "description": "EngineSize_200GB",
+            "x-qlik-const": 6
+          }
+        ]
+      },
+      "EngineSize": {
+        "type": "object",
+        "properties": {
+          "minEngineSize": {
+            "$ref": "#/components/schemas/EngineGBSize"
+          }
+        },
+        "description": "Engine size override for app placement on non reload engines."
+      },
       "evaluation": {
         "type": "object",
         "properties": {
@@ -56287,6 +56456,20 @@
           }
         },
         "additionalProperties": false
+      },
+      "Placement": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The iso timestamp for when the override was configured."
+          },
+          "minEngineSize": {
+            "$ref": "#/components/schemas/EngineGBSize"
+          }
+        },
+        "description": "Override for app placement on non reload engines."
       },
       "PublishApp": {
         "type": "object",
@@ -81663,6 +81846,25 @@
             }
           }
         ]
+      },
+      "ReloadStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "QUEUED",
+              "RELOADING",
+              "CANCELING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELED",
+              "EXCEEDED_LIMIT"
+            ],
+            "type": "string",
+            "example": "RELOADING",
+            "description": "The status of the reload."
+          }
+        }
       },
       "Status": {
         "enum": [
