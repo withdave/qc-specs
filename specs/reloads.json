@@ -365,6 +365,13 @@
         "summary": "Cancel a reload",
         "responses": {
           "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReloadStatus"
+                }
+              }
+            },
             "description": "Reload is being cancelled."
           },
           "204": {
@@ -689,6 +696,25 @@
             }
           }
         ]
+      },
+      "ReloadStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "QUEUED",
+              "RELOADING",
+              "CANCELING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELED",
+              "EXCEEDED_LIMIT"
+            ],
+            "type": "string",
+            "example": "RELOADING",
+            "description": "The status of the reload."
+          }
+        }
       },
       "Status": {
         "enum": [
