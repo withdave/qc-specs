@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.33",
+    "version": "1.0.34",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -39569,11 +39569,11 @@
         },
         "operationId": "notesConfigGet",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
           "external/manage"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -39649,11 +39649,11 @@
           "description": "A JSON payload containing note settings to put."
         },
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
           "external/manage"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -68387,6 +68387,9 @@
                 "type": "string",
                 "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
               },
+              "fileStats": {
+                "$ref": "#/components/schemas/FileStatistics"
+              },
               "startTime": {
                 "type": "string",
                 "format": "date-time"
@@ -68515,9 +68518,15 @@
                 "type": "string",
                 "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
               },
+              "fileStats": {
+                "$ref": "#/components/schemas/FileStatistics"
+              },
               "startTime": {
                 "type": "string",
                 "format": "date-time"
+              },
+              "operationStats": {
+                "$ref": "#/components/schemas/OperationStatistics"
               },
               "totalProcessedCount": {
                 "type": "number"
@@ -68836,6 +68845,20 @@
           }
         }
       },
+      "FileStatistics": {
+        "type": "object",
+        "properties": {
+          "volume": {
+            "type": "string",
+            "description": "Volume of data processed (e.g. '10.91 MiB')."
+          },
+          "processedCount": {
+            "type": "number",
+            "description": "Number of files processed."
+          }
+        },
+        "description": "Statistics for file-based tasks."
+      },
       "GetDiExportProjectVariablesRsp": {
         "type": "object",
         "properties": {
@@ -68881,6 +68904,28 @@
             }
           }
         }
+      },
+      "OperationStatistics": {
+        "type": "object",
+        "properties": {
+          "deleteCount": {
+            "type": "number",
+            "description": "Number of delete operations."
+          },
+          "failedCount": {
+            "type": "number",
+            "description": "Number of failed operations."
+          },
+          "insertCount": {
+            "type": "number",
+            "description": "Number of insert operations."
+          },
+          "updateCount": {
+            "type": "number",
+            "description": "Number of update operations."
+          }
+        },
+        "description": "Breakdown of operations for record-oriented tasks."
       },
       "PrepareProjectReq": {
         "type": "object",
