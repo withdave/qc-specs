@@ -1878,6 +1878,9 @@
                 "type": "string",
                 "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
               },
+              "fileStats": {
+                "$ref": "#/components/schemas/FileStatistics"
+              },
               "startTime": {
                 "type": "string",
                 "format": "date-time"
@@ -2006,9 +2009,15 @@
                 "type": "string",
                 "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
               },
+              "fileStats": {
+                "$ref": "#/components/schemas/FileStatistics"
+              },
               "startTime": {
                 "type": "string",
                 "format": "date-time"
+              },
+              "operationStats": {
+                "$ref": "#/components/schemas/OperationStatistics"
               },
               "totalProcessedCount": {
                 "type": "number"
@@ -2362,6 +2371,20 @@
           }
         }
       },
+      "FileStatistics": {
+        "type": "object",
+        "properties": {
+          "volume": {
+            "type": "string",
+            "description": "Volume of data processed (e.g. '10.91 MiB')."
+          },
+          "processedCount": {
+            "type": "number",
+            "description": "Number of files processed."
+          }
+        },
+        "description": "Statistics for file-based tasks."
+      },
       "GetDiExportProjectVariablesRsp": {
         "type": "object",
         "properties": {
@@ -2407,6 +2430,28 @@
             }
           }
         }
+      },
+      "OperationStatistics": {
+        "type": "object",
+        "properties": {
+          "deleteCount": {
+            "type": "number",
+            "description": "Number of delete operations."
+          },
+          "failedCount": {
+            "type": "number",
+            "description": "Number of failed operations."
+          },
+          "insertCount": {
+            "type": "number",
+            "description": "Number of insert operations."
+          },
+          "updateCount": {
+            "type": "number",
+            "description": "Number of update operations."
+          }
+        },
+        "description": "Breakdown of operations for record-oriented tasks."
       },
       "PrepareProjectReq": {
         "type": "object",

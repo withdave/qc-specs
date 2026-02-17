@@ -413,6 +413,9 @@
           },
           "detail": {
             "type": "string"
+          },
+          "status": {
+            "type": "string"
           }
         }
       },
