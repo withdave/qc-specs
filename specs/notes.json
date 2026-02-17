@@ -44,11 +44,11 @@
         },
         "operationId": "notesConfigGet",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
           "external/manage"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -124,11 +124,11 @@
           "description": "A JSON payload containing note settings to put."
         },
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
           "external/manage"
         ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
