@@ -66,6 +66,9 @@
             "name": "sort",
             "schema": {
               "enum": [
+                "id",
+                "-id",
+                "+id",
                 "name",
                 "+name",
                 "-name"
@@ -180,6 +183,29 @@
             "type": "boolean",
             "example": "true",
             "description": "Indicates if the connector is billable."
+          },
+          "logoLarge": {
+            "type": "string",
+            "example": "https://cdn.qlikcloud.com/automations/logos/a2649cabda63b339ebc68a0c8d028f08.png",
+            "nullable": true,
+            "description": "The URL to the large logo of the connector."
+          },
+          "logoSmall": {
+            "type": "string",
+            "example": "https://cdn.qlikcloud.com/automations/logos/a14638b5bf73f6d360f3c2732cf94bd9.png",
+            "nullable": true,
+            "description": "The URL to the small logo of the connector."
+          },
+          "logoMedium": {
+            "type": "string",
+            "example": "https://cdn.qlikcloud.com/automations/logos/db2e3454fd01a6c3a53c09609a0b504f.png",
+            "nullable": true,
+            "description": "The URL to the medium logo of the connector."
+          },
+          "hasWebhooks": {
+            "type": "boolean",
+            "example": "true",
+            "description": "Indicates if the connector supports webhooks."
           }
         }
       },
@@ -233,6 +259,7 @@
         "properties": {
           "href": {
             "type": "string",
+            "nullable": true,
             "description": "The URL to a resource request"
           }
         }
