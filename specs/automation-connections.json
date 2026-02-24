@@ -657,7 +657,11 @@
       "AutomationConnectionCheckObject": {
         "type": "object",
         "properties": {
-          "isConnected": {
+          "connected": {
+            "type": "boolean",
+            "description": "The connection status of the automation connection. When true, the automation connection is connected."
+          },
+          "is_connected": {
             "type": "boolean",
             "description": "The connection status of the automation connection. When true, the automation connection is connected."
           }
@@ -984,6 +988,7 @@
         "properties": {
           "href": {
             "type": "string",
+            "nullable": true,
             "description": "The URL to a resource request"
           }
         }
