@@ -706,7 +706,9 @@
             "enum": [
               "active",
               "disabled",
-              "deleted"
+              "deleted",
+              "pending",
+              "initializing"
             ],
             "type": "string",
             "description": "The status of the tenant."

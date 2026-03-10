@@ -9,7 +9,7 @@
         "tags": [
           "automation-connections"
         ],
-        "summary": "Retrieves a list of automation connections",
+        "summary": "List automation connections",
         "responses": {
           "200": {
             "content": {
@@ -94,9 +94,10 @@
               "example": "-name"
             },
             "required": false,
-            "description": "The field to sort by, with +- prefix indicating sort order. (?sort=-name => sort on the name field using descending order)"
+            "description": "The field to sort by, with +- prefix indicating sort order. (`?sort=-name` => sort on the `name` field using descending order)."
           }
         ],
+        "description": "Retrieves a list of automation connections the requesting user has access to.",
         "operationId": "getAutomationConnections",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -173,7 +174,7 @@
         "tags": [
           "automation-connections"
         ],
-        "summary": "Get automation connection",
+        "summary": "Get an automation connection",
         "responses": {
           "200": {
             "content": {
@@ -234,7 +235,7 @@
         "tags": [
           "automation-connections"
         ],
-        "summary": "Update automation connection",
+        "summary": "Update an automation connection",
         "responses": {
           "200": {
             "content": {
@@ -306,7 +307,7 @@
         "tags": [
           "automation-connections"
         ],
-        "summary": "Delete automation connection",
+        "summary": "Delete an automation connection",
         "responses": {
           "204": {
             "description": "No Content"

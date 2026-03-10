@@ -46,7 +46,7 @@
               "example": "name eq \"My Automation\" and runMode eq \"scheduled\" and ownerId eq \"sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy\""
             },
             "required": false,
-            "description": "Allowed filters: name, runMode, lastRunStatus, ownerId, spaceId"
+            "description": "Allowed filters: `name`, `runMode`, `lastRunStatus`, `ownerId`, `spaceId`."
           },
           {
             "in": "query",
@@ -109,7 +109,7 @@
               "example": "-name"
             },
             "required": false,
-            "description": "The field to sort by, with +- prefix indicating sort order. (?sort=-name => sort on the name field using descending order)."
+            "description": "The field to sort by, with +- prefix indicating sort order. (`?sort=-name` => sort on the `name` field using descending order)."
           }
         ],
         "description": "Retrieves a list of the automations that the requesting user has access to.",
@@ -412,7 +412,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
-        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned one of roles: `TenantAdmin`, `AnalyticsAdmin` or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
+        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned one of the following roles: `TenantAdmin`, `AnalyticsAdmin` or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
         "operationId": "automationChangeOwner",
         "requestBody": {
           "content": {
@@ -760,7 +760,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
-        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned one of roles: `TenantAdmin`, `AnalyticsAdmin` or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
+        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned one of the following roles: `TenantAdmin`, `AnalyticsAdmin` or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
         "operationId": "moveAutomation",
         "requestBody": {
           "content": {
@@ -850,7 +850,7 @@
               "example": "status eq \"finished\""
             },
             "required": false,
-            "description": "Allowed filters: status, context, startTime, title, spaceId, ownerId, executedById, billable"
+            "description": "Allowed filters: `status`, `context`, `startTime`, `title`, `spaceId`, `ownerId`, `executedById`, `billable`."
           },
           {
             "in": "query",
@@ -885,7 +885,7 @@
               "example": "-id"
             },
             "required": false,
-            "description": "The field to sort by, with +- prefix indicating sort order. (?query=-startTime => sort on the startTime field using descending order)"
+            "description": "The field to sort by, with +- prefix indicating sort order. (`?query=-startTime` => sort on the `startTime` field using descending order)."
           }
         ],
         "description": "Retrieves a list of runs for a specific automation. The requesting user must be the owner of the automation, or be assigned the one of roles: `TenantAdmin`, `AnalyticsAdmin`. Alternatively, the user must have at least one of the following scopes: `admin.automation-runs`, `automation-runs.private`, or `automation-runs.shared`.",
@@ -949,7 +949,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
-        "description": "Creates a runs for a specific automation. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
+        "description": "Creates a run for a specific automation. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
         "operationId": "createRun",
         "requestBody": {
           "content": {
@@ -1053,7 +1053,7 @@
         "tags": [
           "automations"
         ],
-        "summary": "Export log for automation run",
+        "summary": "Export automation run log",
         "responses": {
           "200": {
             "content": {
