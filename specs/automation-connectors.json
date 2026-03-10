@@ -78,7 +78,7 @@
               "example": "-name"
             },
             "required": false,
-            "description": "The field to sort by, with +- prefix indicating sort order. (?sort=-name => sort on the name field using descending order)"
+            "description": "The field to sort by, with +- prefix indicating sort order. (`?sort=-name` => sort on the `name` field using descending order)."
           }
         ],
         "description": "Retrieves a list of automation connectors.",

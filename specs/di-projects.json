@@ -1959,6 +1959,11 @@
               "message": {
                 "type": "string"
               },
+              "lastProcessed": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp of the latest source record inserted into the target dataset."
+              },
               "parseIssueCount": {
                 "type": "number",
                 "description": "Number of records that had parsing issues"
@@ -1967,9 +1972,17 @@
                 "type": "number",
                 "description": "Total number of records written to the dataset"
               },
+              "totalProcessedCount": {
+                "type": "number",
+                "description": "Total number of processed changes for the dataset"
+              },
               "recordsFilteredCount": {
                 "type": "number",
                 "description": "Total number of records filtered out and not written to the dataset"
+              },
+              "unoptimizedRecordsCount": {
+                "type": "number",
+                "description": "Queryable records pending merge into optimized Iceberg partitions."
               }
             }
           },

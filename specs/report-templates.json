@@ -787,6 +787,17 @@
             "nullable": true,
             "description": "Template name"
           },
+          "type": {
+            "enum": [
+              "excel",
+              "pixelPerfect",
+              "html",
+              "powerPoint",
+              "word"
+            ],
+            "type": "string",
+            "description": "Template type"
+          },
           "ownerId": {
             "type": "string",
             "example": "0rTsxGg_rtsZAs19Zib_421n6haydjIh",

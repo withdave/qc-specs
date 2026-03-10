@@ -898,7 +898,7 @@
                   "headerName": "headerValue",
                   "encryptedHeadersName": "**OMITTED**"
                 },
-                "description": "Headers sent for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\".",
+                "description": "Headers sent for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\". Maximum size: 2048 bytes for non-encrypted headers + 2048 bytes for encrypted headers.",
                 "additionalProperties": {
                   "type": "string"
                 }
@@ -919,7 +919,7 @@
                   "headerName": "headerValue",
                   "encryptedHeadersName": "**OMITTED**"
                 },
-                "description": "Headers received for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\".",
+                "description": "Headers received for this delivery, values of encryptedHeaders are omitted as such \"**OMITTED**\". Maximum size: 2048 bytes for non-encrypted headers + 2048 bytes for encrypted headers.",
                 "additionalProperties": {
                   "type": "string"
                 }
@@ -1112,7 +1112,7 @@
             "example": {
               "headerName": "headerValue"
             },
-            "description": "Additional headers in the post request (webhook delivery). Note: duplicate headers are not allowed and are case-insensitive.",
+            "description": "Additional headers in the post request (webhook delivery). Note: duplicate headers are not allowed and are case-insensitive. Maximum size: 2048 bytes for non-encrypted headers.",
             "additionalProperties": {
               "type": "string"
             }
@@ -1165,7 +1165,7 @@
             "example": {
               "headerName": "sensitiveHeaderValue"
             },
-            "description": "These headers are persisted encrypted and decrypted to be sent as normal headers in post request (webhook delivery), in case of URL change these headers will need to be re-entered. Note: duplicate headers are not allowed and are case-insensitive.",
+            "description": "These headers are persisted encrypted and decrypted to be sent as normal headers in post request (webhook delivery), in case of URL change these headers will need to be re-entered. Note: duplicate headers are not allowed and are case-insensitive. Maximum size: 2048 bytes for encrypted headers.",
             "additionalProperties": {
               "type": "string"
             }
@@ -1367,7 +1367,7 @@
             "example": {
               "headerName": "headerValue"
             },
-            "description": "Additional headers in the post request.",
+            "description": "Additional headers in the post request. Maximum size: 2048 bytes for non-encrypted headers.",
             "additionalProperties": {
               "type": "string"
             }
@@ -1428,7 +1428,7 @@
               "header1",
               "header2"
             ],
-            "description": "Additional encrypted headers in the post request."
+            "description": "Additional encrypted headers in the post request. Maximum size: 2048 bytes for encrypted headers."
           },
           "disabledReasonCode": {
             "type": "string",
