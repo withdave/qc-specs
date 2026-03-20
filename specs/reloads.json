@@ -133,6 +133,30 @@
             "description": "The cursor to the previous page of resources. Provide either the next or prev cursor, but not both."
           },
           {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "creationTime",
+                "+creationTime",
+                "-creationTime",
+                "status",
+                "+status",
+                "-status",
+                "startTime",
+                "+startTime",
+                "-startTime",
+                "endTime",
+                "+endTime",
+                "-endTime"
+              ],
+              "type": "string",
+              "default": "-creationTime"
+            },
+            "required": false,
+            "description": "The field to sort by, with +/- prefix indicating sort order"
+          },
+          {
             "in": "header",
             "name": "Authorization",
             "schema": {
