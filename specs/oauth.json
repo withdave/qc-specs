@@ -134,7 +134,8 @@
             "schema": {
               "enum": [
                 "none",
-                "login"
+                "login",
+                "consent"
               ],
               "type": "string"
             },

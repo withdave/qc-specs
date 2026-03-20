@@ -340,6 +340,10 @@
             "headers": {},
             "description": "Bad request"
           },
+          "401": {
+            "headers": {},
+            "description": "Unauthorized"
+          },
           "403": {
             "headers": {},
             "description": "Forbidden"
@@ -791,6 +795,10 @@
           "404": {
             "headers": {},
             "description": "Not Found"
+          },
+          "409": {
+            "headers": {},
+            "description": "Conflict"
           }
         },
         "parameters": [

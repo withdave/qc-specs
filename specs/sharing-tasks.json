@@ -2161,11 +2161,6 @@
       },
       "SharingSettings": {
         "type": "object",
-        "required": [
-          "enable-report-subscription",
-          "enable-reporting-template-subscription",
-          "enable-sharing"
-        ],
         "properties": {
           "tenantId": {
             "type": "string",
@@ -2235,7 +2230,8 @@
           "enable-reporting-template-subscription": {
             "type": "boolean",
             "example": true,
-            "description": "true if reporting-template-subscription feature is enabled for this tenant"
+            "description": "true if reporting-template-subscription feature is enabled for this tenant",
+            "x-qlik-deprecated": true
           },
           "reportingTemplateSubscriptionStatusChangeTime": {
             "type": "string",
@@ -2299,16 +2295,6 @@
           {
             "op": "replace",
             "path": "/enable-report-subscription",
-            "value": false
-          },
-          {
-            "op": "replace",
-            "path": "/enable-reporting-template-subscription",
-            "value": true
-          },
-          {
-            "op": "replace",
-            "path": "/enable-reporting-template-subscription",
             "value": false
           }
         ],
