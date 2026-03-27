@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.37",
+    "version": "1.0.38",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -42430,6 +42430,7 @@
             "schema": {
               "type": "string"
             },
+            "example": "Sales",
             "description": "Template name to search and filter for. Case-insensitive open search with wildcards both as prefix and suffix."
           },
           {
@@ -42438,6 +42439,7 @@
             "schema": {
               "type": "string"
             },
+            "example": "0rTsxGg_rtsZAs19Zib_421n6haydjIh",
             "description": "Return the templates for the specified owner."
           },
           {
@@ -42475,6 +42477,7 @@
                 "type": "string"
               }
             },
+            "example": "+name",
             "description": "Field to sort by. Prefix with +/- to indicate ascending/descending. By default, the sort order is ascending."
           },
           {
@@ -42483,9 +42486,11 @@
             "schema": {
               "type": "string"
             },
+            "example": "78fb8e8d-bc83-4da1-b0d1-b0dc0a5c3e5b",
             "description": "Return the templates that are using the specified app as data source."
           }
         ],
+        "operationId": "getReportTemplates",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
@@ -42554,6 +42559,7 @@
             "description": "The template file exceeds the user's quota for maximum file to upload."
           }
         },
+        "operationId": "createReportTemplate",
         "requestBody": {
           "content": {
             "application/json": {
@@ -42636,6 +42642,7 @@
             "description": "The ID of the report template."
           }
         ],
+        "operationId": "getReportTemplate",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
@@ -42719,6 +42726,7 @@
             "description": "The ID of the report template to patch."
           }
         ],
+        "operationId": "patchReportTemplate",
         "requestBody": {
           "content": {
             "application/json": {
@@ -42830,6 +42838,7 @@
             "description": "The ID of the report template to update."
           }
         ],
+        "operationId": "updateReportTemplate",
         "requestBody": {
           "content": {
             "application/json": {
@@ -42903,6 +42912,7 @@
             "description": "The ID of the report template to delete."
           }
         ],
+        "operationId": "deleteReportTemplate",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
@@ -42976,6 +42986,7 @@
             "description": "The ID of the report template."
           }
         ],
+        "operationId": "downloadReportTemplate",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
@@ -73855,9 +73866,6 @@
           },
           "fileConfig": {
             "$ref": "#/components/schemas/dataSourceFileConfig"
-          },
-          "crawlerConfig": {
-            "$ref": "#/components/schemas/dataSourceCrawlConfig"
           }
         },
         "description": "Specification on where to fetch the files for. This is required when the type == 'file'. Only one of path and files can be set. Path takes precedence if both are provided."
@@ -73954,46 +73962,11 @@
             "example": 10,
             "description": "The number of times that a datasource was referenced as a source in an answer"
           },
-          "crawlerConfig": {
-            "$ref": "#/components/schemas/dataSourceCrawlConfig"
-          },
           "contentSummary": {
             "$ref": "#/components/schemas/contentSummary"
           }
         },
         "description": "Specification on where to fetch the files for. This is required when the type == 'file'. Only one of path and files can be set. Path takes precedence if both are provided."
-      },
-      "dataSourceCrawlConfig": {
-        "type": "object",
-        "required": [
-          "url",
-          "scope"
-        ],
-        "properties": {
-          "url": {
-            "type": "string",
-            "example": "http://www.example.com",
-            "description": "Seed URL that crawling will start on."
-          },
-          "scope": {
-            "$ref": "#/components/schemas/dataSourceCrawlScope"
-          },
-          "crawlPatterns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/dataSourceCrawlPattern"
-            },
-            "description": "Pattern matching links to crawl"
-          },
-          "indexPatterns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/dataSourceCrawlPattern"
-            },
-            "description": "Pattern matching links to index"
-          }
-        },
-        "description": "Configuration for webcrawling"
       },
       "dataSourceCrawlPattern": {
         "type": "object",
@@ -74018,47 +73991,6 @@
           }
         },
         "description": "Include or exclude pattern"
-      },
-      "dataSourceCrawlScope": {
-        "type": "object",
-        "required": [
-          "scope",
-          "depth"
-        ],
-        "properties": {
-          "depth": {
-            "type": "integer",
-            "example": 1,
-            "description": "The number of levels of links the crawler will traverse"
-          },
-          "scope": {
-            "enum": [
-              "all",
-              "domain",
-              "subdomain"
-            ],
-            "type": "string",
-            "example": "all",
-            "description": "The scope that the crawler will crawl."
-          },
-          "maxSize": {
-            "type": "integer",
-            "example": 1000000,
-            "description": "Optional parameter. Max size of downloaded files in bytes"
-          },
-          "maxLinks": {
-            "type": "integer",
-            "example": 100,
-            "description": "Maximum number of links per page that will be extracted"
-          },
-          "downloadFiles": {
-            "type": "boolean",
-            "default": false,
-            "example": false,
-            "description": "if set to true crawler will try to download and index other supported content like pdf:s from links"
-          }
-        },
-        "description": "Scope for th webcrawler"
       },
       "dataSourceFileConfig": {
         "type": "object",
@@ -76837,7 +76769,6 @@
           },
           "applyDatasetChangeOnly": {
             "type": "boolean",
-            "default": true,
             "description": "If true, only run prediction if dataset has changed to avoid\nduplicates. If set to false, re-runs predictions on unchanged\ndatasets.\n"
           },
           "lastSuccessfulDateTime": {
@@ -76907,7 +76838,9 @@
         "type": "object",
         "required": [
           "startDateTime",
-          "timezone"
+          "timezone",
+          "recurrence",
+          "applyDatasetChangeOnly"
         ],
         "properties": {
           "timezone": {
@@ -76928,13 +76861,13 @@
           },
           "endDateTime": {
             "type": "string",
-            "example": "2025-12-31T23:59:00",
-            "description": "When the job is scheduled to finish"
+            "example": "2035-12-31T23:59:00",
+            "description": "When the job is scheduled to finish, date needs to be now or in future"
           },
           "startDateTime": {
             "type": "string",
-            "example": "2025-12-25T00:00:00",
-            "description": "When the job is scheduled to start"
+            "example": "2035-12-25T00:00:00",
+            "description": "When the job is scheduled to start, date needs to be now or in future"
           },
           "applyDatasetChangeOnly": {
             "type": "boolean",
@@ -82050,18 +81983,21 @@
         "properties": {
           "name": {
             "type": "string",
+            "example": "Sales by category",
             "maxLength": 255,
             "minLength": 1,
             "description": "Template name"
           },
           "description": {
             "type": "string",
+            "example": "Sales grouped by product category",
             "nullable": true,
             "maxLength": 255,
             "description": "Template description"
           },
           "sourceAppId": {
             "type": "string",
+            "example": "78fb8e8d-bc83-4da1-b0d1-b0dc0a5c3e5b",
             "nullable": true,
             "description": "The ID of the app that this template is using as data source. The id stored in the template file metadata is used if no value is specified."
           },
@@ -82071,10 +82007,12 @@
               "replace"
             ],
             "type": "string",
+            "default": "validate",
             "description": "Specifies the action to perform with the given source app id. Use \"validate\" to verify that the template source app matches the provided value. Use \"replace\" to migrate the template to a different app by replacing the source app id."
           },
           "temporaryContentId": {
             "type": "string",
+            "example": "69b14f2bb93332c3ff8c64b8",
             "minLength": 1,
             "description": "The ID of a previously uploaded temporary content file"
           }
@@ -82130,7 +82068,7 @@
           },
           "name": {
             "type": "string",
-            "example": "Qlik report",
+            "example": "Sales by category",
             "nullable": true,
             "description": "Template name"
           },
@@ -82143,6 +82081,7 @@
               "word"
             ],
             "type": "string",
+            "example": "excel",
             "description": "Template type"
           },
           "ownerId": {
@@ -82154,6 +82093,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2026-01-01T12:00:00.000Z",
             "nullable": true,
             "description": "The date and time when the template was created."
           },
@@ -82166,6 +82106,7 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2026-01-01T12:00:00.000Z",
             "nullable": true,
             "description": "The date and time when the template was last updated."
           },
@@ -82177,7 +82118,7 @@
           },
           "description": {
             "type": "string",
-            "example": "A daily report of interesting data",
+            "example": "Sales grouped by product category",
             "nullable": true,
             "description": "Template description"
           },
@@ -82211,12 +82152,14 @@
         "properties": {
           "name": {
             "type": "string",
+            "example": "Sales by category",
             "maxLength": 255,
             "minLength": 1,
             "description": "Template name"
           },
           "description": {
             "type": "string",
+            "example": "Sales grouped by product category",
             "nullable": true,
             "maxLength": 255,
             "description": "Template description"
@@ -82227,10 +82170,12 @@
               "replace"
             ],
             "type": "string",
+            "default": "validate",
             "description": "Specifies the action to perform with the new source app. Use \"validate\" to verify that the source app of the uploaded template matches the target app. Use \"replace\" to migrate the uploaded template to the target app by replacing the source app id."
           },
           "temporaryContentId": {
             "type": "string",
+            "example": "69b14f2bb93332c3ff8c64b8",
             "minLength": 1,
             "description": "The ID of a previously uploaded temporary content file"
           }
@@ -82429,7 +82374,7 @@
         "properties": {
           "code": {
             "type": "string",
-            "description": "The unique code for the error\n\n- \"REP-400000\" Bad request. The server could not understand the request due to invalid syntax.\n- \"REP-400008\" Selections error.\n- \"REP-400009\" Maximum 16384 columns limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of columns you can download.\n- \"REP-400010\" Maximum 1048566 rows limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of rows you can download.\n- \"REP-400011\" The size of the downloaded Excel file exceed 100 MB limit. Download data in a visualization can't generate an .xlsx file due to limitations to the amount of data you can download.\n- \"REP-400015\" Bad request in enigma request. The patch value has invalid JSON format.\n- \"REP-400017\" Static App size exceeded.\n- \"REP-400018\" Excel string length exceeded.\n- \"REP-400020\" Invalid Issuer.\n- \"REP-400024\" Cannot extract claims from JWT.\n- \"REP-400028\" Invalid Tags.\n- \"REP-400029\" Reload Entitlement Limit Reached.\n- \"REP-400035\" Multiple selections detected in a field having OneAndOnlyone attribute.\n- \"REP-400036\" No selection detected in a field having OneAndOnlyone attribute.\n- \"REP-400037\" Max number of images exceeded in a report.\n- \"REP-400038\" Max number of nested levels exceeded in report.\n- \"REP-400039\" Max number of objects exceeded in a report.\n- \"REP-400040\" Max number of templates exceeded in a report.\n- \"REP-400041\" Unsupported dimension type for level tag.\n- \"REP-400050\" Error retrieving outputs.\n- \"REP-400052\" Report Request Aborted from internal error.\n- \"REP-400054\" The number of generated cycle reports exceeds the maximum allowed.\n- \"REP-400055\" Export options not allowed for this object.\n- \"REP-400057\" The sense object has an empty GenericType.\n- \"REP-400102\" Image rendering invalid strategy error on Sense client.\n- \"REP-400240\" Engine Client Global generic closure error\n- \"REP-400260\" Engine Client generic closure error.\n- \"REP-400280\" Engine Client proxy generic closure error.\n- \"REP-401000\" Unauthorized. The client must authenticate itself to get the requested response.\n- \"REP-401001\" Unauthorized, bad JWT.\n- \"REP-403000\" Forbidden. The client does not have access rights to the content.\n- \"REP-403001\" App forbidden, the user does not have read permission on the app.\n- \"REP-403002\" Chart type not supported.\n- \"REP-403019\" Export is not available for app with enabled directQuery feature.\n- \"REP-403025\" No entitlement to perform the operation.\n- \"REP-403026\" No entitlement to perform the operation. Export capability is off.\n- \"REP-403027\" Object without Hypercube or unsupported object type.\n- \"REP-403048\" Forbidden. User does not have permission to export the report (access control usePermission)\n- \"REP-404000\" Not found. The server can not find the requested resource.\n- \"REP-404001\" App not found, the app does not exist or it has been deleted.\n- \"REP-404002\" Chart not found, the chart does not exist or it has been deleted.\n- \"REP-404003\" Sheet not found, the sheet does not exist or it has been deleted or it is unavailable.\n- \"REP-404004\" Story not found, the story does not exist or it has been deleted or it is unavailable.\n- \"REP-409001\" App conflict.\n- \"REP-409021\" Reload timestamp constraint not met.\n- \"REP-409046\" Report aborted due to app reload.\n- \"REP-422030\" Apply variables error.\n- \"REP-422051\" There is no report to produce due to empty dataset or missing fields (the measure/dimension was removed or omitted in Section Access)\n- \"REP-429000\" Too many request. The user has sent too many requests in a given amount of time (\"rate limiting\").\n- \"REP-429012\" Exceeded max session tenant quota. A tenant has opened too many different sessions at the same time.\n- \"REP-429014\" The export could not be completed within the requested deadline.\n- \"REP-429016\" Exceeded max session tenant quota per day.\n- \"REP-429022\" Enigma generic abort.\n- \"REP-500000\" Fail to resolve resource.\n- \"REP-500006\" Fail to get report session parameters.\n- \"REP-500014\" The app did not open within 10 minutes.\n- \"REP-500023\" Validate Report Request Tags failure.\n- \"REP-500045\" Failure setting Bookmark timestamp.\n- \"REP-500047\" Error setting GroupState.\n- \"REP-500053\" Unexpected number of generated cycle reports.\n- \"REP-500059\" The App is corrupt.\n- \"REP-500061\" Engine Memory limit reached.\n- \"REP-500100\" Image rendering generic error on Sense client.\n- \"REP-500101\" Image rendering could not set cookies error on Sense client.\n- \"REP-500103\" Image rendering JS timeout error on Sense client.\n- \"REP-500104\" Image rendering load URL timeout error on Sense client.\n- \"REP-500105\" Image rendering max paint attempts exceeded error on Sense client.\n- \"REP-500106\" Image rendering max JS attempts exceeded error on Sense client.\n- \"REP-500107\" Image rendering render timeout error on Sense client.\n- \"REP-500108\" Image rendering JS failure due to timeout error on Sense client.\n- \"REP-500109\" Image rendering generic JS failure error on Sense client.\n- \"REP-500200\" Report Generator error.\n- \"REP-500240\" Engine Global generic closure error.\n- \"REP-500260\" Engine Websocket generic closure error.\n- \"REP-500280\" Engine proxy generic closure error.\n- \"REP-503001\" Rest Engine Error.\n- \"REP-503005\" Engine unavailable, qix-sessions error no engines available.\n- \"REP-503013\" Session unavailable. The engine session used to create the report is unavailable.\n- \"REP-503060\" Engine Service unavailable.\n"
+            "description": "The unique code for the error\n\n- \"REP-400000\" Bad request. The server could not understand the request due to invalid syntax.\n- \"REP-400008\" Selections error.\n- \"REP-400009\" Maximum 16384 columns limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of columns you can download.\n- \"REP-400010\" Maximum 1048566 rows limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of rows you can download.\n- \"REP-400011\" The size of the downloaded Excel file exceed 100 MB limit. Download data in a visualization can't generate an .xlsx file due to limitations to the amount of data you can download.\n- \"REP-400015\" Bad request in enigma request. The patch value has invalid JSON format.\n- \"REP-400017\" Static App size exceeded.\n- \"REP-400018\" Excel string length exceeded.\n- \"REP-400020\" Invalid Issuer.\n- \"REP-400024\" Cannot extract claims from JWT.\n- \"REP-400028\" Invalid Tags.\n- \"REP-400029\" Reload Entitlement Limit Reached.\n- \"REP-400035\" Multiple selections detected in a field having OneAndOnlyone attribute.\n- \"REP-400036\" No selection detected in a field having OneAndOnlyone attribute.\n- \"REP-400037\" Max number of images exceeded in a report.\n- \"REP-400038\" Max number of nested levels exceeded in report.\n- \"REP-400039\" Max number of objects exceeded in a report.\n- \"REP-400040\" Max number of templates exceeded in a report.\n- \"REP-400041\" Unsupported dimension type for level tag.\n- \"REP-400050\" Error retrieving outputs.\n- \"REP-400052\" Report Request Aborted from internal error.\n- \"REP-400054\" The number of generated cycle reports exceeds the maximum allowed.\n- \"REP-400055\" Export options not allowed for this object.\n- \"REP-400057\" The sense object has an empty GenericType.\n- \"REP-400102\" Image rendering invalid strategy error on Sense client.\n- \"REP-400240\" Engine Client Global generic closure error\n- \"REP-400260\" Engine Client generic closure error.\n- \"REP-400280\" Engine Client proxy generic closure error.\n- \"REP-401000\" Unauthorized. The client must authenticate itself to get the requested response.\n- \"REP-401001\" Unauthorized, bad JWT.\n- \"REP-403000\" Forbidden. The client does not have access rights to the content.\n- \"REP-403001\" App forbidden, the user does not have read permission on the app.\n- \"REP-403002\" Chart type not supported.\n- \"REP-403019\" Export is not available for app with enabled directQuery feature.\n- \"REP-403025\" No entitlement to perform the operation.\n- \"REP-403026\" No entitlement to perform the operation. Export capability is off.\n- \"REP-403027\" Object without Hypercube or unsupported object type.\n- \"REP-403048\" Forbidden. User does not have permission to export the report (access control usePermission)\n- \"REP-404000\" Not found. The server can not find the requested resource.\n- \"REP-404001\" App not found, the app does not exist or it has been deleted.\n- \"REP-404002\" Chart not found, the chart does not exist or it has been deleted.\n- \"REP-404003\" Sheet not found, the sheet does not exist or it has been deleted or it is unavailable.\n- \"REP-404004\" Story not found, the story does not exist or it has been deleted or it is unavailable.\n- \"REP-409001\" App conflict.\n- \"REP-409021\" Reload timestamp constraint not met.\n- \"REP-409046\" Report aborted due to app reload.\n- \"REP-422030\" Apply variables error.\n- \"REP-422051\" There is no report to produce due to empty dataset or missing fields (the measure/dimension was removed or omitted in Section Access)\n- \"REP-429000\" Too many request. The user has sent too many requests in a given amount of time (\"rate limiting\").\n- \"REP-429012\" Exceeded max session tenant quota. A tenant has opened too many different sessions at the same time.\n- \"REP-429014\" The export could not be completed within the requested deadline.\n- \"REP-429016\" Exceeded max session tenant quota per day.\n- \"REP-429022\" Enigma generic abort.\n- \"REP-500000\" Fail to resolve resource.\n- \"REP-500006\" Fail to get report session parameters.\n- \"REP-500014\" The app did not open within 10 minutes.\n- \"REP-500023\" Validate Report Request Tags failure.\n- \"REP-500045\" Failure setting Bookmark timestamp.\n- \"REP-500047\" Error setting GroupState.\n- \"REP-500053\" Unexpected number of generated cycle reports.\n- \"REP-500059\" The App is corrupt.\n- \"REP-500061\" Engine Memory limit reached.\n- \"REP-500062\" Too many resolution attempts for a task.\n- \"REP-500100\" Image rendering generic error on Sense client.\n- \"REP-500101\" Image rendering could not set cookies error on Sense client.\n- \"REP-500103\" Image rendering JS timeout error on Sense client.\n- \"REP-500104\" Image rendering load URL timeout error on Sense client.\n- \"REP-500105\" Image rendering max paint attempts exceeded error on Sense client.\n- \"REP-500106\" Image rendering max JS attempts exceeded error on Sense client.\n- \"REP-500107\" Image rendering render timeout error on Sense client.\n- \"REP-500108\" Image rendering JS failure due to timeout error on Sense client.\n- \"REP-500109\" Image rendering generic JS failure error on Sense client.\n- \"REP-500200\" Report Generator error.\n- \"REP-500240\" Engine Global generic closure error.\n- \"REP-500260\" Engine Websocket generic closure error.\n- \"REP-500280\" Engine proxy generic closure error.\n- \"REP-503001\" Rest Engine Error.\n- \"REP-503005\" Engine unavailable, qix-sessions error no engines available.\n- \"REP-503013\" Session unavailable. The engine session used to create the report is unavailable.\n- \"REP-503060\" Engine Service unavailable.\n"
           },
           "meta": {
             "$ref": "#/components/schemas/MetaExportError"

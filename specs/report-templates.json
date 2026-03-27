@@ -51,6 +51,7 @@
             "schema": {
               "type": "string"
             },
+            "example": "Sales",
             "description": "Template name to search and filter for. Case-insensitive open search with wildcards both as prefix and suffix."
           },
           {
@@ -59,6 +60,7 @@
             "schema": {
               "type": "string"
             },
+            "example": "0rTsxGg_rtsZAs19Zib_421n6haydjIh",
             "description": "Return the templates for the specified owner."
           },
           {
@@ -96,6 +98,7 @@
                 "type": "string"
               }
             },
+            "example": "+name",
             "description": "Field to sort by. Prefix with +/- to indicate ascending/descending. By default, the sort order is ascending."
           },
           {
@@ -104,9 +107,11 @@
             "schema": {
               "type": "string"
             },
+            "example": "78fb8e8d-bc83-4da1-b0d1-b0dc0a5c3e5b",
             "description": "Return the templates that are using the specified app as data source."
           }
         ],
+        "operationId": "getReportTemplates",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
@@ -175,6 +180,7 @@
             "description": "The template file exceeds the user's quota for maximum file to upload."
           }
         },
+        "operationId": "createReportTemplate",
         "requestBody": {
           "content": {
             "application/json": {
@@ -257,6 +263,7 @@
             "description": "The ID of the report template."
           }
         ],
+        "operationId": "getReportTemplate",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
@@ -340,6 +347,7 @@
             "description": "The ID of the report template to patch."
           }
         ],
+        "operationId": "patchReportTemplate",
         "requestBody": {
           "content": {
             "application/json": {
@@ -451,6 +459,7 @@
             "description": "The ID of the report template to update."
           }
         ],
+        "operationId": "updateReportTemplate",
         "requestBody": {
           "content": {
             "application/json": {
@@ -524,6 +533,7 @@
             "description": "The ID of the report template to delete."
           }
         ],
+        "operationId": "deleteReportTemplate",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
@@ -597,6 +607,7 @@
             "description": "The ID of the report template."
           }
         ],
+        "operationId": "downloadReportTemplate",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-categories": [
@@ -625,18 +636,21 @@
         "properties": {
           "name": {
             "type": "string",
+            "example": "Sales by category",
             "maxLength": 255,
             "minLength": 1,
             "description": "Template name"
           },
           "description": {
             "type": "string",
+            "example": "Sales grouped by product category",
             "nullable": true,
             "maxLength": 255,
             "description": "Template description"
           },
           "sourceAppId": {
             "type": "string",
+            "example": "78fb8e8d-bc83-4da1-b0d1-b0dc0a5c3e5b",
             "nullable": true,
             "description": "The ID of the app that this template is using as data source. The id stored in the template file metadata is used if no value is specified."
           },
@@ -646,10 +660,12 @@
               "replace"
             ],
             "type": "string",
+            "default": "validate",
             "description": "Specifies the action to perform with the given source app id. Use \"validate\" to verify that the template source app matches the provided value. Use \"replace\" to migrate the template to a different app by replacing the source app id."
           },
           "temporaryContentId": {
             "type": "string",
+            "example": "69b14f2bb93332c3ff8c64b8",
             "minLength": 1,
             "description": "The ID of a previously uploaded temporary content file"
           }
@@ -783,7 +799,7 @@
           },
           "name": {
             "type": "string",
-            "example": "Qlik report",
+            "example": "Sales by category",
             "nullable": true,
             "description": "Template name"
           },
@@ -796,6 +812,7 @@
               "word"
             ],
             "type": "string",
+            "example": "excel",
             "description": "Template type"
           },
           "ownerId": {
@@ -807,6 +824,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2026-01-01T12:00:00.000Z",
             "nullable": true,
             "description": "The date and time when the template was created."
           },
@@ -819,6 +837,7 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2026-01-01T12:00:00.000Z",
             "nullable": true,
             "description": "The date and time when the template was last updated."
           },
@@ -830,7 +849,7 @@
           },
           "description": {
             "type": "string",
-            "example": "A daily report of interesting data",
+            "example": "Sales grouped by product category",
             "nullable": true,
             "description": "Template description"
           },
@@ -864,12 +883,14 @@
         "properties": {
           "name": {
             "type": "string",
+            "example": "Sales by category",
             "maxLength": 255,
             "minLength": 1,
             "description": "Template name"
           },
           "description": {
             "type": "string",
+            "example": "Sales grouped by product category",
             "nullable": true,
             "maxLength": 255,
             "description": "Template description"
@@ -880,10 +901,12 @@
               "replace"
             ],
             "type": "string",
+            "default": "validate",
             "description": "Specifies the action to perform with the new source app. Use \"validate\" to verify that the source app of the uploaded template matches the target app. Use \"replace\" to migrate the uploaded template to the target app by replacing the source app id."
           },
           "temporaryContentId": {
             "type": "string",
+            "example": "69b14f2bb93332c3ff8c64b8",
             "minLength": 1,
             "description": "The ID of a previously uploaded temporary content file"
           }

@@ -3666,7 +3666,6 @@
           },
           "applyDatasetChangeOnly": {
             "type": "boolean",
-            "default": true,
             "description": "If true, only run prediction if dataset has changed to avoid\nduplicates. If set to false, re-runs predictions on unchanged\ndatasets.\n"
           },
           "lastSuccessfulDateTime": {
@@ -3736,7 +3735,9 @@
         "type": "object",
         "required": [
           "startDateTime",
-          "timezone"
+          "timezone",
+          "recurrence",
+          "applyDatasetChangeOnly"
         ],
         "properties": {
           "timezone": {
@@ -3757,13 +3758,13 @@
           },
           "endDateTime": {
             "type": "string",
-            "example": "2025-12-31T23:59:00",
-            "description": "When the job is scheduled to finish"
+            "example": "2035-12-31T23:59:00",
+            "description": "When the job is scheduled to finish, date needs to be now or in future"
           },
           "startDateTime": {
             "type": "string",
-            "example": "2025-12-25T00:00:00",
-            "description": "When the job is scheduled to start"
+            "example": "2035-12-25T00:00:00",
+            "description": "When the job is scheduled to start, date needs to be now or in future"
           },
           "applyDatasetChangeOnly": {
             "type": "boolean",

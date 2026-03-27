@@ -1828,9 +1828,6 @@
           },
           "fileConfig": {
             "$ref": "#/components/schemas/dataSourceFileConfig"
-          },
-          "crawlerConfig": {
-            "$ref": "#/components/schemas/dataSourceCrawlConfig"
           }
         },
         "description": "Specification on where to fetch the files for. This is required when the type == 'file'. Only one of path and files can be set. Path takes precedence if both are provided."
@@ -1927,46 +1924,11 @@
             "example": 10,
             "description": "The number of times that a datasource was referenced as a source in an answer"
           },
-          "crawlerConfig": {
-            "$ref": "#/components/schemas/dataSourceCrawlConfig"
-          },
           "contentSummary": {
             "$ref": "#/components/schemas/contentSummary"
           }
         },
         "description": "Specification on where to fetch the files for. This is required when the type == 'file'. Only one of path and files can be set. Path takes precedence if both are provided."
-      },
-      "dataSourceCrawlConfig": {
-        "type": "object",
-        "required": [
-          "url",
-          "scope"
-        ],
-        "properties": {
-          "url": {
-            "type": "string",
-            "example": "http://www.example.com",
-            "description": "Seed URL that crawling will start on."
-          },
-          "scope": {
-            "$ref": "#/components/schemas/dataSourceCrawlScope"
-          },
-          "crawlPatterns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/dataSourceCrawlPattern"
-            },
-            "description": "Pattern matching links to crawl"
-          },
-          "indexPatterns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/dataSourceCrawlPattern"
-            },
-            "description": "Pattern matching links to index"
-          }
-        },
-        "description": "Configuration for webcrawling"
       },
       "dataSourceCrawlPattern": {
         "type": "object",
@@ -1991,47 +1953,6 @@
           }
         },
         "description": "Include or exclude pattern"
-      },
-      "dataSourceCrawlScope": {
-        "type": "object",
-        "required": [
-          "scope",
-          "depth"
-        ],
-        "properties": {
-          "depth": {
-            "type": "integer",
-            "example": 1,
-            "description": "The number of levels of links the crawler will traverse"
-          },
-          "scope": {
-            "enum": [
-              "all",
-              "domain",
-              "subdomain"
-            ],
-            "type": "string",
-            "example": "all",
-            "description": "The scope that the crawler will crawl."
-          },
-          "maxSize": {
-            "type": "integer",
-            "example": 1000000,
-            "description": "Optional parameter. Max size of downloaded files in bytes"
-          },
-          "maxLinks": {
-            "type": "integer",
-            "example": 100,
-            "description": "Maximum number of links per page that will be extracted"
-          },
-          "downloadFiles": {
-            "type": "boolean",
-            "default": false,
-            "example": false,
-            "description": "if set to true crawler will try to download and index other supported content like pdf:s from links"
-          }
-        },
-        "description": "Scope for th webcrawler"
       },
       "dataSourceFileConfig": {
         "type": "object",
