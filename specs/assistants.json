@@ -3538,6 +3538,11 @@
             "example": "2021-10-02T14:20:50.52Z",
             "readOnly": true,
             "description": "Datetime when the thread was updated."
+          },
+          "useUserPreferredLanguage": {
+            "type": "boolean",
+            "example": false,
+            "description": "Whether the thread should use the user's preferred language."
           }
         }
       },
@@ -4353,6 +4358,7 @@
           "updatedAt",
           "hasFeedback",
           "favorite",
+          "useUserPreferredLanguage",
           "summaryStats"
         ],
         "properties": {
@@ -4407,6 +4413,12 @@
           },
           "summaryStats": {
             "$ref": "#/components/schemas/feedbackSummary"
+          },
+          "useUserPreferredLanguage": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "If the thread should respond in the user's preferred language."
           }
         }
       },
@@ -4454,6 +4466,7 @@
           "ownerId",
           "hasFeedback",
           "favorite",
+          "useUserPreferredLanguage",
           "messages",
           "summaryStats"
         ],
@@ -4516,6 +4529,12 @@
           },
           "summaryStats": {
             "$ref": "#/components/schemas/feedbackSummary"
+          },
+          "useUserPreferredLanguage": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "If the thread should respond in the user's preferred language."
           }
         }
       }

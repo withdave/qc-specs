@@ -1450,6 +1450,11 @@
               "$ref": "#/components/schemas/KeyContact"
             }
           },
+          "pendingChangesCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of pending changes that are not yet activated."
+          },
           "apiConsumableDatasetIds": {
             "type": "array",
             "items": {

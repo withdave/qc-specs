@@ -2086,6 +2086,10 @@
                 "format": "date-time",
                 "description": "The latest point in time the data reflects, based on updates from the source system."
               },
+              "lakehouseClusterId": {
+                "type": "string",
+                "description": "For lakehouse storage tasks, this is the id of the cluster where the task runs"
+              },
               "liveViewsUpdatedTo": {
                 "type": "string",
                 "format": "date-time",

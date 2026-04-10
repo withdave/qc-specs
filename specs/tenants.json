@@ -707,8 +707,7 @@
               "active",
               "disabled",
               "deleted",
-              "pending",
-              "initializing"
+              "user-access-disabled"
             ],
             "type": "string",
             "description": "The status of the tenant."

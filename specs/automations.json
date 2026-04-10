@@ -1920,12 +1920,6 @@
             "type": "string",
             "description": "The title of the automation run."
           },
-          "inputs": {
-            "type": "object",
-            "nullable": true,
-            "description": "Input values that have been provided by the user.",
-            "x-qlik-stability": "private"
-          },
           "status": {
             "enum": [
               "failed",
@@ -2098,12 +2092,6 @@
             "type": "string",
             "readOnly": true,
             "description": "The unique identifier of the user who executed the automation run."
-          },
-          "expectedInputs": {
-            "type": "object",
-            "nullable": true,
-            "description": "User inputs from input blocks that must be populated for the automation run to continue.",
-            "x-qlik-stability": "private"
           },
           "scheduledStartTime": {
             "type": "string",
