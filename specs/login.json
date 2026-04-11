@@ -112,9 +112,6 @@
         "description": "Initiates login using the active interactive identity provider associated with the tenant. Uses default Qlik identity provider if no customer-configured interactive identity provider is active.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/authenticate"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -162,9 +159,6 @@
         "description": "Exchanges a token in the form of a user JWT for a session cookie.\nThe JWT should be securely signed with an algorithm other than HS, and it should contain the following claims:\n1. iss: identifies the principal that issued the JWT; it must match the issuer in the IDP definition.\n2. aud: identifies the recipients of the JWT, which in this case is \"qlik.api/login/jwt-session\".\n3. sub: identifies the subject of the JWT.\n4. subType: the type of identifier the sub represents, which in this case is \"user\".\n5. name: the name of the user.\n6. email: the email address of the user.\n7. email_verified: a claim indicating to Qlik that the JWT source has verified that the email address belongs to the subject.\n9. jti: JWT ID; it should be unique for each consumed JWT token.\n10. iat: identifies the time at which the JWT was issued.\n11. nbf: identifies the starting time on which the JWT is accepted. The current unix time must be passed this value.\n12. exp: identifies the expiration time after which the JWT is not accepted.\n13. keyid: identifies the KeyID used to sign the JWT; it must match the KeyID in the IDP definition.\n\nAnd the time window between exp and nbf should not exceed 1 hour.\n",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/authenticate"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -173,9 +167,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/authenticate"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

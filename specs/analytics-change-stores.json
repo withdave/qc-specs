@@ -54,7 +54,6 @@
         "operationId": "listChangeStores",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -100,7 +99,6 @@
         "operationId": "getChangeStoreById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -158,7 +156,6 @@
         "operationId": "listChanges",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -222,7 +219,6 @@
         "operationId": "getTabularViewChanges",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -231,7 +227,6 @@
       }
     }
   },
-  "x-qlik-categories": [],
   "openapi": "3.0.0",
   "components": {
     "parameters": {
@@ -273,6 +268,11 @@
             "value": "createdBy eq \"6900ba43dff989b49c63cbe8\"",
             "summary": "Filter by createdBy"
           },
+          "isUsedByEmpty": {
+            "value": "isUsedByEmpty eq \"true\"",
+            "summary": "Filter by usedBy array is empty or not",
+            "description": "isUsedByEmpty is a virtual filter property that only supports \"eq\" boolean values. \n It filters on whether the concrete usedBy array is empty or not, without the need for complex expressions on the usedBy property."
+          },
           "logicalExpression": {
             "value": "usedBy.appId pr and referenceId eq \"690c9e193e5b3a66a93bfe46\" and (storeName co \"store\" or primaryKey eq \"Dim2\")",
             "summary": "Filter by logical expression"
@@ -287,7 +287,7 @@
           }
         },
         "required": false,
-        "description": "A SCIM filter expression used to filter the result.\nThe filter parameter allows complex logical expressions using comparison operators and grouping.\n- **Supported attributes:** `storeName`, `storeId`, `referenceId`, `usedBy.appId`, `primaryKey`\n- **Supported operators:** `eq`, `ne`, `co`, `sw`, `ew`, `pr`, `gt`, `ge`, `lt`, `le`  \n- **Logical operators:** `and`, `or`, `not`\n"
+        "description": "A SCIM filter expression used to filter the result.\nThe filter parameter allows complex logical expressions using comparison operators and grouping.\n- **Supported attributes:** `storeName`, `storeId`, `referenceId`, `usedBy.appId`, `primaryKey`, `isUsedByEmpty`\n- **Supported operators:** `eq`, `ne`, `co`, `sw`, `ew`, `pr`, `gt`, `ge`, `lt`, `le`  \n- **Logical operators:** `and`, `or`, `not`\n"
       },
       "JWTAuthHeader": {
         "in": "header",

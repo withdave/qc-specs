@@ -95,9 +95,6 @@
         "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -190,9 +187,6 @@
         "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -290,9 +284,6 @@
         "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -388,9 +379,6 @@
         "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -486,9 +474,6 @@
         "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -586,9 +571,6 @@
         "x-qlik-deprecated-version": "2025-08",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -596,9 +578,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/build"
-  ],
   "openapi": "3.0.0",
   "components": {
     "parameters": {

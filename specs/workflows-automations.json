@@ -1,10 +1,10 @@
 {
   "info": {
-    "title": "automations",
+    "title": "workflows/automations",
     "version": ""
   },
   "paths": {
-    "/api/v1/automations": {
+    "/api/workflows/automations": {
       "get": {
         "tags": [
           "automations"
@@ -117,10 +117,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "GET:/workflows/automations"
+            "namespace": "",
+            "uniqueIdentifier": "GET:/v1/automations"
           }
         ],
         "x-qlik-tier": {
@@ -176,10 +176,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations"
           }
         ],
         "x-qlik-tier": {
@@ -188,7 +188,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}": {
+    "/api/workflows/automations/{id}": {
       "get": {
         "tags": [
           "automations"
@@ -241,10 +241,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "GET:/workflows/automations/{id}"
+            "namespace": "",
+            "uniqueIdentifier": "GET:/v1/automations/{id}"
           }
         ],
         "x-qlik-tier": {
@@ -279,6 +279,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
@@ -315,10 +318,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "PUT:/workflows/automations/{id}"
+            "namespace": "",
+            "uniqueIdentifier": "PUT:/v1/automations/{id}"
           }
         ],
         "x-qlik-tier": {
@@ -368,10 +371,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "DELETE:/workflows/automations/{id}"
+            "namespace": "",
+            "uniqueIdentifier": "DELETE:/v1/automations/{id}"
           }
         ],
         "x-qlik-tier": {
@@ -380,7 +383,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/actions/change-owner": {
+    "/api/workflows/automations/{id}/actions/change-owner": {
       "post": {
         "tags": [
           "automations"
@@ -447,10 +450,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/actions/change-owner"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/actions/change-owner"
           }
         ],
         "x-qlik-tier": {
@@ -459,7 +462,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/actions/change-space": {
+    "/api/workflows/automations/{id}/actions/change-space": {
       "post": {
         "tags": [
           "automations"
@@ -524,10 +527,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/actions/change-space"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/actions/change-space"
           }
         ],
         "x-qlik-tier": {
@@ -536,7 +539,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/actions/copy": {
+    "/api/workflows/automations/{id}/actions/copy": {
       "post": {
         "tags": [
           "automations"
@@ -592,7 +595,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
-        "description": "Duplicates an existing automation.",
+        "description": "Duplicates an existing automation. The requesting user must be the owner of the automation or have at least one of the following scopes: `automations`, `admin.automations`, `automations.private` or `automations.shared`.",
         "operationId": "copyAutomation",
         "requestBody": {
           "content": {
@@ -605,6 +608,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "example": "My automation",
                     "description": "Name of the new automation."
                   }
                 }
@@ -616,10 +620,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/actions/copy"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/actions/copy"
           }
         ],
         "x-qlik-tier": {
@@ -628,7 +632,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/actions/disable": {
+    "/api/workflows/automations/{id}/actions/disable": {
       "post": {
         "tags": [
           "automations"
@@ -674,10 +678,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/actions/disable"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/actions/disable"
           }
         ],
         "x-qlik-tier": {
@@ -686,7 +690,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/actions/enable": {
+    "/api/workflows/automations/{id}/actions/enable": {
       "post": {
         "tags": [
           "automations"
@@ -732,10 +736,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/actions/enable"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/actions/enable"
           }
         ],
         "x-qlik-tier": {
@@ -744,7 +748,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/actions/move": {
+    "/api/workflows/automations/{id}/actions/move": {
       "post": {
         "tags": [
           "automations"
@@ -799,7 +803,8 @@
                 "properties": {
                   "userId": {
                     "type": "string",
-                    "example": "sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy"
+                    "example": "sWYAHxZxhtcmBT7Ptc5xJ5I6N7HxwnEy",
+                    "description": "Unique identifier of the new owner of the automation."
                   }
                 }
               }
@@ -810,10 +815,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/actions/move"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/actions/move"
           }
         ],
         "x-qlik-tier": {
@@ -822,7 +827,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/runs": {
+    "/api/workflows/automations/{id}/runs": {
       "get": {
         "tags": [
           "automations"
@@ -921,10 +926,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "GET:/workflows/automations/{id}/runs"
+            "namespace": "",
+            "uniqueIdentifier": "GET:/v1/automations/{id}/runs"
           }
         ],
         "x-qlik-tier": {
@@ -995,10 +1000,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/runs"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/runs"
           }
         ],
         "x-qlik-tier": {
@@ -1007,7 +1012,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/runs/{runId}": {
+    "/api/workflows/automations/{id}/runs/{runId}": {
       "get": {
         "tags": [
           "automations"
@@ -1070,10 +1075,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "GET:/workflows/automations/{id}/runs/{runId}"
+            "namespace": "",
+            "uniqueIdentifier": "GET:/v1/automations/{id}/runs/{runId}"
           }
         ],
         "x-qlik-tier": {
@@ -1082,7 +1087,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/runs/{runId}/actions/export": {
+    "/api/workflows/automations/{id}/runs/{runId}/actions/export": {
       "post": {
         "tags": [
           "automations"
@@ -1097,7 +1102,7 @@
                   "properties": {
                     "url": {
                       "type": "string",
-                      "example": "https://{tenantname}.{region}.qlikcloud.com/api/v1/automations/{id}/runs/{runId}/debug"
+                      "example": "https://{tenantname}.{region}.qlikcloud.com/api/workflows/automations/{id}/runs/{runId}/debug"
                     }
                   }
                 }
@@ -1151,10 +1156,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/runs/{runId}/actions/export"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/runs/{runId}/actions/export"
           }
         ],
         "x-qlik-tier": {
@@ -1163,7 +1168,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/runs/{runId}/actions/retry": {
+    "/api/workflows/automations/{id}/runs/{runId}/actions/retry": {
       "post": {
         "tags": [
           "automations"
@@ -1219,10 +1224,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/runs/{runId}/actions/retry"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/runs/{runId}/actions/retry"
           }
         ],
         "x-qlik-tier": {
@@ -1231,7 +1236,7 @@
         }
       }
     },
-    "/api/v1/automations/{id}/runs/{runId}/actions/stop": {
+    "/api/workflows/automations/{id}/runs/{runId}/actions/stop": {
       "post": {
         "tags": [
           "automations"
@@ -1287,10 +1292,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automations/{id}/runs/{runId}/actions/stop"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automations/{id}/runs/{runId}/actions/stop"
           }
         ],
         "x-qlik-tier": {
@@ -1299,7 +1304,175 @@
         }
       }
     },
-    "/api/v1/automations/usage": {
+    "/api/workflows/automations/{id}/runs/{runId}/debug": {
+      "get": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Get automation run debug log",
+        "responses": {
+          "200": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "path",
+            "name": "runId",
+            "schema": {
+              "type": "string",
+              "example": "00000000-0000-0000-0000-000000000000"
+            },
+            "required": true,
+            "description": "The unique identifier for the run."
+          }
+        ],
+        "description": "Retrieves the debug log for a specific run of an automation. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
+        "operationId": "getDebugLog",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/workflows/automations/settings": {
+      "get": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Get automation settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingsObject"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "description": "Retrieves the global automation settings for the tenant.",
+        "operationId": "getSettings",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "automations"
+        ],
+        "summary": "Update automation settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingsObject"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "description": "Updates the global automation settings for the tenant.",
+        "operationId": "putSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsObject"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/workflows/automations/usage": {
       "get": {
         "tags": [
           "automations"
@@ -1376,10 +1549,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "GET:/workflows/automations/usage"
+            "namespace": "",
+            "uniqueIdentifier": "GET:/v1/automations/usage"
           }
         ],
         "x-qlik-tier": {
@@ -1401,6 +1574,16 @@
           }
         },
         "description": "Bad Request"
+      },
+      "Conflict": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Conflict with the current state of the resource"
       },
       "Forbidden": {
         "content": {
@@ -1456,12 +1639,19 @@
     "schemas": {
       "AutomationDetailRequestObject": {
         "type": "object",
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "My automation",
+            "description": "The name of the automation."
           },
           "spaceId": {
-            "type": "string"
+            "type": "string",
+            "example": "5f0f78b239ff4f0001234567",
+            "description": "The unique identifier of the space in which the automation is created."
           },
           "schedules": {
             "type": "array",
@@ -1471,10 +1661,13 @@
           },
           "workspace": {
             "type": "object",
+            "example": {},
             "description": "The workspace generated by the Qlik Automate editor."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "default": "",
+            "description": "The description of the automation"
           },
           "maxConcurrentRuns": {
             "type": "integer",
@@ -1640,7 +1833,9 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "My automation",
+            "description": "The name of the automation."
           },
           "schedules": {
             "type": "array",
@@ -1650,10 +1845,13 @@
           },
           "workspace": {
             "type": "object",
+            "example": {},
             "description": "The workspace generated by the Qlik Automate editor."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "default": "",
+            "description": "The description of the automation"
           },
           "maxConcurrentRuns": {
             "type": "integer",
@@ -1791,7 +1989,7 @@
               "53a6fb70-b28f-11eb-b601-b545a40867e0"
             ],
             "readOnly": true,
-            "description": "A list of endpoints that were detected in the workspace. This includes endpoints present in blocks that are not connected to other blocks. Order of GUIDs is not guaranteed."
+            "description": "A list of endpoints that were detected inside the workspace. This includes Endpoints present in blocks which are not connected to other blocks. Order of guids is not guaranteed."
           },
           "connectorIds": {
             "type": "array",
@@ -1803,7 +2001,7 @@
               "0d86ee8a-27c0-11ea-921c-022e6b5ea1e2"
             ],
             "readOnly": true,
-            "description": "A list of connectors that were detected in the workspace. This includes connectors present in blocks that are not connected to other blocks. Order of GUIDs is not guaranteed."
+            "description": "A list of connectors that were detected the workspace. This includes Connectors present in blocks which are not connected to other blocks. Order of guids is not guaranteed."
           },
           "lastRunStatus": {
             "enum": [
@@ -1827,7 +2025,8 @@
           "executionToken": {
             "type": "string",
             "example": "aZXuEogT9X3le0k0WXMBnzuYKq4xRlkDnurjs8NVhEAAW1BYx8C1PpIl3ielgRb1",
-            "readOnly": true
+            "readOnly": true,
+            "description": "Execution token required to authorize the execution of the automation."
           },
           "maxConcurrentRuns": {
             "type": "integer",
@@ -1923,7 +2122,8 @@
             "type": "string",
             "format": "uuid",
             "example": "d452d100-9b0b-11ec-b199-8323e1031c3e",
-            "readOnly": true
+            "readOnly": true,
+            "description": "The unique identifier of the run."
           },
           "context": {
             "enum": [
@@ -2057,7 +2257,7 @@
                   "txBytes": {
                     "type": "integer",
                     "default": 0,
-                    "description": "The number of sent bytes."
+                    "description": "The number of received bytes."
                   }
                 }
               },
@@ -2293,11 +2493,13 @@
         "properties": {
           "stopAt": {
             "type": "string",
-            "example": "2022-12-01 00:00:00"
+            "example": "2022-12-01 00:00:00",
+            "description": "The date and time until the schedule is active."
           },
           "startAt": {
             "type": "string",
-            "example": "2022-01-01 00:00:00"
+            "example": "2022-01-01 00:00:00",
+            "description": "The date and time when the schedule becomes active."
           },
           "interval": {
             "type": "integer",
@@ -2306,7 +2508,8 @@
           },
           "timezone": {
             "type": "string",
-            "example": "Europe/Stockholm"
+            "example": "Europe/Stockholm",
+            "description": "The timezone applied to the start and end times."
           }
         }
       },
@@ -2340,6 +2543,16 @@
             "type": "string",
             "format": "date-time",
             "example": "2022-01-01T12:28:21.000000Z"
+          }
+        }
+      },
+      "SettingsObject": {
+        "type": "object",
+        "properties": {
+          "maxConcurrentRunsPerAutomation": {
+            "type": "integer",
+            "example": 10,
+            "description": "Maximum number of concurrent runs allowed per automation."
           }
         }
       },

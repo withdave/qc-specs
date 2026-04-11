@@ -26,9 +26,6 @@
         "operationId": "getThemes",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -116,9 +113,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -189,9 +183,6 @@
         "operationId": "getThemeById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -310,9 +301,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -374,9 +362,6 @@
         "operationId": "deleteThemeById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -454,9 +439,6 @@
         "operationId": "getThemeArchive",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -530,9 +512,6 @@
         "operationId": "getFileFromThemeArchive",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -541,9 +520,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/extend"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {
@@ -683,6 +659,11 @@
           "qextFilename": {
             "type": "string",
             "description": "The name of the qext file that was uploaded with this theme."
+          },
+          "migrationState": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The migration state of the theme. It can be either \"READY_TO_MOVE\", \"IN_PROGRESS\" or \"COMPLETED\"."
           }
         },
         "description": "The theme model."

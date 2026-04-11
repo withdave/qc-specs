@@ -1,10 +1,10 @@
 {
   "info": {
-    "title": "automation-connections",
+    "title": "workflows/automation-connections",
     "version": ""
   },
   "paths": {
-    "/api/v1/automation-connections": {
+    "/api/workflows/automation-connections": {
       "get": {
         "tags": [
           "automation-connections"
@@ -102,10 +102,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "GET:/workflows/automation-connections"
+            "namespace": "",
+            "uniqueIdentifier": "GET:/v1/automation-connections"
           }
         ],
         "x-qlik-tier": {
@@ -161,10 +161,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automation-connections"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automation-connections"
           }
         ],
         "x-qlik-tier": {
@@ -173,7 +173,7 @@
         }
       }
     },
-    "/api/v1/automation-connections/{id}": {
+    "/api/workflows/automation-connections/{id}": {
       "get": {
         "tags": [
           "automation-connections"
@@ -226,10 +226,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "GET:/workflows/automation-connections/{id}"
+            "namespace": "",
+            "uniqueIdentifier": "GET:/v1/automation-connections/{id}"
           }
         ],
         "x-qlik-tier": {
@@ -265,6 +265,9 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           },
@@ -278,7 +281,8 @@
             "name": "id",
             "schema": {
               "type": "string",
-              "example": "00000000-0000-0000-0000-000000000000"
+              "example": "00000000-0000-0000-0000-000000000000",
+              "readOnly": true
             },
             "required": true,
             "description": "The unique identifier for the automation connection."
@@ -300,10 +304,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "PUT:/workflows/automation-connections/{id}"
+            "namespace": "",
+            "uniqueIdentifier": "PUT:/v1/automation-connections/{id}"
           }
         ],
         "x-qlik-tier": {
@@ -366,10 +370,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "DELETE:/workflows/automation-connections/{id}"
+            "namespace": "",
+            "uniqueIdentifier": "DELETE:/v1/automation-connections/{id}"
           }
         ],
         "x-qlik-tier": {
@@ -378,7 +382,7 @@
         }
       }
     },
-    "/api/v1/automation-connections/{id}/actions/change-owner": {
+    "/api/workflows/automation-connections/{id}/actions/change-owner": {
       "post": {
         "tags": [
           "automation-connections"
@@ -435,10 +439,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automation-connections/{id}/actions/change-owner"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automation-connections/{id}/actions/change-owner"
           }
         ],
         "x-qlik-tier": {
@@ -447,7 +451,7 @@
         }
       }
     },
-    "/api/v1/automation-connections/{id}/actions/change-space": {
+    "/api/workflows/automation-connections/{id}/actions/change-space": {
       "post": {
         "tags": [
           "automation-connections"
@@ -504,10 +508,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automation-connections/{id}/actions/change-space"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automation-connections/{id}/actions/change-space"
           }
         ],
         "x-qlik-tier": {
@@ -516,7 +520,7 @@
         }
       }
     },
-    "/api/v1/automation-connections/{id}/actions/check": {
+    "/api/workflows/automation-connections/{id}/actions/check": {
       "post": {
         "tags": [
           "automation-connections"
@@ -569,10 +573,10 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
-        "x-qlik-replaced-by": [
+        "x-qlik-replaces": [
           {
-            "namespace": "workflows",
-            "uniqueIdentifier": "POST:/workflows/automation-connections/{id}/actions/check"
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/automation-connections/{id}/actions/check"
           }
         ],
         "x-qlik-tier": {
@@ -594,6 +598,16 @@
           }
         },
         "description": "Bad Request"
+      },
+      "Conflict": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Conflict with the current state of the resource"
       },
       "Forbidden": {
         "content": {
@@ -785,6 +799,7 @@
           },
           "value": {
             "type": "string",
+            "example": "example-username",
             "description": "The value of the automation connection parameter option."
           }
         }
@@ -866,6 +881,7 @@
           },
           "value": {
             "type": "string",
+            "example": "100",
             "description": "The value of the automation connection parameter option."
           }
         }

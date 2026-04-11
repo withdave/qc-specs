@@ -137,9 +137,6 @@
         "x-qlik-deprecated-description": "This endpoint has been replaced by a new version",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 300
@@ -147,9 +144,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/build"
-  ],
   "openapi": "3.0.0",
   "components": {
     "parameters": {
