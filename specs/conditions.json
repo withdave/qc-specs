@@ -55,9 +55,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -118,9 +115,6 @@
         "operationId": "getCondition",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -191,9 +185,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -245,9 +236,6 @@
         "operationId": "deleteCondition",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -327,9 +315,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -399,9 +384,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -462,9 +444,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -534,9 +513,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -618,9 +594,6 @@
         "operationId": "conditionsPreviewGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -680,9 +653,6 @@
         "operationId": "ConditionManagerAPISettingsGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -754,9 +724,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -765,9 +732,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/build"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

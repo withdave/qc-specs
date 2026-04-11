@@ -97,9 +97,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -169,9 +166,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -256,9 +250,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -382,9 +373,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -485,9 +473,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -549,9 +534,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -641,9 +623,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -768,9 +747,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -862,9 +838,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -969,9 +942,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1106,9 +1076,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1220,9 +1187,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1295,9 +1259,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1436,9 +1397,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1530,9 +1488,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1628,9 +1583,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1775,9 +1727,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1899,9 +1848,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1974,9 +1920,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -2106,9 +2049,6 @@
         "description": "Only a steward can verify a term. Once the term is verified only a steward can modify the term. Note that links to resources are considered external relations that can be managed independently of the status of the term.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -2252,9 +2192,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -2377,9 +2314,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -2509,9 +2443,6 @@
         ],
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -2622,9 +2553,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -2633,9 +2561,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/manage"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

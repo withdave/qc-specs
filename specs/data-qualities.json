@@ -19,6 +19,24 @@
                 }
               }
             },
+            "headers": {
+              "link": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "sunset": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "Deprecation": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            },
             "description": "Accepted"
           },
           "400": {
@@ -85,9 +103,8 @@
           "required": true
         },
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
           "limit": 10
@@ -106,6 +123,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ComputationStatusResponse"
+                }
+              }
+            },
+            "headers": {
+              "link": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "sunset": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "Deprecation": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             },
@@ -188,9 +223,8 @@
         "description": "Returns the execution status of a data quality computation.",
         "operationId": "getDataQualityComputation",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -209,6 +243,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DatasetQualityGlobalResultsResponse"
+                }
+              }
+            },
+            "headers": {
+              "link": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "sunset": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "Deprecation": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             },
@@ -286,9 +338,8 @@
         "description": "Returns the global data results for a dataset, including counts of total, valid, invalid, and empty sample cells.",
         "operationId": "getDataQualityGlobalResults",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -296,7 +347,6 @@
       }
     }
   },
-  "x-qlik-categories": [],
   "openapi": "3.0.0",
   "components": {
     "parameters": {
@@ -507,8 +557,9 @@
           "sampleSize": {
             "type": "integer",
             "format": "int64",
+            "maximum": 100000,
             "minimum": 1,
-            "description": "The actual value of the selected sampling method size (either a fixed number for ABSOLUTE mode or a percentage for RELATIVE mode)."
+            "description": "The actual value of the selected sampling method size (either a fixed number for ABSOLUTE mode or a percentage for RELATIVE mode). Maximum allowed value for ABSOLUTE mode is 100000."
           },
           "executionMode": {
             "enum": [

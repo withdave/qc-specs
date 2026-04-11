@@ -105,9 +105,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -207,9 +204,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -331,9 +325,6 @@
         "operationId": "getDataSet",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -464,9 +455,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -583,9 +571,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -762,9 +747,6 @@
         "operationId": "getDataSetProfiles",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -773,9 +755,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/build"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

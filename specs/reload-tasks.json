@@ -153,12 +153,12 @@
           }
         ],
         "description": "Finds and returns the tasks that the user has access to.",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-03",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -264,12 +264,12 @@
           "required": true,
           "description": "Request body specifying the task parameters."
         },
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-03",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -385,12 +385,12 @@
           }
         ],
         "description": "Finds and returns a task.",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-03",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks/{id} instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -505,12 +505,12 @@
           "required": true,
           "description": "Request body specifying the task parameters."
         },
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-03",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks/{id} instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -597,12 +597,12 @@
           }
         ],
         "description": "Deletes a task",
+        "x-qlik-deprecated": true,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-03",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks/{id} instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
-        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -610,9 +610,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/manage"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

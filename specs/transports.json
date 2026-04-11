@@ -46,9 +46,6 @@
         "operationId": "getEmailConfig",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -113,9 +110,6 @@
         "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2025-11",
         "x-qlik-deprecated-description": "Migrating to PUT /email-config",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -175,7 +169,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -226,9 +219,6 @@
         "operationId": "deleteEmailConfig",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -302,9 +292,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -344,9 +331,6 @@
         "operationId": "validateAction",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -396,9 +380,6 @@
         "operationId": "verifyConnectionAction",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -407,9 +388,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/manage"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

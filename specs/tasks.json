@@ -92,7 +92,6 @@
         "operationId": "ListTasks",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -164,7 +163,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -223,7 +221,6 @@
         "operationId": "GetTask",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -290,7 +287,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -340,7 +336,6 @@
         "operationId": "DeleteTask",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -415,7 +410,6 @@
         "operationId": "StartTask",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -517,7 +511,6 @@
         "operationId": "GetTaskRuns",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -617,7 +610,6 @@
         "operationId": "GetTaskRunLog",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -676,7 +668,6 @@
         "operationId": "GetTaskLastRun",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -778,7 +769,6 @@
         "operationId": "GetResourceRuns",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -787,7 +777,6 @@
       }
     }
   },
-  "x-qlik-categories": [],
   "openapi": "3.0.0",
   "components": {
     "examples": {

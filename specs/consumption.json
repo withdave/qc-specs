@@ -145,9 +145,6 @@
         "operationId": "GetExecutionsByTenantId",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -156,9 +153,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/manage"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

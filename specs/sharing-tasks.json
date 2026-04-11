@@ -237,10 +237,6 @@
         "operationId": "sharingTasksList",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -309,10 +305,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -403,10 +395,6 @@
         "operationId": "sharingTasksIDGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -489,10 +477,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -564,10 +548,6 @@
         "operationId": "sharingTasksDelete",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -641,10 +621,6 @@
         "operationId": "sharingTasksActionsCancel",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -796,7 +772,6 @@
         "operationId": "SharingExecutionsList",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -900,7 +875,6 @@
         "operationId": "sharingExecutionsIDGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1025,7 +999,6 @@
         "operationId": "sharingExecutionsFilesAliasGet",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1099,10 +1072,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1152,10 +1121,6 @@
         "operationId": "sharingSettingsGet",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1217,10 +1182,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1282,10 +1243,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1294,10 +1251,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/build",
-    "external/manage"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

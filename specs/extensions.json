@@ -26,9 +26,6 @@
         "operationId": "getExtensions",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -116,9 +113,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -189,9 +183,6 @@
         "operationId": "getExtensionById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -310,9 +301,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -374,9 +362,6 @@
         "operationId": "deleteExtensionById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -454,9 +439,6 @@
         "operationId": "getExtensionArchive",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -530,9 +512,6 @@
         "operationId": "getFileFromExtensionArchive",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/extend"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -541,9 +520,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/extend"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {
@@ -711,6 +687,11 @@
           "qextFilename": {
             "type": "string",
             "description": "The name of the qext file that was uploaded with this extension."
+          },
+          "migrationState": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The migration state of the extension. It can be either \"READY_TO_MOVE\", \"IN_PROGRESS\" or \"COMPLETED\"."
           }
         },
         "description": "The extension model."

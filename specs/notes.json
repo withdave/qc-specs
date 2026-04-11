@@ -46,9 +46,6 @@
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -126,9 +123,6 @@
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -136,9 +130,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/manage"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

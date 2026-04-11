@@ -89,9 +89,6 @@
         "description": "Retrieve list of OAuth tokens that the user has access to. Users assigned with a `TenantAdmin` role can list OAuth tokens generated for all users in the tenant.",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/authenticate"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -148,9 +145,6 @@
         "description": "Revokes a specific OAuth token by ID. Requesting user must have `TenantAdmin` role assigned to delete tokens owned by other users.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/authenticate"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -159,9 +153,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/authenticate"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

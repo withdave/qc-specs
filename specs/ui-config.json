@@ -44,7 +44,6 @@
         "operationId": "getPinnedLinks",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -109,7 +108,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -171,7 +169,6 @@
         "operationId": "getPinnedLink",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -240,7 +237,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -293,7 +289,6 @@
         "operationId": "deletePinnedLink",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -360,7 +355,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -402,7 +396,6 @@
         "description": "Deletes all pinned links in the tenant. Requires calling user to be assigned the `TenantAdmin` role.",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -411,7 +404,6 @@
       }
     }
   },
-  "x-qlik-categories": [],
   "openapi": "3.0.0",
   "components": {
     "schemas": {

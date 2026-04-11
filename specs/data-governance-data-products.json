@@ -106,7 +106,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -211,7 +210,6 @@
         "operationId": "getDataProduct",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -317,7 +315,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -413,7 +410,6 @@
         "operationId": "deleteDataProduct",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -528,7 +524,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -626,7 +621,6 @@
         "operationId": "deactivateDataProduct",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -742,7 +736,6 @@
         "operationId": "getDataProductDoc",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -850,7 +843,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -964,7 +956,6 @@
         "operationId": "getDataProductChangelog",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1059,7 +1050,6 @@
         "operationId": "generateProviderUiUrl",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1068,7 +1058,6 @@
       }
     }
   },
-  "x-qlik-categories": [],
   "openapi": "3.0.0",
   "components": {
     "parameters": {
@@ -1449,6 +1438,11 @@
             "items": {
               "$ref": "#/components/schemas/KeyContact"
             }
+          },
+          "pendingChangesCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of pending changes that are not yet activated."
           },
           "apiConsumableDatasetIds": {
             "type": "array",

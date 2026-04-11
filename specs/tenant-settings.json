@@ -36,7 +36,6 @@
         "operationId": "getTenantSettings",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -96,7 +95,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -154,7 +152,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -195,7 +192,6 @@
         "operationId": "deleteTenantSettings",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -261,7 +257,7 @@
             "description": "Error response."
           }
         },
-        "description": "Sets the cross region inference setting for the tenant. Creates tenant settings if none exist, or updates existing settings. This is access controlled by the permission admin.tenant-settings:update.\nWhen cross-region processing is required, you must include an additional header x-qlik-consent-verified: true in your API requests to confirm that you have the authority to enable this feature and accept the associated terms.\n",
+        "description": "Sets the cross region inference setting for the tenant. Creates tenant settings if none exist, or updates existing settings. This is access controlled by the permission `admin.tenant-settings:update`.\nWhen cross-region processing is required, you must include an additional header `x-qlik-consent-verified: true` in your API requests to confirm that you have the authority to enable this feature and accept the associated terms.\n",
         "operationId": "toggleCrossRegionalDataProcessing",
         "requestBody": {
           "content": {
@@ -275,7 +271,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -315,7 +310,6 @@
         "operationId": "getTenantSettingsStartPages",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -324,7 +318,6 @@
       }
     }
   },
-  "x-qlik-categories": [],
   "openapi": "3.0.0",
   "components": {
     "responses": {

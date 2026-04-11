@@ -235,10 +235,6 @@
         ],
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -406,10 +402,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -480,10 +472,6 @@
         ],
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -657,10 +645,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "special",
@@ -722,10 +706,6 @@
         ],
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -820,10 +800,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -918,10 +894,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -970,10 +942,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1021,10 +989,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1163,10 +1127,6 @@
         "description": "The non-filtered list contains a set of hardcoded connections, along with one connection per team space that\r\nthe given user has access to.",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1227,10 +1187,6 @@
         ],
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1278,10 +1234,6 @@
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
-        "x-qlik-categories": [
-          "external/manage",
-          "external/build"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1290,10 +1242,6 @@
       }
     }
   },
-  "x-qlik-categories": [
-    "external/build",
-    "external/manage"
-  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {
