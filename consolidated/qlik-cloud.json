@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.39",
+    "version": "1.0.40",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -40504,12 +40504,12 @@
           }
         ],
         "description": "Finds and returns the tasks that the user has access to.",
-        "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -40615,12 +40615,12 @@
           "required": true,
           "description": "Request body specifying the task parameters."
         },
-        "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -40736,12 +40736,12 @@
           }
         ],
         "description": "Finds and returns a task.",
-        "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks/{id} instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -40856,12 +40856,12 @@
           "required": true,
           "description": "Request body specifying the task parameters."
         },
-        "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks/{id} instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -40948,12 +40948,12 @@
           }
         ],
         "description": "Deletes a task",
-        "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the Choreographer API at /scheduling/tasks/{id} instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
+        "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -44436,24 +44436,6 @@
           },
           {
             "in": "query",
-            "name": "environment.name",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Environment name to filter by. For example, \"?environment.name=Development\". Use an empty value to return spaces with no environment."
-          },
-          {
-            "in": "query",
-            "name": "environmentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Environment ID to filter by. For example, \"?environmentId=67f4fba37f7cbb2f04ce727a\". Use an empty value to return spaces with no environment."
-          },
-          {
-            "in": "query",
             "name": "limit",
             "schema": {
               "type": "integer",
@@ -44522,6 +44504,9 @@
         "operationId": "getSpaces",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -44600,6 +44585,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -44681,6 +44669,9 @@
         "operationId": "getSpaceById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -44771,6 +44762,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -44861,6 +44855,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -44943,6 +44940,9 @@
         "operationId": "deleteSpaceById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45071,6 +45071,9 @@
         "operationId": "getSpaceAssignments",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -45171,6 +45174,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45262,6 +45268,9 @@
         "operationId": "getSpaceAssignmentById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -45362,6 +45371,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45444,6 +45456,9 @@
         "operationId": "deleteSpaceAssignmentById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45603,6 +45618,9 @@
         "operationId": "getSpaceShares",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -45702,6 +45720,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45793,6 +45814,9 @@
         "operationId": "getSpaceShareById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -45892,6 +45916,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45974,6 +46001,9 @@
         "operationId": "deleteSpaceShareById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -46023,6 +46053,9 @@
         "operationId": "getTypes",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -67500,7 +67533,19 @@
         "required": [
           "id",
           "tenantId",
-          "name"
+          "name",
+          "createdAt",
+          "createdBy",
+          "updatedAt",
+          "updatedBy",
+          "ownerId",
+          "datasetIds",
+          "apiConsumableDatasetIds",
+          "glossaryIds",
+          "keyContacts",
+          "tags",
+          "activatedOn",
+          "qri"
         ],
         "properties": {
           "id": {
