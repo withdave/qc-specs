@@ -1338,7 +1338,19 @@
         "required": [
           "id",
           "tenantId",
-          "name"
+          "name",
+          "createdAt",
+          "createdBy",
+          "updatedAt",
+          "updatedBy",
+          "ownerId",
+          "datasetIds",
+          "apiConsumableDatasetIds",
+          "glossaryIds",
+          "keyContacts",
+          "tags",
+          "activatedOn",
+          "qri"
         ],
         "properties": {
           "id": {

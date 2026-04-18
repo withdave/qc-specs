@@ -64,24 +64,6 @@
           },
           {
             "in": "query",
-            "name": "environment.name",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Environment name to filter by. For example, \"?environment.name=Development\". Use an empty value to return spaces with no environment."
-          },
-          {
-            "in": "query",
-            "name": "environmentId",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Environment ID to filter by. For example, \"?environmentId=67f4fba37f7cbb2f04ce727a\". Use an empty value to return spaces with no environment."
-          },
-          {
-            "in": "query",
             "name": "limit",
             "schema": {
               "type": "integer",
@@ -150,6 +132,9 @@
         "operationId": "getSpaces",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -228,6 +213,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -309,6 +297,9 @@
         "operationId": "getSpaceById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -399,6 +390,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -489,6 +483,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -571,6 +568,9 @@
         "operationId": "deleteSpaceById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -699,6 +699,9 @@
         "operationId": "getSpaceAssignments",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -799,6 +802,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -890,6 +896,9 @@
         "operationId": "getSpaceAssignmentById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -990,6 +999,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1072,6 +1084,9 @@
         "operationId": "deleteSpaceAssignmentById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1231,6 +1246,9 @@
         "operationId": "getSpaceShares",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1330,6 +1348,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1421,6 +1442,9 @@
         "operationId": "getSpaceShareById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1520,6 +1544,9 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1602,6 +1629,9 @@
         "operationId": "deleteSpaceShareById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -1651,6 +1681,9 @@
         "operationId": "getTypes",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
+        "x-qlik-categories": [
+          "external/manage"
+        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -1659,6 +1692,9 @@
       }
     }
   },
+  "x-qlik-categories": [
+    "external/manage"
+  ],
   "openapi": "3.0.0",
   "components": {
     "schemas": {
