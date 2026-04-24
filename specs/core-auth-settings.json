@@ -1,0 +1,393 @@
+{
+  "info": {
+    "title": "core/auth-settings",
+    "version": ""
+  },
+  "paths": {
+    "/api/core/auth-settings": {
+      "get": {
+        "tags": [
+          "iam-resources"
+        ],
+        "summary": "Get authentication settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthSettingsResource"
+                }
+              }
+            },
+            "description": "Authentication settings retrieved successfully."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The authenticated user does not have the `TenantAdmin` role required to read authentication settings."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Authentication settings not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Returns the authentication settings for the tenant, including the session inactivity timeout and maximum session lifespan. If no custom values have been saved, the response reflects tenant-wide defaults with `isDefault` set to `true`. The user must be assigned the `TenantAdmin` role.",
+        "operationId": "getAuthSettings",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "iam-resources"
+        ],
+        "summary": "Update authentication settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthSettingsResource"
+                }
+              }
+            },
+            "description": "Authentication settings updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request body."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The authenticated user does not have the `TenantAdmin` role required to update authentication settings."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Authentication settings not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Updates one or more authentication settings for the tenant using JSON Patch (RFC 6902). Supports `replace` operations on `/userSessionInactivityTimeoutMinutes` and `/maxUserSessionLifespanMinutes`. The value for `maxUserSessionLifespanMinutes` must be a whole number of hours (divisible by 60). The user must be assigned the `TenantAdmin` role.",
+        "operationId": "updateAuthSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthSettingsJSONPatchArray"
+              }
+            }
+          },
+          "required": true,
+          "description": "An array of JSON Patch operations to apply to the authentication settings."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "AuthSettingsJSONPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "required,oneof=replace"
+            }
+          },
+          "path": {
+            "enum": [
+              "/userSessionInactivityTimeoutMinutes",
+              "/maxUserSessionLifespanMinutes"
+            ],
+            "type": "string",
+            "description": "A JSON Pointer to the authentication settings field.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "required,oneof=/userSessionInactivityTimeoutMinutes /maxUserSessionLifespanMinutes"
+            }
+          },
+          "value": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1440,
+            "description": "Integer value in minutes to set for the targeted authentication settings field. For `maxUserSessionLifespanMinutes`, the value must be a whole number of hours (divisible by 60)."
+          }
+        },
+        "description": "A JSON Patch document for authentication settings as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "AuthSettingsJSONPatchArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AuthSettingsJSONPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/userSessionInactivityTimeoutMinutes",
+            "value": 60
+          },
+          {
+            "op": "replace",
+            "path": "/maxUserSessionLifespanMinutes",
+            "value": 1440
+          }
+        ],
+        "description": "An array of JSON Patch documents for authentication settings."
+      },
+      "AuthSettingsResource": {
+        "type": "object",
+        "required": [
+          "tenantId",
+          "userSessionInactivityTimeoutMinutes",
+          "maxUserSessionLifespanMinutes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "x-go-name": "ID",
+            "description": "The unique identifier for the authentication settings."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "644fd58b846d649c82eba436",
+            "readOnly": true,
+            "x-go-name": "TenantID",
+            "description": "The tenant unique identifier associated with the authentication settings."
+          },
+          "isDefault": {
+            "type": "boolean",
+            "example": false,
+            "readOnly": true,
+            "description": "`true` if the authentication settings are using tenant-wide defaults. No custom values have been saved for this tenant."
+          },
+          "maxUserSessionLifespanMinutes": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1440,
+            "x-go-name": "MaxUserSessionLifespanMinutes",
+            "description": "Maximum total lifespan for a user session, in minutes. Sessions are invalidated after this duration regardless of activity."
+          },
+          "userSessionInactivityTimeoutMinutes": {
+            "type": "integer",
+            "format": "int64",
+            "example": 60,
+            "x-go-name": "UserSessionInactivityTimeoutMinutes",
+            "description": "Maximum inactivity period for a user session, in minutes. Sessions that have been idle for longer than this value are invalidated."
+          }
+        },
+        "description": "The authentication settings for a tenant, controlling user session duration and inactivity behavior."
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "meta": {
+            "type": "object",
+            "description": "Additional properties relating to the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem."
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "A JSON Pointer to the property that caused the error."
+              },
+              "parameter": {
+                "type": "string",
+                "description": "The URI query parameter that caused the error."
+              }
+            },
+            "description": "References to the source of the error."
+          }
+        },
+        "description": "An error object describing the error."
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "CODE-10402",
+              "title": "Not Found"
+            }
+          ],
+          "traceId": "0000000000000000200ba0714061b982"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "An array of errors related to the operation."
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique identifier for tracing the error."
+          }
+        },
+        "description": "The error response object describing the error from the handling of an HTTP request."
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}

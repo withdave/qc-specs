@@ -1390,7 +1390,8 @@
           "dataqualityrule",
           "glossary",
           "knowledgebase",
-          "script"
+          "script",
+          "semantictype"
         ],
         "type": "string",
         "description": "The case-sensitive string defining the item's type."
