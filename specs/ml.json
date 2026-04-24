@@ -3875,6 +3875,19 @@
         },
         "additionalProperties": false
       },
+      "BinnedFrequency": {
+        "type": "object",
+        "properties": {
+          "binEdge": {
+            "type": "number"
+          },
+          "frequency": {
+            "type": "number"
+          }
+        },
+        "description": "A frequency bin in a field's frequency distribution.",
+        "additionalProperties": false
+      },
       "ChangeType": {
         "enum": [
           "categorical",
@@ -3938,6 +3951,31 @@
         "type": "string",
         "default": "new",
         "description": "Whether this is a new or other dataset"
+      },
+      "DataSetProfile": {
+        "type": "object",
+        "required": [
+          "meta"
+        ],
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/ProfileMetadata"
+          },
+          "samples": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableSample"
+            }
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableProfile"
+            }
+          }
+        },
+        "description": "Full dataset profile from the Profile Service.",
+        "additionalProperties": false
       },
       "DataType": {
         "enum": [
@@ -5241,6 +5279,127 @@
         "type": "string",
         "description": "The default feature type based on the feature's data type.\nIf you want a value to be interpreted differently (e.g. 0/1\nas categorical/boolean instead of numeric), use `changeType`.\n"
       },
+      "FieldProfile": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "index": {
+            "type": "integer"
+          },
+          "median": {
+            "type": "number"
+          },
+          "average": {
+            "type": "number"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "kurtosis": {
+            "type": "number"
+          },
+          "skewness": {
+            "type": "number"
+          },
+          "fractiles": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "sampleValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "technicalName": {
+            "type": "string"
+          },
+          "classification": {
+            "$ref": "#/components/schemas/ProfileClassification"
+          },
+          "nullValueCount": {
+            "type": "integer"
+          },
+          "textValueCount": {
+            "type": "integer"
+          },
+          "zeroValueCount": {
+            "type": "integer"
+          },
+          "maxNumericValue": {
+            "type": "number"
+          },
+          "maxStringLength": {
+            "type": "integer"
+          },
+          "minNumericValue": {
+            "type": "number"
+          },
+          "minStringLength": {
+            "type": "integer"
+          },
+          "sumStringLength": {
+            "type": "integer"
+          },
+          "emptyStringCount": {
+            "type": "integer"
+          },
+          "sumNumericValues": {
+            "type": "number"
+          },
+          "numericValueCount": {
+            "type": "integer"
+          },
+          "standardDeviation": {
+            "type": "number"
+          },
+          "distinctValueCount": {
+            "type": "integer"
+          },
+          "mostFrequentValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileFrequency"
+            }
+          },
+          "negativeValueCount": {
+            "type": "integer"
+          },
+          "positiveValueCount": {
+            "type": "integer"
+          },
+          "averageStringLength": {
+            "type": "number"
+          },
+          "frequencyDistribution": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BinnedFrequency"
+            }
+          },
+          "lastSortedStringValue": {
+            "type": "string"
+          },
+          "firstSortedStringValue": {
+            "type": "string"
+          },
+          "sumSquaredNumericValues": {
+            "type": "number"
+          }
+        },
+        "description": "Profile metadata for a single field/column.",
+        "additionalProperties": false
+      },
       "FileType": {
         "type": "string",
         "example": "qvd, parquet, csv",
@@ -5258,6 +5417,14 @@
         },
         "description": "Meta for FIND operations",
         "additionalProperties": false
+      },
+      "IncludeProfileInsightsField": {
+        "enum": [
+          "dataSetProfile"
+        ],
+        "type": "string",
+        "example": "dataSetProfile",
+        "description": "Fields to include in the response.\n\nCurrently only supported value is `dataSetProfile`.\n\nWhen `dataSetProfile` is specified, the response includes the full dataset profile.\n"
       },
       "IndexColumn": {
         "type": "string",
@@ -6094,6 +6261,54 @@
         "description": "Metadata about features/columns from dataset after preprocessing\n",
         "additionalProperties": false
       },
+      "ProfileClassification": {
+        "type": "object",
+        "properties": {
+          "pii": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileClassificationTag"
+            }
+          },
+          "sensitive": {
+            "type": "boolean"
+          },
+          "obfuscation": {
+            "type": "string"
+          }
+        },
+        "description": "Classification metadata for a field.",
+        "additionalProperties": false
+      },
+      "ProfileClassificationTag": {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          }
+        },
+        "description": "A classification tag with a confidence score.",
+        "additionalProperties": false
+      },
+      "ProfileFrequency": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "number"
+          }
+        },
+        "description": "A value and its frequency count.",
+        "additionalProperties": false
+      },
       "ProfileInsights": {
         "type": "object",
         "required": [
@@ -6145,6 +6360,9 @@
             "type": "number",
             "description": "Number of rows in the dataset.\n\nWhen isLargeCsv is true, this is an estimate since their metadata is\nbased on a sample rather than the full dataset.\n\nFor datasets over 1GB, multiply `rows` (this) by `columns` (features\nincluded in experiment version) to calculate total `cells` to\nensure it stays under your license limit. Large CSVs have a hard\n100M cell limit.\n"
           },
+          "dataSetProfile": {
+            "$ref": "#/components/schemas/DataSetProfile"
+          },
           "experimentVersionId": {
             "type": "string",
             "description": "Optional experiment version ID. When included, it indicates that\nthis dataset profile is a snapshot from a previous version.\n"
@@ -6175,7 +6393,8 @@
               "experimentMode": {
                 "$ref": "#/components/schemas/ExperimentMode"
               }
-            }
+            },
+            "description": "Default configuration for creating an experiment version from this\ndataset. Not returned when `experimentVersionId` is provided.\n"
           }
         },
         "description": "Insights (metadata) about an experiment dataset",
@@ -6233,6 +6452,9 @@
                     "type": "string",
                     "description": "Optional selected target provided on subsequent requests\n"
                   },
+                  "include": {
+                    "$ref": "#/components/schemas/IncludeProfileInsightsField"
+                  },
                   "dataSetId": {
                     "$ref": "#/components/schemas/DataSetId"
                   },
@@ -6254,6 +6476,63 @@
           }
         },
         "description": "Input to get dataset and feature metadata needed to create\nexperiment versions\n",
+        "additionalProperties": false
+      },
+      "ProfileMetadata": {
+        "type": "object",
+        "required": [
+          "dataSetId",
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "FINISHED",
+              "PARTIAL",
+              "QUEUED",
+              "RUNNING",
+              "STALE",
+              "CANCELLED",
+              "FAILED",
+              "INCOMPLETE",
+              "DEFERRED"
+            ],
+            "type": "string"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataSetId": {
+            "$ref": "#/components/schemas/DataSetId"
+          },
+          "resultType": {
+            "enum": [
+              "NORMAL",
+              "BASIC",
+              "BASIC_TOO_LARGE"
+            ],
+            "type": "string"
+          },
+          "connectionId": {
+            "type": "string"
+          },
+          "lastLoadTime": {
+            "type": "string"
+          },
+          "maxSizeBytes": {
+            "type": "number"
+          },
+          "computationEndTime": {
+            "type": "string"
+          },
+          "computationStartTime": {
+            "type": "string"
+          }
+        },
+        "description": "Metadata about a dataset profile computation.",
         "additionalProperties": false
       },
       "RealtimePrediction": {
@@ -6411,6 +6690,68 @@
         "type": "string",
         "description": "Space ID for this entity (empty string for personal space)",
         "x-qlik-filterable": true
+      },
+      "TableProfile": {
+        "type": "object",
+        "required": [
+          "name",
+          "numberOfRows",
+          "fieldProfiles"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "sizeInBytes": {
+            "type": "number"
+          },
+          "numberOfRows": {
+            "type": "integer"
+          },
+          "fieldProfiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldProfile"
+            }
+          }
+        },
+        "description": "Profile metadata for a single table/dataset.",
+        "additionalProperties": false
+      },
+      "TableRecord": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "A single record of sample values.",
+        "additionalProperties": false
+      },
+      "TableSample": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableRecord"
+            }
+          },
+          "fieldNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Sample values from a table/dataset.",
+        "additionalProperties": false
       },
       "TenantId": {
         "type": "string",

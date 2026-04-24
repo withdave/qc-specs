@@ -272,6 +272,97 @@
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/tenant-settings/actions/toggle-cross-region-inference"
+          }
+        ],
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/tenant-settings/actions/toggle-cross-region-inference": {
+      "post": {
+        "tags": [
+          "tenant-settings"
+        ],
+        "summary": "Toggle cross-region inference",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantSettingsDefinition"
+                }
+              }
+            },
+            "description": "The cross region inference setting has been successfully updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Bad Request. The request is incorrect."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized. The user is not authorized to access the service."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden. You don't have sufficient permissions to access this resource."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Sets the cross-region inference setting for the tenant. Creates tenant settings if none exist, or updates existing settings. This is access controlled by the permission `admin.tenant-settings:update`.\nWhen cross-region inference is required, you must include an additional header `x-qlik-consent-verified: true` in your API requests to confirm that you have the authority to enable this feature and accept the associated terms.\n",
+        "operationId": "toggleCrossRegionInference",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetCrossRegionDataProcessing"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-replaces": [
+          {
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/tenant-settings/actions/toggle-cross-region-data-processing"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100

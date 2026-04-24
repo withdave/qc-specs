@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.40",
+    "version": "1.0.41",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -13547,6 +13547,201 @@
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
+        }
+      }
+    },
+    "/api/core/auth-settings": {
+      "get": {
+        "tags": [
+          "iam-resources"
+        ],
+        "summary": "Get authentication settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthSettingsResource"
+                }
+              }
+            },
+            "description": "Authentication settings retrieved successfully."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The authenticated user does not have the `TenantAdmin` role required to read authentication settings."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Authentication settings not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Returns the authentication settings for the tenant, including the session inactivity timeout and maximum session lifespan. If no custom values have been saved, the response reflects tenant-wide defaults with `isDefault` set to `true`. The user must be assigned the `TenantAdmin` role.",
+        "operationId": "getAuthSettings",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "iam-resources"
+        ],
+        "summary": "Update authentication settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthSettingsResource"
+                }
+              }
+            },
+            "description": "Authentication settings updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request body."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not authorized."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The authenticated user does not have the `TenantAdmin` role required to update authentication settings."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Authentication settings not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "headers": {
+              "retry-after": {
+                "schema": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "description": "The amount of seconds to wait before retrying the request."
+              }
+            },
+            "description": "Request has been rate limited."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "description": "Updates one or more authentication settings for the tenant using JSON Patch (RFC 6902). Supports `replace` operations on `/userSessionInactivityTimeoutMinutes` and `/maxUserSessionLifespanMinutes`. The value for `maxUserSessionLifespanMinutes` must be a whole number of hours (divisible by 60). The user must be assigned the `TenantAdmin` role.",
+        "operationId": "updateAuthSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthSettingsJSONPatchArray"
+              }
+            }
+          },
+          "required": true,
+          "description": "An array of JSON Patch operations to apply to the authentication settings."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
         }
       }
     },
@@ -47633,6 +47828,97 @@
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/tenant-settings/actions/toggle-cross-region-inference"
+          }
+        ],
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/v1/tenant-settings/actions/toggle-cross-region-inference": {
+      "post": {
+        "tags": [
+          "tenant-settings"
+        ],
+        "summary": "Toggle cross-region inference",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantSettingsDefinition"
+                }
+              }
+            },
+            "description": "The cross region inference setting has been successfully updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Bad Request. The request is incorrect."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized. The user is not authorized to access the service."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden. You don't have sufficient permissions to access this resource."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "description": "Sets the cross-region inference setting for the tenant. Creates tenant settings if none exist, or updates existing settings. This is access controlled by the permission `admin.tenant-settings:update`.\nWhen cross-region inference is required, you must include an additional header `x-qlik-consent-verified: true` in your API requests to confirm that you have the authority to enable this feature and accept the associated terms.\n",
+        "operationId": "toggleCrossRegionInference",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetCrossRegionDataProcessing"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-replaces": [
+          {
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/tenant-settings/actions/toggle-cross-region-data-processing"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -62390,7 +62676,8 @@
           "dataqualityrule",
           "glossary",
           "knowledgebase",
-          "script"
+          "script",
+          "semantictype"
         ],
         "type": "string",
         "description": "The case-sensitive string defining the item's type."
@@ -63808,6 +64095,110 @@
           }
         },
         "description": "properties that should be added to every list response"
+      },
+      "AuthSettingsJSONPatch": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "enum": [
+              "replace"
+            ],
+            "type": "string",
+            "description": "The operation to be performed.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "required,oneof=replace"
+            }
+          },
+          "path": {
+            "enum": [
+              "/userSessionInactivityTimeoutMinutes",
+              "/maxUserSessionLifespanMinutes"
+            ],
+            "type": "string",
+            "description": "A JSON Pointer to the authentication settings field.",
+            "x-oapi-codegen-extra-tags": {
+              "validate": "required,oneof=/userSessionInactivityTimeoutMinutes /maxUserSessionLifespanMinutes"
+            }
+          },
+          "value": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1440,
+            "description": "Integer value in minutes to set for the targeted authentication settings field. For `maxUserSessionLifespanMinutes`, the value must be a whole number of hours (divisible by 60)."
+          }
+        },
+        "description": "A JSON Patch document for authentication settings as defined in http://tools.ietf.org/html/rfc6902."
+      },
+      "AuthSettingsJSONPatchArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AuthSettingsJSONPatch"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/userSessionInactivityTimeoutMinutes",
+            "value": 60
+          },
+          {
+            "op": "replace",
+            "path": "/maxUserSessionLifespanMinutes",
+            "value": 1440
+          }
+        ],
+        "description": "An array of JSON Patch documents for authentication settings."
+      },
+      "AuthSettingsResource": {
+        "type": "object",
+        "required": [
+          "tenantId",
+          "userSessionInactivityTimeoutMinutes",
+          "maxUserSessionLifespanMinutes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uid",
+            "example": "507f191e810c19729de860ea",
+            "readOnly": true,
+            "x-go-name": "ID",
+            "description": "The unique identifier for the authentication settings."
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uid",
+            "example": "644fd58b846d649c82eba436",
+            "readOnly": true,
+            "x-go-name": "TenantID",
+            "description": "The tenant unique identifier associated with the authentication settings."
+          },
+          "isDefault": {
+            "type": "boolean",
+            "example": false,
+            "readOnly": true,
+            "description": "`true` if the authentication settings are using tenant-wide defaults. No custom values have been saved for this tenant."
+          },
+          "maxUserSessionLifespanMinutes": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1440,
+            "x-go-name": "MaxUserSessionLifespanMinutes",
+            "description": "Maximum total lifespan for a user session, in minutes. Sessions are invalidated after this duration regardless of activity."
+          },
+          "userSessionInactivityTimeoutMinutes": {
+            "type": "integer",
+            "format": "int64",
+            "example": 60,
+            "x-go-name": "UserSessionInactivityTimeoutMinutes",
+            "description": "Maximum inactivity period for a user session, in minutes. Sessions that have been idle for longer than this value are invalidated."
+          }
+        },
+        "description": "The authentication settings for a tenant, controlling user session duration and inactivity behavior."
       },
       "CreateIPPolicy": {
         "type": "object",
@@ -68001,14 +68392,14 @@
         "type": "object",
         "properties": {
           "binEdge": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "frequency": {
-            "type": "integer",
-            "format": "int64"
+            "type": "number"
           }
-        }
+        },
+        "description": "A frequency bin in a field's frequency distribution.",
+        "additionalProperties": false
       },
       "Classification": {
         "type": "object",
@@ -68247,7 +68638,9 @@
       },
       "DataSetProfile": {
         "type": "object",
-        "title": "Data Set Profile",
+        "required": [
+          "meta"
+        ],
         "properties": {
           "meta": {
             "$ref": "#/components/schemas/ProfileMetadata"
@@ -68256,17 +68649,17 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TableSample"
-            },
-            "readOnly": true
+            }
           },
           "profiles": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TableProfile"
-            },
-            "readOnly": true
+            }
           }
-        }
+        },
+        "description": "Full dataset profile from the Profile Service.",
+        "additionalProperties": false
       },
       "FieldDataType": {
         "type": "object",
@@ -68306,7 +68699,6 @@
       },
       "FieldProfile": {
         "type": "object",
-        "title": "Field Profile",
         "properties": {
           "name": {
             "type": "string"
@@ -68318,50 +68710,27 @@
             }
           },
           "index": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           },
           "median": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "average": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "dataType": {
-            "enum": [
-              "DATE",
-              "TIME",
-              "DATETIME",
-              "TIMESTAMP",
-              "STRING",
-              "DOUBLE",
-              "DECIMAL",
-              "INTEGER",
-              "BOOLEAN",
-              "BINARY",
-              "CUSTOM"
-            ],
             "type": "string"
           },
-          "evenness": {
-            "type": "number",
-            "format": "double"
-          },
           "kurtosis": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "skewness": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "fractiles": {
             "type": "array",
             "items": {
-              "type": "number",
-              "format": "double"
+              "type": "number"
             }
           },
           "sampleValues": {
@@ -68374,77 +68743,61 @@
             "type": "string"
           },
           "classification": {
-            "$ref": "#/components/schemas/Classification"
+            "$ref": "#/components/schemas/ProfileClassification"
           },
           "nullValueCount": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "textValueCount": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "zeroValueCount": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "maxNumericValue": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "maxStringLength": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "minNumericValue": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "minStringLength": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "sumStringLength": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "emptyStringCount": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "sumNumericValues": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "numericValueCount": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "standardDeviation": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "distinctValueCount": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "mostFrequentValues": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Frequency"
+              "$ref": "#/components/schemas/ProfileFrequency"
             }
           },
           "negativeValueCount": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "positiveValueCount": {
-            "type": "integer",
-            "format": "int64"
+            "type": "integer"
           },
           "averageStringLength": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           },
           "frequencyDistribution": {
             "type": "array",
@@ -68459,10 +68812,11 @@
             "type": "string"
           },
           "sumSquaredNumericValues": {
-            "type": "number",
-            "format": "double"
+            "type": "number"
           }
-        }
+        },
+        "description": "Profile metadata for a single field/column.",
+        "additionalProperties": false
       },
       "Frequency": {
         "type": "object",
@@ -68556,18 +68910,21 @@
       },
       "ProfileMetadata": {
         "type": "object",
-        "title": "Profile Metadata",
+        "required": [
+          "dataSetId",
+          "status"
+        ],
         "properties": {
           "status": {
             "enum": [
+              "FINISHED",
+              "PARTIAL",
               "QUEUED",
               "RUNNING",
-              "FINISHED",
+              "STALE",
+              "CANCELLED",
               "FAILED",
               "INCOMPLETE",
-              "CANCELLED",
-              "STALE",
-              "PARTIAL",
               "DEFERRED"
             ],
             "type": "string"
@@ -68579,12 +68936,13 @@
             }
           },
           "dataSetId": {
-            "type": "string"
+            "$ref": "#/components/schemas/DataSetId"
           },
           "resultType": {
             "enum": [
               "NORMAL",
-              "BASIC"
+              "BASIC",
+              "BASIC_TOO_LARGE"
             ],
             "type": "string"
           },
@@ -68592,18 +68950,20 @@
             "type": "string"
           },
           "lastLoadTime": {
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
+          },
+          "maxSizeBytes": {
+            "type": "number"
           },
           "computationEndTime": {
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
           },
           "computationStartTime": {
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
           }
-        }
+        },
+        "description": "Metadata about a dataset profile computation.",
+        "additionalProperties": false
       },
       "Schema": {
         "type": "object",
@@ -68668,30 +69028,30 @@
       },
       "TableProfile": {
         "type": "object",
-        "title": "Table Profile",
+        "required": [
+          "name",
+          "numberOfRows",
+          "fieldProfiles"
+        ],
         "properties": {
           "name": {
-            "type": "string",
-            "readOnly": true
+            "type": "string"
           },
           "sizeInBytes": {
-            "type": "integer",
-            "format": "int64",
-            "readOnly": true
+            "type": "number"
           },
           "numberOfRows": {
-            "type": "integer",
-            "format": "int64",
-            "readOnly": true
+            "type": "integer"
           },
           "fieldProfiles": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FieldProfile"
-            },
-            "readOnly": true
+            }
           }
-        }
+        },
+        "description": "Profile metadata for a single table/dataset.",
+        "additionalProperties": false
       },
       "TableRecord": {
         "type": "object",
@@ -68702,31 +69062,31 @@
               "type": "string"
             }
           }
-        }
+        },
+        "description": "A single record of sample values.",
+        "additionalProperties": false
       },
       "TableSample": {
         "type": "object",
-        "title": "Table Sample",
         "properties": {
           "name": {
-            "type": "string",
-            "readOnly": true
+            "type": "string"
           },
           "records": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TableRecord"
-            },
-            "readOnly": true
+            }
           },
           "fieldNames": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "readOnly": true
+            }
           }
-        }
+        },
+        "description": "Sample values from a table/dataset.",
+        "additionalProperties": false
       },
       "Tag": {
         "type": "object",
@@ -79443,6 +79803,14 @@
         "description": "Meta for FIND operations",
         "additionalProperties": false
       },
+      "IncludeProfileInsightsField": {
+        "enum": [
+          "dataSetProfile"
+        ],
+        "type": "string",
+        "example": "dataSetProfile",
+        "description": "Fields to include in the response.\n\nCurrently only supported value is `dataSetProfile`.\n\nWhen `dataSetProfile` is specified, the response includes the full dataset profile.\n"
+      },
       "IndexColumn": {
         "type": "string",
         "description": "A optional column name upon which to create an index. Must be unique for\nevery row. If not included, Qlik will create a unique index column.\n"
@@ -80278,6 +80646,54 @@
         "description": "Metadata about features/columns from dataset after preprocessing\n",
         "additionalProperties": false
       },
+      "ProfileClassification": {
+        "type": "object",
+        "properties": {
+          "pii": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileClassificationTag"
+            }
+          },
+          "sensitive": {
+            "type": "boolean"
+          },
+          "obfuscation": {
+            "type": "string"
+          }
+        },
+        "description": "Classification metadata for a field.",
+        "additionalProperties": false
+      },
+      "ProfileClassificationTag": {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          }
+        },
+        "description": "A classification tag with a confidence score.",
+        "additionalProperties": false
+      },
+      "ProfileFrequency": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "number"
+          }
+        },
+        "description": "A value and its frequency count.",
+        "additionalProperties": false
+      },
       "ProfileInsights": {
         "type": "object",
         "required": [
@@ -80329,6 +80745,9 @@
             "type": "number",
             "description": "Number of rows in the dataset.\n\nWhen isLargeCsv is true, this is an estimate since their metadata is\nbased on a sample rather than the full dataset.\n\nFor datasets over 1GB, multiply `rows` (this) by `columns` (features\nincluded in experiment version) to calculate total `cells` to\nensure it stays under your license limit. Large CSVs have a hard\n100M cell limit.\n"
           },
+          "dataSetProfile": {
+            "$ref": "#/components/schemas/DataSetProfile"
+          },
           "experimentVersionId": {
             "type": "string",
             "description": "Optional experiment version ID. When included, it indicates that\nthis dataset profile is a snapshot from a previous version.\n"
@@ -80359,7 +80778,8 @@
               "experimentMode": {
                 "$ref": "#/components/schemas/ExperimentMode"
               }
-            }
+            },
+            "description": "Default configuration for creating an experiment version from this\ndataset. Not returned when `experimentVersionId` is provided.\n"
           }
         },
         "description": "Insights (metadata) about an experiment dataset",
@@ -80416,6 +80836,9 @@
                   "target": {
                     "type": "string",
                     "description": "Optional selected target provided on subsequent requests\n"
+                  },
+                  "include": {
+                    "$ref": "#/components/schemas/IncludeProfileInsightsField"
                   },
                   "dataSetId": {
                     "$ref": "#/components/schemas/DataSetId"
