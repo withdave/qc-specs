@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.41",
+    "version": "1.0.42",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -7729,6 +7729,16 @@
         "parameters": [
           {
             "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6NDI4OTQ1LCJfcG9pbnRzVG9OZXh0SXRlbXMiOnRydWV9"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
+          },
+          {
+            "in": "query",
             "name": "filter",
             "schema": {
               "type": "string",
@@ -8306,6 +8316,16 @@
         "parameters": [
           {
             "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6MiwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
+          },
+          {
+            "in": "query",
             "name": "filter",
             "schema": {
               "type": "string",
@@ -8398,6 +8418,16 @@
           }
         },
         "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6MjIwMjA5MDgsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
+          },
           {
             "in": "query",
             "name": "filter",
@@ -9229,6 +9259,16 @@
             },
             "required": true,
             "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6MjIwMjA5MDgsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
           },
           {
             "in": "query",
@@ -10641,6 +10681,7 @@
           }
         ],
         "description": "Lists all brand entries for a tenant.",
+        "operationId": "getBrands",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -10679,6 +10720,7 @@
           }
         },
         "description": "Creates a new brand.",
+        "operationId": "postBrands",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -10782,6 +10824,7 @@
           }
         ],
         "description": "Returns a specific brand.",
+        "operationId": "getBrandsByBrandId",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -10821,6 +10864,7 @@
           }
         ],
         "description": "Patches a brand.",
+        "operationId": "patchBrandsByBrandId",
         "requestBody": {
           "content": {
             "application/json": {
@@ -10873,6 +10917,7 @@
           }
         ],
         "description": "Deletes a specific brand. If the active brand is deleted, the tenant will return to the Qlik default.",
+        "operationId": "deleteBrandsByBrandId",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -10921,6 +10966,7 @@
           }
         ],
         "description": "Sets the brand active and de-activates any other active brand. If the brand is already active, no action is taken.",
+        "operationId": "postBrandsByBrandIdActionsActivate",
         "requestBody": {
           "content": {
             "application/json": {}
@@ -10974,6 +11020,7 @@
           }
         ],
         "description": "Sets the brand so it is no longer active, returning the tenant the Qlik default brand. If the brand is already inactive, no action is taken.",
+        "operationId": "postBrandsByBrandIdActionsDeactivate",
         "requestBody": {
           "content": {
             "application/json": {}
@@ -11031,6 +11078,7 @@
           }
         ],
         "description": "Downloads the specified brand file.",
+        "operationId": "getBrandsByBrandIdFilesByBrandFileId",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -11080,6 +11128,7 @@
           }
         ],
         "description": "Creates a brand file for the specified identifier.",
+        "operationId": "postBrandsByBrandIdFilesByBrandFileId",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -11152,6 +11201,7 @@
           }
         ],
         "description": "Updates the specified brand file.",
+        "operationId": "putBrandsByBrandIdFilesByBrandFileId",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -11217,6 +11267,7 @@
           }
         ],
         "description": "Deletes the specified brand file.",
+        "operationId": "deleteBrandsByBrandIdFilesByBrandFileId",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -11248,6 +11299,7 @@
           }
         },
         "description": "Returns the current active brand. If using the Qlik default brand, no value is returned.",
+        "operationId": "getBrandsActive",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -47826,8 +47878,11 @@
           "required": true
         },
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-deprecated": false,
+        "x-qlik-deprecated-sunset": "2026-05",
+        "x-qlik-deprecated-version": "2026-05",
+        "x-qlik-deprecated-description": "Use `/tenant-settings/actions/toggle-cross-region-inference` instead. This endpoint uses outdated terminology.",
         "x-qlik-replaced-by": [
           {
             "namespace": "",
@@ -49753,6 +49808,7 @@
           }
         },
         "description": "Creates one or more pinned links for navigation, an alternative method to multiple calls to `/ui-config/pinned-links`. Links are displayed below any existing pinned links, and will be added in the order sent in the request. Requires calling user to be assigned the `TenantAdmin` role. A tenant can have a maximum of 50 pinned links.",
+        "operationId": "postPinnedLinksBulkCreate",
         "requestBody": {
           "content": {
             "application/json": {
@@ -49804,6 +49860,7 @@
           }
         },
         "description": "Deletes all pinned links in the tenant. Requires calling user to be assigned the `TenantAdmin` role.",
+        "operationId": "postPinnedLinksDeleteAll",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
@@ -52434,6 +52491,16 @@
         "parameters": [
           {
             "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6NDI4OTQ1LCJfcG9pbnRzVG9OZXh0SXRlbXMiOnRydWV9"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
+          },
+          {
+            "in": "query",
             "name": "filter",
             "schema": {
               "type": "string",
@@ -53015,6 +53082,16 @@
         "parameters": [
           {
             "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6MiwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
+          },
+          {
+            "in": "query",
             "name": "filter",
             "schema": {
               "type": "string",
@@ -53107,6 +53184,16 @@
           }
         },
         "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6MjIwMjA5MDgsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
+          },
           {
             "in": "query",
             "name": "filter",
@@ -53943,6 +54030,16 @@
             },
             "required": true,
             "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6MjIwMjA5MDgsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
           },
           {
             "in": "query",
@@ -58715,6 +58812,10 @@
           {
             "title": "SINGLE_TABLE_PREP",
             "x-qlik-const": 3
+          },
+          {
+            "title": "DIRECT_QUERY_MODE",
+            "x-qlik-const": 4
           }
         ]
       },
@@ -61975,6 +62076,7 @@
           "endTime": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "description": "date-time in UTC."
           },
           "linkUrl": {
@@ -61992,6 +62094,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true
           },
           "createdBy": {
@@ -62004,11 +62107,13 @@
           "startTime": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "description": "date-time in UTC."
           },
           "updatedAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true
           },
           "updatedBy": {
@@ -62046,6 +62151,7 @@
           "endTime": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "description": "date-time in UTC."
           },
           "linkUrl": {
@@ -62061,6 +62167,7 @@
           "startTime": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "description": "date-time in UTC."
           },
           "linkEnabled": {
@@ -62250,6 +62357,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true,
             "description": "The UTC timestamp when the brand was created."
           },
@@ -62261,6 +62369,7 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true,
             "description": "The UTC timestamp when the brand was last updated."
           },
@@ -67837,12 +67946,33 @@
             "example": "ExampleSpaceId",
             "description": "Unique identifier of the space."
           },
+          "datasetIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "uniqueItems": true
+            },
+            "maxItems": 100,
+            "description": "List of dataset IDs associated with the Data Product. Maximum of 100 items.",
+            "uniqueItems": true
+          },
           "description": {
             "type": "string",
             "example": "This is an example Data Product.",
             "maxLength": 1024,
             "description": "A description of the Data Product.",
             "x-size-message": "The description should be set with a maximal length of 1024 characters"
+          },
+          "glossaryIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+              "maxLength": 36,
+              "description": "UUIDv4 format glossary identifier."
+            },
+            "maxItems": 100,
+            "description": "List of glossary IDs linked to the Data Product. Each entry must be a valid UUIDv4 (maximum 36 characters). Maximum of 100 items.\n"
           },
           "keyContacts": {
             "type": "array",
@@ -67857,6 +67987,14 @@
             ],
             "maxItems": 100,
             "description": "List of key contacts for the data product."
+          },
+          "apiConsumableDatasetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of dataset IDs for which API consumption is enabled. Must be a subset of datasetIds.\n",
+            "uniqueItems": true
           }
         },
         "description": "Request payload for creating a data product.\n"
@@ -68145,7 +68283,8 @@
               ]
             }
           }
-        }
+        },
+        "maxItems": 8
       },
       "Quality": {
         "type": "object",
@@ -69940,6 +70079,14 @@
               "totalProcessedCount": {
                 "type": "number",
                 "description": "Total number of changes/DMLs applied to the dataset"
+              },
+              "incomingChangesCount": {
+                "type": "number",
+                "description": "Number of incoming changes for the dataset. Only relevant for 'Iceberg Storage' and 'Streaming Transform' tasks."
+              },
+              "unoptimizedRecordsCount": {
+                "type": "number",
+                "description": "Number of records that are queryable via the view, but not yet merged into optimized Iceberg partitions. Only relevant for 'Iceberg Storage' and 'Streaming Transform' tasks."
               }
             }
           },
@@ -70059,6 +70206,13 @@
             ],
             "type": "string"
           },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "List of errors encountered during the last run"
+          },
           "endTime": {
             "type": "string",
             "format": "date-time",
@@ -70110,6 +70264,10 @@
           "message": {
             "type": "string"
           },
+          "traceId": {
+            "type": "string",
+            "description": "Trace identifier for the last run, useful for diagnostics and support"
+          },
           "duration": {
             "type": "string",
             "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
@@ -70148,6 +70306,10 @@
               },
               "applyingChangesCount": {
                 "type": "number"
+              },
+              "incomingChangesCount": {
+                "type": "number",
+                "description": "Number of incoming changes. Only relevant for 'Iceberg Storage' and 'Streaming Transform' tasks."
               },
               "accumulatingChangesCount": {
                 "type": "number"
@@ -83480,6 +83642,7 @@
               "replace"
             ],
             "type": "string",
+            "format": "Enumeration",
             "default": "validate",
             "description": "Specifies the action to perform with the given source app id. Use \"validate\" to verify that the template source app matches the provided value. Use \"replace\" to migrate the template to a different app by replacing the source app id."
           },
@@ -83643,6 +83806,7 @@
               "replace"
             ],
             "type": "string",
+            "format": "Enumeration",
             "default": "validate",
             "description": "Specifies the action to perform with the new source app. Use \"validate\" to verify that the source app of the uploaded template matches the target app. Use \"replace\" to migrate the uploaded template to the target app by replacing the source app id."
           },
@@ -83847,7 +84011,7 @@
         "properties": {
           "code": {
             "type": "string",
-            "description": "The unique code for the error\n\n- \"REP-400000\" Bad request. The server could not understand the request due to invalid syntax.\n- \"REP-400008\" Selections error.\n- \"REP-400009\" Maximum 16384 columns limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of columns you can download.\n- \"REP-400010\" Maximum 1048566 rows limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of rows you can download.\n- \"REP-400011\" The size of the downloaded Excel file exceed 100 MB limit. Download data in a visualization can't generate an .xlsx file due to limitations to the amount of data you can download.\n- \"REP-400015\" Bad request in enigma request. The patch value has invalid JSON format.\n- \"REP-400017\" Static App size exceeded.\n- \"REP-400018\" Excel string length exceeded.\n- \"REP-400020\" Invalid Issuer.\n- \"REP-400024\" Cannot extract claims from JWT.\n- \"REP-400028\" Invalid Tags.\n- \"REP-400029\" Reload Entitlement Limit Reached.\n- \"REP-400035\" Multiple selections detected in a field having OneAndOnlyone attribute.\n- \"REP-400036\" No selection detected in a field having OneAndOnlyone attribute.\n- \"REP-400037\" Max number of images exceeded in a report.\n- \"REP-400038\" Max number of nested levels exceeded in report.\n- \"REP-400039\" Max number of objects exceeded in a report.\n- \"REP-400040\" Max number of templates exceeded in a report.\n- \"REP-400041\" Unsupported dimension type for level tag.\n- \"REP-400050\" Error retrieving outputs.\n- \"REP-400052\" Report Request Aborted from internal error.\n- \"REP-400054\" The number of generated cycle reports exceeds the maximum allowed.\n- \"REP-400055\" Export options not allowed for this object.\n- \"REP-400057\" The sense object has an empty GenericType.\n- \"REP-400102\" Image rendering invalid strategy error on Sense client.\n- \"REP-400240\" Engine Client Global generic closure error\n- \"REP-400260\" Engine Client generic closure error.\n- \"REP-400280\" Engine Client proxy generic closure error.\n- \"REP-401000\" Unauthorized. The client must authenticate itself to get the requested response.\n- \"REP-401001\" Unauthorized, bad JWT.\n- \"REP-403000\" Forbidden. The client does not have access rights to the content.\n- \"REP-403001\" App forbidden, the user does not have read permission on the app.\n- \"REP-403002\" Chart type not supported.\n- \"REP-403019\" Export is not available for app with enabled directQuery feature.\n- \"REP-403025\" No entitlement to perform the operation.\n- \"REP-403026\" No entitlement to perform the operation. Export capability is off.\n- \"REP-403027\" Object without Hypercube or unsupported object type.\n- \"REP-403048\" Forbidden. User does not have permission to export the report (access control usePermission)\n- \"REP-404000\" Not found. The server can not find the requested resource.\n- \"REP-404001\" App not found, the app does not exist or it has been deleted.\n- \"REP-404002\" Chart not found, the chart does not exist or it has been deleted.\n- \"REP-404003\" Sheet not found, the sheet does not exist or it has been deleted or it is unavailable.\n- \"REP-404004\" Story not found, the story does not exist or it has been deleted or it is unavailable.\n- \"REP-409001\" App conflict.\n- \"REP-409021\" Reload timestamp constraint not met.\n- \"REP-409046\" Report aborted due to app reload.\n- \"REP-422030\" Apply variables error.\n- \"REP-422051\" There is no report to produce due to empty dataset or missing fields (the measure/dimension was removed or omitted in Section Access)\n- \"REP-429000\" Too many request. The user has sent too many requests in a given amount of time (\"rate limiting\").\n- \"REP-429012\" Exceeded max session tenant quota. A tenant has opened too many different sessions at the same time.\n- \"REP-429014\" The export could not be completed within the requested deadline.\n- \"REP-429016\" Exceeded max session tenant quota per day.\n- \"REP-429022\" Enigma generic abort.\n- \"REP-500000\" Fail to resolve resource.\n- \"REP-500006\" Fail to get report session parameters.\n- \"REP-500014\" The app did not open within 10 minutes.\n- \"REP-500023\" Validate Report Request Tags failure.\n- \"REP-500045\" Failure setting Bookmark timestamp.\n- \"REP-500047\" Error setting GroupState.\n- \"REP-500053\" Unexpected number of generated cycle reports.\n- \"REP-500059\" The App is corrupt.\n- \"REP-500061\" Engine Memory limit reached.\n- \"REP-500062\" Too many resolution attempts for a task.\n- \"REP-500063\" Engine terminated\n- \"REP-500100\" Image rendering generic error on Sense client.\n- \"REP-500101\" Image rendering could not set cookies error on Sense client.\n- \"REP-500103\" Image rendering JS timeout error on Sense client.\n- \"REP-500104\" Image rendering load URL timeout error on Sense client.\n- \"REP-500105\" Image rendering max paint attempts exceeded error on Sense client.\n- \"REP-500106\" Image rendering max JS attempts exceeded error on Sense client.\n- \"REP-500107\" Image rendering render timeout error on Sense client.\n- \"REP-500108\" Image rendering JS failure due to timeout error on Sense client.\n- \"REP-500109\" Image rendering generic JS failure error on Sense client.\n- \"REP-500200\" Report Generator error.\n- \"REP-500240\" Engine Global generic closure error.\n- \"REP-500260\" Engine Websocket generic closure error.\n- \"REP-500280\" Engine proxy generic closure error.\n- \"REP-503001\" Rest Engine Error.\n- \"REP-503005\" Engine unavailable, qix-sessions error no engines available.\n- \"REP-503013\" Session unavailable. The engine session used to create the report is unavailable.\n- \"REP-503060\" Engine Service unavailable.\n"
+            "description": "The unique code for the error\n\n- \"REP-400000\" Bad request. The server could not understand the request due to invalid syntax.\n- \"REP-400008\" Selections error.\n- \"REP-400009\" Maximum 16384 columns limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of columns you can download.\n- \"REP-400010\" Maximum 1048566 rows limit exceeded. Download data in a visualization can't generate an .xlsx file due to limitations to the number of rows you can download.\n- \"REP-400011\" The size of the downloaded Excel file exceed 100 MB limit. Download data in a visualization can't generate an .xlsx file due to limitations to the amount of data you can download.\n- \"REP-400015\" Bad request in enigma request. The patch value has invalid JSON format.\n- \"REP-400017\" Static App size exceeded.\n- \"REP-400018\" Excel string length exceeded.\n- \"REP-400020\" Invalid Issuer.\n- \"REP-400024\" Cannot extract claims from JWT.\n- \"REP-400028\" Invalid Tags.\n- \"REP-400029\" Reload Entitlement Limit Reached.\n- \"REP-400035\" Multiple selections detected in a field having OneAndOnlyone attribute.\n- \"REP-400036\" No selection detected in a field having OneAndOnlyone attribute.\n- \"REP-400037\" Max number of images exceeded in a report.\n- \"REP-400038\" Max number of nested levels exceeded in report.\n- \"REP-400039\" Max number of objects exceeded in a report.\n- \"REP-400040\" Max number of templates exceeded in a report.\n- \"REP-400041\" Unsupported dimension type for level tag.\n- \"REP-400050\" Error retrieving outputs.\n- \"REP-400052\" Report Request Aborted from internal error.\n- \"REP-400054\" The number of generated cycle reports exceeds the maximum allowed.\n- \"REP-400055\" Export options not allowed for this object.\n- \"REP-400057\" The sense object has an empty GenericType.\n- \"REP-400102\" Image rendering invalid strategy error on Sense client.\n- \"REP-400240\" Engine Client Global generic closure error\n- \"REP-400260\" Engine Client generic closure error.\n- \"REP-400280\" Engine Client proxy generic closure error.\n- \"REP-401000\" Unauthorized. The client must authenticate itself to get the requested response.\n- \"REP-401001\" Unauthorized, bad JWT.\n- \"REP-403000\" Forbidden. The client does not have access rights to the content.\n- \"REP-403001\" App forbidden, the user does not have read permission on the app.\n- \"REP-403002\" Chart type not supported.\n- \"REP-403019\" Export is not available for app with enabled directQuery feature.\n- \"REP-403025\" No entitlement to perform the operation.\n- \"REP-403026\" No entitlement to perform the operation. Export capability is off.\n- \"REP-403027\" Object without Hypercube or unsupported object type.\n- \"REP-403048\" Forbidden. User does not have permission to export the report (access control usePermission)\n- \"REP-404000\" Not found. The server can not find the requested resource.\n- \"REP-404001\" App not found, the app does not exist or it has been deleted.\n- \"REP-404002\" Chart not found, the chart does not exist or it has been deleted.\n- \"REP-404003\" Sheet not found, the sheet does not exist or it has been deleted or it is unavailable.\n- \"REP-404004\" Story not found, the story does not exist or it has been deleted or it is unavailable.\n- \"REP-409001\" App conflict.\n- \"REP-409021\" Reload timestamp constraint not met.\n- \"REP-409046\" Report aborted due to app reload.\n- \"REP-422030\" Apply variables error.\n- \"REP-422051\" There is no report to produce due to empty dataset or missing fields (the measure/dimension was removed or omitted in Section Access)\n- \"REP-429000\" Too many request. The user has sent too many requests in a given amount of time (\"rate limiting\").\n- \"REP-429012\" Exceeded max session tenant quota. A tenant has opened too many different sessions at the same time.\n- \"REP-429014\" The export could not be completed within the requested deadline.\n- \"REP-429016\" Exceeded max session tenant quota per day.\n- \"REP-429022\" Enigma generic abort.\n- \"REP-400064\" Missing Bookmark \n- \"REP-500000\" Fail to resolve resource.\n- \"REP-500006\" Fail to get report session parameters.\n- \"REP-500014\" The app did not open within 10 minutes.\n- \"REP-500023\" Validate Report Request Tags failure.\n- \"REP-500045\" Failure setting Bookmark timestamp.\n- \"REP-500047\" Error setting GroupState.\n- \"REP-500053\" Unexpected number of generated cycle reports.\n- \"REP-500059\" The App is corrupt.\n- \"REP-500061\" Engine Memory limit reached.\n- \"REP-500062\" Too many resolution attempts for a task.\n- \"REP-500063\" Engine terminated\n- \"REP-500100\" Image rendering generic error on Sense client.\n- \"REP-500101\" Image rendering could not set cookies error on Sense client.\n- \"REP-500103\" Image rendering JS timeout error on Sense client.\n- \"REP-500104\" Image rendering load URL timeout error on Sense client.\n- \"REP-500105\" Image rendering max paint attempts exceeded error on Sense client.\n- \"REP-500106\" Image rendering max JS attempts exceeded error on Sense client.\n- \"REP-500107\" Image rendering render timeout error on Sense client.\n- \"REP-500108\" Image rendering JS failure due to timeout error on Sense client.\n- \"REP-500109\" Image rendering generic JS failure error on Sense client.\n- \"REP-500200\" Report Generator error.\n- \"REP-500240\" Engine Global generic closure error.\n- \"REP-500260\" Engine Websocket generic closure error.\n- \"REP-500280\" Engine proxy generic closure error.\n- \"REP-503001\" Rest Engine Error.\n- \"REP-503005\" Engine unavailable, qix-sessions error no engines available.\n- \"REP-503013\" Session unavailable. The engine session used to create the report is unavailable.\n- \"REP-503060\" Engine Service unavailable.\n"
           },
           "meta": {
             "$ref": "#/components/schemas/MetaExportError"
@@ -85931,29 +86095,6 @@
             "example": "2020-09-02T13:44:33Z",
             "readOnly": true,
             "description": "UTC timestamp of the most recent change of reportSubscriptionStatus. If there has not been any such change, this is the timestamp of the initial creation of the record."
-          },
-          "reportingTemplateSubscriptionStatus": {
-            "enum": [
-              "none",
-              "enabling",
-              "disabling"
-            ],
-            "type": "string",
-            "example": "disabling",
-            "readOnly": true,
-            "description": "This indicates that there is an ongoing operation to either disable or enable the reporting template subscription feature. none means that no such operation is ongoing. enabling/disabling means that system is currently enabling/disabling the feature"
-          },
-          "enable-reporting-template-subscription": {
-            "type": "boolean",
-            "example": true,
-            "description": "true if reporting-template-subscription feature is enabled for this tenant",
-            "x-qlik-deprecated": true
-          },
-          "reportingTemplateSubscriptionStatusChangeTime": {
-            "type": "string",
-            "example": "2020-09-02T13:44:33Z",
-            "readOnly": true,
-            "description": "UTC timestamp of the most recent change of reportSubscriptionStatus. If there has not been any such change, this is the timestamp of the initial creation of the record."
           }
         }
       },
@@ -85974,8 +86115,7 @@
           "path": {
             "enum": [
               "/enable-sharing",
-              "/enable-report-subscription",
-              "/enable-reporting-template-subscription"
+              "/enable-report-subscription"
             ],
             "type": "string",
             "description": "The path for the given resource field to patch."
@@ -88623,6 +88763,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true
           },
           "createdBy": {
@@ -88632,6 +88773,7 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true
           },
           "updatedBy": {
@@ -88785,9 +88927,20 @@
             "example": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy7A",
             "description": "The user ID who created the tenant."
           },
+          "statusLastUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-18T12:34:56.789Z",
+            "readOnly": true,
+            "description": "The timestamp for when the tenant status was last changed."
+          },
           "enableAnalyticCreation": {
             "type": "boolean",
-            "default": false
+            "default": false,
+            "x-qlik-deprecated": true,
+            "x-qlik-deprecated-sunset": "2027-03",
+            "x-qlik-deprecated-version": "2026-03",
+            "x-qlik-deprecated-description": "enableAnalyticCreation is deprecated and will be removed in a future version."
           },
           "enableAppOpeningFeedback": {
             "type": "boolean",
