@@ -721,9 +721,20 @@
             "example": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy7A",
             "description": "The user ID who created the tenant."
           },
+          "statusLastUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-18T12:34:56.789Z",
+            "readOnly": true,
+            "description": "The timestamp for when the tenant status was last changed."
+          },
           "enableAnalyticCreation": {
             "type": "boolean",
-            "default": false
+            "default": false,
+            "x-qlik-deprecated": true,
+            "x-qlik-deprecated-sunset": "2027-03",
+            "x-qlik-deprecated-version": "2026-03",
+            "x-qlik-deprecated-description": "enableAnalyticCreation is deprecated and will be removed in a future version."
           },
           "enableAppOpeningFeedback": {
             "type": "boolean",

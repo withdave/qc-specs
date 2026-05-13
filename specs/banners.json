@@ -194,6 +194,7 @@
           "endTime": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "description": "date-time in UTC."
           },
           "linkUrl": {
@@ -211,6 +212,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true
           },
           "createdBy": {
@@ -223,11 +225,13 @@
           "startTime": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "description": "date-time in UTC."
           },
           "updatedAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true
           },
           "updatedBy": {
@@ -265,6 +269,7 @@
           "endTime": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "description": "date-time in UTC."
           },
           "linkUrl": {
@@ -280,6 +285,7 @@
           "startTime": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "description": "date-time in UTC."
           },
           "linkEnabled": {

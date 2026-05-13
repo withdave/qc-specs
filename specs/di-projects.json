@@ -1901,6 +1901,14 @@
               "totalProcessedCount": {
                 "type": "number",
                 "description": "Total number of changes/DMLs applied to the dataset"
+              },
+              "incomingChangesCount": {
+                "type": "number",
+                "description": "Number of incoming changes for the dataset. Only relevant for 'Iceberg Storage' and 'Streaming Transform' tasks."
+              },
+              "unoptimizedRecordsCount": {
+                "type": "number",
+                "description": "Number of records that are queryable via the view, but not yet merged into optimized Iceberg partitions. Only relevant for 'Iceberg Storage' and 'Streaming Transform' tasks."
               }
             }
           },
@@ -2020,6 +2028,13 @@
             ],
             "type": "string"
           },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "description": "List of errors encountered during the last run"
+          },
           "endTime": {
             "type": "string",
             "format": "date-time",
@@ -2071,6 +2086,10 @@
           "message": {
             "type": "string"
           },
+          "traceId": {
+            "type": "string",
+            "description": "Trace identifier for the last run, useful for diagnostics and support"
+          },
           "duration": {
             "type": "string",
             "description": "Duration in HH:MM:SS format (hours:minutes:seconds)"
@@ -2109,6 +2128,10 @@
               },
               "applyingChangesCount": {
                 "type": "number"
+              },
+              "incomingChangesCount": {
+                "type": "number",
+                "description": "Number of incoming changes. Only relevant for 'Iceberg Storage' and 'Streaming Transform' tasks."
               },
               "accumulatingChangesCount": {
                 "type": "number"

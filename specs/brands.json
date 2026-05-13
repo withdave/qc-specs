@@ -88,6 +88,7 @@
           }
         ],
         "description": "Lists all brand entries for a tenant.",
+        "operationId": "getBrands",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -126,6 +127,7 @@
           }
         },
         "description": "Creates a new brand.",
+        "operationId": "postBrands",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -229,6 +231,7 @@
           }
         ],
         "description": "Returns a specific brand.",
+        "operationId": "getBrandsByBrandId",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -268,6 +271,7 @@
           }
         ],
         "description": "Patches a brand.",
+        "operationId": "patchBrandsByBrandId",
         "requestBody": {
           "content": {
             "application/json": {
@@ -320,6 +324,7 @@
           }
         ],
         "description": "Deletes a specific brand. If the active brand is deleted, the tenant will return to the Qlik default.",
+        "operationId": "deleteBrandsByBrandId",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -368,6 +373,7 @@
           }
         ],
         "description": "Sets the brand active and de-activates any other active brand. If the brand is already active, no action is taken.",
+        "operationId": "postBrandsByBrandIdActionsActivate",
         "requestBody": {
           "content": {
             "application/json": {}
@@ -421,6 +427,7 @@
           }
         ],
         "description": "Sets the brand so it is no longer active, returning the tenant the Qlik default brand. If the brand is already inactive, no action is taken.",
+        "operationId": "postBrandsByBrandIdActionsDeactivate",
         "requestBody": {
           "content": {
             "application/json": {}
@@ -478,6 +485,7 @@
           }
         ],
         "description": "Downloads the specified brand file.",
+        "operationId": "getBrandsByBrandIdFilesByBrandFileId",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -527,6 +535,7 @@
           }
         ],
         "description": "Creates a brand file for the specified identifier.",
+        "operationId": "postBrandsByBrandIdFilesByBrandFileId",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -599,6 +608,7 @@
           }
         ],
         "description": "Updates the specified brand file.",
+        "operationId": "putBrandsByBrandIdFilesByBrandFileId",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -664,6 +674,7 @@
           }
         ],
         "description": "Deletes the specified brand file.",
+        "operationId": "deleteBrandsByBrandIdFilesByBrandFileId",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -695,6 +706,7 @@
           }
         },
         "description": "Returns the current active brand. If using the Qlik default brand, no value is returned.",
+        "operationId": "getBrandsActive",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -815,6 +827,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true,
             "description": "The UTC timestamp when the brand was created."
           },
@@ -826,6 +839,7 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true,
             "description": "The UTC timestamp when the brand was last updated."
           },

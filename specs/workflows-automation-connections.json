@@ -40,6 +40,16 @@
         "parameters": [
           {
             "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6NDI4OTQ1LCJfcG9pbnRzVG9OZXh0SXRlbXMiOnRydWV9"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
+          },
+          {
+            "in": "query",
             "name": "filter",
             "schema": {
               "type": "string",
