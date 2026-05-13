@@ -636,6 +636,7 @@
               "replace"
             ],
             "type": "string",
+            "format": "Enumeration",
             "default": "validate",
             "description": "Specifies the action to perform with the given source app id. Use \"validate\" to verify that the template source app matches the provided value. Use \"replace\" to migrate the template to a different app by replacing the source app id."
           },
@@ -877,6 +878,7 @@
               "replace"
             ],
             "type": "string",
+            "format": "Enumeration",
             "default": "validate",
             "description": "Specifies the action to perform with the new source app. Use \"validate\" to verify that the source app of the uploaded template matches the target app. Use \"replace\" to migrate the uploaded template to the target app by replacing the source app id."
           },

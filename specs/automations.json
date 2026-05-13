@@ -40,6 +40,16 @@
         "parameters": [
           {
             "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6MjIwMjA5MDgsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
+          },
+          {
+            "in": "query",
             "name": "filter",
             "schema": {
               "type": "string",
@@ -869,6 +879,16 @@
             },
             "required": true,
             "description": "The unique identifier for the automation."
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6MjIwMjA5MDgsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+            },
+            "required": false,
+            "description": "Pagination cursor returned from a previous request."
           },
           {
             "in": "query",

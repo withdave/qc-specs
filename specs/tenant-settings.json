@@ -270,8 +270,11 @@
           "required": true
         },
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-deprecated": false,
+        "x-qlik-deprecated-sunset": "2026-05",
+        "x-qlik-deprecated-version": "2026-05",
+        "x-qlik-deprecated-description": "Use `/tenant-settings/actions/toggle-cross-region-inference` instead. This endpoint uses outdated terminology.",
         "x-qlik-replaced-by": [
           {
             "namespace": "",
@@ -852,6 +855,7 @@
           "createdAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true
           },
           "createdBy": {
@@ -861,6 +865,7 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z",
             "readOnly": true
           },
           "updatedBy": {

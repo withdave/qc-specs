@@ -2168,29 +2168,6 @@
             "example": "2020-09-02T13:44:33Z",
             "readOnly": true,
             "description": "UTC timestamp of the most recent change of reportSubscriptionStatus. If there has not been any such change, this is the timestamp of the initial creation of the record."
-          },
-          "reportingTemplateSubscriptionStatus": {
-            "enum": [
-              "none",
-              "enabling",
-              "disabling"
-            ],
-            "type": "string",
-            "example": "disabling",
-            "readOnly": true,
-            "description": "This indicates that there is an ongoing operation to either disable or enable the reporting template subscription feature. none means that no such operation is ongoing. enabling/disabling means that system is currently enabling/disabling the feature"
-          },
-          "enable-reporting-template-subscription": {
-            "type": "boolean",
-            "example": true,
-            "description": "true if reporting-template-subscription feature is enabled for this tenant",
-            "x-qlik-deprecated": true
-          },
-          "reportingTemplateSubscriptionStatusChangeTime": {
-            "type": "string",
-            "example": "2020-09-02T13:44:33Z",
-            "readOnly": true,
-            "description": "UTC timestamp of the most recent change of reportSubscriptionStatus. If there has not been any such change, this is the timestamp of the initial creation of the record."
           }
         }
       },
@@ -2211,8 +2188,7 @@
           "path": {
             "enum": [
               "/enable-sharing",
-              "/enable-report-subscription",
-              "/enable-reporting-template-subscription"
+              "/enable-report-subscription"
             ],
             "type": "string",
             "description": "The path for the given resource field to patch."

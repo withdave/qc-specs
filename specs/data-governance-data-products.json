@@ -1251,12 +1251,33 @@
             "example": "ExampleSpaceId",
             "description": "Unique identifier of the space."
           },
+          "datasetIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "uniqueItems": true
+            },
+            "maxItems": 100,
+            "description": "List of dataset IDs associated with the Data Product. Maximum of 100 items.",
+            "uniqueItems": true
+          },
           "description": {
             "type": "string",
             "example": "This is an example Data Product.",
             "maxLength": 1024,
             "description": "A description of the Data Product.",
             "x-size-message": "The description should be set with a maximal length of 1024 characters"
+          },
+          "glossaryIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+              "maxLength": 36,
+              "description": "UUIDv4 format glossary identifier."
+            },
+            "maxItems": 100,
+            "description": "List of glossary IDs linked to the Data Product. Each entry must be a valid UUIDv4 (maximum 36 characters). Maximum of 100 items.\n"
           },
           "keyContacts": {
             "type": "array",
@@ -1271,6 +1292,14 @@
             ],
             "maxItems": 100,
             "description": "List of key contacts for the data product."
+          },
+          "apiConsumableDatasetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of dataset IDs for which API consumption is enabled. Must be a subset of datasetIds.\n",
+            "uniqueItems": true
           }
         },
         "description": "Request payload for creating a data product.\n"
@@ -1618,7 +1647,8 @@
               ]
             }
           }
-        }
+        },
+        "maxItems": 8
       },
       "Quality": {
         "type": "object",

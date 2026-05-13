@@ -6739,6 +6739,10 @@
           {
             "title": "SINGLE_TABLE_PREP",
             "x-qlik-const": 3
+          },
+          {
+            "title": "DIRECT_QUERY_MODE",
+            "x-qlik-const": 4
           }
         ]
       },

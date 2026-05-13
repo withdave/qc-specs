@@ -343,6 +343,7 @@
           }
         },
         "description": "Creates one or more pinned links for navigation, an alternative method to multiple calls to `/ui-config/pinned-links`. Links are displayed below any existing pinned links, and will be added in the order sent in the request. Requires calling user to be assigned the `TenantAdmin` role. A tenant can have a maximum of 50 pinned links.",
+        "operationId": "postPinnedLinksBulkCreate",
         "requestBody": {
           "content": {
             "application/json": {
@@ -394,6 +395,7 @@
           }
         },
         "description": "Deletes all pinned links in the tenant. Requires calling user to be assigned the `TenantAdmin` role.",
+        "operationId": "postPinnedLinksDeleteAll",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
