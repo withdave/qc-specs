@@ -2321,8 +2321,8 @@
           },
           "interval": {
             "type": "integer",
-            "example": 30,
-            "description": "time in seconds."
+            "example": 60,
+            "description": "Interval in seconds; must be a multiple of 60. Values are rounded to the nearest minute (≥30 seconds rounded up, otherwise down)."
           },
           "timezone": {
             "type": "string",
@@ -2349,8 +2349,8 @@
           },
           "interval": {
             "type": "integer",
-            "example": 30,
-            "description": "time in seconds."
+            "example": 60,
+            "description": "Interval in seconds."
           },
           "timezone": {
             "type": "string",

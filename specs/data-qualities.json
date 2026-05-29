@@ -37,7 +37,7 @@
                 }
               }
             },
-            "description": "Accepted"
+            "description": "Computation triggered. The response body contains the `computationId` for tracking progress."
           },
           "400": {
             "content": {
@@ -90,7 +90,7 @@
             "description": "Requested service is not available."
           }
         },
-        "description": "Triggers the computation of data quality.",
+        "description": "Triggers a full data quality computation for a dataset, running profile calculation followed by data quality\nassessment. Returns a `computationId` that can be used to track progress via the computation status endpoint\n(`GET /data-qualities/computations/{computationId}`). The computation runs asynchronously.\nPoll the status endpoint until `status` is `SUCCEEDED` or `FAILED`.\n",
         "operationId": "requestDataQualityComputation",
         "requestBody": {
           "content": {
@@ -105,6 +105,12 @@
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "data-governance",
+            "uniqueIdentifier": "POST:/data-governance/data-qualities/computations"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 10
@@ -144,7 +150,7 @@
                 }
               }
             },
-            "description": "OK"
+            "description": "Current execution status of the computation"
           },
           "400": {
             "content": {
@@ -184,7 +190,7 @@
                 }
               }
             },
-            "description": "Computation is not found."
+            "description": "No computation found with the specified `computationId`."
           },
           "500": {
             "content": {
@@ -217,14 +223,20 @@
             },
             "example": "4db06daa-3117-412e-8fb4-b29c937f9a0e",
             "required": true,
-            "description": "The ID of the computation"
+            "description": "The unique identifier of the computation, as returned by `POST /data-governance/data-qualities/computations`."
           }
         ],
-        "description": "Returns the execution status of a data quality computation.",
+        "description": "Retrieves the current execution status of a data quality computation. Poll this endpoint after triggering a\ncomputation to determine when results are available. The `status` field returns one of `REQUESTED`,\n`SUBMITTED`, `PROFILE_REQUESTED`, `SUCCEEDED`, `FAILED`, or `PROFILE_FAILED`.\n",
         "operationId": "getDataQualityComputation",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "data-governance",
+            "uniqueIdentifier": "GET:/data-governance/data-qualities/computations/{computationId}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -264,7 +276,7 @@
                 }
               }
             },
-            "description": "Ok response"
+            "description": "Global quality results for the dataset, including counts of valid, invalid, empty, and total sample cells per connection."
           },
           "400": {
             "content": {
@@ -304,7 +316,7 @@
                 }
               }
             },
-            "description": "Resource does not exist."
+            "description": "No quality results found for the specified dataset."
           },
           "500": {
             "content": {
@@ -335,11 +347,17 @@
             "$ref": "#/components/parameters/OptionalConnectionIdInQuery"
           }
         ],
-        "description": "Returns the global data results for a dataset, including counts of total, valid, invalid, and empty sample cells.",
+        "description": "Retrieves the global quality results for a dataset, showing counts of valid, invalid, empty, and total\nsample cells.\n",
         "operationId": "getDataQualityGlobalResults",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "data-governance",
+            "uniqueIdentifier": "GET:/data-governance/data-qualities/global-results"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -357,7 +375,7 @@
           "$ref": "#/components/schemas/DatasetIdType"
         },
         "required": true,
-        "description": "The ID of the dataset"
+        "description": "The unique identifier of the dataset."
       },
       "OptionalConnectionIdInQuery": {
         "in": "query",
@@ -366,7 +384,7 @@
           "$ref": "#/components/schemas/ConnectionIdType"
         },
         "required": false,
-        "description": "The connection ID"
+        "description": "The unique identifier of the connection."
       }
     },
     "schemas": {
@@ -377,10 +395,11 @@
         ],
         "properties": {
           "computationId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the triggered computation. Use this value to poll for status."
           }
         },
-        "description": "The ID of the computation"
+        "description": "Response returned when a data quality computation is successfully triggered."
       },
       "ComputationStatusResponse": {
         "type": "object",
@@ -426,7 +445,7 @@
         "required": [
           "datasetId"
         ],
-        "description": "Represents a data quality computation request. The `connectionId` attribute is optional for file-based datasets. If no sampling parameters (`executionMode`, `sampleMode`, `sampleSize`) are provided, the following default configuration is used: - `executionMode: PULLUP` - `sampleMode: ABSOLUTE` - `sampleSize: 1000`\n"
+        "description": "Request payload for triggering a data quality computation. The `connectionId` is optional for file-based datasets.\nIf none of the sampling parameters are provided, the following defaults apply:\n- `executionMode: PULLUP`\n- `sampleMode: ABSOLUTE`\n- `sampleSize: 1000`\n"
       },
       "DatasetIdType": {
         "type": "string",
@@ -442,7 +461,7 @@
         "properties": {
           "datasetId": {
             "type": "string",
-            "description": "The ID of the dataset"
+            "description": "The unique identifier of the dataset."
           },
           "qualities": {
             "type": "array",
@@ -503,7 +522,7 @@
           },
           "connectionId": {
             "type": "string",
-            "description": "The ID of the connection"
+            "description": "The unique identifier of the connection."
           }
         }
       },
@@ -520,26 +539,27 @@
           "empty": {
             "type": "integer",
             "format": "int64",
-            "description": "Number of empty sample cells"
+            "description": "Number of empty sample cells."
           },
           "total": {
             "type": "integer",
             "format": "int64",
-            "description": "Total number of cells in the sample"
+            "description": "Total number of cells in the sample."
           },
           "valid": {
             "type": "integer",
             "format": "int64",
-            "description": "Number of valid sample cells"
+            "description": "Number of valid sample cells."
           },
           "invalid": {
             "type": "integer",
             "format": "int64",
-            "description": "Number of invalid sample cells"
+            "description": "Number of invalid sample cells."
           },
           "updatedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Timestamp of the most recent data quality computation for this dataset and connection."
           }
         }
       },
@@ -552,14 +572,14 @@
               "RELATIVE"
             ],
             "type": "string",
-            "description": "Specifies how the dataset is sampled. ABSOLUTE represents a fixed number of rows, while RELATIVE refers to a percentage of the total dataset rows."
+            "description": "Specifies how the dataset is sampled. `ABSOLUTE` represents a fixed number of rows, while `RELATIVE` refers to a percentage of the total dataset rows."
           },
           "sampleSize": {
             "type": "integer",
             "format": "int64",
             "maximum": 100000,
             "minimum": 1,
-            "description": "The actual value of the selected sampling method size (either a fixed number for ABSOLUTE mode or a percentage for RELATIVE mode). Maximum allowed value for ABSOLUTE mode is 100000."
+            "description": "The actual value of the selected sampling method size (either a fixed number for `ABSOLUTE` mode or a percentage for `RELATIVE` mode). Maximum allowed value for `ABSOLUTE` mode is `100000`."
           },
           "executionMode": {
             "enum": [
@@ -567,7 +587,7 @@
               "PULLUP"
             ],
             "type": "string",
-            "description": "Specifies where the data quality computation takes place. In PUSHDOWN mode, it runs within the Cloud Data Warehouse (e.g., Snowflake, Databricks), whereas in PULLUP mode, it runs in Qlik Cloud."
+            "description": "Specifies where the data quality computation takes place. In `PUSHDOWN` mode, it runs within the Cloud Data Warehouse (e.g., Snowflake, Databricks), whereas in `PULLUP` mode, it runs in Qlik Cloud."
           }
         }
       }

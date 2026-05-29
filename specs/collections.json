@@ -1764,7 +1764,8 @@
           "glossary",
           "knowledgebase",
           "script",
-          "semantictype"
+          "semantictype",
+          "page"
         ],
         "type": "string",
         "description": "The case-sensitive string defining the item's type."
