@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.42",
+    "version": "1.0.43",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -234,6 +234,63 @@
         ],
         "description": "Returns changes in tabular format, showing modified rows with optional expansion to include all columns.",
         "operationId": "getTabularViewChanges",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/change-stores/{storeId}/editable-columns": {
+      "get": {
+        "tags": [
+          "editable-columns"
+        ],
+        "summary": "Get a list of editable-columns",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetEditableColumnsResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JWTAuthHeader"
+          },
+          {
+            "$ref": "#/components/parameters/StoreId"
+          },
+          {
+            "$ref": "#/components/parameters/PageParam"
+          },
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/FilterParamEditableColumns"
+          },
+          {
+            "$ref": "#/components/parameters/SortParamEditableColumns"
+          }
+        ],
+        "description": "Returns a paginated list of editable-columns that belong to the specified change store, supporting optional filtering and sorting.",
+        "operationId": "listEditableColumns",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -4161,8 +4218,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4172,8 +4228,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4288,8 +4343,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4299,8 +4353,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4352,7 +4405,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -4362,7 +4416,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -4372,7 +4427,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -4382,7 +4438,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -4392,7 +4449,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -4453,8 +4511,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4464,8 +4521,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4475,8 +4531,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4527,8 +4582,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4538,8 +4592,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4549,8 +4602,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4610,8 +4662,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4621,8 +4672,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4632,8 +4682,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4739,8 +4788,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4750,8 +4798,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4761,8 +4808,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4822,8 +4868,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4833,8 +4878,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4844,8 +4888,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4919,8 +4962,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4930,8 +4972,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -4941,8 +4982,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5004,8 +5044,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5015,8 +5054,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5026,8 +5064,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5103,8 +5140,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5114,8 +5150,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5125,8 +5160,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5199,8 +5233,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5210,8 +5243,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5221,8 +5253,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5295,8 +5326,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5306,8 +5336,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5317,8 +5346,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5452,8 +5480,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5463,8 +5490,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5474,8 +5500,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5535,8 +5560,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5546,8 +5570,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5557,8 +5580,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5611,8 +5633,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5622,8 +5643,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5633,8 +5653,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5644,8 +5663,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5655,8 +5673,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5728,8 +5745,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5739,8 +5755,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5750,8 +5765,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -5827,7 +5841,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5837,7 +5852,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5847,7 +5863,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5857,7 +5874,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5942,7 +5960,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5952,7 +5971,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5962,7 +5982,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5972,7 +5993,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -5982,7 +6004,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6053,8 +6076,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6064,8 +6086,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6075,8 +6096,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6191,8 +6211,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6202,8 +6221,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6213,8 +6231,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6285,8 +6302,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6296,8 +6312,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6307,8 +6322,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6372,8 +6386,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6383,8 +6396,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6394,8 +6406,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6482,8 +6493,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6493,8 +6503,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6504,8 +6513,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6594,8 +6602,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6605,8 +6612,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6616,8 +6622,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6724,8 +6729,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6735,8 +6739,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6746,8 +6749,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6843,8 +6845,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6854,8 +6855,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6865,8 +6865,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6922,8 +6921,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6933,8 +6931,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6944,8 +6941,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6955,8 +6951,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6966,8 +6961,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -7037,8 +7031,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -7048,8 +7041,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -7059,8 +7051,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -20584,7 +20575,7 @@
                 }
               }
             },
-            "description": "Accepted"
+            "description": "Computation triggered. The response body contains the `computationId` for tracking progress."
           },
           "400": {
             "content": {
@@ -20637,7 +20628,7 @@
             "description": "Requested service is not available."
           }
         },
-        "description": "Triggers the computation of data quality.",
+        "description": "Triggers a full data quality computation for a dataset, running profile calculation followed by data quality\nassessment. Returns a `computationId` that can be used to track progress via the computation status endpoint\n(`GET /data-qualities/computations/{computationId}`). The computation runs asynchronously.\nPoll the status endpoint until `status` is `SUCCEEDED` or `FAILED`.\n",
         "operationId": "requestDataQualityComputation",
         "requestBody": {
           "content": {
@@ -20652,6 +20643,12 @@
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "data-governance",
+            "uniqueIdentifier": "POST:/data-governance/data-qualities/computations"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 10
@@ -20691,7 +20688,7 @@
                 }
               }
             },
-            "description": "OK"
+            "description": "Current execution status of the computation"
           },
           "400": {
             "content": {
@@ -20731,7 +20728,7 @@
                 }
               }
             },
-            "description": "Computation is not found."
+            "description": "No computation found with the specified `computationId`."
           },
           "500": {
             "content": {
@@ -20764,14 +20761,20 @@
             },
             "example": "4db06daa-3117-412e-8fb4-b29c937f9a0e",
             "required": true,
-            "description": "The ID of the computation"
+            "description": "The unique identifier of the computation, as returned by `POST /data-governance/data-qualities/computations`."
           }
         ],
-        "description": "Returns the execution status of a data quality computation.",
+        "description": "Retrieves the current execution status of a data quality computation. Poll this endpoint after triggering a\ncomputation to determine when results are available. The `status` field returns one of `REQUESTED`,\n`SUBMITTED`, `PROFILE_REQUESTED`, `SUCCEEDED`, `FAILED`, or `PROFILE_FAILED`.\n",
         "operationId": "getDataQualityComputation",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "data-governance",
+            "uniqueIdentifier": "GET:/data-governance/data-qualities/computations/{computationId}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -20811,7 +20814,7 @@
                 }
               }
             },
-            "description": "Ok response"
+            "description": "Global quality results for the dataset, including counts of valid, invalid, empty, and total sample cells per connection."
           },
           "400": {
             "content": {
@@ -20851,7 +20854,7 @@
                 }
               }
             },
-            "description": "Resource does not exist."
+            "description": "No quality results found for the specified dataset."
           },
           "500": {
             "content": {
@@ -20882,11 +20885,17 @@
             "$ref": "#/components/parameters/OptionalConnectionIdInQuery"
           }
         ],
-        "description": "Returns the global data results for a dataset, including counts of total, valid, invalid, and empty sample cells.",
+        "description": "Retrieves the global quality results for a dataset, showing counts of valid, invalid, empty, and total\nsample cells.\n",
         "operationId": "getDataQualityGlobalResults",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "data-governance",
+            "uniqueIdentifier": "GET:/data-governance/data-qualities/global-results"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -21327,6 +21336,7 @@
             "required": true
           }
         ],
+        "description": "Partially updates an existing DataSet by ID using JSON Patch operations (RFC 6902), including ownership attributes.\n\nA user can update any DataSet within a space if they fulfill **one** of the following conditions:\n\n- Has **Can edit** permission in a **data space**.\n- Is a **Professional** user with the **Editor** or **Operator** role in a **shared space**.\n- Is a **Professional** user with the **Facilitator** or **Operator** role in a **managed space**.\n",
         "operationId": "patchDataSet",
         "requestBody": {
           "content": {
@@ -21447,6 +21457,7 @@
             "required": true
           }
         ],
+        "description": "Fully replaces an existing DataSet by ID, including ownership attributes.\n\nA user can update any DataSet within a space if they fulfill **one** of the following conditions:\n\n- Has **Can edit** permission in a **data space**.\n- Is a **Professional** user with the **Editor** or **Operator** role in a **shared space**.\n- Is a **Professional** user with the **Facilitator** or **Operator** role in a **managed space**.\n",
         "operationId": "updateDataSet",
         "requestBody": {
           "content": {
@@ -32665,8 +32676,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32676,8 +32686,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32784,8 +32793,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32795,8 +32803,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32857,8 +32864,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32868,8 +32874,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32879,8 +32884,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32936,8 +32940,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32947,8 +32950,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32958,8 +32960,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32969,8 +32970,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -32980,8 +32980,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33051,8 +33050,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33062,8 +33060,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33073,8 +33070,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33125,7 +33121,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -33135,7 +33132,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -33145,7 +33143,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -33155,7 +33154,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -33165,7 +33165,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -33225,8 +33226,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33236,8 +33236,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33247,8 +33246,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33308,8 +33306,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33319,8 +33316,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33330,8 +33326,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33393,8 +33388,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33404,8 +33398,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33415,8 +33408,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33478,8 +33470,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33489,8 +33480,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33500,8 +33490,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33563,8 +33552,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33574,8 +33562,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33585,8 +33572,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33657,8 +33643,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33668,8 +33653,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33679,8 +33663,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33750,8 +33733,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33761,8 +33743,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33772,8 +33753,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33874,8 +33854,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33885,8 +33864,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33896,8 +33874,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33970,8 +33947,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33981,8 +33957,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -33992,8 +33967,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -34063,8 +34037,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -34074,8 +34047,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -34085,8 +34057,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -34148,8 +34119,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -34159,8 +34129,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -34170,8 +34139,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -34233,8 +34201,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -34244,8 +34211,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -34255,8 +34221,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -54847,6 +54812,153 @@
           }
         }
       },
+      "EditableColumn": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The unique id of the editable column."
+          },
+          "type": {
+            "enum": [
+              "editable-text",
+              "editable-selector",
+              "editable-date"
+            ],
+            "type": "string",
+            "example": "editable-text",
+            "description": "Type of the editable column."
+          },
+          "config": {
+            "type": "object",
+            "properties": {
+              "maxDate": {
+                "type": "string",
+                "format": "date",
+                "example": "2025-12-31",
+                "description": "Maximum selectable date for editable-date columns (ISO 8601 date)."
+              },
+              "minDate": {
+                "type": "string",
+                "format": "date",
+                "example": "2025-01-01",
+                "description": "Minimum selectable date for editable-date columns (ISO 8601 date)."
+              },
+              "selectorType": {
+                "enum": [
+                  "fixed",
+                  "dynamic",
+                  ""
+                ],
+                "type": "string",
+                "example": "fixed",
+                "description": "Type of selector. fixed, dynamic or empty if editable-column type is not editable-selector."
+              },
+              "selectorValues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "example": "label1",
+                      "maxLength": 256,
+                      "description": "The Label of the selector."
+                    },
+                    "value": {
+                      "type": "string",
+                      "example": "value1",
+                      "maxLength": 256,
+                      "description": "The Value of the selector."
+                    }
+                  }
+                },
+                "maxItems": 100,
+                "description": "List of value/label key/value pairs."
+              },
+              "selectorExpression": {
+                "type": "string",
+                "example": "BEL~Belgium|DNK~Denmark|SWE~Sweden",
+                "description": "Expression used to create dynamic selector values."
+              }
+            },
+            "description": "Configuration values required for the editable-column type."
+          },
+          "usedBy": {
+            "$ref": "#/components/schemas/UsedByArray"
+          },
+          "spaceId": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The space id that the editable columns are associated with."
+          },
+          "storeId": {
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011",
+            "description": "Store id."
+          },
+          "tenantId": {
+            "type": "string",
+            "example": "tenantID",
+            "description": "Tenant id."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-05-27T12:29:07.178Z",
+            "description": "Timestamp of creation."
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "testUser",
+            "description": "The user who created the column."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "0001-01-01T00:00:00Z",
+            "description": "Timestamp of last update."
+          },
+          "columnName": {
+            "type": "string",
+            "example": "Price4",
+            "description": "Name of the editable column."
+          },
+          "referenceId": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The unique id used to keep a reference of editable columns in multiple spaces."
+          },
+          "publishRefId": {
+            "type": "string",
+            "example": "6835b0135cf7147c01979e5d",
+            "description": "The publish reference id used to relate editable columns between published apps/spaces."
+          },
+          "selectorValues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "example": "label1",
+                  "maxLength": 256,
+                  "description": "The Label of the selector."
+                },
+                "value": {
+                  "type": "string",
+                  "example": "value1",
+                  "maxLength": 256,
+                  "description": "The Value of the selector."
+                }
+              }
+            },
+            "maxItems": 100,
+            "description": "List of value/label key/value pairs."
+          }
+        }
+      },
       "Error": {
         "type": "object",
         "required": [
@@ -59452,8 +59564,7 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "string",
-            "description": "Custom error codes\n* AE-1 - Internal processing error\n* AE-2 - Incorrect request\n* AE-3 - Authentication issue\n* AE-4 - Prompt is rejected\n* AE-5 - Resource is not found\n* AE-6 - API usage rate limit is exceeded\n* AE-7 - Method is not allowed\n"
+            "type": "string"
           },
           "title": {
             "type": "string"
@@ -59467,7 +59578,8 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "Custom error codes\n* AE-1 - Internal processing error\n* AE-2 - Incorrect request\n* AE-3 - Authentication issue\n* AE-4 - Prompt is rejected\n* AE-5 - Resource is not found\n* AE-6 - API usage rate limit is exceeded\n* AE-7 - Method is not allowed\n"
           },
           "title": {
             "type": "string"
@@ -61875,8 +61987,8 @@
           },
           "interval": {
             "type": "integer",
-            "example": 30,
-            "description": "time in seconds."
+            "example": 60,
+            "description": "Interval in seconds; must be a multiple of 60. Values are rounded to the nearest minute (≥30 seconds rounded up, otherwise down)."
           },
           "timezone": {
             "type": "string",
@@ -61904,8 +62016,8 @@
           },
           "interval": {
             "type": "integer",
-            "example": 30,
-            "description": "time in seconds."
+            "example": 60,
+            "description": "Interval in seconds."
           },
           "timezone": {
             "type": "string",
@@ -62786,7 +62898,8 @@
           "glossary",
           "knowledgebase",
           "script",
-          "semantictype"
+          "semantictype",
+          "page"
         ],
         "type": "string",
         "description": "The case-sensitive string defining the item's type."
@@ -68361,10 +68474,11 @@
         ],
         "properties": {
           "computationId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the triggered computation. Use this value to poll for status."
           }
         },
-        "description": "The ID of the computation"
+        "description": "Response returned when a data quality computation is successfully triggered."
       },
       "ComputationStatusResponse": {
         "type": "object",
@@ -68410,7 +68524,7 @@
         "required": [
           "datasetId"
         ],
-        "description": "Represents a data quality computation request. The `connectionId` attribute is optional for file-based datasets. If no sampling parameters (`executionMode`, `sampleMode`, `sampleSize`) are provided, the following default configuration is used: - `executionMode: PULLUP` - `sampleMode: ABSOLUTE` - `sampleSize: 1000`\n"
+        "description": "Request payload for triggering a data quality computation. The `connectionId` is optional for file-based datasets.\nIf none of the sampling parameters are provided, the following defaults apply:\n- `executionMode: PULLUP`\n- `sampleMode: ABSOLUTE`\n- `sampleSize: 1000`\n"
       },
       "DatasetIdType": {
         "type": "string",
@@ -68426,7 +68540,7 @@
         "properties": {
           "datasetId": {
             "type": "string",
-            "description": "The ID of the dataset"
+            "description": "The unique identifier of the dataset."
           },
           "qualities": {
             "type": "array",
@@ -68459,7 +68573,7 @@
           },
           "connectionId": {
             "type": "string",
-            "description": "The ID of the connection"
+            "description": "The unique identifier of the connection."
           }
         }
       },
@@ -68476,26 +68590,27 @@
           "empty": {
             "type": "integer",
             "format": "int64",
-            "description": "Number of empty sample cells"
+            "description": "Number of empty sample cells."
           },
           "total": {
             "type": "integer",
             "format": "int64",
-            "description": "Total number of cells in the sample"
+            "description": "Total number of cells in the sample."
           },
           "valid": {
             "type": "integer",
             "format": "int64",
-            "description": "Number of valid sample cells"
+            "description": "Number of valid sample cells."
           },
           "invalid": {
             "type": "integer",
             "format": "int64",
-            "description": "Number of invalid sample cells"
+            "description": "Number of invalid sample cells."
           },
           "updatedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Timestamp of the most recent data quality computation for this dataset and connection."
           }
         }
       },
@@ -68508,14 +68623,14 @@
               "RELATIVE"
             ],
             "type": "string",
-            "description": "Specifies how the dataset is sampled. ABSOLUTE represents a fixed number of rows, while RELATIVE refers to a percentage of the total dataset rows."
+            "description": "Specifies how the dataset is sampled. `ABSOLUTE` represents a fixed number of rows, while `RELATIVE` refers to a percentage of the total dataset rows."
           },
           "sampleSize": {
             "type": "integer",
             "format": "int64",
             "maximum": 100000,
             "minimum": 1,
-            "description": "The actual value of the selected sampling method size (either a fixed number for ABSOLUTE mode or a percentage for RELATIVE mode). Maximum allowed value for ABSOLUTE mode is 100000."
+            "description": "The actual value of the selected sampling method size (either a fixed number for `ABSOLUTE` mode or a percentage for `RELATIVE` mode). Maximum allowed value for `ABSOLUTE` mode is `100000`."
           },
           "executionMode": {
             "enum": [
@@ -68523,7 +68638,7 @@
               "PULLUP"
             ],
             "type": "string",
-            "description": "Specifies where the data quality computation takes place. In PUSHDOWN mode, it runs within the Cloud Data Warehouse (e.g., Snowflake, Databricks), whereas in PULLUP mode, it runs in Qlik Cloud."
+            "description": "Specifies where the data quality computation takes place. In `PUSHDOWN` mode, it runs within the Cloud Data Warehouse (e.g., Snowflake, Databricks), whereas in `PULLUP` mode, it runs in Qlik Cloud."
           }
         }
       },
@@ -70464,6 +70579,15 @@
           "STREAMING_TRANSFORM"
         ]
       },
+      "DiExportMode": {
+        "enum": [
+          "MINIMAL",
+          "ALL",
+          "LEGACY"
+        ],
+        "type": "string",
+        "description": "Defines the export format for the project files.\n- 'LEGACY': Exports a ZIP of the previous JSON files. Deprecated and will be removed in a future release.\n- 'MINIMAL': Exports a ZIP of the new YAML files, including only non-default attribute values.\n- 'ALL': Exports a ZIP of the new YAML files, including all attributes.\n"
+      },
       "DiProjectItemRsp": {
         "type": "object",
         "properties": {
@@ -70510,6 +70634,9 @@
       "ExportDiProjectReq": {
         "type": "object",
         "properties": {
+          "mode": {
+            "$ref": "#/components/schemas/DiExportMode"
+          },
           "includeBindings": {
             "type": "boolean",
             "example": false,
@@ -72086,7 +72213,7 @@
             }
           }
         },
-        "description": "Atlan glossary format. See https://apidocs.atlan.com/"
+        "description": "Atlan glossary format. For more information, see https://docs.atlan.com/"
       },
       "atlanRelationEntity": {
         "type": "object",
@@ -80694,7 +80821,8 @@
               "pending",
               "completed",
               "cancelled",
-              "error"
+              "error",
+              "deleted_resource"
             ],
             "type": "string",
             "description": "Status of this job"
