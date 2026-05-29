@@ -6147,7 +6147,8 @@
               "pending",
               "completed",
               "cancelled",
-              "error"
+              "error",
+              "deleted_resource"
             ],
             "type": "string",
             "description": "Status of this job"

@@ -2636,7 +2636,7 @@
             }
           }
         },
-        "description": "Atlan glossary format. See https://apidocs.atlan.com/"
+        "description": "Atlan glossary format. For more information, see https://docs.atlan.com/"
       },
       "atlanRelationEntity": {
         "type": "object",

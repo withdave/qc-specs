@@ -438,6 +438,7 @@
             "required": true
           }
         ],
+        "description": "Partially updates an existing DataSet by ID using JSON Patch operations (RFC 6902), including ownership attributes.\n\nA user can update any DataSet within a space if they fulfill **one** of the following conditions:\n\n- Has **Can edit** permission in a **data space**.\n- Is a **Professional** user with the **Editor** or **Operator** role in a **shared space**.\n- Is a **Professional** user with the **Facilitator** or **Operator** role in a **managed space**.\n",
         "operationId": "patchDataSet",
         "requestBody": {
           "content": {
@@ -558,6 +559,7 @@
             "required": true
           }
         ],
+        "description": "Fully replaces an existing DataSet by ID, including ownership attributes.\n\nA user can update any DataSet within a space if they fulfill **one** of the following conditions:\n\n- Has **Can edit** permission in a **data space**.\n- Is a **Professional** user with the **Editor** or **Operator** role in a **shared space**.\n- Is a **Professional** user with the **Facilitator** or **Operator** role in a **managed space**.\n",
         "operationId": "updateDataSet",
         "requestBody": {
           "content": {

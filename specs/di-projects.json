@@ -2286,6 +2286,15 @@
           "STREAMING_TRANSFORM"
         ]
       },
+      "DiExportMode": {
+        "enum": [
+          "MINIMAL",
+          "ALL",
+          "LEGACY"
+        ],
+        "type": "string",
+        "description": "Defines the export format for the project files.\n- 'LEGACY': Exports a ZIP of the previous JSON files. Deprecated and will be removed in a future release.\n- 'MINIMAL': Exports a ZIP of the new YAML files, including only non-default attribute values.\n- 'ALL': Exports a ZIP of the new YAML files, including all attributes.\n"
+      },
       "DiProjectItemRsp": {
         "type": "object",
         "properties": {
@@ -2367,6 +2376,9 @@
       "ExportDiProjectReq": {
         "type": "object",
         "properties": {
+          "mode": {
+            "$ref": "#/components/schemas/DiExportMode"
+          },
           "includeBindings": {
             "type": "boolean",
             "example": false,
