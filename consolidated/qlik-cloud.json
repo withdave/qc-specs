@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.44",
+    "version": "1.0.45",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -291,6 +291,1294 @@
         ],
         "description": "Returns a paginated list of editable-columns that belong to the specified change store, supporting optional filtering and sorting.",
         "operationId": "listEditableColumns",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/odag-apps": {
+      "get": {
+        "tags": [
+          "Apps"
+        ],
+        "summary": "List ODAG Analytics Applications by type",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdagAppsResponseBodyV2"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "appType",
+            "schema": {
+              "$ref": "#/components/schemas/AppTypeV2"
+            },
+            "required": true,
+            "description": "The type of ODAG Analytics Application."
+          }
+        ],
+        "description": "Retrieves ODAG Analytics Applications filtered by type: `selection` (used as entry points), `template` (source Analytics Application for generation), or `generated` (Analytics Applications created via ODAG requests).",
+        "operationId": "getAppsV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/odag-links": {
+      "get": {
+        "tags": [
+          "Link"
+        ],
+        "summary": "List ODAG links",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LinkStateFullV2"
+                  },
+                  "title": "Array Of LinkStateFull"
+                }
+              }
+            },
+            "description": "ODAG links retrieved successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "ODAG not enabled or access denied."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "includeCharts",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Determines whether master charts of the template Analytics Application are included in the response."
+          },
+          {
+            "in": "query",
+            "name": "selectionAppID",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter the list by the selection Analytics Application ID."
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "$ref": "#/components/schemas/LinkTypeV2"
+            },
+            "required": false,
+            "description": "The type of the links to query. Defaults to `link`."
+          },
+          {
+            "$ref": "#/components/parameters/OptOwnedByV2"
+          }
+        ],
+        "description": "A Link object defines an on-demand data navigation path between a selection Analytics Application and a template Analytics Application including the set of properties that control how that data access occurs and under what conditions access is permitted. The set of links returned by this method have properties that match the combination of conditions defined by any supplied query parameters.",
+        "operationId": "linksGetV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "Link"
+        ],
+        "summary": "Create an ODAG link",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkStateFullV2"
+                }
+              }
+            },
+            "description": "ODAG link created successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid link payload (see detailed error)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid referenced object ID (see detailed error message)."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "includeCharts",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Determines whether master charts of the template Analytics Application are included in the response."
+          }
+        ],
+        "description": "Creates a new link that enables ODAG navigation from a designated selection Analytics Application to a generated Analytics Application that is created by copying the designated template Analytics Application, injecting values for bind variables harvested from the selection Analytics Application and dynamically loaded with data using those bindings. The Bindings will be initialized by searching the load script of the template Analytics Application for patterns of the form `$(od_FIELDNAME)[M-N]` where `FIELDNAME` is the name of a field in the model of the selection Analytics Application and the optional pattern `[M-N]` identifies the lower bound `M` and the upper bound `N` for the number of values for that field which must be in the active selection state of the selection Analytics Application for binding to occur.  The active selection state defaults to `selected` (i.e. green) unless the `od` prefix is immediately followed by some combination of the letters `s`, `o`, or `x`, in that order, specifically designating the `selected`, `optional` (i.e. white) and/or `excluded` (i.e. gray) groups of values to be harvested from the selection Analytics Application's selection state. The bindings in the `bindings` array in the request payload override the properties of the corresponding field bindings found in the script of the template Analytics Application.",
+        "operationId": "linkCreateV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkAddPayloadV2"
+              }
+            }
+          },
+          "required": true,
+          "description": "A JSON payload containing the content for a new ODAG link."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-links/{linkId}": {
+      "get": {
+        "tags": [
+          "Link"
+        ],
+        "summary": "Get ODAG link details",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkStateFullV2"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid link ID (see detailed error)."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "linkId",
+            "schema": {
+              "$ref": "#/components/schemas/LinkId"
+            },
+            "required": true,
+            "description": "The ID of the link."
+          },
+          {
+            "in": "query",
+            "name": "includeCharts",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Determines whether master charts of the template Analytics Application are included in the response."
+          }
+        ],
+        "description": "Retrieves details of a specific ODAG link, including bindings, properties, status, and template Analytics Application charts. Use this to review link configuration or verify permissions before generating Analytics Applications.",
+        "operationId": "linkGetV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "Link"
+        ],
+        "summary": "Update an ODAG link",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkStateFullV2"
+                }
+              }
+            },
+            "description": "ODAG link updated successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Link not found, ODAG not enabled, or invalid referenced object."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "linkId",
+            "schema": {
+              "$ref": "#/components/schemas/LinkId"
+            },
+            "required": true,
+            "description": "The ID of the link."
+          },
+          {
+            "in": "query",
+            "name": "includeCharts",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Determines whether master charts of the template Analytics Application are included in the response."
+          }
+        ],
+        "description": "Modifies ODAG link configuration including bindings, properties, status, and template Analytics Application reference. You can re-scan the template Analytics Application script to auto-detect binding patterns or override specific settings. If `statusSetting` is provided, the request updates only the link status (other payload fields are not applied).",
+        "operationId": "linkUpdateV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkPutPayloadV2"
+              }
+            }
+          },
+          "required": true,
+          "description": "A JSON payload containing the updated configuration for the ODAG link."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-links/{linkId}/requests": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "List requests for an ODAG link",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestArrayV2"
+                }
+              }
+            },
+            "description": "Successful response - see array of requests in response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Link not found or ODAG service error (see detailed error)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "ODAG not enabled or access denied."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "linkId",
+            "schema": {
+              "$ref": "#/components/schemas/LinkId"
+            },
+            "required": true,
+            "description": "The ID of the link."
+          },
+          {
+            "in": "query",
+            "name": "clientContextHandle",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "An opaque handle to a client-side object that contains the reference to the link being used."
+          },
+          {
+            "in": "query",
+            "name": "pending",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Pass `true` if only pending requests should be returned."
+          },
+          {
+            "in": "query",
+            "name": "selectionAppId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The ID of the selection Analytics Application."
+          },
+          {
+            "in": "query",
+            "name": "selectionAppSheet",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The name (or ID) of the sheet to filter qualifying ODAG requests for a selection Analytics Application."
+          }
+        ],
+        "description": "Retrieves all Analytics Application generation requests for a specific ODAG link, with optional filtering by pending status (`pending`), selection Analytics Application (`selectionAppId`), sheet context (`selectionAppSheet`), or client context (`clientContextHandle`). Use this to track generation history or monitor in-flight requests.",
+        "operationId": "linkRequestsGetV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Submit an ODAG request",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestObjectV2"
+                }
+              }
+            },
+            "description": "Successful response - the request has been queued."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "The selection Analytics Application was in an invalid state to proceed with this Analytics Application generation (see detailed error)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid link ID."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "linkId",
+            "schema": {
+              "$ref": "#/components/schemas/LinkId"
+            },
+            "required": true,
+            "description": "The ID of the link."
+          }
+        ],
+        "description": "Submits a new Analytics Application generation request with the current selection state from a selection Analytics Application. The request is validated against link properties before queuing.  On success, returns a request object that you must monitor for completion using the status endpoint.  Validation failures return detailed error information.",
+        "operationId": "linkRequestCreateV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPostPayloadV2"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-links/cancreate": {
+      "get": {
+        "tags": [
+          "Link"
+        ],
+        "summary": "Check create link permission",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanCreateLinks"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid parameter values (see detailed error)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "ODAG not enabled."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "optDenyIfSelAppNotUpdatable",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "When `true`, deny permission if the selection Analytics Application cannot be updated. This parameter is ignored unless `optSelectAppId` is also supplied."
+          },
+          {
+            "in": "query",
+            "name": "optSelectAppId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "An optional parameter for specifying the ID of a selection Analytics Application."
+          },
+          {
+            "in": "query",
+            "name": "optTemplateAppId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "An optional parameter for specifying the ID of a template Analytics Application."
+          }
+        ],
+        "description": "Checks whether the current user has permission to create new ODAG links. Optionally verify permissions for a specific template Analytics Application or selection Analytics Application context. Returns a boolean indicating create permission status.",
+        "operationId": "linkCanCreateV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/odag-links/selection-app-link-usages": {
+      "post": {
+        "tags": [
+          "Link"
+        ],
+        "summary": "List ODAG links used by a selection Analytics Application",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LinkStateRefV2"
+                  },
+                  "title": "Array of LinkStateFull"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid parameter values or link list (see detailed error)."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid selection Analytics Application ID or link ID supplied (see detailed error message)."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "selAppId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of a selection Analytics Application."
+          },
+          {
+            "in": "query",
+            "name": "includeCharts",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "When `true`, include master charts from the template Analytics Application in the response."
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "$ref": "#/components/schemas/LinkTypeV2"
+            },
+            "required": false,
+            "description": "The type of the links to query. Defaults to `link`."
+          }
+        ],
+        "description": "Registers the current set of ODAG links referenced by a selection Analytics Application and returns only those links the current user can access. Call this when a selection Analytics Application is opened or after modifying its ODAG link references. The response is an array of objects, where the `id` identifies the requested link and `link` contains the link state when accessible. Use `GET /analytics/odag-links/{linkId}` for full details.",
+        "operationId": "syncAppLinkUsagesV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelAppLinkUsagePayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-requests/{requestId}": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Get ODAG request status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestObjectV2"
+                }
+              }
+            },
+            "description": "Successful response - see request status in response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the ODAG request whose status is to be returned."
+          }
+        ],
+        "description": "Retrieves the current status and details of an ODAG request, including its state (`queued`, `loading`, `succeeded`, `failed`), generated Analytics Application ID, and error information. For multi-application generation requests, includes nested status for each sub-request.",
+        "operationId": "requestGetV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Perform action on ODAG request",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestObjectV2"
+                }
+              }
+            },
+            "description": "Successful response - see request status in response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request whose status is to be returned."
+          },
+          {
+            "in": "query",
+            "name": "action",
+            "schema": {
+              "$ref": "#/components/schemas/RequestAction"
+            },
+            "required": true,
+            "description": "The action to perform on the request. One of: (1) `cancel` a pending or in-flight request; (2) `pause` a request that has not started (still in the `queued` state); (3) `resume` a paused request; (4) acknowledge a prior cancellation; or (5) acknowledge a prior failure."
+          },
+          {
+            "in": "query",
+            "name": "autoAck",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Optional flag used with the `cancel` action. When `autoAck` is `true`, a canceled request automatically transitions to the `canceledAck` state after cancellation completes. When `autoAck` is `false`, the request transitions to `canceled`, and you must call this endpoint again with `action=ackcancel` to acknowledge the cancellation."
+          },
+          {
+            "in": "query",
+            "name": "delGenApp",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Optional flag that deletes the generated Analytics Application after an `action` of `cancel` (with `autoAck=true`), `ackcancel`, or `ackfailure`."
+          },
+          {
+            "in": "query",
+            "name": "ignoreSucceeded",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Optional flag used with the `cancel` action. When `true`, the API does not return an error if the request reaches the `succeeded` state while the cancellation request is in progress."
+          }
+        ],
+        "description": "Performs actions on ODAG requests such as pausing, resuming, or canceling them. Cancel actions are effective only before the data loading phase. For multi-application generation requests, actions apply only to sub-requests that have not yet started loading. Automatic acknowledgment  option simplifies state transitions.",
+        "operationId": "requestActionV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-requests/{requestId}/app": {
+      "delete": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Delete a generated Analytics Application",
+        "responses": {
+          "204": {
+            "description": "Successful response - No Content."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Insufficient privilege to delete the generated Analytics Application. User must be either owner of the request or the ODAG link."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID or generated Analytics Application not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request."
+          }
+        ],
+        "description": "Deletes the generated Analytics Application associated with a completed request. Only the request owner or ODAG link creator can delete generated Analytics Applications.",
+        "operationId": "deleteAppV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-requests/{requestId}/reload-app": {
+      "post": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Reload a generated Analytics Application",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestObjectV2"
+                }
+              }
+            },
+            "description": "Successful response. Returns the updated request state."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Insufficient privilege to reload the generated Analytics Application. User must be either owner of the request or the ODAG link."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID or generated Analytics Application not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request."
+          }
+        ],
+        "description": "Reloads data in a generated Analytics Application from the underlying data sources. Only the request owner or ODAG link creator can reload generated Analytics Applications.",
+        "operationId": "reloadAppV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReloadAppPayloadV2"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-requests/{requestId}/rename-app": {
+      "post": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Rename a generated Analytics Application",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestObjectV2"
+                }
+              }
+            },
+            "description": "Successful response. Returns the updated request state."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Insufficient privilege to rename the generated Analytics Application. User must be either owner of the request or the ODAG link."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID or generated Analytics Application not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request."
+          }
+        ],
+        "description": "Renames a generated Analytics Application. Only the request owner or ODAG link creator can rename generated Analytics Applications.",
+        "operationId": "renameAppV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameAppPayloadV2"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-requests/{requestId}/selections": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Get request selections",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SelectionStateV2"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request."
+          }
+        ],
+        "description": "Retrieves the selection state (selected and optional field values) that was active when the Analytics Application generation request was submitted.",
+        "operationId": "getSelectionsV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/analytics/odag-settings": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Get ODAG settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdagSettingsV2"
+                }
+              }
+            },
+            "description": "ODAG settings retrieved successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Internal system error accessing ODAG settings."
+          }
+        },
+        "description": "Retrieves ODAG settings, including feature enablement status. Available only to administrators.",
+        "operationId": "getV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Update ODAG settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdagSettingsV2"
+                }
+              }
+            },
+            "description": "ODAG settings updated successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Access denied. You lack permission to modify ODAG settings."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Internal system error accessing ODAG settings."
+          }
+        },
+        "description": "Modifies ODAG settings such as feature enablement. Available only to administrators. Changes apply immediately to all ODAG operations.",
+        "operationId": "updateV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsPutPayload"
+              }
+            }
+          },
+          "required": true,
+          "description": "A JSON payload containing the content for the new settings."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-settings/canupdate": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Check update permission",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanUpdateSettings"
+                }
+              }
+            },
+            "description": "Permission check completed successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          }
+        },
+        "description": "Checks whether the current user has permission to modify ODAG settings.",
+        "operationId": "canUpdateV2",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -45074,6 +46362,24 @@
           },
           {
             "in": "query",
+            "name": "environment.name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Environment name to filter by. For example, \"?environment.name=Development\". Use an empty value to return spaces with no environment."
+          },
+          {
+            "in": "query",
+            "name": "environmentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Environment ID to filter by. For example, \"?environmentId=67f4fba37f7cbb2f04ce727a\". Use an empty value to return spaces with no environment."
+          },
+          {
+            "in": "query",
             "name": "limit",
             "schema": {
               "type": "integer",
@@ -45121,6 +46427,20 @@
           },
           {
             "in": "query",
+            "name": "roles",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RoleType"
+              }
+            },
+            "explode": false,
+            "required": false,
+            "description": "Comma-separated list of roles to filter spaces by the caller's assignment role. For example, \"?roles=publisher,facilitator\" returns spaces where the caller has the publisher or facilitator role."
+          },
+          {
+            "in": "query",
             "name": "sort",
             "schema": {
               "type": "string"
@@ -45142,9 +46462,6 @@
         "operationId": "getSpaces",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -45223,9 +46540,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45307,9 +46621,6 @@
         "operationId": "getSpaceById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -45400,9 +46711,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45493,9 +46801,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45578,9 +46883,6 @@
         "operationId": "deleteSpaceById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45709,9 +47011,6 @@
         "operationId": "getSpaceAssignments",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -45812,9 +47111,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -45906,9 +47202,6 @@
         "operationId": "getSpaceAssignmentById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -46009,9 +47302,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -46094,9 +47384,6 @@
         "operationId": "deleteSpaceAssignmentById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -46256,9 +47543,6 @@
         "operationId": "getSpaceShares",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -46358,9 +47642,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -46452,9 +47733,6 @@
         "operationId": "getSpaceShareById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -46554,9 +47832,6 @@
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -46639,9 +47914,6 @@
         "operationId": "deleteSpaceShareById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "2",
@@ -46691,9 +47963,6 @@
         "operationId": "getTypes",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-categories": [
-          "external/manage"
-        ],
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
           "tier": "1",
@@ -55587,6 +56856,1111 @@
           "$ref": "#/components/schemas/UsedBy"
         },
         "description": "List of chart/app references."
+      },
+      "AppIdV2": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The system-assigned ID for an Analytics Application."
+      },
+      "AppNameV2": {
+        "type": "string",
+        "example": "appname",
+        "minLength": 1,
+        "description": "The name of an Analytics Application."
+      },
+      "AppStateCondensedV2": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "name": {
+            "$ref": "#/components/schemas/AppNameV2"
+          }
+        },
+        "description": "Condensed state of an Analytics Application returned in `state` for Link, LinkUsage, Request, and ODAG Apps GET calls."
+      },
+      "AppTypeV2": {
+        "enum": [
+          "selection",
+          "template",
+          "generated"
+        ],
+        "type": "string",
+        "description": "The type of the ODAG Analytics Application."
+      },
+      "ErrorDetailsV2": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A unique code used to identify the template form of the message in i18n tables (language independent)."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/MetaV2"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string",
+            "description": "The message describing the error."
+          }
+        },
+        "description": "A single error entry within an error response."
+      },
+      "ErrorV2": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetailsV2"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique ID of the trace which the error occurred in. Makes it possible to locate involved services and find log messages from the time of the error."
+          }
+        },
+        "description": "A standard error response containing a list of one or more errors."
+      },
+      "MetaV2": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The HTTP status code for the error. Generally speaking, the following codes have these meanings: `200` - Success, `201` - Success (object created), `400` - Error with user input, `403` - Authorization error (user lacks permission), `404` - Object not found, `409` - Attempt to change an object using an obsolete last ModifiedDate."
+          }
+        },
+        "description": "Additional metadata associated with an error."
+      },
+      "OdagAppsResponseBodyV2": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppStateCondensedV2"
+            }
+          }
+        },
+        "description": "The response body for ODAG Analytics Applications."
+      },
+      "AppNameParameterV2": {
+        "enum": [
+          "templateAppName",
+          "userId",
+          "curYear",
+          "curMonth",
+          "curDay",
+          "curHr",
+          "curMin",
+          "curSec"
+        ],
+        "type": "string",
+        "description": "One of the allowed variables that, when evaluated at ODAG Request execution time, can be used to compute a part of a generated Analytics Application's name."
+      },
+      "BindFormattingV2": {
+        "type": "object",
+        "properties": {
+          "quote": {
+            "type": "string",
+            "default": "'",
+            "description": "The character to use for quote wrapping each of the bound values when formatting the source values associated with this binding.  If this property is not supplied, a single quote character (`'`) will be used by default.  Use an empty string to suppress quote wrapping the values."
+          },
+          "delimiter": {
+            "type": "string",
+            "default": ",",
+            "description": "The character to use as a separator between two (or more) bound values when formatting the source values associated with this binding.  If this property is not supplied, a comma character will be used by default.  Use an empty string to indicate that no separator character should be used."
+          }
+        },
+        "description": "A property value that describes the formatting of field values in a Binding. This is currently only settable in the template Analytics Application script and not when creating or updating a Link."
+      },
+      "BindingArrayV2": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/BindingV2"
+        },
+        "description": "A collection of Bindings.  Note that there can be multiple bindings having the same `templateAppFieldName` in a binding collection to denote different usages of the field's selection state in the context of the data prep logic but they all must have the same value for their `range` property."
+      },
+      "BindingV2": {
+        "type": "object",
+        "required": [
+          "templateAppVarName",
+          "selectAppParamType"
+        ],
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/ValueCountRangeV2"
+          },
+          "formatting": {
+            "$ref": "#/components/schemas/BindFormattingV2"
+          },
+          "numericOnly": {
+            "$ref": "#/components/schemas/NumericOnlyV2"
+          },
+          "selectionStates": {
+            "$ref": "#/components/schemas/SelectionStateDescrV2"
+          },
+          "selectAppParamName": {
+            "type": "string",
+            "description": "The path (or name) of the selection Analytics Application field, variable, or property to obtain the list of values for this binding."
+          },
+          "selectAppParamType": {
+            "$ref": "#/components/schemas/SelectAppParamTypeV2"
+          },
+          "templateAppVarName": {
+            "type": "string"
+          }
+        },
+        "description": "An object that defines how values accessible in the selection Analytics Application are to be harvested and injected into the data prep phase of the template Analytics Application at Analytics Application generation time."
+      },
+      "CanCreateLinks": {
+        "type": "object",
+        "properties": {
+          "canCreateLinks": {
+            "type": "boolean"
+          }
+        },
+        "description": "An object used to inform the caller whether the current user has privilege to create new Links."
+      },
+      "DataLoadStatus": {
+        "enum": [
+          "pending",
+          "success",
+          "warnings",
+          "failed"
+        ],
+        "type": "string",
+        "description": "The completion status of a completed Request."
+      },
+      "FieldSelectionStateV2": {
+        "type": "object",
+        "required": [
+          "selectionAppParamType",
+          "selectionAppParamName",
+          "values"
+        ],
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldValueV2"
+            },
+            "description": "The list of values in the selection state for this field."
+          },
+          "selectedSize": {
+            "type": "integer",
+            "description": "The actual number of selected values. Not used for `bindSelectionState`."
+          },
+          "selectionAppParamName": {
+            "type": "string",
+            "description": "The name of a variable or field that corresponds to one or more bindings having a matching `selectAppParamName` used to generate Analytics Applications."
+          },
+          "selectionAppParamType": {
+            "$ref": "#/components/schemas/SelectAppParamTypeV2"
+          }
+        },
+        "description": "The set of values used by link bindings to generate an Analytics Application."
+      },
+      "FieldValueV2": {
+        "type": "object",
+        "required": [
+          "strValue",
+          "selStatus"
+        ],
+        "properties": {
+          "numValue": {
+            "type": "string"
+          },
+          "strValue": {
+            "type": "string"
+          },
+          "selStatus": {
+            "$ref": "#/components/schemas/SelectStatusV2"
+          }
+        },
+        "description": "A single field value with its selection status."
+      },
+      "LinkAddPayloadV2": {
+        "type": "object",
+        "required": [
+          "name",
+          "selectionApp"
+        ],
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/LinkNameV2"
+          },
+          "bindings": {
+            "$ref": "#/components/schemas/BindingArrayV2"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/LinkPropertiesV2"
+          },
+          "rowEstExpr": {
+            "$ref": "#/components/schemas/LinkRowEstExprV2"
+          },
+          "dynamicView": {
+            "type": "boolean",
+            "description": "When `true`, the ODAG link is treated as a dynamic view. Analytics Application retention time is overridden to `24 hours` and the maximum number of generated Analytics Applications is set to `1`."
+          },
+          "templateApp": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "selectionApp": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "includeScript": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set to `true` to include the generated Analytics Application load script in the generated Analytics Application. The default value is `false`."
+          },
+          "statusSetting": {
+            "$ref": "#/components/schemas/LinkStatusSettingV2"
+          }
+        },
+        "description": "An object that defines the properties of a Link to be created."
+      },
+      "LinkId": {
+        "type": "string",
+        "pattern": "^[a-fA-F0-9]{24}$",
+        "description": "The system-assigned ID for a link."
+      },
+      "LinkNameV2": {
+        "type": "string",
+        "example": "ODAG Link name",
+        "maxLength": 255,
+        "minLength": 1,
+        "description": "The name of a link."
+      },
+      "LinkPropAppOpenMethodV2": {
+        "type": "object",
+        "required": [
+          "context",
+          "openMethod"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          },
+          "openMethod": {
+            "enum": [
+              "Tab",
+              "Window"
+            ],
+            "type": "string",
+            "default": "Tab"
+          }
+        },
+        "description": "Sets the default method by which the newly generated Analytics Application is displayed when opened. The default is `Tab` to open a new tab in the same browser.  Note that not all devices permit both methods so the chosen behavior may not apply if it is not supported on the user's device or browser."
+      },
+      "LinkPropAppRetentionTimeV2": {
+        "type": "object",
+        "required": [
+          "context",
+          "retentionTime"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          },
+          "retentionTime": {
+            "type": "string"
+          }
+        },
+        "description": "A string that defines the length of time that a generated Analytics Application should be allowed to exist before it is automatically purged.  The format must be in either ISO 8601 duration format or the text `unlimited`."
+      },
+      "LinkPropDisableV2": {
+        "type": "object",
+        "required": [
+          "context",
+          "disable"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          },
+          "disable": {
+            "type": "boolean"
+          }
+        },
+        "description": "Set to `true` to temporarily disable the use of this Link to generate Analytics Applications."
+      },
+      "LinkPropertiesV2": {
+        "type": "object",
+        "required": [
+          "rowEstRange"
+        ],
+        "properties": {
+          "disable": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropDisableV2"
+            }
+          },
+          "menuLabel": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropMenuLabelV2"
+            }
+          },
+          "genAppName": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropGenAppNameV2"
+            }
+          },
+          "genAppLimit": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropGenAppLimitV2"
+            }
+          },
+          "limitPolicy": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropLimitPolicyV2"
+            }
+          },
+          "rowEstRange": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropRowEstRangeV2"
+            }
+          },
+          "targetSheet": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropTargetSheetV2"
+            }
+          },
+          "appOpenMethod": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropAppOpenMethodV2"
+            }
+          },
+          "appRetentionTime": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropAppRetentionTimeV2"
+            }
+          },
+          "overrideGenAppLimit": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkPropOverrideGenAppLimitV2"
+            }
+          }
+        },
+        "description": "The complete set of possible properties for a link and their associated user context/value pairings."
+      },
+      "LinkPropGenAppLimitV2": {
+        "type": "object",
+        "required": [
+          "context",
+          "limit"
+        ],
+        "properties": {
+          "limit": {
+            "type": "integer"
+          },
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          }
+        },
+        "description": "The limit to the number of Analytics Applications generated using this specific Link that can exist, and still not deleted, before the policy defined by the `limitPolicy` property (configured separately via LinkPropertiesV2.limitPolicy) is applied. If no `limitPolicy` is defined, the `Restrict` policy is assumed. If there is no value for this property applicable to the current user, there is no limit to the number of Analytics Applications that can be generated from this link for the user.  The count of the current number of Analytics Applications is based on just those Analytics Applications generated by the current user (and still in existence) for this specific link. The minimum value for `limit` is `1`."
+      },
+      "LinkPropGenAppNameV2": {
+        "type": "object",
+        "required": [
+          "context",
+          "formatString"
+        ],
+        "properties": {
+          "params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppNameParameterV2"
+            }
+          },
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          },
+          "formatString": {
+            "type": "string",
+            "description": "A string containing the base text of the name to use for the generated Analytics Application and optionally any number of placeholder patterns of the form `{N}` where `N` is an integer greater than or equal to `0`. The integer identifies the offset in the `params` array of an `AppNameParameterV2` to evaluate at ODAG Request execution time to compute a fragment of the generated Analytics Application's name and insert it at the same position as its corresponding `{N}` placeholder."
+          }
+        },
+        "description": "An object that defines how to compute the name to use for the generated Analytics Application."
+      },
+      "LinkPropLimitPolicyV2": {
+        "type": "object",
+        "required": [
+          "context",
+          "limitPolicy"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          },
+          "limitPolicy": {
+            "enum": [
+              "Restrict",
+              "AutoDelete"
+            ],
+            "type": "string"
+          }
+        },
+        "description": "The action to take when the limit to the maximum number of generated Analytics Applications is reached."
+      },
+      "LinkPropMenuLabelV2": {
+        "type": "object",
+        "required": [
+          "context",
+          "label"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          }
+        },
+        "description": "The default label to use for this Link in the context of the selection Analytics Application's ODAG navigation menu."
+      },
+      "LinkPropOverrideGenAppLimitV2": {
+        "type": "object",
+        "required": [
+          "context"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          },
+          "overrideGenAppLimit": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "description": "The limit to the number of Analytics Applications generated can be overridden using this specific Link that can exist, and still not deleted. The default value for this property is `false`. If this property value is set to `true`, then the `limit` value in `genAppLimit` is ignored."
+      },
+      "LinkPropRowEstRangeV2": {
+        "type": "object",
+        "required": [
+          "context",
+          "highBound"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          },
+          "lowBound": {
+            "type": "integer",
+            "description": "The minimum value for the row estimate to enable usage of the link to perform an ODAG request.  If the row estimate expression evaluates to a number lower than this value, the user will be prevented from submitting an ODAG request for this link.  If this value is not supplied, no minimum is required."
+          },
+          "highBound": {
+            "type": "integer",
+            "description": "The maximum value for the row estimate to enable usage of the link. If the row estimate expression evaluates to a value larger than this value, the user will be prevented from submitting an ODAG request for this link."
+          }
+        },
+        "description": "A link property that defines a value range that the evaluated value of the row estimate measure must fall within in order to allow submissions of a request for the link."
+      },
+      "LinkPropTargetSheetV2": {
+        "type": "object",
+        "required": [
+          "context",
+          "sheetId"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/LinkUsageContextV2"
+          },
+          "sheetId": {
+            "type": "string",
+            "description": "The ID of the sheet to first navigate to when opening the generated Analytics Application from the selection Analytics Application."
+          },
+          "sheetName": {
+            "type": "string",
+            "description": "An optional, read-only property that is returned when retrieving a link if the `targetSheet` setting exists for the current user in the link's `properties` set and the sheet with that ID exists in the link's `templateApp`."
+          }
+        },
+        "description": "An optional property that a Link creator can specify to cause the client to navigate to a specific sheet in the generated Analytics Application when opening the generated Analytics Application from the selection Analytics Application's navpoint panel."
+      },
+      "LinkPutPayloadV2": {
+        "type": "object",
+        "required": [
+          "name",
+          "selectionApp"
+        ],
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/LinkNameV2"
+          },
+          "ownerId": {
+            "$ref": "#/components/schemas/UserIdV2"
+          },
+          "bindings": {
+            "$ref": "#/components/schemas/BindingArrayV2"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/LinkPropertiesV2"
+          },
+          "rowEstExpr": {
+            "$ref": "#/components/schemas/LinkRowEstExprV2"
+          },
+          "dynamicView": {
+            "type": "boolean",
+            "description": "When `true`, the ODAG link is treated as a dynamic view. Analytics Application retention time is overridden to `24 hours` and the maximum number of generated Analytics Applications is set to `1`."
+          },
+          "templateApp": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "selectionApp": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "includeScript": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set to `true` to include the generated Analytics Application load script in the generated Analytics Application. The default value is `false`."
+          },
+          "statusSetting": {
+            "$ref": "#/components/schemas/LinkStatusSettingV2"
+          }
+        },
+        "description": "An object that defines the properties of a Link to be modified."
+      },
+      "LinkRowEstExprV2": {
+        "type": "string",
+        "description": "The measure expression to be evaluated in the context of the selection Analytics Application for the link that estimates the number of records that will be qualified by the primary load query of the template Analytics Application. This expression must be valid in the context of the selection Analytics Application fields and update whenever the selection state of the selection Analytics Application changes."
+      },
+      "LinkStateFullV2": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdDate",
+          "owner",
+          "name",
+          "status",
+          "templateApp",
+          "properties",
+          "rowEstExpr"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectId"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LinkNameV2"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/UserStateCondensedV2"
+          },
+          "status": {
+            "$ref": "#/components/schemas/LinkStatusV2"
+          },
+          "bindings": {
+            "$ref": "#/components/schemas/BindingArrayV2"
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "properties": {
+            "$ref": "#/components/schemas/LinkPropertiesV2"
+          },
+          "rowEstExpr": {
+            "$ref": "#/components/schemas/LinkRowEstExprV2"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "dynamicView": {
+            "type": "boolean",
+            "description": "When `true`, the ODAG link is treated as a dynamic view."
+          },
+          "templateApp": {
+            "$ref": "#/components/schemas/AppStateCondensedV2"
+          },
+          "modifiedDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "includeScript": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set to `true` to include the generated Analytics Application load script in the generated Analytics Application. The default value is `false`.",
+            "x-omitempty": false
+          },
+          "modifiedByUser": {
+            "$ref": "#/components/schemas/UserStateCondensedV2"
+          },
+          "genAppAccessible": {
+            "type": "boolean",
+            "description": "Only returned on `LinkGet` and set to `true` if user will have access to an Analytics Application generated by this link."
+          },
+          "templateAppChartObjects": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "description": "The full state of a Link."
+      },
+      "LinkStateRefV2": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/LinkId"
+          },
+          "link": {
+            "$ref": "#/components/schemas/LinkStateFullV2"
+          }
+        },
+        "description": "Used to return a possibly empty link state when querying multiple links by ID where any one of those IDs may be invalid or obsolete. If the `link` field is missing, it means there was no accessible link for the corresponding `id`."
+      },
+      "LinkStatusSettingV2": {
+        "enum": [
+          "activate",
+          "disable",
+          "decommission"
+        ],
+        "type": "string",
+        "description": "The requested status transition to apply to a Link.\nNew links are always created with status `active`; `statusSetting` is ignored.\nWhen updating a Link, if `statusSetting` is provided, the request updates the Link's `status` only (other fields in the payload are not applied). If omitted, the Link's status is not changed.\n`statusSetting` is an action, and it maps to the resulting `status`: - `activate` sets `status` to `active`. - `disable` sets `status` to `disabled`. - `decommission` sets `status` to `decommissioned`.\nIf `statusSetting` has an unsupported value, the request returns an error and the Link is not updated.\nLinks with status `decommissioned` cannot change status."
+      },
+      "LinkStatusV2": {
+        "enum": [
+          "active",
+          "disabled",
+          "decommissioned",
+          "incomplete"
+        ],
+        "type": "string",
+        "description": "The current status of a link."
+      },
+      "LinkTypeV2": {
+        "enum": [
+          "link",
+          "view",
+          "all"
+        ],
+        "type": "string",
+        "default": "link",
+        "description": "The type of link"
+      },
+      "LinkUsageContextV2": {
+        "type": "string",
+        "description": "An expression based on the usage environment of a Link typically including predicates that test the current user's membership in a group or possession of a user role that when evaluated truthfully enables an applicable value for a Link property. For example, `User_*` indicates that the link property setting applies to all users while `User.name = joe` indicates the rule applies only to a specific user named `joe`."
+      },
+      "NumericOnlyV2": {
+        "type": "boolean",
+        "default": false,
+        "description": "Set to `true` to indicate that only numeric values from the selection Analytics Application source parameter should be used. The default value for this property, if left unspecified, is `false`. This is currently only settable in the template Analytics Application script and not when creating or updating a Link."
+      },
+      "RequestArrayV2": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/RequestObjectV2"
+        },
+        "description": "An array of Request Summary objects."
+      },
+      "RequestIdV2": {
+        "type": "string",
+        "pattern": "^[a-fA-F0-9]{24}$",
+        "description": "The system-assigned ID for an ODAG request."
+      },
+      "RequestKindV2": {
+        "enum": [
+          "single",
+          "multiple",
+          "singlesub"
+        ],
+        "type": "string",
+        "description": "For links that do not use any partitioning fields, a `single` Analytics Application generation request is created. However, for selection Analytics Applications that designate a set of partitioning fields and the user selects multiple values for any of those partitioning fields, ODAG uses a separate `singlesub` request to generate a separate Analytics Application for each combination of selected partition field values, and tracks the queuing and data load phase of each of those sub-requests separately. Note that `singlesub` requests share the same link ID as their spawning `multiple` parent request."
+      },
+      "RequestLoadInfoV2": {
+        "type": "object",
+        "required": [
+          "loadHost",
+          "startedAt"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/DataLoadStatus"
+          },
+          "loadHost": {
+            "type": "string",
+            "description": "The engine host name used to perform the data load operation for this request. This property will be missing in `multiple` generation requests (see the `loadHost` field of their sub-requests) and will be an empty string on a `single` or `singlesub` request that has not yet reached the `loading` phase."
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "finishedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          }
+        },
+        "description": "An object that describes the state of a generated Analytics Application's data load operation. In request objects that include this object as an optional property, the property will be missing for `multiple` generation requests (see their sub-requests for their data load information) or for `single` and `singlesub` requests that have not yet reached their `loading` phase."
+      },
+      "RequestObjectV2": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdDate",
+          "modifiedDate",
+          "owner",
+          "link",
+          "templateApp",
+          "kind",
+          "state"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/RequestIdV2"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/RequestKindV2"
+          },
+          "link": {
+            "$ref": "#/components/schemas/LinkId"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/UserStateCondensedV2"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RequestStateV2"
+          },
+          "loadState": {
+            "$ref": "#/components/schemas/RequestLoadInfoV2"
+          },
+          "sheetname": {
+            "type": "string"
+          },
+          "purgeAfter": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "timeToLive": {
+            "type": "integer",
+            "description": "The value of the Link's `appRetentionTime` property at the time the Analytics Application was generated (`0` means no auto-purge)."
+          },
+          "validation": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of validation errors or warnings."
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "targetSheet": {
+            "type": "string",
+            "description": "The ID of the target sheet, taken from the link properties, to navigate to when opening the generated Analytics Application (empty for Analytics Application overview)."
+          },
+          "templateApp": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "actualRowEst": {
+            "type": "integer",
+            "description": "The evaluated value of the Link's `rowEstExpr` measure expression at the time this request was initiated."
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Detailed message if the request failed."
+          },
+          "generatedApp": {
+            "$ref": "#/components/schemas/AppStateCondensedV2"
+          },
+          "modifiedDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "selectionApp": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "curRowEstExpr": {
+            "type": "string",
+            "description": "The Link's `rowEstExpr` property setting at the time this request was initiated."
+          },
+          "retentionTime": {
+            "type": "integer",
+            "description": "The remaining time in minutes this request will be retained (0 means kept forever)."
+          },
+          "parentRequestId": {
+            "$ref": "#/components/schemas/RequestIdV2"
+          },
+          "templateAppName": {
+            "$ref": "#/components/schemas/AppNameV2"
+          },
+          "bindingStateHash": {
+            "type": "integer",
+            "format": "int64",
+            "description": "A 64-bit hash of the bound field state at the time the request was made."
+          },
+          "generatedAppName": {
+            "$ref": "#/components/schemas/AppNameV2"
+          },
+          "selectionAppName": {
+            "$ref": "#/components/schemas/AppNameV2"
+          },
+          "curRowEstLowBound": {
+            "type": "integer",
+            "description": "The Link's `rowEstRange.lowBound` value for the user at the time this request was initiated."
+          },
+          "curRowEstHighBound": {
+            "type": "integer",
+            "description": "The Link's `rowEstRange.highBound` value for the user at the time this request was initiated."
+          },
+          "selectionStateHash": {
+            "type": "integer",
+            "format": "int64",
+            "description": "A 64-bit hash of the selected field values at the time the request was made."
+          }
+        },
+        "description": "The detailed content of an ODAG request object. If this is a summarization of a request initiated from a navigation point that has a single link, its `link` property refers to that link. Otherwise, a sub-request is created for each link in the navigation point and the `link` of each sub-request refers to its respective link.\nIf this is a `single` or `singlesub` Analytics Application generation request and the request has reached at least the `queued` stage, the `generatedApp` property contains the ID of the generated Analytics Application (note that the generated Analytics Application might not yet be populated with data or published if the request is not completed).\nIf this is a `single` or `singlesub` request and the data load operation failed, the `generatedApp` property still contains the ID of the failed Analytics Application to allow viewing of the ODAG-bound script for diagnostic purposes. Generated Analytics Applications for failed requests are purged regularly, so the Analytics Application might no longer be available.\nIf this is a `single` or `singlesub` request that was canceled before reaching the `loading` phase, the `generatedApp` property is missing because generated Analytics Applications for pre-load phase requests are deleted. If this is a `multiple` request, the `generatedApp` property is also missing."
+      },
+      "RequestPostPayloadV2": {
+        "type": "object",
+        "required": [
+          "selectionApp",
+          "bindSelectionState"
+        ],
+        "properties": {
+          "sheetname": {
+            "type": "string",
+            "description": "The name of the sheet from which the request is being made."
+          },
+          "actualRowEst": {
+            "type": "integer",
+            "description": "The current row estimate value calculated by the link's `rowEstExpr` property in the context of the selection Analytics Application."
+          },
+          "selectionApp": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "selectionState": {
+            "$ref": "#/components/schemas/SelectionStateV2"
+          },
+          "bindSelectionState": {
+            "$ref": "#/components/schemas/SelectionStateV2"
+          },
+          "clientContextHandle": {
+            "type": "string",
+            "description": "An opaque handle to a client-side object that contains the reference to the link being used."
+          }
+        },
+        "description": "Payload to send when creating an ODAG request. `selectionApp` is the ID of the selection Analytics Application from which the request is made. `bindSelectionState` is the selection state in the selection Analytics Application at the time the request is submitted (you can limit the fields to those used by the link's `bindings` to reduce payload size)."
+      },
+      "RequestStateV2": {
+        "enum": [
+          "validating",
+          "queued",
+          "invalid",
+          "hold",
+          "loading",
+          "canceled",
+          "failed",
+          "succeeded",
+          "canceling",
+          "canceledAck",
+          "failedAck"
+        ],
+        "type": "string",
+        "description": "The current state of an ODAG request."
+      },
+      "SelAppLinkUsagePayload": {
+        "type": "object",
+        "required": [
+          "linkList"
+        ],
+        "properties": {
+          "linkList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of Link IDs."
+          }
+        },
+        "description": "A JSON payload containing an array of LinkIds."
+      },
+      "SelectAppParamTypeV2": {
+        "enum": [
+          "Field",
+          "Variable",
+          "Property",
+          "Exclude",
+          "BDI"
+        ],
+        "type": "string",
+        "description": "The different kinds of selection Analytics Application parameters whose values can be bound to the script of template Analytics Applications when generating new Analytics Applications. Note that `Exclude` is used to specifically prevent fields defined as optional bind parameters in the template Analytics Application script from being bound (these must either not have the optional quantity constraint specifiers or have a minimum quantity of 0)."
+      },
+      "SelectionStateDescrV2": {
+        "type": "string",
+        "description": "A combination of the letters `S` and/or `O` to indicate which values from the selection states `selected` or `optional` in the hypercube of the selection Analytics Application to harvest as bind values to inject into the script of the template Analytics Application at ODAG request submission time. This is currently only settable in the template Analytics Application script and not when creating or updating a Link."
+      },
+      "SelectionStateV2": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/FieldSelectionStateV2"
+        },
+        "description": "A collection of FieldSelectionStateV2 objects."
+      },
+      "SelectStatusV2": {
+        "enum": [
+          "S",
+          "O",
+          "X"
+        ],
+        "type": "string",
+        "description": "The valid set of selection states that a specific field value can be in. One of: `S` (selected), `O` (optional), or `X` (excluded)."
+      },
+      "UserIdV2": {
+        "type": "string",
+        "example": "wcgIs6wGcDdyzep9QmyopWvNH1FJTOhh",
+        "description": "The system-assigned ID for a user"
+      },
+      "UserStateCondensedV2": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "subject",
+          "tenantid"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/UserIdV2"
+          },
+          "name": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Identity subject used for identity mapping."
+          },
+          "tenantid": {
+            "type": "string",
+            "description": "Tenant identifier."
+          }
+        },
+        "description": "Condensed state of a user returned in state of ownable ODAG entities (for example, a link or request)."
+      },
+      "ValueCountRangeV2": {
+        "type": "object",
+        "properties": {
+          "lowerBound": {
+            "type": "integer"
+          },
+          "upperBound": {
+            "type": "integer"
+          }
+        },
+        "description": "The lower and upper bound for the permitted number of values that must exist in the selection Analytics Application's source parameter in order for this binding to be valid (and permit an ODAG Request to be submitted. If this property is not supplied, there is no constraint on either the lower or upper bound. To indicate that an exact number of selections are required, use the same number for both the lower and upper bound."
+      },
+      "ReloadAppPayloadV2": {
+        "type": "object",
+        "properties": {
+          "copyRequest": {
+            "type": "boolean",
+            "description": "Determines whether the request should be copied along with the generated Analytics Application."
+          },
+          "actualRowEst": {
+            "type": "integer",
+            "description": "The current row estimate value calculated by the link's `rowEstExpr` property in the context of the selection Analytics Application."
+          },
+          "selectionState": {
+            "$ref": "#/components/schemas/SelectionStateV2"
+          },
+          "bindSelectionState": {
+            "$ref": "#/components/schemas/SelectionStateV2"
+          }
+        },
+        "description": "Payload to send when reloading an Analytics Application generated by an ODAG request."
+      },
+      "RenameAppPayloadV2": {
+        "type": "object",
+        "required": [
+          "appName"
+        ],
+        "properties": {
+          "appName": {
+            "type": "string",
+            "description": "The new name of the generated Analytics Application."
+          }
+        },
+        "description": "Payload to send when renaming an Analytics Application generated by an ODAG request."
+      },
+      "RequestAction": {
+        "enum": [
+          "cancel",
+          "pause",
+          "resume",
+          "ackcancel",
+          "ackfailure"
+        ],
+        "type": "string",
+        "description": "The valid set of action that can be performed on a request."
+      },
+      "CanUpdateSettings": {
+        "type": "object",
+        "properties": {
+          "canUpdateSettings": {
+            "type": "boolean"
+          }
+        },
+        "description": "An object used to inform the caller whether the current user has privilege to update ODAG settings."
+      },
+      "OdagSettingsV2": {
+        "type": "object",
+        "properties": {
+          "odagEnabled": {
+            "type": "boolean",
+            "description": "Whether the ODAG feature is enabled."
+          },
+          "dynamicViewEnabled": {
+            "type": "boolean",
+            "description": "Whether the dynamic view feature is enabled."
+          }
+        },
+        "description": "The state of the ODAG settings available for users assigned the `TenantAdmin` role to view and configure."
+      },
+      "SettingsPutPayload": {
+        "type": "object",
+        "properties": {
+          "odagEnabled": {
+            "type": "boolean"
+          },
+          "dynamicViewEnabled": {
+            "type": "boolean"
+          }
+        },
+        "description": "An object that defines the properties of ODAG settings to be modified."
       },
       "api-key-page": {
         "type": "object",
@@ -87105,7 +89479,8 @@
               "CANCELLING",
               "CANCELLED",
               "REPORTING_CONSUMPTION_EXCEEDED",
-              "REPORTING_CAPABILITY_NOT_FOUND"
+              "REPORTING_CAPABILITY_NOT_FOUND",
+              "REPORTING_DAILY_QUOTA_EXCEEDED"
             ],
             "type": "string",
             "readOnly": true,
@@ -87497,7 +89872,8 @@
               "OWNER_INSUFFICIENT_PERMISSIONS",
               "MAX_UNIQUE_REPORTS_LIMIT_REACHED",
               "MISSING_DISTRIBUTION_LIST",
-              "SECTION_ACCESS_NOT_SUPPORTED"
+              "SECTION_ACCESS_NOT_SUPPORTED",
+              "REPORTING_DAILY_QUOTA_EXCEEDED"
             ],
             "type": "string",
             "description": "Identifier for type of error occurring on sharing task"

@@ -1,0 +1,173 @@
+{
+  "info": {
+    "title": "analytics/odag-apps",
+    "version": ""
+  },
+  "paths": {
+    "/api/analytics/odag-apps": {
+      "get": {
+        "tags": [
+          "Apps"
+        ],
+        "summary": "List ODAG Analytics Applications by type",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdagAppsResponseBodyV2"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "appType",
+            "schema": {
+              "$ref": "#/components/schemas/AppTypeV2"
+            },
+            "required": true,
+            "description": "The type of ODAG Analytics Application."
+          }
+        ],
+        "description": "Retrieves ODAG Analytics Applications filtered by type: `selection` (used as entry points), `template` (source Analytics Application for generation), or `generated` (Analytics Applications created via ODAG requests).",
+        "operationId": "getAppsV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "AppIdV2": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The system-assigned ID for an Analytics Application."
+      },
+      "AppNameV2": {
+        "type": "string",
+        "example": "appname",
+        "minLength": 1,
+        "description": "The name of an Analytics Application."
+      },
+      "AppStateCondensedV2": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "name": {
+            "$ref": "#/components/schemas/AppNameV2"
+          }
+        },
+        "description": "Condensed state of an Analytics Application returned in `state` for Link, LinkUsage, Request, and ODAG Apps GET calls."
+      },
+      "AppTypeV2": {
+        "enum": [
+          "selection",
+          "template",
+          "generated"
+        ],
+        "type": "string",
+        "description": "The type of the ODAG Analytics Application."
+      },
+      "ErrorDetailsV2": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A unique code used to identify the template form of the message in i18n tables (language independent)."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/MetaV2"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string",
+            "description": "The message describing the error."
+          }
+        },
+        "description": "A single error entry within an error response."
+      },
+      "ErrorV2": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetailsV2"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique ID of the trace which the error occurred in. Makes it possible to locate involved services and find log messages from the time of the error."
+          }
+        },
+        "description": "A standard error response containing a list of one or more errors."
+      },
+      "MetaV2": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The HTTP status code for the error. Generally speaking, the following codes have these meanings: `200` - Success, `201` - Success (object created), `400` - Error with user input, `403` - Authorization error (user lacks permission), `404` - Object not found, `409` - Attempt to change an object using an obsolete last ModifiedDate."
+          }
+        },
+        "description": "Additional metadata associated with an error."
+      },
+      "OdagAppsResponseBodyV2": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppStateCondensedV2"
+            }
+          }
+        },
+        "description": "The response body for ODAG Analytics Applications."
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}

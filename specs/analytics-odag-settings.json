@@ -1,0 +1,256 @@
+{
+  "info": {
+    "title": "analytics/odag-settings",
+    "version": ""
+  },
+  "paths": {
+    "/api/analytics/odag-settings": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Get ODAG settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdagSettingsV2"
+                }
+              }
+            },
+            "description": "ODAG settings retrieved successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Internal system error accessing ODAG settings."
+          }
+        },
+        "description": "Retrieves ODAG settings, including feature enablement status. Available only to administrators.",
+        "operationId": "getV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Update ODAG settings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OdagSettingsV2"
+                }
+              }
+            },
+            "description": "ODAG settings updated successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Access denied. You lack permission to modify ODAG settings."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Internal system error accessing ODAG settings."
+          }
+        },
+        "description": "Modifies ODAG settings such as feature enablement. Available only to administrators. Changes apply immediately to all ODAG operations.",
+        "operationId": "updateV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsPutPayload"
+              }
+            }
+          },
+          "required": true,
+          "description": "A JSON payload containing the content for the new settings."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-settings/canupdate": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Check update permission",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanUpdateSettings"
+                }
+              }
+            },
+            "description": "Permission check completed successfully."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          }
+        },
+        "description": "Checks whether the current user has permission to modify ODAG settings.",
+        "operationId": "canUpdateV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "CanUpdateSettings": {
+        "type": "object",
+        "properties": {
+          "canUpdateSettings": {
+            "type": "boolean"
+          }
+        },
+        "description": "An object used to inform the caller whether the current user has privilege to update ODAG settings."
+      },
+      "ErrorDetailsV2": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A unique code used to identify the template form of the message in i18n tables (language independent)."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/MetaV2"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string",
+            "description": "The message describing the error."
+          }
+        },
+        "description": "A single error entry within an error response."
+      },
+      "ErrorV2": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetailsV2"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique ID of the trace which the error occurred in. Makes it possible to locate involved services and find log messages from the time of the error."
+          }
+        },
+        "description": "A standard error response containing a list of one or more errors."
+      },
+      "MetaV2": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The HTTP status code for the error. Generally speaking, the following codes have these meanings: `200` - Success, `201` - Success (object created), `400` - Error with user input, `403` - Authorization error (user lacks permission), `404` - Object not found, `409` - Attempt to change an object using an obsolete last ModifiedDate."
+          }
+        },
+        "description": "Additional metadata associated with an error."
+      },
+      "OdagSettingsV2": {
+        "type": "object",
+        "properties": {
+          "odagEnabled": {
+            "type": "boolean",
+            "description": "Whether the ODAG feature is enabled."
+          },
+          "dynamicViewEnabled": {
+            "type": "boolean",
+            "description": "Whether the dynamic view feature is enabled."
+          }
+        },
+        "description": "The state of the ODAG settings available for users assigned the `TenantAdmin` role to view and configure."
+      },
+      "SettingsPutPayload": {
+        "type": "object",
+        "properties": {
+          "odagEnabled": {
+            "type": "boolean"
+          },
+          "dynamicViewEnabled": {
+            "type": "boolean"
+          }
+        },
+        "description": "An object that defines the properties of ODAG settings to be modified."
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}
