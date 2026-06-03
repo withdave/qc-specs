@@ -1,0 +1,854 @@
+{
+  "info": {
+    "title": "analytics/odag-requests",
+    "version": ""
+  },
+  "paths": {
+    "/api/analytics/odag-requests/{requestId}": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Get ODAG request status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestObjectV2"
+                }
+              }
+            },
+            "description": "Successful response - see request status in response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the ODAG request whose status is to be returned."
+          }
+        ],
+        "description": "Retrieves the current status and details of an ODAG request, including its state (`queued`, `loading`, `succeeded`, `failed`), generated Analytics Application ID, and error information. For multi-application generation requests, includes nested status for each sub-request.",
+        "operationId": "requestGetV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "put": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Perform action on ODAG request",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestObjectV2"
+                }
+              }
+            },
+            "description": "Successful response - see request status in response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request whose status is to be returned."
+          },
+          {
+            "in": "query",
+            "name": "action",
+            "schema": {
+              "$ref": "#/components/schemas/RequestAction"
+            },
+            "required": true,
+            "description": "The action to perform on the request. One of: (1) `cancel` a pending or in-flight request; (2) `pause` a request that has not started (still in the `queued` state); (3) `resume` a paused request; (4) acknowledge a prior cancellation; or (5) acknowledge a prior failure."
+          },
+          {
+            "in": "query",
+            "name": "autoAck",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Optional flag used with the `cancel` action. When `autoAck` is `true`, a canceled request automatically transitions to the `canceledAck` state after cancellation completes. When `autoAck` is `false`, the request transitions to `canceled`, and you must call this endpoint again with `action=ackcancel` to acknowledge the cancellation."
+          },
+          {
+            "in": "query",
+            "name": "delGenApp",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Optional flag that deletes the generated Analytics Application after an `action` of `cancel` (with `autoAck=true`), `ackcancel`, or `ackfailure`."
+          },
+          {
+            "in": "query",
+            "name": "ignoreSucceeded",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Optional flag used with the `cancel` action. When `true`, the API does not return an error if the request reaches the `succeeded` state while the cancellation request is in progress."
+          }
+        ],
+        "description": "Performs actions on ODAG requests such as pausing, resuming, or canceling them. Cancel actions are effective only before the data loading phase. For multi-application generation requests, actions apply only to sub-requests that have not yet started loading. Automatic acknowledgment  option simplifies state transitions.",
+        "operationId": "requestActionV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-requests/{requestId}/app": {
+      "delete": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Delete a generated Analytics Application",
+        "responses": {
+          "204": {
+            "description": "Successful response - No Content."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Insufficient privilege to delete the generated Analytics Application. User must be either owner of the request or the ODAG link."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID or generated Analytics Application not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request."
+          }
+        ],
+        "description": "Deletes the generated Analytics Application associated with a completed request. Only the request owner or ODAG link creator can delete generated Analytics Applications.",
+        "operationId": "deleteAppV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-requests/{requestId}/reload-app": {
+      "post": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Reload a generated Analytics Application",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestObjectV2"
+                }
+              }
+            },
+            "description": "Successful response. Returns the updated request state."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Insufficient privilege to reload the generated Analytics Application. User must be either owner of the request or the ODAG link."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID or generated Analytics Application not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request."
+          }
+        ],
+        "description": "Reloads data in a generated Analytics Application from the underlying data sources. Only the request owner or ODAG link creator can reload generated Analytics Applications.",
+        "operationId": "reloadAppV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReloadAppPayloadV2"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-requests/{requestId}/rename-app": {
+      "post": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Rename a generated Analytics Application",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestObjectV2"
+                }
+              }
+            },
+            "description": "Successful response. Returns the updated request state."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Insufficient privilege to rename the generated Analytics Application. User must be either owner of the request or the ODAG link."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID or generated Analytics Application not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request."
+          }
+        ],
+        "description": "Renames a generated Analytics Application. Only the request owner or ODAG link creator can rename generated Analytics Applications.",
+        "operationId": "renameAppV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameAppPayloadV2"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/analytics/odag-requests/{requestId}/selections": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Get request selections",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SelectionStateV2"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Forbidden."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Invalid request ID."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIdV2"
+            },
+            "required": true,
+            "description": "The ID of the request."
+          }
+        ],
+        "description": "Retrieves the selection state (selected and optional field values) that was active when the Analytics Application generation request was submitted.",
+        "operationId": "getSelectionsV2",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "AppIdV2": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The system-assigned ID for an Analytics Application."
+      },
+      "AppNameV2": {
+        "type": "string",
+        "example": "appname",
+        "minLength": 1,
+        "description": "The name of an Analytics Application."
+      },
+      "AppStateCondensedV2": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "name": {
+            "$ref": "#/components/schemas/AppNameV2"
+          }
+        },
+        "description": "Condensed state of an Analytics Application returned in `state` for Link, LinkUsage, Request, and ODAG Apps GET calls."
+      },
+      "DataLoadStatus": {
+        "enum": [
+          "pending",
+          "success",
+          "warnings",
+          "failed"
+        ],
+        "type": "string",
+        "description": "The completion status of a completed Request."
+      },
+      "ErrorDetailsV2": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A unique code used to identify the template form of the message in i18n tables (language independent)."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/MetaV2"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string",
+            "description": "The message describing the error."
+          }
+        },
+        "description": "A single error entry within an error response."
+      },
+      "ErrorV2": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetailsV2"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A unique ID of the trace which the error occurred in. Makes it possible to locate involved services and find log messages from the time of the error."
+          }
+        },
+        "description": "A standard error response containing a list of one or more errors."
+      },
+      "FieldSelectionStateV2": {
+        "type": "object",
+        "required": [
+          "selectionAppParamType",
+          "selectionAppParamName",
+          "values"
+        ],
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldValueV2"
+            },
+            "description": "The list of values in the selection state for this field."
+          },
+          "selectedSize": {
+            "type": "integer",
+            "description": "The actual number of selected values. Not used for `bindSelectionState`."
+          },
+          "selectionAppParamName": {
+            "type": "string",
+            "description": "The name of a variable or field that corresponds to one or more bindings having a matching `selectAppParamName` used to generate Analytics Applications."
+          },
+          "selectionAppParamType": {
+            "$ref": "#/components/schemas/SelectAppParamTypeV2"
+          }
+        },
+        "description": "The set of values used by link bindings to generate an Analytics Application."
+      },
+      "FieldValueV2": {
+        "type": "object",
+        "required": [
+          "strValue",
+          "selStatus"
+        ],
+        "properties": {
+          "numValue": {
+            "type": "string"
+          },
+          "strValue": {
+            "type": "string"
+          },
+          "selStatus": {
+            "$ref": "#/components/schemas/SelectStatusV2"
+          }
+        },
+        "description": "A single field value with its selection status."
+      },
+      "LinkId": {
+        "type": "string",
+        "pattern": "^[a-fA-F0-9]{24}$",
+        "description": "The system-assigned ID for a link."
+      },
+      "MetaV2": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The HTTP status code for the error. Generally speaking, the following codes have these meanings: `200` - Success, `201` - Success (object created), `400` - Error with user input, `403` - Authorization error (user lacks permission), `404` - Object not found, `409` - Attempt to change an object using an obsolete last ModifiedDate."
+          }
+        },
+        "description": "Additional metadata associated with an error."
+      },
+      "ReloadAppPayloadV2": {
+        "type": "object",
+        "properties": {
+          "copyRequest": {
+            "type": "boolean",
+            "description": "Determines whether the request should be copied along with the generated Analytics Application."
+          },
+          "actualRowEst": {
+            "type": "integer",
+            "description": "The current row estimate value calculated by the link's `rowEstExpr` property in the context of the selection Analytics Application."
+          },
+          "selectionState": {
+            "$ref": "#/components/schemas/SelectionStateV2"
+          },
+          "bindSelectionState": {
+            "$ref": "#/components/schemas/SelectionStateV2"
+          }
+        },
+        "description": "Payload to send when reloading an Analytics Application generated by an ODAG request."
+      },
+      "RenameAppPayloadV2": {
+        "type": "object",
+        "required": [
+          "appName"
+        ],
+        "properties": {
+          "appName": {
+            "type": "string",
+            "description": "The new name of the generated Analytics Application."
+          }
+        },
+        "description": "Payload to send when renaming an Analytics Application generated by an ODAG request."
+      },
+      "RequestAction": {
+        "enum": [
+          "cancel",
+          "pause",
+          "resume",
+          "ackcancel",
+          "ackfailure"
+        ],
+        "type": "string",
+        "description": "The valid set of action that can be performed on a request."
+      },
+      "RequestIdV2": {
+        "type": "string",
+        "pattern": "^[a-fA-F0-9]{24}$",
+        "description": "The system-assigned ID for an ODAG request."
+      },
+      "RequestKindV2": {
+        "enum": [
+          "single",
+          "multiple",
+          "singlesub"
+        ],
+        "type": "string",
+        "description": "For links that do not use any partitioning fields, a `single` Analytics Application generation request is created. However, for selection Analytics Applications that designate a set of partitioning fields and the user selects multiple values for any of those partitioning fields, ODAG uses a separate `singlesub` request to generate a separate Analytics Application for each combination of selected partition field values, and tracks the queuing and data load phase of each of those sub-requests separately. Note that `singlesub` requests share the same link ID as their spawning `multiple` parent request."
+      },
+      "RequestLoadInfoV2": {
+        "type": "object",
+        "required": [
+          "loadHost",
+          "startedAt"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/DataLoadStatus"
+          },
+          "loadHost": {
+            "type": "string",
+            "description": "The engine host name used to perform the data load operation for this request. This property will be missing in `multiple` generation requests (see the `loadHost` field of their sub-requests) and will be an empty string on a `single` or `singlesub` request that has not yet reached the `loading` phase."
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "finishedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          }
+        },
+        "description": "An object that describes the state of a generated Analytics Application's data load operation. In request objects that include this object as an optional property, the property will be missing for `multiple` generation requests (see their sub-requests for their data load information) or for `single` and `singlesub` requests that have not yet reached their `loading` phase."
+      },
+      "RequestObjectV2": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdDate",
+          "modifiedDate",
+          "owner",
+          "link",
+          "templateApp",
+          "kind",
+          "state"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/RequestIdV2"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/RequestKindV2"
+          },
+          "link": {
+            "$ref": "#/components/schemas/LinkId"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/UserStateCondensedV2"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RequestStateV2"
+          },
+          "loadState": {
+            "$ref": "#/components/schemas/RequestLoadInfoV2"
+          },
+          "sheetname": {
+            "type": "string"
+          },
+          "purgeAfter": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "timeToLive": {
+            "type": "integer",
+            "description": "The value of the Link's `appRetentionTime` property at the time the Analytics Application was generated (`0` means no auto-purge)."
+          },
+          "validation": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of validation errors or warnings."
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "targetSheet": {
+            "type": "string",
+            "description": "The ID of the target sheet, taken from the link properties, to navigate to when opening the generated Analytics Application (empty for Analytics Application overview)."
+          },
+          "templateApp": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "actualRowEst": {
+            "type": "integer",
+            "description": "The evaluated value of the Link's `rowEstExpr` measure expression at the time this request was initiated."
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Detailed message if the request failed."
+          },
+          "generatedApp": {
+            "$ref": "#/components/schemas/AppStateCondensedV2"
+          },
+          "modifiedDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-11T13:45:30Z"
+          },
+          "selectionApp": {
+            "$ref": "#/components/schemas/AppIdV2"
+          },
+          "curRowEstExpr": {
+            "type": "string",
+            "description": "The Link's `rowEstExpr` property setting at the time this request was initiated."
+          },
+          "retentionTime": {
+            "type": "integer",
+            "description": "The remaining time in minutes this request will be retained (0 means kept forever)."
+          },
+          "parentRequestId": {
+            "$ref": "#/components/schemas/RequestIdV2"
+          },
+          "templateAppName": {
+            "$ref": "#/components/schemas/AppNameV2"
+          },
+          "bindingStateHash": {
+            "type": "integer",
+            "format": "int64",
+            "description": "A 64-bit hash of the bound field state at the time the request was made."
+          },
+          "generatedAppName": {
+            "$ref": "#/components/schemas/AppNameV2"
+          },
+          "selectionAppName": {
+            "$ref": "#/components/schemas/AppNameV2"
+          },
+          "curRowEstLowBound": {
+            "type": "integer",
+            "description": "The Link's `rowEstRange.lowBound` value for the user at the time this request was initiated."
+          },
+          "curRowEstHighBound": {
+            "type": "integer",
+            "description": "The Link's `rowEstRange.highBound` value for the user at the time this request was initiated."
+          },
+          "selectionStateHash": {
+            "type": "integer",
+            "format": "int64",
+            "description": "A 64-bit hash of the selected field values at the time the request was made."
+          }
+        },
+        "description": "The detailed content of an ODAG request object. If this is a summarization of a request initiated from a navigation point that has a single link, its `link` property refers to that link. Otherwise, a sub-request is created for each link in the navigation point and the `link` of each sub-request refers to its respective link.\nIf this is a `single` or `singlesub` Analytics Application generation request and the request has reached at least the `queued` stage, the `generatedApp` property contains the ID of the generated Analytics Application (note that the generated Analytics Application might not yet be populated with data or published if the request is not completed).\nIf this is a `single` or `singlesub` request and the data load operation failed, the `generatedApp` property still contains the ID of the failed Analytics Application to allow viewing of the ODAG-bound script for diagnostic purposes. Generated Analytics Applications for failed requests are purged regularly, so the Analytics Application might no longer be available.\nIf this is a `single` or `singlesub` request that was canceled before reaching the `loading` phase, the `generatedApp` property is missing because generated Analytics Applications for pre-load phase requests are deleted. If this is a `multiple` request, the `generatedApp` property is also missing."
+      },
+      "RequestStateV2": {
+        "enum": [
+          "validating",
+          "queued",
+          "invalid",
+          "hold",
+          "loading",
+          "canceled",
+          "failed",
+          "succeeded",
+          "canceling",
+          "canceledAck",
+          "failedAck"
+        ],
+        "type": "string",
+        "description": "The current state of an ODAG request."
+      },
+      "SelectAppParamTypeV2": {
+        "enum": [
+          "Field",
+          "Variable",
+          "Property",
+          "Exclude",
+          "BDI"
+        ],
+        "type": "string",
+        "description": "The different kinds of selection Analytics Application parameters whose values can be bound to the script of template Analytics Applications when generating new Analytics Applications. Note that `Exclude` is used to specifically prevent fields defined as optional bind parameters in the template Analytics Application script from being bound (these must either not have the optional quantity constraint specifiers or have a minimum quantity of 0)."
+      },
+      "SelectionStateV2": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/FieldSelectionStateV2"
+        },
+        "description": "A collection of FieldSelectionStateV2 objects."
+      },
+      "SelectStatusV2": {
+        "enum": [
+          "S",
+          "O",
+          "X"
+        ],
+        "type": "string",
+        "description": "The valid set of selection states that a specific field value can be in. One of: `S` (selected), `O` (optional), or `X` (excluded)."
+      },
+      "UserIdV2": {
+        "type": "string",
+        "example": "wcgIs6wGcDdyzep9QmyopWvNH1FJTOhh",
+        "description": "The system-assigned ID for a user"
+      },
+      "UserStateCondensedV2": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "subject",
+          "tenantid"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/UserIdV2"
+          },
+          "name": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Identity subject used for identity mapping."
+          },
+          "tenantid": {
+            "type": "string",
+            "description": "Tenant identifier."
+          }
+        },
+        "description": "Condensed state of a user returned in state of ownable ODAG entities (for example, a link or request)."
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}
