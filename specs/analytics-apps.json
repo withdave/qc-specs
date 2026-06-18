@@ -1,0 +1,292 @@
+{
+  "info": {
+    "title": "analytics/apps",
+    "version": ""
+  },
+  "paths": {
+    "/api/analytics/apps/{appId}/actions/restore": {
+      "post": {
+        "summary": "Restore an application",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NxApp_V2"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Identifier of the app."
+          }
+        ],
+        "description": "Restores a soft-deleted Qlik Cloud Analytics application to the same space with the same app ID, retaining the properties it had at the time of deletion.\nThis operation is available to the app owner and Tenant Admins. The app owner can restore the app only if the original space still exists and they still have delete permission in the space; otherwise, a 403 Forbidden error is returned.\nAssociated resources such as data alerts, subscriptions, collections, notes, and tags are deleted when the app is deleted and cannot be restored.",
+        "operationId": "restoreApp",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorItem": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A unique code for the error."
+          },
+          "title": {
+            "type": "string",
+            "description": "A human-readable description of the error."
+          },
+          "detail": {
+            "type": "string",
+            "description": "Additional information about the error."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorItem"
+            },
+            "description": "Array of all errors that occurred during the request."
+          }
+        }
+      },
+      "NxApp_V2": {
+        "type": "object",
+        "properties": {
+          "create": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NxAppCreatePrivileges"
+            },
+            "description": "Object create privileges. Hints to the client what type of objects the user is allowed to create."
+          },
+          "attributes": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NxAttributes_V2"
+              }
+            ],
+            "description": "Application attributes."
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Application privileges.\nHints to the client what actions the user is allowed to perform.\nCould be any of:\n* read\n* create\n* update\n* delete\n* reload\n* import\n* publish\n* duplicate\n* export\n* exportdata\n* change_owner\n* change_space"
+          }
+        },
+        "description": "Application attributes and user privileges."
+      },
+      "NxAppCreatePrivileges": {
+        "type": "object",
+        "properties": {
+          "resource": {
+            "type": "string",
+            "description": "Type of resource. For example, sheet, story, bookmark, etc."
+          },
+          "canCreate": {
+            "type": "boolean",
+            "description": "Is set to true if the user has privileges to create the resource."
+          }
+        }
+      },
+      "NxAttributes_V2": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The App ID."
+          },
+          "name": {
+            "type": "string",
+            "description": "App name."
+          },
+          "state": {
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StateEnum"
+              }
+            ],
+            "description": "Promotion state of the app.\nPromotion state of an app.\nOne of:\n* EMPTY\n* PROMOTED\n* DISTRIBUTED"
+          },
+          "usage": {
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UsageEnum"
+              }
+            ],
+            "description": "Indicates the use for the app.\n\nOne of:\n* ANALYTICS\n* DATA_PREPARATION\n* DATAFLOW_PREP\n* SINGLE_TABLE_PREP\n* DIRECT_QUERY_MODE"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "Identifier of the app owner."
+          },
+          "spaceId": {
+            "type": "string",
+            "description": "The ID of the app's space."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-01-01T00:00:00.000Z",
+            "description": "The date and time when the app was created."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-01-01T00:00:00.000Z",
+            "description": "The date and time when the app was modified."
+          },
+          "promotedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-01-01T00:00:00.000Z",
+            "description": "The date and time when the app was promoted, empty if not promoted. Use to determine if an app is promoted in Qlik Cloud."
+          },
+          "reloadedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-01-01T00:00:00.000Z",
+            "description": "Date and time of the last reload of the app."
+          },
+          "description": {
+            "type": "string",
+            "description": "App description."
+          },
+          "originAppId": {
+            "type": "string",
+            "description": "The Origin App ID for promoted apps."
+          },
+          "resourceType": {
+            "type": "string",
+            "description": "App resource type."
+          },
+          "hasSectionAccess": {
+            "type": "boolean",
+            "description": "If set to true, the app has section access configured."
+          }
+        },
+        "description": "App attributes."
+      },
+      "StateEnum": {
+        "oneOf": [
+          {
+            "type": "string",
+            "title": "EMPTY",
+            "x-qlik-const": 0
+          },
+          {
+            "type": "string",
+            "title": "PROMOTED",
+            "x-qlik-const": 1
+          },
+          {
+            "type": "string",
+            "title": "DISTRIBUTED",
+            "x-qlik-const": 2
+          }
+        ]
+      },
+      "UsageEnum": {
+        "oneOf": [
+          {
+            "type": "string",
+            "title": "ANALYTICS",
+            "x-qlik-const": 0
+          },
+          {
+            "type": "string",
+            "title": "DATA_PREPARATION",
+            "x-qlik-const": 1
+          },
+          {
+            "type": "string",
+            "title": "DATAFLOW_PREP",
+            "x-qlik-const": 2
+          },
+          {
+            "type": "string",
+            "title": "SINGLE_TABLE_PREP",
+            "x-qlik-const": 3
+          },
+          {
+            "type": "string",
+            "title": "DIRECT_QUERY_MODE",
+            "x-qlik-const": 4
+          }
+        ]
+      }
+    }
+  }
+}

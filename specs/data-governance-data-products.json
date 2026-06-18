@@ -71,6 +71,16 @@
             },
             "description": "The input request conflicts with the current state of the resource."
           },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The data product limit has been exceeded for this tenant."
+          },
           "500": {
             "content": {
               "application/json": {

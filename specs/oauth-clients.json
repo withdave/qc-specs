@@ -1221,6 +1221,11 @@
             "readOnly": true,
             "description": "Hints of any client application secrets"
           },
+          "createdByType": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The type of caller that created this client. Possible values are `user`, `service`, and `dcr` for Dynamic Client Registration."
+          },
           "connectionConfig": {
             "type": "object",
             "properties": {

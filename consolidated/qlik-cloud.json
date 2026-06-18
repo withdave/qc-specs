@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.45",
+    "version": "1.0.46",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -21,6 +21,83 @@
     }
   ],
   "paths": {
+    "/api/analytics/apps/{appId}/actions/restore": {
+      "post": {
+        "summary": "Restore an application",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NxApp_V2"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Identifier of the app."
+          }
+        ],
+        "description": "Restores a soft-deleted Qlik Cloud Analytics application to the same space with the same app ID, retaining the properties it had at the time of deletion.\nThis operation is available to the app owner and Tenant Admins. The app owner can restore the app only if the original space still exists and they still have delete permission in the space; otherwise, a 403 Forbidden error is returned.\nAssociated resources such as data alerts, subscriptions, collections, notes, and tags are deleted when the app is deleted and cannot be restored.",
+        "operationId": "restoreApp",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/analytics/change-stores": {
       "get": {
         "tags": [
@@ -20909,6 +20986,16 @@
               }
             },
             "description": "The input request conflicts with the current state of the resource."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The data product limit has been exceeded for this tenant."
           },
           "500": {
             "content": {
@@ -51614,7 +51701,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://datatracker.ietf.org/doc/rfc7644/) for the syntax. Cannot be combined with any of the fields marked as deprecated. All conditional statements within this query parameter are case insensitive.\n\nThe following fields support the `eq` operator: `id`, `subject`, `name`, `email`, `status`, `clientId`, `assignedRoles.id` `assignedRoles.name`, `assignedGroups.id`, `assignedGroupsAssignedRoles.name`\n\nAdditionally, the following fields support the `co` operator: `name`, `email`, `subject`\n\nQueries may be rate limited if they differ greatly from these examples:\n\n```\n(id eq \"62716ab404a7bd8626af9bd6\" or id eq \"62716ac4c7e500e13ff5fa22\") and (status eq \"active\" or status eq \"disabled\")\n```\n\n```\nname co \"query\" or email co \"query\" or subject co \"query\" or id eq \"query\" or assignedRoles.name eq \"query\"\n```\n\nAny filters for status must be grouped together and applied to the whole query.\n\nValid:\n\n```\n(name eq \"Bob\" or name eq \"Alice\") and (status eq \"active\" or status eq \"disabled\")\n```\n\nInvalid:\n\n```\nname eq \"Bob\" or name eq \"Alice\" and (status eq \"active\" or status eq \"disabled\")\n```\n"
+            "description": "The advanced filtering to use for the query. Refer to [RFC 7644](https://datatracker.ietf.org/doc/rfc7644/) for the syntax. Cannot be combined with any of the fields marked as deprecated. All conditional statements within this query parameter are case insensitive.\n\nThe following fields support the `eq` operator: `id`, `subject`, `name`, `email`, `status`, `clientId`, `assignedRoles.id`, `assignedRoles.name`, `assignedGroups.id`, `assignedGroupsAssignedRoles.name`, `assignedScopes`\n\nAdditionally, the following fields support the `co` operator: `name`, `email`, `subject`\n\nQueries may be rate limited if they differ greatly from these examples:\n\n```\n(id eq \"62716ab404a7bd8626af9bd6\" or id eq \"62716ac4c7e500e13ff5fa22\") and (status eq \"active\" or status eq \"disabled\")\n```\n\n```\nname co \"query\" or email co \"query\" or subject co \"query\" or id eq \"query\" or assignedRoles.name eq \"query\"\n```\n\nAny filters for status must be grouped together and applied to the whole query.\n\nValid:\n\n```\n(name eq \"Bob\" or name eq \"Alice\") and (status eq \"active\" or status eq \"disabled\")\n```\n\nInvalid:\n\n```\nname eq \"Bob\" or name eq \"Alice\" and (status eq \"active\" or status eq \"disabled\")\n```\n"
           },
           {
             "in": "query",
@@ -56390,6 +56477,209 @@
   },
   "components": {
     "schemas": {
+      "ErrorItem": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of the problem"
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem (if applicable)"
+          }
+        },
+        "description": "Error object."
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "description": "A way to trace the source of the error."
+          }
+        }
+      },
+      "NxApp_V2": {
+        "type": "object",
+        "properties": {
+          "create": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NxAppCreatePrivileges"
+            },
+            "description": "Object create privileges. Hints to the client what type of objects the user is allowed to create."
+          },
+          "attributes": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NxAttributes_V2"
+              }
+            ],
+            "description": "Application attributes."
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Application privileges.\nHints to the client what actions the user is allowed to perform.\nCould be any of:\n* read\n* create\n* update\n* delete\n* reload\n* import\n* publish\n* duplicate\n* export\n* exportdata\n* change_owner\n* change_space"
+          }
+        },
+        "description": "Application attributes and user privileges."
+      },
+      "NxAppCreatePrivileges": {
+        "type": "object",
+        "properties": {
+          "resource": {
+            "type": "string",
+            "description": "Type of resource. For example, sheet, story, bookmark, etc."
+          },
+          "canCreate": {
+            "type": "boolean",
+            "description": "Is set to true if the user has privileges to create the resource."
+          }
+        }
+      },
+      "NxAttributes_V2": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The App ID."
+          },
+          "name": {
+            "type": "string",
+            "description": "App name."
+          },
+          "state": {
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StateEnum"
+              }
+            ],
+            "description": "Promotion state of the app.\nPromotion state of an app.\nOne of:\n* EMPTY\n* PROMOTED\n* DISTRIBUTED"
+          },
+          "usage": {
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UsageEnum"
+              }
+            ],
+            "description": "Indicates the use for the app.\n\nOne of:\n* ANALYTICS\n* DATA_PREPARATION\n* DATAFLOW_PREP\n* SINGLE_TABLE_PREP\n* DIRECT_QUERY_MODE"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "Identifier of the app owner."
+          },
+          "spaceId": {
+            "type": "string",
+            "description": "The ID of the app's space."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-01-01T00:00:00.000Z",
+            "description": "The date and time when the app was created."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-01-01T00:00:00.000Z",
+            "description": "The date and time when the app was modified."
+          },
+          "promotedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-01-01T00:00:00.000Z",
+            "description": "The date and time when the app was promoted, empty if not promoted. Use to determine if an app is promoted in Qlik Cloud."
+          },
+          "reloadedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-01-01T00:00:00.000Z",
+            "description": "Date and time of the last reload of the app."
+          },
+          "description": {
+            "type": "string",
+            "description": "App description."
+          },
+          "originAppId": {
+            "type": "string",
+            "description": "The Origin App ID for promoted apps."
+          },
+          "resourceType": {
+            "type": "string",
+            "description": "App resource type."
+          },
+          "hasSectionAccess": {
+            "type": "boolean",
+            "description": "If set to true, the app has section access configured."
+          }
+        },
+        "description": "App attributes."
+      },
+      "StateEnum": {
+        "oneOf": [
+          {
+            "type": "string",
+            "title": "EMPTY",
+            "x-qlik-const": 0
+          },
+          {
+            "type": "string",
+            "title": "PROMOTED",
+            "x-qlik-const": 1
+          },
+          {
+            "type": "string",
+            "title": "DISTRIBUTED",
+            "x-qlik-const": 2
+          }
+        ]
+      },
+      "UsageEnum": {
+        "type": "string",
+        "oneOf": [
+          {
+            "title": "ANALYTICS",
+            "x-qlik-const": 0
+          },
+          {
+            "title": "DATA_PREPARATION",
+            "x-qlik-const": 1
+          },
+          {
+            "title": "DATAFLOW_PREP",
+            "x-qlik-const": 2
+          },
+          {
+            "title": "SINGLE_TABLE_PREP",
+            "x-qlik-const": 3
+          },
+          {
+            "title": "DIRECT_QUERY_MODE",
+            "x-qlik-const": 4
+          }
+        ]
+      },
       "CellKey": {
         "type": "object",
         "required": [
@@ -56672,21 +56962,6 @@
           "detail": {
             "type": "string",
             "description": "May be used to provide additional details"
-          }
-        }
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Error"
-            }
-          },
-          "traceId": {
-            "type": "string",
-            "description": "A way to trace the source of the error."
           }
         }
       },
@@ -60404,19 +60679,6 @@
         },
         "description": "Application attributes and user privileges."
       },
-      "NxAppCreatePrivileges": {
-        "type": "object",
-        "properties": {
-          "resource": {
-            "type": "string",
-            "description": "Type of resource. For example, sheet, story, bookmark, etc."
-          },
-          "canCreate": {
-            "type": "boolean",
-            "description": "Is set to true if the user has privileges to create the resource."
-          }
-        }
-      },
       "NxAppObject": {
         "type": "object",
         "properties": {
@@ -61705,31 +61967,6 @@
             "type": "string"
           }
         }
-      },
-      "UsageEnum": {
-        "type": "string",
-        "oneOf": [
-          {
-            "title": "ANALYTICS",
-            "x-qlik-const": 0
-          },
-          {
-            "title": "DATA_PREPARATION",
-            "x-qlik-const": 1
-          },
-          {
-            "title": "DATAFLOW_PREP",
-            "x-qlik-const": 2
-          },
-          {
-            "title": "SINGLE_TABLE_PREP",
-            "x-qlik-const": 3
-          },
-          {
-            "title": "DIRECT_QUERY_MODE",
-            "x-qlik-const": 4
-          }
-        ]
       },
       "UserPrivileges": {
         "type": "string",
@@ -63968,6 +64205,12 @@
             "example": "https://cdn.qlikcloud.com/automations/logos/db2e3454fd01a6c3a53c09609a0b504f.png",
             "nullable": true,
             "description": "The URL to the medium logo of the connector."
+          },
+          "description": {
+            "type": "string",
+            "example": "Airtable is a cloud collaboration service.",
+            "nullable": true,
+            "description": "The description of the automation connector."
           },
           "hasWebhooks": {
             "type": "boolean",
@@ -84659,6 +84902,11 @@
             "readOnly": true,
             "description": "Hints of any client application secrets"
           },
+          "createdByType": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The type of caller that created this client. Possible values are `user`, `service`, and `dcr` for Dynamic Client Registration."
+          },
           "connectionConfig": {
             "type": "object",
             "properties": {
@@ -86393,6 +86641,9 @@
             "example": "2020-11-03T17:00:07.048Z",
             "description": "The timestamp returned from the Sense engine upon successful reload."
           },
+          "resourceId": {
+            "$ref": "#/components/schemas/ResourceId"
+          },
           "creationTime": {
             "type": "string",
             "example": "2020-11-03T17:00:00.164Z",
@@ -86402,6 +86653,9 @@
             "type": "string",
             "example": "failed to complete reload: unexpected EOF",
             "description": "The error message when the status is FAILED."
+          },
+          "resourceType": {
+            "$ref": "#/components/schemas/ResourceType"
           }
         }
       },
@@ -86443,6 +86697,12 @@
               "type": "string",
               "maxLength": 256
             }
+          },
+          "resourceId": {
+            "$ref": "#/components/schemas/ResourceId"
+          },
+          "resourceType": {
+            "$ref": "#/components/schemas/ResourceType"
           }
         }
       },
@@ -86500,6 +86760,22 @@
             "description": "The status of the reload."
           }
         }
+      },
+      "ResourceId": {
+        "type": "string",
+        "example": "5be59decca62aa00097268a4",
+        "description": "The String field identifying the specific resource ID within that service"
+      },
+      "ResourceType": {
+        "enum": [
+          "api",
+          "reload-tasks",
+          "tasks",
+          "automate"
+        ],
+        "type": "string",
+        "example": "api",
+        "description": "The String field identifying the service type that triggered the reload, e.g. \"api\""
       },
       "Status": {
         "enum": [
@@ -88026,11 +88302,12 @@
           "type": {
             "enum": [
               "visualization",
-              "sessionobject"
+              "sessionobject",
+              "sheet"
             ],
             "type": "string",
             "example": "visualization",
-            "description": "Choose visualization to export an image of a sense chart, sessionobject for a visualization to be created on-the-fly. An empty value leads to the type being inferred by its id."
+            "description": "Choose visualization to export an image of a sense chart, sessionobject for a visualization to be created on-the-fly, sheet to export a sheet as a whole image. An empty value leads to the type being inferred by its id."
           },
           "jsOpts": {
             "type": "object",
@@ -92952,28 +93229,6 @@
         },
         "readOnly": true,
         "description": "An array of scopes assigned to a user"
-      },
-      "ErrorItem": {
-        "type": "object",
-        "required": [
-          "code",
-          "title"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "description": "Error code"
-          },
-          "title": {
-            "type": "string",
-            "description": "Summary of the problem"
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human-readable explanation specific to this occurrence of the problem (if applicable)"
-          }
-        },
-        "description": "Error object."
       },
       "ErrorsResponse": {
         "type": "object",

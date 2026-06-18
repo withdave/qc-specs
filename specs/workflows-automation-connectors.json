@@ -216,6 +216,12 @@
             "nullable": true,
             "description": "The URL to the medium logo of the connector."
           },
+          "description": {
+            "type": "string",
+            "example": "Airtable is a cloud collaboration service.",
+            "nullable": true,
+            "description": "The description of the automation connector."
+          },
           "hasWebhooks": {
             "type": "boolean",
             "example": "true",
