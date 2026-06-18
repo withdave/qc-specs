@@ -1972,11 +1972,12 @@
           "type": {
             "enum": [
               "visualization",
-              "sessionobject"
+              "sessionobject",
+              "sheet"
             ],
             "type": "string",
             "example": "visualization",
-            "description": "Choose visualization to export an image of a sense chart, sessionobject for a visualization to be created on-the-fly. An empty value leads to the type being inferred by its id."
+            "description": "Choose visualization to export an image of a sense chart, sessionobject for a visualization to be created on-the-fly, sheet to export a sheet as a whole image. An empty value leads to the type being inferred by its id."
           },
           "jsOpts": {
             "type": "object",

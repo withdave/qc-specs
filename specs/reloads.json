@@ -617,6 +617,9 @@
             "example": "2020-11-03T17:00:07.048Z",
             "description": "The timestamp returned from the Sense engine upon successful reload."
           },
+          "resourceId": {
+            "$ref": "#/components/schemas/ResourceId"
+          },
           "creationTime": {
             "type": "string",
             "example": "2020-11-03T17:00:00.164Z",
@@ -626,6 +629,9 @@
             "type": "string",
             "example": "failed to complete reload: unexpected EOF",
             "description": "The error message when the status is FAILED."
+          },
+          "resourceType": {
+            "$ref": "#/components/schemas/ResourceType"
           }
         }
       },
@@ -667,6 +673,12 @@
               "type": "string",
               "maxLength": 256
             }
+          },
+          "resourceId": {
+            "$ref": "#/components/schemas/ResourceId"
+          },
+          "resourceType": {
+            "$ref": "#/components/schemas/ResourceType"
           }
         }
       },
@@ -724,6 +736,22 @@
             "description": "The status of the reload."
           }
         }
+      },
+      "ResourceId": {
+        "type": "string",
+        "example": "5be59decca62aa00097268a4",
+        "description": "The String field identifying the specific resource ID within that service"
+      },
+      "ResourceType": {
+        "enum": [
+          "api",
+          "reload-tasks",
+          "tasks",
+          "automate"
+        ],
+        "type": "string",
+        "example": "api",
+        "description": "The String field identifying the service type that triggered the reload, e.g. \"api\""
       },
       "Status": {
         "enum": [
