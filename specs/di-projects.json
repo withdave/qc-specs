@@ -1383,6 +1383,302 @@
         }
       }
     },
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/runs/{runId}/state": {
+      "get": {
+        "tags": [
+          "task run history"
+        ],
+        "summary": "Get run state",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataTaskRuntimeState"
+                }
+              }
+            },
+            "description": "Run execution state retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request or missing parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task run not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data task."
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data project."
+          },
+          {
+            "in": "path",
+            "name": "runId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "run-abc123"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the run instance."
+          }
+        ],
+        "description": "Returns the state of a specific historical run instance for a data task, including execution progress and any errors encountered.",
+        "operationId": "get_task_run_state",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/runs/{runId}/state/datasets": {
+      "get": {
+        "tags": [
+          "task run history"
+        ],
+        "summary": "List run dataset states",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListDataTaskDatasetsRsp"
+                }
+              }
+            },
+            "description": "Dataset-level state for the specified run instance retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request or missing parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Task run not found."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Gone — the dataset state for this run has been purged due to retention policy."
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Payload Too Large — the dataset state for this run exceeds the per-response size limit. This is a soft guard against pathologically large tasks; if you hit this consistently, contact support."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data task."
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data project."
+          },
+          {
+            "in": "path",
+            "name": "runId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "run-abc123"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the run instance."
+          }
+        ],
+        "description": "Returns dataset-level state for a specific historical run instance of a data task. All datasets for the run are returned in a single response; this endpoint does not paginate.",
+        "operationId": "list_task_run_datasets",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/runs/actions/search": {
+      "post": {
+        "tags": [
+          "task run history"
+        ],
+        "summary": "Search task run history",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiSearchTaskRunHistoryRsp"
+                }
+              }
+            },
+            "description": "Search results retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Invalid request. Check parameter formats and filter syntax."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Project or task not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dataTaskId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "task-cYSY"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data task."
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data project."
+          }
+        ],
+        "description": "Returns a paginated list of historical run instances for the specified data task, filtered by the provided criteria.",
+        "operationId": "search_task_runs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiSearchTaskRunHistoryReq"
+              }
+            }
+          },
+          "required": true,
+          "description": "Search criteria and pagination options for task run history query."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/di-projects/{projectId}/di-tasks/{dataTaskId}/runtime/state": {
       "get": {
         "tags": [
@@ -1784,20 +2080,7 @@
             "description": "A description of the project"
           },
           "platformType": {
-            "enum": [
-              "SNOWFLAKE",
-              "BIGQUERY",
-              "SYNAPSE",
-              "DATABRICKS",
-              "REDSHIFT",
-              "MSSQL",
-              "FABRIC",
-              "QLIK_QVD",
-              "QLIK_QVD_CUSTOMER_MANAGED"
-            ],
-            "type": "string",
-            "example": "SNOWFLAKE",
-            "description": "The platform type of the project. Supported values: - SNOWFLAKE: Snowflake - BIGQUERY: Google BigQuery - SYNAPSE: Azure Synapse - DATABRICKS: Databricks - REDSHIFT: Amazon Redshift - MSSQL: Microsoft SQL Server - FABRIC: Microsoft Fabric (OneLake) - QLIK_QVD: Qlik-managed QVD - QLIK_QVD_CUSTOMER_MANAGED: Customer-managed QVD\n"
+            "$ref": "#/components/schemas/PlatformType"
           },
           "platformConnection": {
             "type": "string",
@@ -1910,7 +2193,8 @@
                 "type": "number",
                 "description": "Number of records that are queryable via the view, but not yet merged into optimized Iceberg partitions. Only relevant for 'Iceberg Storage' and 'Streaming Transform' tasks."
               }
-            }
+            },
+            "description": "Change Data Capture state for the dataset, tracking incremental changes applied and any errors."
           },
           "datasetId": {
             "type": "string",
@@ -1955,7 +2239,8 @@
                 "type": "number",
                 "description": "Queryable records pending merge into optimized Iceberg partitions."
               }
-            }
+            },
+            "description": "Real-time streaming state for the dataset, tracking record processing and transformation statistics."
           },
           "sourceName": {
             "type": "string",
@@ -2012,7 +2297,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Represents the execution state of a single dataset within a task run, including full load, CDC, and streaming progress."
       },
       "DataTaskInstanceState": {
         "type": "object",
@@ -2081,7 +2367,8 @@
                 "type": "string",
                 "description": "For lakehouse storage tasks, this is the name of the cluster where the task runs"
               }
-            }
+            },
+            "description": "Overall task execution statistics including dataset counts, data freshness timestamps, and infrastructure details."
           },
           "message": {
             "type": "string"
@@ -2113,7 +2400,8 @@
                 "type": "number",
                 "description": "Number of datasets that have completed full load in this task run"
               }
-            }
+            },
+            "description": "Statistics for the full load phase of the task run, tracking dataset processing progress."
           },
           "cdcStatus": {
             "type": "object",
@@ -2140,7 +2428,8 @@
                 "type": "number",
                 "description": "Throughput in kilobytes per second"
               }
-            }
+            },
+            "description": "Change Data Capture status information for tasks performing incremental updates, including latency and processing counts."
           },
           "startTime": {
             "type": "string",
@@ -2170,7 +2459,8 @@
                 "type": "number",
                 "description": "Total number of records processed"
               }
-            }
+            },
+            "description": "Real-time streaming statistics for tasks that continuously process data streams."
           },
           "lastBatchOfChanges": {
             "type": "object",
@@ -2192,9 +2482,11 @@
                 "type": "number",
                 "description": "Throughput in records per second"
               }
-            }
+            },
+            "description": "Statistics for the most recent batch of changes processed during the task run, including timing and throughput metrics."
           }
-        }
+        },
+        "description": "Represents the execution state of a task instance, including progress metrics, errors, and operation-specific statistics."
       },
       "DataTaskItemRsp": {
         "type": "object",
@@ -2248,7 +2540,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Represents the current or historical execution state of a data task, including progress information, error details, and dataset-level statistics."
       },
       "DataTaskType": {
         "enum": [
@@ -2304,6 +2597,15 @@
           "name": {
             "type": "string"
           },
+          "type": {
+            "enum": [
+              "DATA_PIPELINE",
+              "DATA_MOVEMENT"
+            ],
+            "type": "string",
+            "example": "DATA_PIPELINE",
+            "description": "The type of the project"
+          },
           "ownerId": {
             "type": "string"
           },
@@ -2312,6 +2614,9 @@
           },
           "description": {
             "type": "string"
+          },
+          "platformType": {
+            "$ref": "#/components/schemas/PlatformType"
           }
         }
       },
@@ -2327,26 +2632,97 @@
           }
         }
       },
+      "DiSearchTaskRunHistoryReq": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "format": "int32",
+            "default": 50,
+            "maximum": 200,
+            "minimum": 1,
+            "description": "Maximum number of runs to return."
+          },
+          "lastId": {
+            "type": "string",
+            "example": "caf50cbf-d6f8-47c6-a5e0-b31e0d11102a",
+            "description": "Cursor for paging. Pass the `runId` of the last item from the previous response to fetch the next page; omit on the first request."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskRunSearchFilter"
+            },
+            "example": [
+              {
+                "field": "STATUS",
+                "value": [
+                  "COMPLETED",
+                  "FAILED"
+                ],
+                "operator": "IN"
+              },
+              {
+                "field": "PERIOD",
+                "value": [
+                  "2024-03-01T00:00:00Z",
+                  "2024-03-31T23:59:59Z"
+                ],
+                "operator": "BETWEEN"
+              }
+            ],
+            "description": "Field filters to apply to the search."
+          }
+        },
+        "description": "Request parameters for searching task run history, including filter criteria and pagination options."
+      },
+      "DiSearchTaskRunHistoryRsp": {
+        "type": "object",
+        "properties": {
+          "runs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskRunItemRsp"
+            },
+            "description": "List of task run instances matching the search."
+          },
+          "lastId": {
+            "type": "string",
+            "example": "caf50cbf-d6f8-47c6-a5e0-b31e0d11102a",
+            "description": "Identifier of the last run in this page. Pass this value back as `lastId` in the next request to fetch the following page."
+          },
+          "nextPageExists": {
+            "type": "boolean",
+            "example": true,
+            "description": "True when more pages are available after this one; false when this is the last page."
+          }
+        }
+      },
       "Error": {
         "type": "object",
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "Machine-readable error code for programmatic handling."
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Brief human-readable summary of the error."
           },
           "detail": {
-            "type": "string"
+            "type": "string",
+            "description": "Detailed explanation of the error and suggested remediation steps."
           },
           "source": {
             "$ref": "#/components/schemas/ErrorSource"
           },
           "status": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "description": "HTTP status code associated with the error."
           }
-        }
+        },
+        "description": "Represents a single error condition with details about what went wrong."
       },
       "Errors": {
         "type": "object",
@@ -2355,23 +2731,29 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Error"
-            }
+            },
+            "description": "Array of error objects describing what went wrong."
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique identifier for this error response, useful for tracking and support inquiries."
           }
-        }
+        },
+        "description": "Standard error response wrapper containing one or more error details and a trace ID for diagnostics."
       },
       "ErrorSource": {
         "type": "object",
         "properties": {
           "pointer": {
-            "type": "string"
+            "type": "string",
+            "description": "JSON Pointer (RFC 6901) to the field in the request body that caused the error."
           },
           "parameter": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the query parameter or path parameter that caused the error."
           }
-        }
+        },
+        "description": "Identifies the location of the error in the request."
       },
       "ExportDiProjectReq": {
         "type": "object",
@@ -2424,6 +2806,17 @@
       "ImportDiProjectRsp": {
         "type": "object"
       },
+      "ListDataTaskDatasetsRsp": {
+        "type": "object",
+        "properties": {
+          "datasets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataTaskDatasetState"
+            }
+          }
+        }
+      },
       "ListDataTasksRsp": {
         "type": "object",
         "properties": {
@@ -2467,6 +2860,24 @@
           }
         },
         "description": "Breakdown of operations for record-oriented tasks."
+      },
+      "PlatformType": {
+        "enum": [
+          "SNOWFLAKE",
+          "BIGQUERY",
+          "SYNAPSE",
+          "DATABRICKS",
+          "REDSHIFT",
+          "MSSQL",
+          "FABRIC",
+          "QLIK_QVD",
+          "QLIK_QVD_CUSTOMER_MANAGED",
+          "QLIK_OPEN_LAKEHOUSE",
+          "NONE"
+        ],
+        "type": "string",
+        "example": "SNOWFLAKE",
+        "description": "The platform type of the project. Supported values: - SNOWFLAKE: Snowflake - BIGQUERY: Google BigQuery - SYNAPSE: Azure Synapse - DATABRICKS: Databricks - REDSHIFT: Amazon Redshift - MSSQL: Microsoft SQL Server - FABRIC: Microsoft Fabric (OneLake) - QLIK_QVD: Qlik-managed QVD - QLIK_QVD_CUSTOMER_MANAGED: Customer-managed QVD - QLIK_OPEN_LAKEHOUSE: Qlik Open Lakehouse - NONE: No platform (e.g. replication-only projects)\n"
       },
       "PrepareProjectReq": {
         "type": "object",
@@ -2553,6 +2964,117 @@
             "description": "The value indicating where to resume the process, either a timestamp or an offset depending on the run option (optional, applies to Replication tasks only)."
           }
         }
+      },
+      "TaskRunItemRsp": {
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "example": "caf50cbf-d6f8-47c6-a5e0-b31e0d11102a",
+            "description": "Identifier of the run instance."
+          },
+          "status": {
+            "$ref": "#/components/schemas/TaskRunStatus"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-03-01T09:30:00Z",
+            "description": "Timestamp indicating when the run ended."
+          },
+          "duration": {
+            "type": "string",
+            "example": "00:30:00",
+            "description": "Duration of the run in HH:MM:SS format."
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-03-01T09:00:00Z",
+            "description": "Timestamp indicating when the run started."
+          },
+          "subStatus": {
+            "type": "string",
+            "description": "Sub-status of the run, when applicable."
+          },
+          "errorMessage": {
+            "type": "string",
+            "default": "",
+            "description": "Error message, if the run failed."
+          },
+          "datasetsCount": {
+            "type": "integer",
+            "format": "int32",
+            "example": 10,
+            "description": "Total number of datasets processed in this run."
+          },
+          "originSubStatus": {
+            "type": "string",
+            "description": "Origin-specific sub-status of the run, when applicable."
+          },
+          "datasetsErrorCount": {
+            "type": "integer",
+            "format": "int32",
+            "example": 0,
+            "description": "Number of datasets that encountered errors in this run."
+          }
+        },
+        "description": "Represents a single historical task run instance with execution status, timing, and error information."
+      },
+      "TaskRunSearchFilter": {
+        "type": "object",
+        "required": [
+          "field",
+          "operator",
+          "value"
+        ],
+        "properties": {
+          "field": {
+            "$ref": "#/components/schemas/TaskRunSearchFilterField"
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Values to match. For `BETWEEN` on `PERIOD`, supply exactly two ISO-8601 timestamps."
+          },
+          "operator": {
+            "$ref": "#/components/schemas/TaskRunSearchFilterOperator"
+          }
+        },
+        "description": "Specifies a single filter criterion to apply when searching task run history."
+      },
+      "TaskRunSearchFilterField": {
+        "enum": [
+          "ID",
+          "STATUS",
+          "SUB_STATUS",
+          "PERIOD"
+        ],
+        "type": "string",
+        "description": "The run-history field to filter on."
+      },
+      "TaskRunSearchFilterOperator": {
+        "enum": [
+          "IN",
+          "NOT_IN",
+          "BETWEEN"
+        ],
+        "type": "string",
+        "description": "Filter operator.\n- `IN` / `NOT_IN`: exact match against the values list (recommended for ID, STATUS, SUB_STATUS).\n- `BETWEEN`: only valid with the `PERIOD` field. The `value` list must contain two ISO-8601 timestamps (start, end).\n"
+      },
+      "TaskRunStatus": {
+        "enum": [
+          "STARTING",
+          "RUNNING",
+          "COMPLETED",
+          "FAILED",
+          "CANCELED",
+          "MISFIRED"
+        ],
+        "type": "string",
+        "description": "Execution status of a task run instance."
       },
       "TaskSelectionList": {
         "type": "array",

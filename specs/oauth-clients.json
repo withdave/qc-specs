@@ -50,7 +50,7 @@
             },
             "example": "appType eq \"spa\" and clientId eq \"b3ee66d6f21d1611efa89a425f656f6f\"",
             "required": false,
-            "description": "The filter query that should be used to filter the list of oauth clients.  The filter syntax is defined in RFC 7644. Valid attributes for filtering are `clientId`, `clientName`, `appType`, and `tenantId`."
+            "description": "The filter query that should be used to filter the list of oauth clients.  The filter syntax is defined in RFC 7644. Valid attributes for filtering are `clientId`, `clientName`, `appType`, `tenantId`, and `createdByType`."
           },
           {
             "in": "query",

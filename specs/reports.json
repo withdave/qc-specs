@@ -1768,6 +1768,9 @@
           "visualization": {
             "$ref": "#/components/schemas/Visualization"
           },
+          "selectionChain": {
+            "$ref": "#/components/schemas/SelectionChain"
+          },
           "selectionStrategy": {
             "$ref": "#/components/schemas/SelectionStrategy"
           },
