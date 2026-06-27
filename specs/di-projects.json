@@ -290,7 +290,7 @@
         "tags": [
           "data project deployment"
         ],
-        "summary": "Import a project",
+        "summary": "Import a project (JSON zip)",
         "responses": {
           "200": {
             "content": {
@@ -300,7 +300,7 @@
                 }
               }
             },
-            "description": "OK"
+            "description": "OK — the JSON-based project was imported successfully."
           },
           "400": {
             "content": {
@@ -310,7 +310,7 @@
                 }
               }
             },
-            "description": "Bad Request"
+            "description": "Bad Request — for example, if a YAML-based zip is submitted to this endpoint."
           },
           "404": {
             "content": {
@@ -321,6 +321,16 @@
               }
             },
             "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Conflict"
           },
           "500": {
             "content": {
@@ -349,7 +359,7 @@
             "description": "Identifier of the data project."
           }
         ],
-        "description": "Imports a data integration project from a `.zip` file.",
+        "description": "Imports a data integration project synchronously from a legacy JSON-based `.zip` file.\nThis endpoint only accepts zips that contain JSON project files (the legacy format). The import is processed synchronously and completes before the response is returned.\nSubmitting a YAML-based zip to this endpoint returns `400`. To import a YAML-based zip, use `POST /di-projects/{projectId}/actions/import-async` instead.\n",
         "operationId": "import_project",
         "requestBody": {
           "content": {
@@ -366,7 +376,7 @@
             }
           },
           "required": true,
-          "description": "The ZIP file containing the project to import"
+          "description": "The ZIP file containing the JSON-based project to import."
         },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -2035,7 +2045,8 @@
           "PROJECT_PREPARE",
           "PROJECT_VALIDATE",
           "TASK_PREPARE",
-          "TASK_VALIDATE"
+          "TASK_VALIDATE",
+          "PROJECT_IMPORT"
         ],
         "type": "string",
         "description": "Type of action being performed"
@@ -2763,8 +2774,8 @@
           },
           "includeBindings": {
             "type": "boolean",
-            "example": false,
-            "description": "Include bindings in the exported zip file (optional, default is false)"
+            "default": false,
+            "description": "Include bindings in the exported zip file. If not specified, defaults to `false`."
           }
         }
       },
