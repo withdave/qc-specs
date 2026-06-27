@@ -93,6 +93,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "GET:/scheduling/tasks"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600
@@ -164,6 +170,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "POST:/scheduling/tasks"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600
@@ -222,6 +234,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "GET:/scheduling/tasks/{id}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600
@@ -288,6 +306,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "PUT:/scheduling/tasks/{id}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600
@@ -337,6 +361,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "DELETE:/scheduling/tasks/{id}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600
@@ -411,6 +441,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "POST:/scheduling/tasks/{id}/actions/start"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600
@@ -512,6 +548,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "GET:/scheduling/tasks/{id}/runs"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600
@@ -611,6 +653,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "GET:/scheduling/tasks/{id}/runs/{runId}/log"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600
@@ -669,6 +717,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "GET:/scheduling/tasks/{id}/runs/last"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600
@@ -770,6 +824,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "scheduling",
+            "uniqueIdentifier": "GET:/scheduling/tasks/resources/{id}/runs"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "special",
           "limit": 600

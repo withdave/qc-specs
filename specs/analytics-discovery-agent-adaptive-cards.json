@@ -1,0 +1,1011 @@
+{
+  "info": {
+    "title": "analytics/discovery-agent/adaptive-cards",
+    "version": ""
+  },
+  "paths": {
+    "/api/analytics/discovery-agent/adaptive-cards": {
+      "get": {
+        "tags": [
+          "owl"
+        ],
+        "summary": "Generate adaptive cards for all metrics",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdaptiveCards"
+                }
+              }
+            },
+            "description": "Expected response to a valid request."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Unauthorized, JWT invalid or not provided."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Forbidden, the requesting JWT does not allow for retrieval of in-app metrics (error code: OWL-003)."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "analysisTypes",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AnalysisTypeEnum"
+              },
+              "example": [
+                "spikesUp",
+                "spikesDown"
+              ]
+            },
+            "explode": false,
+            "required": false,
+            "description": "Filter by analysis types. Repeat parameter to include multiple types (results may match any of the provided types).\nWhen this parameter is present, the rank filter is disabled and all matching analysis types are returned regardless of rank.\n"
+          },
+          {
+            "in": "query",
+            "name": "appIds",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": false,
+            "examples": {
+              "singleAppId": {
+                "value": [
+                  "9b89de1e-9a1b-11ef-9974-563d08542bef"
+                ],
+                "summary": "Single app"
+              },
+              "multipleAppIds": {
+                "value": [
+                  "9b89de1e-9a1b-11ef-9974-563d08542bef"
+                ],
+                "summary": "Multiple apps"
+              }
+            },
+            "required": false,
+            "description": "Filter by app ID(s). Use this to scope results to specific apps. When combined with measures, returns only cards matching BOTH criteria (AND logic). Repeat the parameter to supply multiple app IDs (OR logic within appIds).\n\n**Recommendation:** Use consistent parameter order for better HTTP cache hit rates:\n1. appIds (if present)\n2. measures (if present)\n3. other filters\n4. pagination (limit, next, prev)\n\n**Example - One app, multiple measures:**\n`?appIds=app-123&measures=Sum(Sales)&measures=Avg(Revenue)&measures=Count(Orders)`\n\n**Example - Multiple apps, one measure:**\n`?appIds=app-retail&appIds=app-wholesale&measures=Sum(Sales)`\n\n**Example - Multiple apps, multiple measures:**\n`?appIds=app-sales&appIds=app-hr&measures=Sum(Revenue)&measures=Avg(Salary)`\n"
+          },
+          {
+            "in": "query",
+            "name": "breakdowns",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "Region:EMEA"
+              }
+            },
+            "explode": false,
+            "examples": {
+              "singleBreakdown": {
+                "value": [
+                  "Region:EMEA"
+                ],
+                "summary": "Single breakdown selection"
+              },
+              "multipleBreakdowns": {
+                "value": [
+                  "Region:EMEA"
+                ],
+                "summary": "Multiple breakdown selections"
+              }
+            },
+            "required": false,
+            "description": "Filter by one or more breakdown selections in the form `dimension:value` (example `Region:EMEA`). Values are selected from the UI dropdown — not free text — and should match available dimension/value pairs.\nRepeat the parameter to supply multiple breakdowns; results match any of the provided breakdown pairs.\n"
+          },
+          {
+            "in": "query",
+            "name": "categories",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": false,
+            "examples": {
+              "single": {
+                "value": [
+                  "6db0fd8e-2115-4ac6-8d51-1729adbc4cfd"
+                ],
+                "summary": "Single category"
+              },
+              "multiple": {
+                "value": [
+                  "6db0fd8e-2115-4ac6-8d51-1729adbc4cfd"
+                ],
+                "summary": "Multiple categories"
+              }
+            },
+            "required": false,
+            "description": "List of category ids from the business glossary. Parsed by the API but not applied to the DB filter in the current implementation."
+          },
+          {
+            "in": "query",
+            "name": "comparisonPeriods",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AggregationFrequencyEnum"
+              }
+            },
+            "explode": false,
+            "required": false,
+            "description": "Filter by comparison (aggregation) periods. Example values: D, W, M, Q, Y.\nWhen this parameter is present, the rank filter is disabled and all matching periods are returned regardless of rank.\n"
+          },
+          {
+            "in": "query",
+            "name": "dimensions",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": false,
+            "examples": {
+              "singleDimension": {
+                "value": [
+                  "Date"
+                ],
+                "summary": "Single dimension"
+              },
+              "multipleDimensions": {
+                "value": [
+                  "Date"
+                ],
+                "summary": "Multiple dimensions"
+              }
+            },
+            "required": false,
+            "description": "Filter by dimension(s). Matching is case-sensitive; leading and trailing whitespace will be trimmed. Repeat the parameter to supply multiple dimensions."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of resources to return for a request. The limit must be an integer between 1 and 100 (inclusive)."
+          },
+          {
+            "in": "query",
+            "name": "measures",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": false,
+            "examples": {
+              "singleMeasure": {
+                "value": [
+                  "Sum(Sales)"
+                ],
+                "summary": "Single measure selection"
+              },
+              "multipleMeasures": {
+                "value": [
+                  "Sum(Sales)"
+                ],
+                "summary": "Multiple measure selections"
+              }
+            },
+            "required": false,
+            "description": "Filter by measure(s). Matching is case-sensitive; leading and trailing whitespace will be trimmed. Repeat the parameter to supply multiple measures."
+          },
+          {
+            "in": "query",
+            "name": "metricIds",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": false,
+            "examples": {
+              "oneMetricId": {
+                "value": [
+                  "123e4567-e89b-12d3-a456-426614174000"
+                ],
+                "summary": "Single metric"
+              },
+              "multipleMetricIds": {
+                "value": [
+                  "123e4567-e89b-12d3-a456-426614174000"
+                ],
+                "summary": "Multiple metrics"
+              }
+            },
+            "required": false,
+            "description": "Comma-separated list of metric IDs to return Adaptive Cards for. When omitted the endpoint may return cards for multiple metrics visible to the tenant."
+          },
+          {
+            "in": "query",
+            "name": "next",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "required": false,
+            "description": "The numeric offset to the next page of resources. Provide either the next or prev parameter, but not both."
+          },
+          {
+            "in": "query",
+            "name": "prev",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 5
+            },
+            "required": false,
+            "description": "The numeric offset to the previous page of resources. Provide either the next or prev parameter, but not both."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "creationTime",
+                "+creationTime",
+                "-creationTime"
+              ],
+              "type": "string",
+              "default": "+creationTime"
+            },
+            "required": false,
+            "description": "The field to sort by, with +/- prefix indicating sort order"
+          },
+          {
+            "in": "query",
+            "name": "timeRangeEnd",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2023-10-31T00:00:00.000Z"
+            },
+            "required": false,
+            "description": "Exclusive upper bound for analysis result end time. Use ISO 8601 format (example: 2023-10-31T00:00:00.000Z). The store applies this as endTime < timeRangeEnd."
+          },
+          {
+            "in": "query",
+            "name": "timeRangeStart",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2023-10-01T00:00:00.000Z"
+            },
+            "required": false,
+            "description": "Inclusive lower bound for analysis result end time. Use ISO 8601 format (example: 2023-10-01T00:00:00.000Z). The store applies this as endTime >= timeRangeStart."
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "enum": [
+                "measures",
+                "dimensions",
+                "breakdowns"
+              ],
+              "type": "string"
+            },
+            "required": false,
+            "description": "Optional filter to request only one category: measures, dimensions, or breakdowns. When omitted, all categories are returned."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT containing tenant credentials."
+          }
+        ],
+        "description": "Retrieves Adaptive Card(s) in JSON format. Support fetching of a single card by metric ID or multiple cards by a list of metric IDs. Support filtering by app IDs, measures, dimensions, categories, breakdown dimension, analysis types and triggered time range. When filtering by measures, use appIds parameter to scope results to specific apps, as the same measure expression can exist across multiple apps.\n\n**Ranking behaviour:** When the endpoint is called *without any filter parameters* (bare `GET /adaptive-cards`), only the top-ranked result per metric (rank ≤ 1) or results without a rank field are returned. When *any* DB-reaching filter is supplied (`metricIds`, `dimensions`, `measures`, `appIds`, `breakdowns`, `analysisTypes`, `comparisonPeriods`, `timeRangeStart`, `timeRangeEnd`), ranking is not applied and all matching results are returned so that explicit filters are never silently constrained by rank.\n",
+        "operationId": "getAdaptiveCards",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "AdaptiveCard": {
+        "type": "object",
+        "description": "Adaptive card"
+      },
+      "AdaptiveCards": {
+        "type": "object",
+        "required": [
+          "data",
+          "links"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdaptiveCard"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/AdaptiveCardsLinks"
+          },
+          "inAppMetrics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FormattedInAppMetricRecord"
+            }
+          }
+        }
+      },
+      "AdaptiveCardsLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Href"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Href"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Href"
+          }
+        }
+      },
+      "AggregationFrequencyEnum": {
+        "enum": [
+          "D",
+          "W",
+          "M",
+          "Q",
+          "Y"
+        ],
+        "type": "string",
+        "example": "D",
+        "description": "Comparison period for the analysis."
+      },
+      "AggregationType": {
+        "enum": [
+          "sum",
+          "avg",
+          "count",
+          "max",
+          "min"
+        ],
+        "type": "string",
+        "example": "sum",
+        "description": "Aggregation operation type"
+      },
+      "AnalysisTypeEnum": {
+        "enum": [
+          "recordHigh",
+          "recordLow",
+          "aboveModel",
+          "belowModel",
+          "spikesUp",
+          "spikesDown",
+          "newBaseLine",
+          "trendChanges"
+        ],
+        "type": "string",
+        "example": "spikesUp",
+        "description": "Type of analysis performed on the in-app metric."
+      },
+      "BreakdownConditionFilter": {
+        "type": "object",
+        "required": [
+          "conditionType",
+          "comparisonType"
+        ],
+        "properties": {
+          "field": {
+            "type": "string",
+            "example": "Sales",
+            "description": "Primary field for calculated values"
+          },
+          "value": {
+            "type": "number",
+            "example": 100,
+            "description": "Fixed numeric value (used by single comparisons with Compare.Fixed and General.Fixed)"
+          },
+          "field2": {
+            "type": "string",
+            "example": "Cost",
+            "description": "Additional field used only by General.Calculated for single comparisons"
+          },
+          "toField": {
+            "type": "string",
+            "example": "MaxPrice",
+            "description": "Upper bound field for range comparisons with Calculated value type (used with > < or >= <=)"
+          },
+          "toValue": {
+            "type": "number",
+            "example": 500,
+            "description": "Upper bound value for range comparisons with Fixed value type (used with > < or >= <=)"
+          },
+          "fromField": {
+            "type": "string",
+            "example": "MinPrice",
+            "description": "Lower bound field for range comparisons with Calculated value type (used with > < or >= <=)"
+          },
+          "fromValue": {
+            "type": "number",
+            "example": 100,
+            "description": "Lower bound value for range comparisons with Fixed value type (used with > < or >= <=)"
+          },
+          "valueType": {
+            "$ref": "#/components/schemas/ValueType"
+          },
+          "aggregation": {
+            "$ref": "#/components/schemas/AggregationType"
+          },
+          "aggregation2": {
+            "$ref": "#/components/schemas/AggregationType"
+          },
+          "conditionType": {
+            "$ref": "#/components/schemas/ConditionType"
+          },
+          "toAggregation": {
+            "$ref": "#/components/schemas/AggregationType"
+          },
+          "comparisonType": {
+            "$ref": "#/components/schemas/ComparisonType"
+          },
+          "fromAggregation": {
+            "$ref": "#/components/schemas/AggregationType"
+          }
+        },
+        "description": "Condition-based filtering configuration. Supports single comparisons (>, >=, <, <=) and range comparisons (> <, >= <=).\n\n**Single Comparisons:**\n- Compare type: Uses `value` (Fixed) or `aggregation`+`field` (Calculated)\n- General type: Uses `aggregation`+`field` and either `value` (Fixed) or `aggregation2`+`field2` (Calculated)\n\n**Range Comparisons (> < or >= <=):**\n- Compare type: Uses `fromValue`+`toValue` (Fixed) or `fromAggregation`+`fromField`+`toAggregation`+`toField` (Calculated)\n- General type: Uses `aggregation`+`field` plus either `fromValue`+`toValue` (Fixed) or `fromAggregation`+`fromField`+`toAggregation`+`toField` (Calculated)\n"
+      },
+      "BreakDownDimension": {
+        "type": "object",
+        "example": {
+          "filter": {
+            "type": "values",
+            "values": [
+              "Europe",
+              "Asia"
+            ]
+          },
+          "values": [
+            "Europe",
+            "Asia"
+          ],
+          "dimension": "Region"
+        },
+        "required": [
+          "dimension"
+        ],
+        "properties": {
+          "filter": {
+            "$ref": "#/components/schemas/BreakdownFilter"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Europe",
+              "description": "A dimension value to include in the breakdown."
+            },
+            "example": [
+              "Europe",
+              "Asia"
+            ],
+            "description": "List of values (kept for backward compatibility)"
+          },
+          "dimension": {
+            "type": "string",
+            "example": "Region",
+            "description": "The dimension name"
+          }
+        },
+        "description": "Breakdown dimension with filtering capabilities.\n- `dimension` is required.\n- `values` and `filter` are optional. If both are omitted (or `values` is empty and `filter` is null), the API interprets this as \"analyze all values\" for the given dimension.\n"
+      },
+      "BreakdownFilter": {
+        "type": "object",
+        "example": {
+          "type": "values",
+          "values": [
+            "Europe",
+            "Asia",
+            "North America"
+          ]
+        },
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BreakdownFilterType"
+          },
+          "search": {
+            "$ref": "#/components/schemas/BreakdownSearchFilter"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Europe",
+              "description": "A dimension value to filter by."
+            },
+            "example": [
+              "Europe",
+              "Asia"
+            ],
+            "description": "List of values to filter by (used when type is Values)"
+          },
+          "exclude": {
+            "type": "boolean",
+            "default": false,
+            "description": "When set to true, the filter values are excluded from analysis instead of included.\n- If exclude is false or omitted, only the matched values are analyzed (max 50).\n- If exclude is true, all dimension values EXCEPT the matched values are analyzed (max 50).\n"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/BreakdownConditionFilter"
+          },
+          "topBottom": {
+            "$ref": "#/components/schemas/BreakdownTopBottomFilter"
+          }
+        },
+        "description": "Filter configuration for a breakdown dimension"
+      },
+      "BreakdownFilterType": {
+        "enum": [
+          "values",
+          "search",
+          "condition",
+          "topBottom"
+        ],
+        "type": "string",
+        "example": "values",
+        "description": "Type of breakdown filter"
+      },
+      "BreakdownSearchFilter": {
+        "type": "object",
+        "required": [
+          "searchType"
+        ],
+        "properties": {
+          "searchType": {
+            "$ref": "#/components/schemas/SearchType"
+          },
+          "searchString": {
+            "type": "string",
+            "example": "Marketing",
+            "description": "String to search for. If empty, all dimension values are analyzed."
+          }
+        },
+        "description": "Search-based filtering configuration. If searchString is empty or not provided, all dimension values will be analyzed (no filtering applied)."
+      },
+      "BreakdownTopBottomFilter": {
+        "type": "object",
+        "required": [
+          "type",
+          "unit",
+          "number"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TopBottomType"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/TopBottomUnit"
+          },
+          "number": {
+            "type": "integer",
+            "example": 10,
+            "description": "Number of top/bottom values to select"
+          }
+        },
+        "description": "Top/bottom filtering configuration"
+      },
+      "Categories": {
+        "type": "object",
+        "properties": {
+          "glossaryId": {
+            "type": "string",
+            "example": "5a7482f5-892a-4194-9f48-366ccb48a1e7",
+            "description": "The ID of the glossary that the category belongs to."
+          },
+          "categoryIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "6db0fd8e-2115-4ac6-8d51-1729adbc4cfd",
+              "description": "Category ID"
+            },
+            "example": [
+              "6db0fd8e-2115-4ac6-8d51-1729adbc4cfd"
+            ],
+            "description": "The IDs of the categories."
+          }
+        }
+      },
+      "ComparisonType": {
+        "enum": [
+          ">",
+          ">=",
+          "<",
+          "<=",
+          "> <",
+          ">= <="
+        ],
+        "type": "string",
+        "example": ">",
+        "description": "Comparison operation type"
+      },
+      "ConditionType": {
+        "enum": [
+          "general",
+          "compare"
+        ],
+        "type": "string",
+        "example": "general",
+        "description": "Condition evaluation type"
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "OWL-001",
+            "description": "The error code is in the form of 'OWL-xxx', ranges from 'OWL-001' to 'OWL-016'."
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "OWL-001",
+              "title": "Invalid request.",
+              "details": ""
+            },
+            {
+              "code": "OWL-002",
+              "title": "Unauthorized access.",
+              "detail": "You may need to login to access this resource."
+            },
+            {
+              "code": "OWL-003",
+              "title": "Resource not found.",
+              "detail": "The resource either never existed, or may have been deleted."
+            },
+            {
+              "code": "OWL-013",
+              "title": "The analysis can not be started because the analysis frequency quota has been met.",
+              "detail": ""
+            },
+            {
+              "code": "OWL-015",
+              "title": "Too many breakdown dimensions.",
+              "detail": ""
+            },
+            {
+              "code": "OWL-016",
+              "title": "Too many breakdown values.",
+              "detail": ""
+            }
+          ]
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "FormattedInAppMetricDefinition": {
+        "type": "object",
+        "required": [
+          "name",
+          "dimension",
+          "measure",
+          "analysisTypes"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Profit by region Europe"
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusEnum"
+          },
+          "measure": {
+            "type": "string",
+            "example": "Sum({<Region='Europe'>} Profit)"
+          },
+          "upwardIs": {
+            "$ref": "#/components/schemas/UpwardIsEnum"
+          },
+          "dimension": {
+            "type": "string",
+            "example": "ShipDate"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Categories"
+            },
+            "example": [
+              {
+                "glossaryId": "fe7df4a8-abb4-42da-95e7-4ee8db22a7cb",
+                "categoryIds": [
+                  "6db0fd8e-2115-4ac6-8d51-1729adbc4cfd"
+                ]
+              }
+            ]
+          },
+          "glossaryId": {
+            "type": "string",
+            "example": "5a7482f5-892a-4194-9f48-366ccb48a1e7",
+            "description": "The ID of the glossary that the in-app metric belongs to."
+          },
+          "description": {
+            "type": "string",
+            "example": "This metric shows the profit by region in Europe.",
+            "description": "A description of the in-app metric."
+          },
+          "analysisTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnalysisTypeEnum"
+            },
+            "example": [
+              "recordHigh",
+              "aboveModel",
+              "spikesUp"
+            ]
+          },
+          "comparisonPeriods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AggregationFrequencyEnum"
+            },
+            "example": [
+              "D",
+              "W",
+              "M",
+              "Q",
+              "Y"
+            ]
+          },
+          "breakDownDimensions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BreakDownDimension"
+            }
+          },
+          "nextExecutionOffset": {
+            "type": "integer",
+            "example": 7,
+            "description": "Number of days to offset the execution of analyses for this aggregation period."
+          }
+        }
+      },
+      "FormattedInAppMetricRecord": {
+        "type": "object",
+        "required": [
+          "id",
+          "tenantId",
+          "appId",
+          "userId",
+          "creationTime",
+          "updateTime",
+          "definition",
+          "status",
+          "links"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "67cab2cf3d74cae279940b99",
+            "description": "The ID of the in-app metric in the database."
+          },
+          "appId": {
+            "type": "string",
+            "example": "9b89de1e-9a1b-11ef-9974-563d08542bef",
+            "description": "The ID of the app."
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "$ref": "#/components/schemas/Href"
+              }
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusEnum"
+          },
+          "userId": {
+            "type": "string",
+            "example": "FyPG6xWp6prDU6BXQ3g7LY9gWR_YRkkx",
+            "description": "The ID of the user who created the in-app-metric."
+          },
+          "tenantId": {
+            "type": "string",
+            "example": "efSCcpNYuayTysONkUcE3F80zYQ_LV9w",
+            "description": "The ID of the tenant who owns the in-app metric."
+          },
+          "definition": {
+            "$ref": "#/components/schemas/FormattedInAppMetricDefinition"
+          },
+          "updateTime": {
+            "type": "string",
+            "example": "2023-10-01T12:00:00Z",
+            "description": "The time when the in-app metric was last updated."
+          },
+          "creationTime": {
+            "type": "string",
+            "example": "2023-10-01T12:00:00Z",
+            "description": "The time when the in-app metric was created."
+          }
+        }
+      },
+      "Href": {
+        "type": "object",
+        "example": {
+          "href": "http://example.com"
+        },
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://example.com"
+          }
+        }
+      },
+      "SearchType": {
+        "enum": [
+          "contains",
+          "exactMatch",
+          "startsWith",
+          "endsWith",
+          "beginningOfWord"
+        ],
+        "type": "string",
+        "example": "contains",
+        "description": "Search operation type"
+      },
+      "StatusEnum": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "example": 1,
+        "description": "Status of the in app metrics (0 - inactive, 1 - active)."
+      },
+      "TopBottomType": {
+        "enum": [
+          "top",
+          "bottom"
+        ],
+        "type": "string",
+        "example": "top",
+        "description": "Whether to select top or bottom values"
+      },
+      "TopBottomUnit": {
+        "enum": [
+          "numerical",
+          "percentage"
+        ],
+        "type": "string",
+        "example": "numerical",
+        "description": "Unit for top/bottom selection"
+      },
+      "UpwardIsEnum": {
+        "enum": [
+          0,
+          1,
+          -1
+        ],
+        "type": "integer",
+        "example": 1,
+        "description": "Indicates whether an increase in the metric is considered neutral (0), positive (1) or negative (-1)."
+      },
+      "ValueType": {
+        "enum": [
+          "calculated",
+          "fixed"
+        ],
+        "type": "string",
+        "example": "fixed",
+        "description": "Whether the value is calculated or fixed"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}
