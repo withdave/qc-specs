@@ -387,6 +387,113 @@
         }
       }
     },
+    "/api/v1/di-projects/{projectId}/actions/import-async": {
+      "post": {
+        "tags": [
+          "data project deployment"
+        ],
+        "summary": "Import a project asynchronously",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncActionRsp"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/AsyncActionLocation"
+              }
+            },
+            "description": "The project import has started. Poll the returned `actionId` using `GET /di-projects/actions/{actionId}` to track progress."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data project."
+          }
+        ],
+        "description": "Imports a data integration project from a `.zip` file and returns an action identifier for tracking the background import operation. Accepts both JSON-based (legacy) and YAML-based project formats, making it the recommended endpoint for deploying YAML-defined pipeline definitions programmatically. Poll the import status using `GET /di-projects/actions/{actionId}`.\n",
+        "operationId": "import_project_async",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "zip": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true,
+          "description": "A `.zip` file containing the project to import. Accepts both JSON-based (legacy) and YAML-based formats."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/di-projects/{projectId}/actions/prepare": {
       "post": {
         "tags": [
@@ -1909,6 +2016,82 @@
           "limit": 1000
         }
       }
+    },
+    "/api/v1/di-projects/utils/actions/validate-project-definitions": {
+      "post": {
+        "tags": [
+          "data project deployment"
+        ],
+        "summary": "Validate project definitions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateProjectDefinitionsRsp"
+                }
+              }
+            },
+            "description": "Validation completed. The response contains a report of warnings and errors found in the project definitions."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Validates the project definition files in a `.zip` and returns a structured report of warnings and errors. The validation runs synchronously and completes before the response is returned. Use this operation before importing with `POST /di-projects/{projectId}/actions/import-async` to confirm that YAML-based pipeline definitions are correct.\n",
+        "operationId": "validate_project_definitions",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "zip": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true,
+          "description": "A `.zip` file containing the project definition files to validate."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
     }
   },
   "openapi": "3.0.0",
@@ -2570,7 +2753,8 @@
           "LAKEHOUSE_STORAGE",
           "LAKEHOUSE_MIRROR",
           "STREAMING_LAKE_LANDING",
-          "STREAMING_TRANSFORM"
+          "STREAMING_TRANSFORM",
+          "REPLICATE_LANDING"
         ],
         "type": "string",
         "x-enum-varnames": [
@@ -2587,7 +2771,8 @@
           "LAKEHOUSE_STORAGE",
           "LAKEHOUSE_MIRROR",
           "STREAMING_LAKE_LANDING",
-          "STREAMING_TRANSFORM"
+          "STREAMING_TRANSFORM",
+          "REPLICATE_LANDING"
         ]
       },
       "DiExportMode": {
@@ -3109,6 +3294,43 @@
       },
       "UpdateDiExportProjectVariablesRsp": {
         "type": "object"
+      },
+      "ValidateProjectDefinitionsReport": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Path to the field or file in the project definition where the issue was found."
+          },
+          "level": {
+            "$ref": "#/components/schemas/ValidateProjectDefinitionsReportLevel"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Human-readable description of the validation finding."
+          }
+        },
+        "description": "A single validation finding, including its severity, a human-readable description of the issue, and the location in the project definition where it was found."
+      },
+      "ValidateProjectDefinitionsReportLevel": {
+        "enum": [
+          "WARNING",
+          "ERROR"
+        ],
+        "type": "string",
+        "description": "Severity of the validation finding. `WARNING` indicates a potential issue that does not block import; `ERROR` indicates a critical issue that must be resolved before importing."
+      },
+      "ValidateProjectDefinitionsRsp": {
+        "type": "object",
+        "properties": {
+          "reports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidateProjectDefinitionsReport"
+            },
+            "description": "List of validation findings. An empty array indicates no issues were found."
+          }
+        }
       },
       "ValidateProjectReq": {
         "type": "object",

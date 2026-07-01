@@ -177,7 +177,7 @@
             "description": "Internal server error."
           }
         },
-        "description": "Updates one or more authentication settings for the tenant using JSON Patch (RFC 6902). Supports `replace` operations on `/userSessionInactivityTimeoutMinutes` and `/maxUserSessionLifespanMinutes`. The value for `maxUserSessionLifespanMinutes` must be a whole number of hours (divisible by 60). The user must be assigned the `TenantAdmin` role.",
+        "description": "Updates one or more authentication settings for the tenant using JSON Patch (RFC 6902). Supports `replace` operations on `/userSessionInactivityTimeoutMinutes`, `/maxUserSessionLifespanMinutes`, and `/dynamicClientRegistrationEnabled`. The value for `maxUserSessionLifespanMinutes` must be a whole number of hours (divisible by 60). The user must be assigned the `TenantAdmin` role.",
         "operationId": "updateAuthSettings",
         "requestBody": {
           "content": {
@@ -224,19 +224,38 @@
           "path": {
             "enum": [
               "/userSessionInactivityTimeoutMinutes",
-              "/maxUserSessionLifespanMinutes"
+              "/maxUserSessionLifespanMinutes",
+              "/dynamicClientRegistrationEnabled",
+              "/dcrAllowedAuthenticationMethods"
             ],
             "type": "string",
-            "description": "A JSON Pointer to the authentication settings field.",
+            "description": "A JSON Pointer to the authentication settings field. Use `/dynamicClientRegistrationEnabled` only with a boolean `value`. Field `/dcrAllowedAuthenticationMethods` is only available when dynamic client registration is enabled.",
             "x-oapi-codegen-extra-tags": {
-              "validate": "required,oneof=/userSessionInactivityTimeoutMinutes /maxUserSessionLifespanMinutes"
+              "validate": "required,oneof=/userSessionInactivityTimeoutMinutes /maxUserSessionLifespanMinutes /dynamicClientRegistrationEnabled /dcrAllowedAuthenticationMethods"
             }
           },
           "value": {
-            "type": "integer",
-            "format": "int64",
+            "oneOf": [
+              {
+                "type": "integer",
+                "format": "int64"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
             "example": 1440,
-            "description": "Integer value in minutes to set for the targeted authentication settings field. For `maxUserSessionLifespanMinutes`, the value must be a whole number of hours (divisible by 60)."
+            "x-go-type": "any",
+            "description": "Value to set for the targeted authentication settings field. Timeout fields accept only integer values, `/dynamicClientRegistrationEnabled` accepts only boolean values, and `/dcrAllowedAuthenticationMethods` accepts an array of strings."
           }
         },
         "description": "A JSON Patch document for authentication settings as defined in http://tools.ietf.org/html/rfc6902."
@@ -256,6 +275,18 @@
             "op": "replace",
             "path": "/maxUserSessionLifespanMinutes",
             "value": 1440
+          },
+          {
+            "op": "replace",
+            "path": "/dynamicClientRegistrationEnabled",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/dcrAllowedAuthenticationMethods",
+            "value": [
+              "client_secret"
+            ]
           }
         ],
         "description": "An array of JSON Patch documents for authentication settings."
@@ -296,6 +327,27 @@
             "example": 1440,
             "x-go-name": "MaxUserSessionLifespanMinutes",
             "description": "Maximum total lifespan for a user session, in minutes. Sessions are invalidated after this duration regardless of activity."
+          },
+          "dcrAllowedAuthenticationMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "none",
+                "client_secret"
+              ],
+              "type": "string"
+            },
+            "example": [
+              "client_secret"
+            ],
+            "x-go-name": "DcrAllowedAuthenticationMethods",
+            "description": "The allowed authentication methods for dynamic client registration. Only present when dynamic client registration is enabled."
+          },
+          "dynamicClientRegistrationEnabled": {
+            "type": "boolean",
+            "example": false,
+            "x-go-name": "DynamicClientRegistrationEnabled",
+            "description": "Indicates whether dynamic client registration is enabled for this tenant."
           },
           "userSessionInactivityTimeoutMinutes": {
             "type": "integer",

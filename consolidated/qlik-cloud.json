@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.48",
+    "version": "1.0.49",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -16144,7 +16144,7 @@
             "description": "Internal server error."
           }
         },
-        "description": "Updates one or more authentication settings for the tenant using JSON Patch (RFC 6902). Supports `replace` operations on `/userSessionInactivityTimeoutMinutes` and `/maxUserSessionLifespanMinutes`. The value for `maxUserSessionLifespanMinutes` must be a whole number of hours (divisible by 60). The user must be assigned the `TenantAdmin` role.",
+        "description": "Updates one or more authentication settings for the tenant using JSON Patch (RFC 6902). Supports `replace` operations on `/userSessionInactivityTimeoutMinutes`, `/maxUserSessionLifespanMinutes`, and `/dynamicClientRegistrationEnabled`. The value for `maxUserSessionLifespanMinutes` must be a whole number of hours (divisible by 60). The user must be assigned the `TenantAdmin` role.",
         "operationId": "updateAuthSettings",
         "requestBody": {
           "content": {
@@ -26467,6 +26467,113 @@
         }
       }
     },
+    "/api/v1/di-projects/{projectId}/actions/import-async": {
+      "post": {
+        "tags": [
+          "data project deployment"
+        ],
+        "summary": "Import a project asynchronously",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncActionRsp"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/AsyncActionLocation"
+              }
+            },
+            "description": "The project import has started. Poll the returned `actionId` using `GET /di-projects/actions/{actionId}` to track progress."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "example": {
+                "value": "65424a71c11367914c1e659b"
+              }
+            },
+            "required": true,
+            "description": "Identifier of the data project."
+          }
+        ],
+        "description": "Imports a data integration project from a `.zip` file and returns an action identifier for tracking the background import operation. Accepts both JSON-based (legacy) and YAML-based project formats, making it the recommended endpoint for deploying YAML-defined pipeline definitions programmatically. Poll the import status using `GET /di-projects/actions/{actionId}`.\n",
+        "operationId": "import_project_async",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "zip": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true,
+          "description": "A `.zip` file containing the project to import. Accepts both JSON-based (legacy) and YAML-based formats."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/v1/di-projects/{projectId}/actions/prepare": {
       "post": {
         "tags": [
@@ -27987,6 +28094,82 @@
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
+        }
+      }
+    },
+    "/api/v1/di-projects/utils/actions/validate-project-definitions": {
+      "post": {
+        "tags": [
+          "data project deployment"
+        ],
+        "summary": "Validate project definitions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateProjectDefinitionsRsp"
+                }
+              }
+            },
+            "description": "Validation completed. The response contains a report of warnings and errors found in the project definitions."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Validates the project definition files in a `.zip` and returns a structured report of warnings and errors. The validation runs synchronously and completes before the response is returned. Use this operation before importing with `POST /di-projects/{projectId}/actions/import-async` to confirm that YAML-based pipeline definitions are correct.\n",
+        "operationId": "validate_project_definitions",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "zip": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true,
+          "description": "A `.zip` file containing the project definition files to validate."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
         }
       }
     },
@@ -70732,19 +70915,38 @@
           "path": {
             "enum": [
               "/userSessionInactivityTimeoutMinutes",
-              "/maxUserSessionLifespanMinutes"
+              "/maxUserSessionLifespanMinutes",
+              "/dynamicClientRegistrationEnabled",
+              "/dcrAllowedAuthenticationMethods"
             ],
             "type": "string",
-            "description": "A JSON Pointer to the authentication settings field.",
+            "description": "A JSON Pointer to the authentication settings field. Use `/dynamicClientRegistrationEnabled` only with a boolean `value`. Field `/dcrAllowedAuthenticationMethods` is only available when dynamic client registration is enabled.",
             "x-oapi-codegen-extra-tags": {
-              "validate": "required,oneof=/userSessionInactivityTimeoutMinutes /maxUserSessionLifespanMinutes"
+              "validate": "required,oneof=/userSessionInactivityTimeoutMinutes /maxUserSessionLifespanMinutes /dynamicClientRegistrationEnabled /dcrAllowedAuthenticationMethods"
             }
           },
           "value": {
-            "type": "integer",
-            "format": "int64",
+            "oneOf": [
+              {
+                "type": "integer",
+                "format": "int64"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
             "example": 1440,
-            "description": "Integer value in minutes to set for the targeted authentication settings field. For `maxUserSessionLifespanMinutes`, the value must be a whole number of hours (divisible by 60)."
+            "x-go-type": "any",
+            "description": "Value to set for the targeted authentication settings field. Timeout fields accept only integer values, `/dynamicClientRegistrationEnabled` accepts only boolean values, and `/dcrAllowedAuthenticationMethods` accepts an array of strings."
           }
         },
         "description": "A JSON Patch document for authentication settings as defined in http://tools.ietf.org/html/rfc6902."
@@ -70764,6 +70966,18 @@
             "op": "replace",
             "path": "/maxUserSessionLifespanMinutes",
             "value": 1440
+          },
+          {
+            "op": "replace",
+            "path": "/dynamicClientRegistrationEnabled",
+            "value": true
+          },
+          {
+            "op": "replace",
+            "path": "/dcrAllowedAuthenticationMethods",
+            "value": [
+              "client_secret"
+            ]
           }
         ],
         "description": "An array of JSON Patch documents for authentication settings."
@@ -70804,6 +71018,27 @@
             "example": 1440,
             "x-go-name": "MaxUserSessionLifespanMinutes",
             "description": "Maximum total lifespan for a user session, in minutes. Sessions are invalidated after this duration regardless of activity."
+          },
+          "dcrAllowedAuthenticationMethods": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "none",
+                "client_secret"
+              ],
+              "type": "string"
+            },
+            "example": [
+              "client_secret"
+            ],
+            "x-go-name": "DcrAllowedAuthenticationMethods",
+            "description": "The allowed authentication methods for dynamic client registration. Only present when dynamic client registration is enabled."
+          },
+          "dynamicClientRegistrationEnabled": {
+            "type": "boolean",
+            "example": false,
+            "x-go-name": "DynamicClientRegistrationEnabled",
+            "description": "Indicates whether dynamic client registration is enabled for this tenant."
           },
           "userSessionInactivityTimeoutMinutes": {
             "type": "integer",
@@ -76955,7 +77190,8 @@
           "LAKEHOUSE_STORAGE",
           "LAKEHOUSE_MIRROR",
           "STREAMING_LAKE_LANDING",
-          "STREAMING_TRANSFORM"
+          "STREAMING_TRANSFORM",
+          "REPLICATE_LANDING"
         ],
         "type": "string",
         "x-enum-varnames": [
@@ -76972,7 +77208,8 @@
           "LAKEHOUSE_STORAGE",
           "LAKEHOUSE_MIRROR",
           "STREAMING_LAKE_LANDING",
-          "STREAMING_TRANSFORM"
+          "STREAMING_TRANSFORM",
+          "REPLICATE_LANDING"
         ]
       },
       "DiExportMode": {
@@ -77451,6 +77688,43 @@
       },
       "UpdateDiExportProjectVariablesRsp": {
         "type": "object"
+      },
+      "ValidateProjectDefinitionsReport": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Path to the field or file in the project definition where the issue was found."
+          },
+          "level": {
+            "$ref": "#/components/schemas/ValidateProjectDefinitionsReportLevel"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Human-readable description of the validation finding."
+          }
+        },
+        "description": "A single validation finding, including its severity, a human-readable description of the issue, and the location in the project definition where it was found."
+      },
+      "ValidateProjectDefinitionsReportLevel": {
+        "enum": [
+          "WARNING",
+          "ERROR"
+        ],
+        "type": "string",
+        "description": "Severity of the validation finding. `WARNING` indicates a potential issue that does not block import; `ERROR` indicates a critical issue that must be resolved before importing."
+      },
+      "ValidateProjectDefinitionsRsp": {
+        "type": "object",
+        "properties": {
+          "reports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidateProjectDefinitionsReport"
+            },
+            "description": "List of validation findings. An empty array indicates no issues were found."
+          }
+        }
       },
       "ValidateProjectReq": {
         "type": "object",
