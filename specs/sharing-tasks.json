@@ -3036,7 +3036,8 @@
               "MAX_UNIQUE_REPORTS_LIMIT_REACHED",
               "MISSING_DISTRIBUTION_LIST",
               "SECTION_ACCESS_NOT_SUPPORTED",
-              "REPORTING_DAILY_QUOTA_EXCEEDED"
+              "REPORTING_DAILY_QUOTA_EXCEEDED",
+              "EMAIL_DELIVERY_FAILURE"
             ],
             "type": "string",
             "description": "Identifier for type of error occurring on sharing task"

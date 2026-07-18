@@ -541,6 +541,109 @@
         }
       }
     },
+    "/api/data-governance/data-products/{dataProductId}/actions/compute-datasets-data-quality": {
+      "post": {
+        "tags": [
+          "data-product-data-quality"
+        ],
+        "summary": "Trigger data quality computation for the data-product's datasets",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetsComputationResponse"
+                }
+              }
+            },
+            "headers": {
+              "location": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "/api/data-governance/data-qualities/batch-computations/12345",
+                "description": "Location where the result can be retrieved"
+              }
+            },
+            "description": "Data quality computation triggered successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          }
+        ],
+        "description": "Triggers a full data quality computation for all datasets in the data product, running profile calculation followed by data quality\nassessment. Returns a `batchComputationId` that can be used to track overall progress via the batch computation status endpoint\n(`GET /api/data-governance/data-qualities/batch-computations/{batchComputationId}`). The computation runs asynchronously.\nPoll the status endpoint until `status` is `FINISHED`.\n",
+        "operationId": "requestDataQualityComputation",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/data-governance/data-products/{dataProductId}/actions/deactivate": {
       "post": {
         "tags": [
@@ -1226,6 +1329,31 @@
           }
         }
       },
+      "ComputationResponse": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "status",
+          "computationId"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message if the computation failed; absent on success."
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExecutionStatus"
+          },
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          },
+          "computationId": {
+            "type": "string",
+            "description": "Unique identifier for this individual data quality computation job."
+          }
+        },
+        "description": "Result of a data quality computation for a single dataset."
+      },
       "CreateDataProductRequest": {
         "type": "object",
         "required": [
@@ -1510,6 +1638,33 @@
           }
         }
       },
+      "DatasetIdType": {
+        "type": "string",
+        "example": "669144f5aa2d642638ef1dd0",
+        "pattern": "^[0-9a-zA-Z-]{1,36}$",
+        "description": "The ID of the dataset"
+      },
+      "DatasetsComputationResponse": {
+        "type": "object",
+        "required": [
+          "batchComputationId",
+          "datasetResponses"
+        ],
+        "properties": {
+          "datasetResponses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ComputationResponse"
+            },
+            "description": "List of computation results, one entry per dataset in the data product."
+          },
+          "batchComputationId": {
+            "type": "string",
+            "description": "Unique identifier for the data quality batch computation job."
+          }
+        },
+        "description": "Response containing the batch computation identifier and per-dataset quality computation results."
+      },
       "Error": {
         "type": "object",
         "properties": {
@@ -1540,6 +1695,15 @@
             "type": "string"
           }
         }
+      },
+      "ExecutionStatus": {
+        "enum": [
+          "REQUESTED",
+          "FAILED"
+        ],
+        "type": "string",
+        "example": "REQUESTED",
+        "description": "Current execution status of the computation (REQUESTED or FAILED)."
       },
       "GenerateProviderUrlResponse": {
         "type": "object",

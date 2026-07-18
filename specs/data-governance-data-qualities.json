@@ -4,6 +4,108 @@
     "version": ""
   },
   "paths": {
+    "/api/data-governance/data-qualities/batch-computations/{batchComputationId}": {
+      "get": {
+        "tags": [
+          "computation"
+        ],
+        "summary": "Get batch computation status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchComputationStatusResponse"
+                }
+              }
+            },
+            "description": "Batch computation status retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Batch computation not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "batchComputationId",
+            "schema": {
+              "type": "string",
+              "example": "a3f1b2c4-5678-90ab-cdef-1234567890ab",
+              "pattern": "^[a-zA-Z0-9-]{1,36}$"
+            },
+            "required": true,
+            "description": "Batch computation ID for tracking progress of the overall data quality computations."
+          }
+        ],
+        "description": "Retrieves the status of a batch computation, including per-dataset statuses.",
+        "operationId": "getBatchComputationStatus",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/data-governance/data-qualities/computations": {
       "post": {
         "tags": [
@@ -215,6 +317,95 @@
         }
       }
     },
+    "/api/data-governance/data-qualities/field-qualities/actions/filter": {
+      "post": {
+        "tags": [
+          "data-quality"
+        ],
+        "summary": "Retrieve field qualities for multiple datasets",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldQualitiesFilterResponse"
+                }
+              }
+            },
+            "description": "Field qualities retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Retrieves the latest computed field quality metrics for a list of datasets. The maximum number of datasets is 100.\nWhen a dataset has been analyzed through multiple connections, the response returns the result from the most recently computed connection.\n",
+        "operationId": "getFieldQualitiesFiltered",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldQualitiesFilterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/data-governance/data-qualities/global-results": {
       "get": {
         "tags": [
@@ -317,6 +508,95 @@
           "limit": 1000
         }
       }
+    },
+    "/api/data-governance/data-qualities/global-results/actions/filter": {
+      "post": {
+        "tags": [
+          "data-quality"
+        ],
+        "summary": "Get datasets data quality global results",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataQualityByDatasetIdResponse"
+                }
+              }
+            },
+            "description": "Data quality global results for the requested datasets."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Retrieves the latest computed global quality metrics for a list of datasets. The maximum number of datasets is 100.\nWhen a dataset has been analyzed through multiple connections, the response returns the result from the most recently computed connection.\n",
+        "operationId": "getDataQualityGlobalResultsFiltered",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasetListRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
     }
   },
   "openapi": "3.0.0",
@@ -342,6 +622,116 @@
       }
     },
     "schemas": {
+      "AggregatedQualityMetrics": {
+        "type": "object",
+        "required": [
+          "valid",
+          "invalid",
+          "empty",
+          "total"
+        ],
+        "properties": {
+          "empty": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of empty entries."
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of entries."
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of valid entries."
+          },
+          "invalid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of invalid entries."
+          }
+        },
+        "description": "Aggregated metrics for the field."
+      },
+      "BatchComputationAggregatedStatus": {
+        "enum": [
+          "IN_PROGRESS",
+          "FINISHED"
+        ],
+        "type": "string",
+        "example": "IN_PROGRESS",
+        "description": "Overall status aggregated across all datasets in the batch."
+      },
+      "BatchComputationDatasetStatusResponse": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "status",
+          "computationId"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ExecutionStatus"
+          },
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          },
+          "errorCode": {
+            "$ref": "#/components/schemas/ComputationErrorCode"
+          },
+          "computationId": {
+            "type": "string",
+            "description": "The unique identifier of the individual computation for this dataset."
+          }
+        },
+        "description": "Status of a single dataset within a batch computation."
+      },
+      "BatchComputationStatusResponse": {
+        "type": "object",
+        "required": [
+          "batchComputationId",
+          "status",
+          "computationStatuses"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/BatchComputationAggregatedStatus"
+          },
+          "batchComputationId": {
+            "type": "string",
+            "description": "The unique identifier of the batch computation."
+          },
+          "computationStatuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BatchComputationDatasetStatusResponse"
+            },
+            "description": "Status of each individual dataset computation within the batch."
+          }
+        },
+        "description": "Status of a batch computation, including per-dataset breakdown."
+      },
+      "ComputationErrorCode": {
+        "enum": [
+          "DQ-100",
+          "DQ-110",
+          "DQ-120",
+          "DQ-121",
+          "DQ-130",
+          "DQ-140",
+          "DQ-150",
+          "DQ-200",
+          "DQ-300",
+          "DQ-310",
+          "DQ-320",
+          "DQ-400",
+          "DQ-500",
+          "DQ-160"
+        ],
+        "type": "string",
+        "description": "Error code indicating the reason for failure."
+      },
       "ComputationResponse": {
         "type": "object",
         "required": [
@@ -366,11 +756,59 @@
           }
         }
       },
+      "ComputedInformation": {
+        "type": "object",
+        "required": [
+          "at",
+          "by"
+        ],
+        "properties": {
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-10-01T12:00:00Z",
+            "description": "When the computation occurred."
+          },
+          "by": {
+            "$ref": "#/components/schemas/ComputedUserInformation"
+          }
+        },
+        "description": "Metadata about the computation."
+      },
+      "ComputedUserInformation": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the user."
+          }
+        },
+        "description": "Details about the user who computed the quality."
+      },
       "ConnectionIdType": {
         "type": "string",
         "example": "2b855c3d-426c-4aac-90cf-0edf9fc294d3",
         "pattern": "^[0-9a-zA-Z-]{1,36}$",
         "description": "The ID of the connection"
+      },
+      "DataQualityByDatasetIdResponse": {
+        "type": "object",
+        "required": [
+          "dataQualities"
+        ],
+        "properties": {
+          "dataQualities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QualitiesAndErrorsResponse"
+            },
+            "description": "List of data quality results, one per dataset and connection pair."
+          }
+        },
+        "description": "Response containing data quality global results grouped by dataset."
       },
       "DataQualityComputationRequest": {
         "type": "object",
@@ -402,11 +840,63 @@
         ],
         "description": "Request payload for triggering a data quality computation. The `connectionId` is optional for file-based datasets.\nIf none of the sampling parameters are provided, the following defaults apply:\n- `executionMode: PULLUP`\n- `sampleMode: ABSOLUTE`\n- `sampleSize: 1000`\n"
       },
+      "DatasetFieldQualityRequestItem": {
+        "type": "object",
+        "required": [
+          "datasetId"
+        ],
+        "properties": {
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          }
+        },
+        "description": "A single dataset identifier in a field quality filter request."
+      },
+      "DatasetFieldQualityResult": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "computed",
+          "fields"
+        ],
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldQuality"
+            },
+            "description": "List of fields and their quality metrics."
+          },
+          "computed": {
+            "$ref": "#/components/schemas/ComputedInformation"
+          },
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          }
+        },
+        "description": "Field quality results for a single dataset."
+      },
       "DatasetIdType": {
         "type": "string",
         "example": "669144f5aa2d642638ef1dd0",
         "pattern": "^[0-9a-zA-Z-]{1,36}$",
         "description": "The ID of the dataset"
+      },
+      "DatasetListRequest": {
+        "type": "object",
+        "required": [
+          "datasetIds"
+        ],
+        "properties": {
+          "datasetIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetIdType"
+            },
+            "description": "List of dataset IDs to retrieve results for."
+          }
+        },
+        "description": "Request containing a list of dataset IDs to filter on."
       },
       "DatasetQualityGlobalResultsResponse": {
         "type": "object",
@@ -429,31 +919,68 @@
       },
       "Error": {
         "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "The error code identifying the type of error."
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "A short summary of the error."
           },
           "detail": {
-            "type": "string"
+            "type": "string",
+            "description": "A human-readable explanation of the error."
           }
-        }
+        },
+        "description": "An individual error detail."
       },
       "ErrorResponse": {
         "type": "object",
+        "required": [
+          "errors"
+        ],
         "properties": {
           "errors": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Error"
-            }
+            },
+            "description": "List of errors that occurred."
           },
           "traceId": {
-            "type": "string"
+            "type": "string",
+            "description": "Trace identifier for debugging purposes."
           }
-        }
+        },
+        "description": "Standard error response wrapper."
+      },
+      "ExecutionError": {
+        "type": "object",
+        "required": [
+          "errorCode"
+        ],
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "A human-readable explanation of the failure."
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code identifying the failure reason."
+          },
+          "executedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-10-01T12:00:00Z",
+            "description": "Timestamp when the execution failed."
+          }
+        },
+        "description": "Details of an execution failure."
       },
       "ExecutionStatus": {
         "enum": [
@@ -465,7 +992,137 @@
           "FAILED"
         ],
         "type": "string",
-        "example": "SUCCEEDED"
+        "example": "SUCCEEDED",
+        "description": "Status of a data quality computation."
+      },
+      "FieldInformation": {
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/FieldTypeEnum"
+          },
+          "name": {
+            "type": "string",
+            "example": "customer_id",
+            "description": "The name of the standard type (if applicable)."
+          },
+          "precision": {
+            "$ref": "#/components/schemas/PrecisionEnum"
+          },
+          "semanticTypeId": {
+            "type": "string",
+            "example": "9996fbb942b02a6987534999",
+            "description": "The ID of the semantic type (if applicable)."
+          }
+        },
+        "description": "Information about the type of the field."
+      },
+      "FieldQualitiesFilterRequest": {
+        "type": "object",
+        "required": [
+          "datasets"
+        ],
+        "properties": {
+          "datasets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetFieldQualityRequestItem"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "nullable": false,
+            "description": "List of datasets to retrieve field qualities for."
+          }
+        }
+      },
+      "FieldQualitiesFilterResponse": {
+        "type": "object",
+        "required": [
+          "fieldQualities"
+        ],
+        "properties": {
+          "fieldQualities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetFieldQualityResult"
+            },
+            "description": "List of field quality results per dataset."
+          }
+        },
+        "description": "Response containing field quality results for the requested datasets."
+      },
+      "FieldQuality": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "quality"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the field."
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldInformation"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/Quality"
+          }
+        },
+        "description": "Quality metrics for a single field."
+      },
+      "FieldTypeEnum": {
+        "enum": [
+          "STANDARD",
+          "SEMANTIC"
+        ],
+        "type": "string",
+        "example": "STANDARD",
+        "description": "The kind of the field type."
+      },
+      "PrecisionEnum": {
+        "enum": [
+          "timestamp-millis",
+          "timestamp-micros",
+          "time-millis",
+          "time-micros",
+          "date"
+        ],
+        "type": "string",
+        "example": "timestamp-millis",
+        "description": "The precision of the type (e.g., for date/time fields)."
+      },
+      "QualitiesAndErrorsResponse": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "connectionId",
+          "status"
+        ],
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ExecutionError"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExecutionStatus"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityGlobalResultsResponse"
+          },
+          "datasetId": {
+            "type": "string",
+            "description": "The ID of the dataset"
+          },
+          "connectionId": {
+            "type": "string",
+            "description": "The ID of the connection"
+          }
+        },
+        "description": "Data quality global results or error for a specific dataset and connection."
       },
       "QualitiesGlobalResultsResponse": {
         "type": "object",
@@ -482,6 +1139,30 @@
             "description": "The unique identifier of the connection."
           }
         }
+      },
+      "Quality": {
+        "type": "object",
+        "required": [
+          "type",
+          "aggregated",
+          "rules"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SchemaTypeQuality"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaRulesQuality"
+            },
+            "description": "Quality results per rule applied to this field."
+          },
+          "aggregated": {
+            "$ref": "#/components/schemas/AggregatedQualityMetrics"
+          }
+        },
+        "description": "Quality metrics for the field."
       },
       "QualityGlobalResultsResponse": {
         "type": "object",
@@ -551,6 +1232,103 @@
             "description": "Specifies where the data quality computation takes place. In `PUSHDOWN` mode, it runs within the Cloud Data Warehouse (e.g., Snowflake, Databricks), whereas in `PULLUP` mode, it runs in Qlik Cloud."
           }
         }
+      },
+      "SchemaRuleQuality": {
+        "type": "object",
+        "required": [
+          "valid",
+          "invalid",
+          "notApplicable",
+          "notExecutable",
+          "total"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of cells evaluated by the rule."
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells that passed the rule."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "DISABLED_SEMANTIC_TYPE"
+            ],
+            "description": "List of error identifiers encountered during rule execution."
+          },
+          "invalid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells that failed the rule."
+          },
+          "notApplicable": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells where the rule does not apply."
+          },
+          "notExecutable": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells where the rule could not be executed."
+          }
+        },
+        "description": "Detailed quality counts for a single rule."
+      },
+      "SchemaRulesQuality": {
+        "type": "object",
+        "properties": {
+          "ruleId": {
+            "type": "string",
+            "description": "The unique identifier of the rule."
+          },
+          "quality": {
+            "$ref": "#/components/schemas/SchemaRuleQuality"
+          },
+          "ruleMappingId": {
+            "type": "string",
+            "description": "The unique identifier of the rule mapping."
+          }
+        },
+        "description": "Quality assessment for a specific rule applied to a field."
+      },
+      "SchemaTypeQuality": {
+        "type": "object",
+        "required": [
+          "valid",
+          "invalid",
+          "empty",
+          "total"
+        ],
+        "properties": {
+          "empty": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of empty sample cells."
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of cells in the sample."
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of valid sample cells."
+          },
+          "invalid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of invalid sample cells."
+          }
+        },
+        "description": "Quality metrics based on type validation."
       }
     }
   },
