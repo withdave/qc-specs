@@ -85,6 +85,20 @@
             "in": "query",
             "name": "sort",
             "schema": {
+              "enum": [
+                "+clientId",
+                "-clientId",
+                "+clientName",
+                "-clientName",
+                "+appType",
+                "-appType",
+                "+tenantId",
+                "-tenantId",
+                "+createdAt",
+                "-createdAt",
+                "+updatedAt",
+                "-updatedAt"
+              ],
               "type": "string"
             },
             "required": false,

@@ -687,7 +687,7 @@
           "spaceId": {
             "type": "string",
             "example": "5f0f78b239ff4f0001234567",
-            "description": "The unique identifier of the new space."
+            "description": "The unique identifier of the new space. Leave empty to move to the owner's personal space."
           }
         }
       },

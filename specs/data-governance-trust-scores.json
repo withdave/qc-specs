@@ -1,0 +1,359 @@
+{
+  "info": {
+    "title": "data-governance/trust-scores",
+    "version": ""
+  },
+  "paths": {
+    "/api/data-governance/trust-scores/results/data-sets/actions/filter": {
+      "post": {
+        "tags": [
+          "trust-score-result"
+        ],
+        "summary": "Retrieve Trust Scores in bulk",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrustScoreResultListResponse"
+                }
+              }
+            },
+            "description": "Trust Score results for the requested datasets. Datasets with no computed Trust Score are omitted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Returns the current Trust Score for up to 100 datasets in a single request. Each result includes the overall score, per-axis breakdown (`weight`, `score`, `enabled` state), and per-metric details. Datasets with no computed Trust Score are omitted from the response. Requires `dataset:read` and `dataquality:read` permissions.",
+        "operationId": "filterDatasetsTrustScore",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasetFilterRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "List of dataset IDs to retrieve Trust Scores for. Maximum 100 IDs per request."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "AxisId": {
+        "enum": [
+          "VALIDITY",
+          "COMPLETENESS",
+          "USAGE",
+          "DISCOVERABILITY",
+          "ACCURACY",
+          "DIVERSITY",
+          "TIMELINESS"
+        ],
+        "type": "string",
+        "example": "TIMELINESS",
+        "description": "Defines the axis of the Trust Score."
+      },
+      "AxisResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "weight",
+          "metrics"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/AxisId"
+          },
+          "score": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Computed score for this axis [0, 100]. Omitted when axis is not applicable."
+          },
+          "weight": {
+            "$ref": "#/components/schemas/GenericWeight"
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this axis is enabled in the tenant configuration. Disabled axes have a `weight` of `0` and do not affect the overall score."
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetricResponse"
+            },
+            "description": "Per-metric breakdown contributing to this axis score."
+          },
+          "applicable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this axis is applicable for the dataset. An axis may be enabled but not applicable (for example, `TIMELINESS` when no freshness threshold is set)."
+          },
+          "previousScore": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Axis score from the previous computation, for change tracking."
+          }
+        },
+        "description": "Score and configuration for a single Trust Score axis."
+      },
+      "DatasetFilterRequest": {
+        "type": "object",
+        "required": [
+          "datasetIds"
+        ],
+        "properties": {
+          "datasetIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetId"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "description": "List of dataset IDs to retrieve Trust Scores for. Maximum 100 IDs per request."
+          }
+        },
+        "description": "Request body for batch-filtering Trust Score results by dataset IDs."
+      },
+      "DatasetId": {
+        "type": "string",
+        "example": "Jjk5NNHiUObQe8xTyeLgP5nQjKTpEr8R",
+        "pattern": "^[0-9a-zA-Z-]{1,36}$",
+        "description": "Unique identifier of the dataset."
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "GenericScore": {
+        "type": "number",
+        "format": "float",
+        "maximum": 100,
+        "minimum": 0,
+        "description": "A numeric score value in the range [0, 100]."
+      },
+      "GenericWeight": {
+        "type": "integer",
+        "format": "int32",
+        "example": 50,
+        "maximum": 100,
+        "minimum": 0,
+        "description": "Defines the weight of the axis or metric in the Trust Score."
+      },
+      "MetricId": {
+        "enum": [
+          "VALIDITY_QUALITY",
+          "COMPLETENESS_QUALITY",
+          "USAGE_APPS",
+          "USAGE_APP_VIEWS",
+          "DISCOVERABILITY_DESCRIPTION",
+          "DISCOVERABILITY_TAGS",
+          "DISCOVERABILITY_ACTIVATED",
+          "DISCOVERABILITY_FIELD_DESCRIPTION",
+          "DISCOVERABILITY_FIELD_TAGS",
+          "ACCURACY_QUALITY",
+          "DIVERSITY_SOURCE",
+          "DIVERSITY_VOLUME",
+          "DIVERSITY_EVENNESS",
+          "TIMELINESS_FRESHNESS"
+        ],
+        "type": "string",
+        "example": "TIMELINESS_FRESHNESS",
+        "description": "Defines the metric of the axis in the Trust Score."
+      },
+      "MetricResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "weight"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/MetricId"
+          },
+          "score": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Computed score for this metric [0, 100]. Omitted when metric is not applicable."
+          },
+          "weight": {
+            "$ref": "#/components/schemas/GenericWeight"
+          }
+        },
+        "description": "Score and configuration for a single Trust Score metric within an axis."
+      },
+      "TrustScoreResponse": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "score",
+          "axes",
+          "updatedAt"
+        ],
+        "properties": {
+          "axes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AxisResponse"
+            },
+            "description": "Per-axis breakdown of the Trust Score."
+          },
+          "score": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Overall weighted Trust Score across all enabled axes [0, 100]."
+          },
+          "datasetId": {
+            "type": "string",
+            "example": "Jjk5NNHiUObQe8xTyeLgP5nQjKTpEr8R",
+            "description": "Unique identifier of the dataset this score belongs to."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-03-20T09:12:28Z",
+            "description": "Timestamp of the last Trust Score computation for this dataset."
+          },
+          "previousScore": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Overall Trust Score from the previous computation, for change tracking."
+          }
+        },
+        "description": "Current Trust Score for a single dataset, including the overall weighted score, a per-axis breakdown, and per-metric details within each axis."
+      },
+      "TrustScoreResultListResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TrustScoreResponse"
+            },
+            "description": "List of Trust Score results, one entry per dataset found."
+          }
+        },
+        "description": "Trust Score results for the requested datasets. Datasets with no computed Trust Score are omitted."
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}

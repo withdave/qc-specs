@@ -9,7 +9,7 @@
         "tags": [
           "owl"
         ],
-        "summary": "Generate adaptive cards for all metrics",
+        "summary": "List Adaptive Cards",
         "responses": {
           "200": {
             "content": {
@@ -19,7 +19,7 @@
                 }
               }
             },
-            "description": "Expected response to a valid request."
+            "description": "Returns the requested Adaptive Cards."
           },
           "400": {
             "content": {
@@ -49,7 +49,7 @@
                 }
               }
             },
-            "description": "Forbidden, the requesting JWT does not allow for retrieval of in-app metrics (error code: OWL-003)."
+            "description": "Forbidden, the requesting JWT does not allow retrieval of Adaptive Cards (error code: OWL-003)."
           },
           "500": {
             "content": {
@@ -79,7 +79,7 @@
             },
             "explode": false,
             "required": false,
-            "description": "Filter by analysis types. Repeat parameter to include multiple types (results may match any of the provided types).\nWhen this parameter is present, the rank filter is disabled and all matching analysis types are returned regardless of rank.\n"
+            "description": "Filter by analysis type. Repeat the parameter to include multiple types. When this parameter is present, all matching results are returned regardless of ranking.\n"
           },
           {
             "in": "query",
@@ -164,7 +164,7 @@
               }
             },
             "required": false,
-            "description": "List of category ids from the business glossary. Parsed by the API but not applied to the DB filter in the current implementation."
+            "description": "Filter by category IDs from the business glossary. Category filtering is not currently applied to the result set."
           },
           {
             "in": "query",
@@ -178,7 +178,7 @@
             },
             "explode": false,
             "required": false,
-            "description": "Filter by comparison (aggregation) periods. Example values: D, W, M, Q, Y.\nWhen this parameter is present, the rank filter is disabled and all matching periods are returned regardless of rank.\n"
+            "description": "Filter by comparison period. Example values: `D`, `W`, `M`, `Q`, `Y`. When this parameter is present, all matching results are returned regardless of ranking.\n"
           },
           {
             "in": "query",
@@ -275,7 +275,7 @@
               }
             },
             "required": false,
-            "description": "Comma-separated list of metric IDs to return Adaptive Cards for. When omitted the endpoint may return cards for multiple metrics visible to the tenant."
+            "description": "Filter by metric ID. Repeat the parameter to supply multiple IDs. When omitted, returns cards for all metrics visible to the caller."
           },
           {
             "in": "query",
@@ -323,7 +323,7 @@
               "example": "2023-10-31T00:00:00.000Z"
             },
             "required": false,
-            "description": "Exclusive upper bound for analysis result end time. Use ISO 8601 format (example: 2023-10-31T00:00:00.000Z). The store applies this as endTime < timeRangeEnd."
+            "description": "Exclusive upper bound for filtering by analysis result end time. Use ISO 8601 format."
           },
           {
             "in": "query",
@@ -334,7 +334,7 @@
               "example": "2023-10-01T00:00:00.000Z"
             },
             "required": false,
-            "description": "Inclusive lower bound for analysis result end time. Use ISO 8601 format (example: 2023-10-01T00:00:00.000Z). The store applies this as endTime >= timeRangeStart."
+            "description": "Inclusive lower bound for filtering by analysis result end time. Use ISO 8601 format."
           },
           {
             "in": "query",
@@ -348,7 +348,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "Optional filter to request only one category: measures, dimensions, or breakdowns. When omitted, all categories are returned."
+            "description": "Filter by Adaptive Card category. When omitted, cards from all categories are returned."
           },
           {
             "in": "header",
@@ -360,7 +360,7 @@
             "description": "JWT containing tenant credentials."
           }
         ],
-        "description": "Retrieves Adaptive Card(s) in JSON format. Support fetching of a single card by metric ID or multiple cards by a list of metric IDs. Support filtering by app IDs, measures, dimensions, categories, breakdown dimension, analysis types and triggered time range. When filtering by measures, use appIds parameter to scope results to specific apps, as the same measure expression can exist across multiple apps.\n\n**Ranking behaviour:** When the endpoint is called *without any filter parameters* (bare `GET /adaptive-cards`), only the top-ranked result per metric (rank ≤ 1) or results without a rank field are returned. When *any* DB-reaching filter is supplied (`metricIds`, `dimensions`, `measures`, `appIds`, `breakdowns`, `analysisTypes`, `comparisonPeriods`, `timeRangeStart`, `timeRangeEnd`), ranking is not applied and all matching results are returned so that explicit filters are never silently constrained by rank.\n",
+        "description": "Retrieves Adaptive Cards for in-app metrics. Supports fetching a single card by metric ID or multiple cards by a list of metric IDs. Supports filtering by app IDs, measures, dimensions, categories, breakdown dimensions, analysis types, and triggered time range. When filtering by measures, use the `appIds` parameter to scope results to specific apps, as the same measure expression can exist across multiple apps.\n\nWhen called without any filter parameters, only the top-ranked result per metric is returned. When any filtering parameter is supplied (`metricIds`, `dimensions`, `measures`, `appIds`, `breakdowns`, `analysisTypes`, `comparisonPeriods`, `timeRangeStart`, `timeRangeEnd`), ranking is not applied and all matching results are returned.\n",
         "operationId": "getAdaptiveCards",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -377,7 +377,7 @@
     "schemas": {
       "AdaptiveCard": {
         "type": "object",
-        "description": "Adaptive card"
+        "description": "Adaptive Card"
       },
       "AdaptiveCards": {
         "type": "object",

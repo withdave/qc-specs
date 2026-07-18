@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.49",
+    "version": "1.0.50",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -992,7 +992,7 @@
         "tags": [
           "owl"
         ],
-        "summary": "Generate adaptive cards for all metrics",
+        "summary": "List Adaptive Cards",
         "responses": {
           "200": {
             "content": {
@@ -1002,7 +1002,7 @@
                 }
               }
             },
-            "description": "Expected response to a valid request."
+            "description": "Returns the requested Adaptive Cards."
           },
           "400": {
             "content": {
@@ -1032,7 +1032,7 @@
                 }
               }
             },
-            "description": "Forbidden, the requesting JWT does not allow for retrieval of in-app metrics (error code: OWL-003)."
+            "description": "Forbidden, the requesting JWT does not allow retrieval of Adaptive Cards (error code: OWL-003)."
           },
           "500": {
             "content": {
@@ -1062,7 +1062,7 @@
             },
             "explode": false,
             "required": false,
-            "description": "Filter by analysis types. Repeat parameter to include multiple types (results may match any of the provided types).\nWhen this parameter is present, the rank filter is disabled and all matching analysis types are returned regardless of rank.\n"
+            "description": "Filter by analysis type. Repeat the parameter to include multiple types. When this parameter is present, all matching results are returned regardless of ranking.\n"
           },
           {
             "in": "query",
@@ -1147,7 +1147,7 @@
               }
             },
             "required": false,
-            "description": "List of category ids from the business glossary. Parsed by the API but not applied to the DB filter in the current implementation."
+            "description": "Filter by category IDs from the business glossary. Category filtering is not currently applied to the result set."
           },
           {
             "in": "query",
@@ -1161,7 +1161,7 @@
             },
             "explode": false,
             "required": false,
-            "description": "Filter by comparison (aggregation) periods. Example values: D, W, M, Q, Y.\nWhen this parameter is present, the rank filter is disabled and all matching periods are returned regardless of rank.\n"
+            "description": "Filter by comparison period. Example values: `D`, `W`, `M`, `Q`, `Y`. When this parameter is present, all matching results are returned regardless of ranking.\n"
           },
           {
             "in": "query",
@@ -1258,7 +1258,7 @@
               }
             },
             "required": false,
-            "description": "Comma-separated list of metric IDs to return Adaptive Cards for. When omitted the endpoint may return cards for multiple metrics visible to the tenant."
+            "description": "Filter by metric ID. Repeat the parameter to supply multiple IDs. When omitted, returns cards for all metrics visible to the caller."
           },
           {
             "in": "query",
@@ -1306,7 +1306,7 @@
               "example": "2023-10-31T00:00:00.000Z"
             },
             "required": false,
-            "description": "Exclusive upper bound for analysis result end time. Use ISO 8601 format (example: 2023-10-31T00:00:00.000Z). The store applies this as endTime < timeRangeEnd."
+            "description": "Exclusive upper bound for filtering by analysis result end time. Use ISO 8601 format."
           },
           {
             "in": "query",
@@ -1317,7 +1317,7 @@
               "example": "2023-10-01T00:00:00.000Z"
             },
             "required": false,
-            "description": "Inclusive lower bound for analysis result end time. Use ISO 8601 format (example: 2023-10-01T00:00:00.000Z). The store applies this as endTime >= timeRangeStart."
+            "description": "Inclusive lower bound for filtering by analysis result end time. Use ISO 8601 format."
           },
           {
             "in": "query",
@@ -1331,7 +1331,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "Optional filter to request only one category: measures, dimensions, or breakdowns. When omitted, all categories are returned."
+            "description": "Filter by Adaptive Card category. When omitted, cards from all categories are returned."
           },
           {
             "in": "header",
@@ -1343,7 +1343,7 @@
             "description": "JWT containing tenant credentials."
           }
         ],
-        "description": "Retrieves Adaptive Card(s) in JSON format. Support fetching of a single card by metric ID or multiple cards by a list of metric IDs. Support filtering by app IDs, measures, dimensions, categories, breakdown dimension, analysis types and triggered time range. When filtering by measures, use appIds parameter to scope results to specific apps, as the same measure expression can exist across multiple apps.\n\n**Ranking behaviour:** When the endpoint is called *without any filter parameters* (bare `GET /adaptive-cards`), only the top-ranked result per metric (rank ≤ 1) or results without a rank field are returned. When *any* DB-reaching filter is supplied (`metricIds`, `dimensions`, `measures`, `appIds`, `breakdowns`, `analysisTypes`, `comparisonPeriods`, `timeRangeStart`, `timeRangeEnd`), ranking is not applied and all matching results are returned so that explicit filters are never silently constrained by rank.\n",
+        "description": "Retrieves Adaptive Cards for in-app metrics. Supports fetching a single card by metric ID or multiple cards by a list of metric IDs. Supports filtering by app IDs, measures, dimensions, categories, breakdown dimensions, analysis types, and triggered time range. When filtering by measures, use the `appIds` parameter to scope results to specific apps, as the same measure expression can exist across multiple apps.\n\nWhen called without any filter parameters, only the top-ranked result per metric is returned. When any filtering parameter is supplied (`metricIds`, `dimensions`, `measures`, `appIds`, `breakdowns`, `analysisTypes`, `comparisonPeriods`, `timeRangeStart`, `timeRangeEnd`), ranking is not applied and all matching results are returned.\n",
         "operationId": "getAdaptiveCards",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -6596,7 +6596,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6606,7 +6607,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6721,7 +6723,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6731,7 +6734,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6783,8 +6787,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6794,8 +6797,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6805,8 +6807,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6816,8 +6817,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6827,8 +6827,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -6889,7 +6888,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6899,7 +6899,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6909,7 +6910,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6960,7 +6962,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6970,7 +6973,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -6980,7 +6984,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7040,7 +7045,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7050,7 +7056,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7060,7 +7067,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7166,7 +7174,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7176,7 +7185,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7186,7 +7196,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7246,7 +7257,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7256,7 +7268,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7266,7 +7279,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7340,7 +7354,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7350,7 +7365,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7360,7 +7376,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7422,7 +7439,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7432,7 +7450,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7442,7 +7461,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7518,7 +7538,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7528,7 +7549,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7538,7 +7560,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7611,7 +7634,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7621,7 +7645,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7631,7 +7656,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7704,7 +7730,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7714,7 +7741,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7724,7 +7752,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7858,7 +7887,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7868,7 +7898,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7878,7 +7909,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7938,7 +7970,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7948,7 +7981,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -7958,7 +7992,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8011,7 +8046,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8021,7 +8057,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8031,7 +8068,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8041,7 +8079,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8051,7 +8090,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8123,7 +8163,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8133,7 +8174,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8143,7 +8185,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8219,8 +8262,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -8230,8 +8272,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -8241,8 +8282,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -8252,8 +8292,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -8338,8 +8377,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -8349,8 +8387,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -8360,8 +8397,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -8371,8 +8407,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -8382,8 +8417,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -8454,7 +8488,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8464,7 +8499,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8474,7 +8510,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8589,7 +8626,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8599,7 +8637,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8609,7 +8648,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8680,7 +8720,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8690,7 +8731,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8700,7 +8742,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8764,7 +8807,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8774,7 +8818,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8784,7 +8829,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8871,7 +8917,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8881,7 +8928,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8891,7 +8939,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8980,7 +9029,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -8990,7 +9040,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9000,7 +9051,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9107,7 +9159,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9117,7 +9170,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9127,7 +9181,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9223,7 +9278,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9233,7 +9289,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9243,7 +9300,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9299,7 +9357,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9309,7 +9368,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9319,7 +9379,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9329,7 +9390,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9339,7 +9401,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9409,7 +9472,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9419,7 +9483,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -9429,7 +9494,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -20689,7 +20755,7 @@
               "nullable": true
             },
             "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
-            "description": "Only return files scoped to the specified app.  If this parameter is not specified, only files that are not\r\nscoped to any app are returned.  \"*\" implies all app-scoped files are returned."
+            "description": "Only return files scoped to the specified app.  If this parameter is not specified, only files that are not\nscoped to any app are returned.  \"*\" implies all app-scoped files are returned."
           },
           {
             "in": "query",
@@ -20700,7 +20766,7 @@
               "nullable": true
             },
             "example": "*SomeFileName*",
-            "description": "If present, return only items whose base name matches the given wildcard.  Wildcards include '*' and '?'\r\ncharacters to allow for multiple matches.  The base name is the actual file or folder name without any\r\nfolder pathing included."
+            "description": "If present, return only items whose base name matches the given wildcard.  Wildcards include '*' and '?'\ncharacters to allow for multiple matches.  The base name is the actual file or folder name without any\nfolder pathing included."
           },
           {
             "in": "query",
@@ -20712,7 +20778,7 @@
               "nullable": true
             },
             "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
-            "description": "Return files and folders that reside in the space referenced by the specified DataFiles connection.  If this\r\nparameter is not specified, the user's personal space is implied."
+            "description": "Return files and folders that reside in the space referenced by the specified DataFiles connection.  If this\nparameter is not specified, the user's personal space is implied."
           },
           {
             "in": "query",
@@ -20734,7 +20800,7 @@
               "example": false
             },
             "example": false,
-            "description": "If set to true, exclude folders and files that reside in sub-folders of the root being searched.  If false,\r\ninclude all items in full folder hierarchy that recursively reside under the root.  That is, setting to\r\ntrue results in only the direct children of the root being returned."
+            "description": "If set to true, exclude folders and files that reside in sub-folders of the root being searched.  If false,\ninclude all items in full folder hierarchy that recursively reside under the root.  That is, setting to\ntrue results in only the direct children of the root being returned."
           },
           {
             "in": "query",
@@ -20746,7 +20812,7 @@
               "nullable": true
             },
             "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
-            "description": "If present, return only items which reside under the folder specified by the given ID.  If not present,\r\nitems that live at the root of the space are returned.  This property is mutually exclusive with 'folderPath'."
+            "description": "If present, return only items which reside under the folder specified by the given ID.  If not present,\nitems that live at the root of the space are returned.  This property is mutually exclusive with 'folderPath'."
           },
           {
             "in": "query",
@@ -20757,7 +20823,7 @@
               "nullable": true
             },
             "example": "some/folder",
-            "description": "If present, return only items which reside under the specified folder path.  If not present, items that\r\nlive at the root of the space are returned.  This property is mutually exclusive with 'folderId'."
+            "description": "If present, return only items which reside under the specified folder path.  If not present, items that\nlive at the root of the space are returned.  This property is mutually exclusive with 'folderId'."
           },
           {
             "in": "query",
@@ -20768,7 +20834,7 @@
               "example": false
             },
             "example": false,
-            "description": "If set to true, and connectionId is not specified, return files and folders from all spaces the given user\r\nhas access to (including the personal space).  If connectionId is specified, this parameter is ignored."
+            "description": "If set to true, and connectionId is not specified, return files and folders from all spaces the given user\nhas access to (including the personal space).  If connectionId is specified, this parameter is ignored."
           },
           {
             "in": "query",
@@ -20790,7 +20856,7 @@
               "example": false
             },
             "example": false,
-            "description": "If set to true, include computed folder statistics for folders in the returned list.  If false, this information\r\nis not returned."
+            "description": "If set to true, include computed folder statistics for folders in the returned list.  If false, this information\nis not returned."
           },
           {
             "in": "query",
@@ -20826,7 +20892,7 @@
               "nullable": true
             },
             "example": "lDL4DIINndhL_iJkcbqWyJenuwizP-2D",
-            "description": "If present, fetch the data files whose owner is not the specified owner.  If a connectionId is specified in\r\nthis case, the returned list is constrained to the specified space.  If connectionId is not specified, then\r\nthe returned list is constrained to the calling user's personal space.  If includeAllSpaces is set to true,\r\nand connectionId is not specified, the returned list is from all spaces the given user\r\nhas access to (including the personal space)."
+            "description": "If present, fetch the data files whose owner is not the specified owner.  If a connectionId is specified in\nthis case, the returned list is constrained to the specified space.  If connectionId is not specified, then\nthe returned list is constrained to the calling user's personal space.  If includeAllSpaces is set to true,\nand connectionId is not specified, the returned list is from all spaces the given user\nhas access to (including the personal space)."
           },
           {
             "in": "query",
@@ -20837,7 +20903,7 @@
               "nullable": true
             },
             "example": "lDL4DIINndhL_iJkcbqWyJenuwizP-2D",
-            "description": "If present, fetch the data files for the specified owner.  If a connectionId is specified in this case, the\r\nreturned list is constrained to the specified space.  If connectionId is not specified, then all files owned\r\nby the specified user are returned regardless of the personal space that a given file resides in."
+            "description": "If present, fetch the data files for the specified owner.  If a connectionId is specified in this case, the\nreturned list is constrained to the specified space.  If connectionId is not specified, then all files owned\nby the specified user are returned regardless of the personal space that a given file resides in."
           },
           {
             "in": "query",
@@ -20856,7 +20922,7 @@
             "schema": {
               "$ref": "#/components/schemas/GetDataFileInfosSortField"
             },
-            "description": "The name of the field used to sort the result.  By default, the sort order is ascending.  Putting a '+' prefix on\r\nthe sort field name explicitly indicates ascending sort order.  A '-' prefix indicates a descending sort order."
+            "description": "The name of the field used to sort the result.  By default, the sort order is ascending.  Putting a '+' prefix on\nthe sort field name explicitly indicates ascending sort order.  A '-' prefix indicates a descending sort order."
           }
         ],
         "x-qlik-stability": "stable",
@@ -20969,13 +21035,13 @@
                         "type": "string",
                         "example": "some/folder/MyFile.csv",
                         "pattern": "^[^<>\":\\u0000|?*]+$",
-                        "description": "Name that will be given to the file or folder.  It should be noted that the '/' character\r\nin the name indicates a 'path' separator in a logical folder hierarchy for the name.  Names that\r\ncontain '/'s should be used with the assumption that a logical 'folder hierarchy' is being defined for the\r\nfull pathname of that file or folder.  IE, a '/' is a significant character in the name."
+                        "description": "Name that will be given to the file or folder.  It should be noted that the '/' character\nin the name indicates a 'path' separator in a logical folder hierarchy for the name.  Names that\ncontain '/'s should be used with the assumption that a logical 'folder hierarchy' is being defined for the\nfull pathname of that file or folder.  IE, a '/' is a significant character in the name."
                       },
                       "appId": {
                         "type": "string",
                         "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
                         "nullable": true,
-                        "description": "If this file should be bound to the lifecycle of a specific app, this is the ID of this app.  If this\r\nrequest is creating a folder, the specification of an app ID is not allowed."
+                        "description": "If this file should be bound to the lifecycle of a specific app, this is the ID of this app.  If this\nrequest is creating a folder, the specification of an app ID is not allowed."
                       },
                       "folder": {
                         "type": "boolean",
@@ -20987,30 +21053,30 @@
                         "format": "uuid",
                         "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
                         "nullable": true,
-                        "description": "If the specified file or folder should be moved to become a a sub-item of an existing folder, this is the ID\r\nof this parent folder.  Any additional folder path that is present on the Name property will be created\r\nas a subfolder hierarchy of this folder.  If the FolderID is null, the file or folder specified in the\r\nName property (including any folder prefix on that name), will be created in the root of the space."
+                        "description": "If the specified file or folder should be moved to become a a sub-item of an existing folder, this is the ID\nof this parent folder.  Any additional folder path that is present on the Name property will be created\nas a subfolder hierarchy of this folder.  If the FolderID is null, the file or folder specified in the\nName property (including any folder prefix on that name), will be created in the root of the space."
                       },
                       "sourceId": {
                         "type": "string",
                         "format": "uuid",
                         "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
                         "nullable": true,
-                        "description": "If a SourceId is specified, this is the ID of the existing data file or folder whose content should be copied\r\ninto the specified data file or folder.  That is, for a file instead of the file content being specified in\r\nthe Data element, it is effectively copied from an existing, previously uploaded file.  For a folder, rather\r\nthan the new folder being empty, it's contents are copied from an existing, previously created folder."
+                        "description": "If a SourceId is specified, this is the ID of the existing data file or folder whose content should be copied\ninto the specified data file or folder.  That is, for a file instead of the file content being specified in\nthe Data element, it is effectively copied from an existing, previously uploaded file.  For a folder, rather\nthan the new folder being empty, it's contents are copied from an existing, previously created folder."
                       },
                       "connectionId": {
                         "type": "string",
                         "format": "uuid",
                         "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
                         "nullable": true,
-                        "description": "If present, this is the DataFiles connection that the upload should occur in the context of.  If absent,\r\nthe default is that the upload will occur in the context of the Personal Space DataFiles connection.  If the\r\nDataFiles connection is different from the one specified when the file or folder was last POSTed or PUT, this\r\nwill result in a logical move of this file or folder into the new space."
+                        "description": "If present, this is the DataFiles connection that the upload should occur in the context of.  If absent,\nthe default is that the upload will occur in the context of the Personal Space DataFiles connection.  If the\nDataFiles connection is different from the one specified when the file or folder was last POSTed or PUT, this\nwill result in a logical move of this file or folder into the new space."
                       },
                       "tempContentFileId": {
                         "type": "string",
                         "example": "624b0f54459f1c00018dade4",
                         "nullable": true,
-                        "description": "If a TempContentFileId is specified, this is the ID of a previously uploaded temporary content file whose\r\ncontent should be copied into the specified data file.  That is, instead of the file content being specified\r\nin the Data element, it is effectively copied from an existing, previously uploaded file.  The expectation\r\nis that this file was previously uploaded to the temporary content service, and the ID specified here is\r\nthe one returned from the temp content upload request.  This option does not apply when POSTing a folder."
+                        "description": "If a TempContentFileId is specified, this is the ID of a previously uploaded temporary content file whose\ncontent should be copied into the specified data file.  That is, instead of the file content being specified\nin the Data element, it is effectively copied from an existing, previously uploaded file.  The expectation\nis that this file was previously uploaded to the temporary content service, and the ID specified here is\nthe one returned from the temp content upload request.  This option does not apply when POSTing a folder."
                       }
                     },
-                    "description": "See PostDataFileRequest schema which defines request structure.\n See  model.",
+                    "description": "See PostDataFileRequest schema which defines request structure.\n See PostDataFileRequest model.",
                     "additionalProperties": false
                   }
                 }
@@ -21020,6 +21086,7 @@
                   "style": "form"
                 },
                 "Json": {
+                  "explode": false,
                   "contentType": "application/json"
                 }
               }
@@ -21158,7 +21225,7 @@
                 }
               }
             },
-            "description": "If the file or folder was renamed during the update, a file or folder with the new name\r\n            already exists.  Also, if the space that the file or folder resides in was changed as part of the update,\r\n            a file or folder with the same name already resides in the new space."
+            "description": "If the file or folder was renamed during the update, a file or folder with the new name\n            already exists.  Also, if the space that the file or folder resides in was changed as part of the update,\n            a file or folder with the same name already resides in the new space."
           },
           "413": {
             "content": {
@@ -21178,7 +21245,7 @@
                 }
               }
             },
-            "description": "The file is already locked for read or write by another client.  If a folder is being\r\n            updated, then if any file or folder in the subfolder hierarchy of this folder is already locked for write."
+            "description": "The file is already locked for read or write by another client.  If a folder is being\n            updated, then if any file or folder in the subfolder hierarchy of this folder is already locked for write."
           }
         },
         "parameters": [
@@ -21214,46 +21281,46 @@
                         "example": "some/folder/MyFile.csv",
                         "pattern": "^[^<>\":\\u0000|?*]+$",
                         "nullable": true,
-                        "description": "Name that will be given to the file or folder.  If this name is different than the name used when the file\r\nor folder was last POSTed or PUT, this will result in a rename of the file or folder.  It should be noted\r\nthat the '/' character in a data file name indicates a 'path' separator in a logical folder hierarchy for\r\nthe name.  Names that contain '/'s should be used with the assumption that a logical 'folder hierarchy' is\r\nbeing defined for the full pathname of that file or folder..  '/' is a significant character in the data file\r\nor folder name."
+                        "description": "Name that will be given to the file or folder.  If this name is different than the name used when the file\nor folder was last POSTed or PUT, this will result in a rename of the file or folder.  It should be noted\nthat the '/' character in a data file name indicates a 'path' separator in a logical folder hierarchy for\nthe name.  Names that contain '/'s should be used with the assumption that a logical 'folder hierarchy' is\nbeing defined for the full pathname of that file or folder..  '/' is a significant character in the data file\nor folder name."
                       },
                       "appId": {
                         "type": "string",
                         "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
                         "nullable": true,
-                        "description": "If this file should be bound to the lifecycle of a specific app, this is the ID of this app.  If this\r\nrequest is creating a folder, the specification of an app ID is not allowed."
+                        "description": "If this file should be bound to the lifecycle of a specific app, this is the ID of this app.  If this\nrequest is creating a folder, the specification of an app ID is not allowed."
                       },
                       "folderId": {
                         "type": "string",
                         "format": "uuid",
                         "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
                         "nullable": true,
-                        "description": "If the specified file or folder should be created as a sub-item of an existing folder, this is the ID\r\nof this parent folder.  Any additional folder path that is present on the Name property will be created\r\nas a subfolder hierarchy of this folder.  If the FolderID is null, the file or folder specified in the\r\nName property (including any folder prefix on that name), will be created in the root of the space."
+                        "description": "If the specified file or folder should be created as a sub-item of an existing folder, this is the ID\nof this parent folder.  Any additional folder path that is present on the Name property will be created\nas a subfolder hierarchy of this folder.  If the FolderID is null, the file or folder specified in the\nName property (including any folder prefix on that name), will be created in the root of the space."
                       },
                       "sourceId": {
                         "type": "string",
                         "format": "uuid",
                         "example": "f34b91a1-0dc3-44ac-a847-51cb84122c84",
                         "nullable": true,
-                        "description": "If a SourceId is specified, this is the ID of the existing data file or folder whose content should be copied\r\ninto the specified data file or folder.  That is, for a file instead of the file content being specified in\r\nthe Data element, it is effectively copied from an existing, previously uploaded file.  For a folder, it's\r\ncontents are copied from an existing, previously created folder.  If there it existing content in the target\r\nfolder, then how the source and target folder contents are merged together is specified in the\r\nFolderMergeBehavior option."
+                        "description": "If a SourceId is specified, this is the ID of the existing data file or folder whose content should be copied\ninto the specified data file or folder.  That is, for a file instead of the file content being specified in\nthe Data element, it is effectively copied from an existing, previously uploaded file.  For a folder, it's\ncontents are copied from an existing, previously created folder.  If there it existing content in the target\nfolder, then how the source and target folder contents are merged together is specified in the\nFolderMergeBehavior option."
                       },
                       "connectionId": {
                         "type": "string",
                         "format": "uuid",
                         "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
                         "nullable": true,
-                        "description": "If present, this is the DataFiles connection points to the space that the file or folder should reside in.\r\nIf absent, the default is that the file or folder will reside in the Personal SPce.  If the DataFiles\r\nconnection is different from the one specified when the file or folder was last POSTed or PUT, this will\r\nresult in a logical move of this file or folder into the new space."
+                        "description": "If present, this is the DataFiles connection points to the space that the file or folder should reside in.\nIf absent, the default is that the file or folder will reside in the Personal SPce.  If the DataFiles\nconnection is different from the one specified when the file or folder was last POSTed or PUT, this will\nresult in a logical move of this file or folder into the new space."
                       },
                       "tempContentFileId": {
                         "type": "string",
                         "example": "624b0f54459f1c00018dade4",
                         "nullable": true,
-                        "description": "If a TempContentFileId is specified, this is the ID of a previously uploaded temporary content file whose\r\ncontent should be copied into the specified data file.  That is, instead of the file content being specified\r\nin the Data element, it is effectively copied from an existing, previously uploaded file.  The expectation\r\nis that this file was previously uploaded to the temporary content service, and the ID specified here is\r\nthe one returned from the temp content upload request."
+                        "description": "If a TempContentFileId is specified, this is the ID of a previously uploaded temporary content file whose\ncontent should be copied into the specified data file.  That is, instead of the file content being specified\nin the Data element, it is effectively copied from an existing, previously uploaded file.  The expectation\nis that this file was previously uploaded to the temporary content service, and the ID specified here is\nthe one returned from the temp content upload request."
                       },
                       "folderMergeBehavior": {
                         "$ref": "#/components/schemas/PutDataFileFolderMergeBehavior"
                       }
                     },
-                    "description": "See PutDataFileRequest schema which defines request structure.\n See  model.",
+                    "description": "See PutDataFileRequest schema which defines request structure.\n See PutDataFileRequest model.",
                     "additionalProperties": false
                   }
                 }
@@ -21263,6 +21330,7 @@
                   "style": "form"
                 },
                 "Json": {
+                  "explode": false,
                   "contentType": "application/json"
                 }
               }
@@ -21281,7 +21349,7 @@
         "tags": [
           "datafiles"
         ],
-        "summary": "Delete the specified data file or folder.  Deleting a folder will also recursively delete all files and\r\nsubfolders that reside within the specified folder.",
+        "summary": "Delete the specified data file or folder.  Deleting a folder will also recursively delete all files and\nsubfolders that reside within the specified folder.",
         "responses": {
           "204": {
             "description": "The file or folder was deleted."
@@ -21367,7 +21435,7 @@
                 }
               }
             },
-            "description": "The user does not have permission to modify the specified data file or folder, or if the\r\n            item does not reside in the root of the space."
+            "description": "The user does not have permission to modify the specified data file or folder, or if the\n            item does not reside in the root of the space."
           },
           "404": {
             "content": {
@@ -21387,7 +21455,7 @@
                 }
               }
             },
-            "description": "If the file or folder is in a personal space, and the personal space of the new owner\r\n            already has an item in the space with the same name as the item being moved."
+            "description": "If the file or folder is in a personal space, and the personal space of the new owner\n            already has an item in the space with the same name as the item being moved."
           },
           "423": {
             "content": {
@@ -21397,7 +21465,7 @@
                 }
               }
             },
-            "description": "The file or folder is already locked for write by another client.  For folders, any\r\n            write lock on a subfolder or file underneath this folder implies a lock on the folder."
+            "description": "The file or folder is already locked for write by another client.  For folders, any\n            write lock on a subfolder or file underneath this folder implies a lock on the folder."
           }
         },
         "parameters": [
@@ -21413,7 +21481,7 @@
             "description": "The ID of the data file or folder whose owner will be updated."
           }
         ],
-        "description": "This is primarily an admin type of operation.  In general, the owner of a data file or folder is implicitly\r\nset as part of a create or update operation.  For data files or folders that reside in a personal space,\r\nchanging the owner has the effect of moving the data file to the new owner's personal space.  Note that,\r\nIf a given file or folder is not in the root of a personal space, this operation will not succeed, since\r\nthe parent folder does not reside in the target owner's personal space.  If the owner of a folder in the\r\nroot of a personal space is changed, the owner of all subfolders and files within those subfolders will\r\nalso recursively change.",
+        "description": "This is primarily an admin type of operation.  In general, the owner of a data file or folder is implicitly\nset as part of a create or update operation.  For data files or folders that reside in a personal space,\nchanging the owner has the effect of moving the data file to the new owner's personal space.  Note that,\nIf a given file or folder is not in the root of a personal space, this operation will not succeed, since\nthe parent folder does not reside in the target owner's personal space.  If the owner of a folder in the\nroot of a personal space is changed, the owner of all subfolders and files within those subfolders will\nalso recursively change.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -21461,7 +21529,7 @@
                 }
               }
             },
-            "description": "The user does not have permission to modify the specified data file or folder, or if the\r\n            item does not reside in the root of the space."
+            "description": "The user does not have permission to modify the specified data file or folder, or if the\n            item does not reside in the root of the space."
           },
           "404": {
             "content": {
@@ -21481,7 +21549,7 @@
                 }
               }
             },
-            "description": "If there is a file or folder in the target space with the same name as the item being\r\n            moved."
+            "description": "If there is a file or folder in the target space with the same name as the item being\n            moved."
           },
           "423": {
             "content": {
@@ -21491,7 +21559,7 @@
                 }
               }
             },
-            "description": "The file is already locked for write by another client.  For folders, any write lock on\r\n            a subfolder or file underneath this folder implies a lock on the folder."
+            "description": "The file is already locked for write by another client.  For folders, any write lock on\n            a subfolder or file underneath this folder implies a lock on the folder."
           }
         },
         "parameters": [
@@ -21504,10 +21572,10 @@
             },
             "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
             "required": true,
-            "description": "The ID of the data file or folder whose\r\n            space will be updated."
+            "description": "The ID of the data file or folder whose\n            space will be updated."
           }
         ],
-        "description": "This is to allow for a separate admin type of operation that is more global in terms of access in cases\r\nwhere admin users may not explicitly have been granted full access to a given space within the declared\r\nspace-level permissions.  If the space ID is set to null, then the datafile or folder will end up residing\r\nin the personal space of the user who is the owner of the item.  Note that, if a given file or folder is not\r\nin the root of a given space, this operation will not succeed, since the parent folder does not reside in\r\nthe target space.  If the space of a folder in the root of the source space is changed, all subfolders and\r\nfiles within those subfolders will also recursively be moved to the new space.",
+        "description": "This is to allow for a separate admin type of operation that is more global in terms of access in cases\nwhere admin users may not explicitly have been granted full access to a given space within the declared\nspace-level permissions.  If the space ID is set to null, then the datafile or folder will end up residing\nin the personal space of the user who is the owner of the item.  Note that, if a given file or folder is not\nin the root of a given space, this operation will not succeed, since the parent folder does not reside in\nthe target space.  If the space of a folder in the root of the source space is changed, all subfolders and\nfiles within those subfolders will also recursively be moved to the new space.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -21555,7 +21623,7 @@
             "description": "Bad Request"
           }
         },
-        "description": "This is to allow for a separate admin type of operation that is more global in terms of access in cases\r\nwhere admin users may not explicitly have been granted full access to a given space within the declared\r\nspace-level permissions.  If the space ID is set to null, then the data file or folder will end up residing\r\nin the personal space of the user who is the owner of the item.",
+        "description": "This is to allow for a separate admin type of operation that is more global in terms of access in cases\nwhere admin users may not explicitly have been granted full access to a given space within the declared\nspace-level permissions.  If the space ID is set to null, then the data file or folder will end up residing\nin the personal space of the user who is the owner of the item.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -21564,7 +21632,7 @@
               }
             }
           },
-          "description": "The batch of IDs for each data file in the batch whose space will be changed along with\r\n            the space IDs for each change."
+          "description": "The batch of IDs for each data file in the batch whose space will be changed along with\n            the space IDs for each change."
         },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -21681,7 +21749,7 @@
               "example": false
             },
             "example": false,
-            "description": "If set to true, include computed space-level statistics for the spaces represented by the connections in the\r\nreturned list.  If false, this information is not returned."
+            "description": "If set to true, include computed space-level statistics for the spaces represented by the connections in the\nreturned list.  If false, this information is not returned."
           },
           {
             "in": "query",
@@ -21736,7 +21804,7 @@
             "schema": {
               "$ref": "#/components/schemas/GetConnectionsSortField"
             },
-            "description": "The name of the field used to sort the result.  By default, the sort is ascending.  Putting a '+' prefix on\r\nthe sort field name explicitly indicates ascending sort order.  A '-' prefix indicates a descending sort order."
+            "description": "The name of the field used to sort the result.  By default, the sort is ascending.  Putting a '+' prefix on\nthe sort field name explicitly indicates ascending sort order.  A '-' prefix indicates a descending sort order."
           },
           {
             "in": "query",
@@ -21750,7 +21818,7 @@
             "description": "If present, only return the connection that accesses data files in the specified space."
           }
         ],
-        "description": "The non-filtered list contains a set of hardcoded connections, along with one connection per team space that\r\nthe given user has access to.",
+        "description": "The non-filtered list contains a set of hardcoded connections, along with one connection per team space that\nthe given user has access to.",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
@@ -22404,6 +22472,109 @@
         }
       }
     },
+    "/api/data-governance/data-products/{dataProductId}/actions/compute-datasets-data-quality": {
+      "post": {
+        "tags": [
+          "data-product-data-quality"
+        ],
+        "summary": "Trigger data quality computation for the data-product's datasets",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetsComputationResponse"
+                }
+              }
+            },
+            "headers": {
+              "location": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "/api/data-governance/data-qualities/batch-computations/12345",
+                "description": "Location where the result can be retrieved"
+              }
+            },
+            "description": "Data quality computation triggered successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service temporarily unavailable. Retry the request."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DataProductIdPath"
+          }
+        ],
+        "description": "Triggers a full data quality computation for all datasets in the data product, running profile calculation followed by data quality\nassessment. Returns a `batchComputationId` that can be used to track overall progress via the batch computation status endpoint\n(`GET /api/data-governance/data-qualities/batch-computations/{batchComputationId}`). The computation runs asynchronously.\nPoll the status endpoint until `status` is `FINISHED`.\n",
+        "operationId": "requestDataQualityComputation",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/data-governance/data-products/{dataProductId}/actions/deactivate": {
       "post": {
         "tags": [
@@ -22930,6 +23101,108 @@
         }
       }
     },
+    "/api/data-governance/data-qualities/batch-computations/{batchComputationId}": {
+      "get": {
+        "tags": [
+          "computation"
+        ],
+        "summary": "Get batch computation status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchComputationStatusResponse"
+                }
+              }
+            },
+            "description": "Batch computation status retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Batch computation not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "batchComputationId",
+            "schema": {
+              "type": "string",
+              "example": "a3f1b2c4-5678-90ab-cdef-1234567890ab",
+              "pattern": "^[a-zA-Z0-9-]{1,36}$"
+            },
+            "required": true,
+            "description": "Batch computation ID for tracking progress of the overall data quality computations."
+          }
+        ],
+        "description": "Retrieves the status of a batch computation, including per-dataset statuses.",
+        "operationId": "getBatchComputationStatus",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/data-governance/data-qualities/computations": {
       "post": {
         "tags": [
@@ -23141,6 +23414,95 @@
         }
       }
     },
+    "/api/data-governance/data-qualities/field-qualities/actions/filter": {
+      "post": {
+        "tags": [
+          "data-quality"
+        ],
+        "summary": "Retrieve field qualities for multiple datasets",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldQualitiesFilterResponse"
+                }
+              }
+            },
+            "description": "Field qualities retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Retrieves the latest computed field quality metrics for a list of datasets. The maximum number of datasets is 100.\nWhen a dataset has been analyzed through multiple connections, the response returns the result from the most recently computed connection.\n",
+        "operationId": "getFieldQualitiesFiltered",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldQualitiesFilterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/data-governance/data-qualities/global-results": {
       "get": {
         "tags": [
@@ -23241,6 +23603,185 @@
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
+        }
+      }
+    },
+    "/api/data-governance/data-qualities/global-results/actions/filter": {
+      "post": {
+        "tags": [
+          "data-quality"
+        ],
+        "summary": "Get datasets data quality global results",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataQualityByDatasetIdResponse"
+                }
+              }
+            },
+            "description": "Data quality global results for the requested datasets."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Retrieves the latest computed global quality metrics for a list of datasets. The maximum number of datasets is 100.\nWhen a dataset has been analyzed through multiple connections, the response returns the result from the most recently computed connection.\n",
+        "operationId": "getDataQualityGlobalResultsFiltered",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasetListRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/trust-scores/results/data-sets/actions/filter": {
+      "post": {
+        "tags": [
+          "trust-score-result"
+        ],
+        "summary": "Retrieve Trust Scores in bulk",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrustScoreResultListResponse"
+                }
+              }
+            },
+            "description": "Trust Score results for the requested datasets. Datasets with no computed Trust Score are omitted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Returns the current Trust Score for up to 100 datasets in a single request. Each result includes the overall score, per-axis breakdown (`weight`, `score`, `enabled` state), and per-metric details. Datasets with no computed Trust Score are omitted from the response. Requires `dataset:read` and `dataquality:read` permissions.",
+        "operationId": "filterDatasetsTrustScore",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasetFilterRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "List of dataset IDs to retrieve Trust Scores for. Maximum 100 IDs per request."
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
         }
       }
     },
@@ -35867,7 +36408,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -35877,7 +36419,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -35984,7 +36527,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -35994,7 +36538,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36055,7 +36600,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36065,7 +36611,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36075,7 +36622,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36131,7 +36679,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36141,7 +36690,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36151,7 +36701,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36161,7 +36712,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36171,7 +36723,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36241,7 +36794,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36251,7 +36805,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36261,7 +36816,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36312,8 +36868,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -36323,8 +36878,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -36334,8 +36888,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -36345,8 +36898,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -36356,8 +36908,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             },
@@ -36417,7 +36968,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36427,7 +36979,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36437,7 +36990,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36497,7 +37051,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36507,7 +37062,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36517,7 +37073,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36579,7 +37136,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36589,7 +37147,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36599,7 +37158,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36661,7 +37221,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36671,7 +37232,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36681,7 +37243,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36743,7 +37306,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36753,7 +37317,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36763,7 +37328,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36834,7 +37400,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36844,7 +37411,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36854,7 +37422,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36924,7 +37493,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36934,7 +37504,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -36944,7 +37515,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37045,7 +37617,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37055,7 +37628,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37065,7 +37639,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37138,7 +37713,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37148,7 +37724,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37158,7 +37735,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37228,7 +37806,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37238,7 +37817,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37248,7 +37828,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37310,7 +37891,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37320,7 +37902,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37330,7 +37913,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37392,7 +37976,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37402,7 +37987,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -37412,7 +37998,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/errorResponse"
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
                 }
               }
             },
@@ -42329,6 +42916,20 @@
             "in": "query",
             "name": "sort",
             "schema": {
+              "enum": [
+                "+clientId",
+                "-clientId",
+                "+clientName",
+                "-clientName",
+                "+appType",
+                "-appType",
+                "+tenantId",
+                "-tenantId",
+                "+createdAt",
+                "-createdAt",
+                "+updatedAt",
+                "-updatedAt"
+              ],
               "type": "string"
             },
             "required": false,
@@ -60987,7 +61588,7 @@
       },
       "AdaptiveCard": {
         "type": "object",
-        "description": "Adaptive card"
+        "description": "Adaptive Card"
       },
       "AdaptiveCards": {
         "type": "object",
@@ -66134,7 +66735,8 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "Custom error codes\n* AE-1 - Internal processing error\n* AE-2 - Incorrect request\n* AE-3 - Authentication issue\n* AE-4 - Prompt is rejected\n* AE-5 - Resource is not found\n* AE-6 - API usage rate limit is exceeded\n* AE-7 - Method is not allowed\n"
           },
           "title": {
             "type": "string"
@@ -66148,8 +66750,7 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "string",
-            "description": "Custom error codes\n* AE-1 - Internal processing error\n* AE-2 - Incorrect request\n* AE-3 - Authentication issue\n* AE-4 - Prompt is rejected\n* AE-5 - Resource is not found\n* AE-6 - API usage rate limit is exceeded\n* AE-7 - Method is not allowed\n"
+            "type": "string"
           },
           "title": {
             "type": "string"
@@ -67388,7 +67989,7 @@
           "spaceId": {
             "type": "string",
             "example": "5f0f78b239ff4f0001234567",
-            "description": "The unique identifier of the new space."
+            "description": "The unique identifier of the new space. Leave empty to move to the owner's personal space."
           }
         }
       },
@@ -73849,7 +74450,7 @@
             "type": "string",
             "example": "617979737a9f56e49dea2e6e",
             "nullable": true,
-            "description": "The ID of the new space.  Passing in a null will result in the data file being moved to the user's\r\npersonal space."
+            "description": "The ID of the new space.  Passing in a null will result in the data file being moved to the user's\npersonal space."
           }
         },
         "additionalProperties": false
@@ -73939,7 +74540,7 @@
             "type": "string",
             "example": "617979737a9f56e49dea2e6e",
             "nullable": true,
-            "description": "The team space that the given connection is associated with.  If null, the connection is not associated\r\nwith any specific team space."
+            "description": "The team space that the given connection is associated with.  If null, the connection is not associated\nwith any specific team space."
           },
           "spaceStats": {
             "$ref": "#/components/schemas/SpaceStatsResponse"
@@ -74087,13 +74688,13 @@
             "format": "uuid",
             "example": "ee6a390c-5d33-11e8-9c2d-fa7ae01bbebc",
             "nullable": true,
-            "description": "If the file or folder resides in a parent folder, this is the parent folder ID.  If the file or folder\r\ndoes not reside in a parent folder, this value is null."
+            "description": "If the file or folder resides in a parent folder, this is the parent folder ID.  If the file or folder\ndoes not reside in a parent folder, this value is null."
           },
           "folderPath": {
             "type": "string",
             "example": "some/folder",
             "nullable": true,
-            "description": "If the file or folder resides in a parent folder, this is the parent folder path.  If the file or folder\r\ndoes not reside in a parent folder, this value is null."
+            "description": "If the file or folder resides in a parent folder, this is the parent folder path.  If the file or folder\ndoes not reside in a parent folder, this value is null."
           },
           "createdDate": {
             "type": "string",
@@ -74164,7 +74765,7 @@
         ],
         "type": "string",
         "example": "HTTP-200",
-        "description": "Fine-grained error codes for data-files REST operations.  For operations which do not have a more fine-grained\r\nerror code, the error code is set to the HTTP status code.<p>Members:</p><ul><li><i>DF-001</i> - The page cursor passed as a parameter to the GET operation is invalid.</li><li><i>DF-002</i> - The sort specification passed as a parameter to the GET operation is invalid.</li><li><i>DF-003</i> - FolderPath and FolderId are mutually exclusive, they cannot both be passed as parameters.</li><li><i>DF-004</i> - The provided FolderPath must be in canonical form.</li><li><i>DF-005</i> - The specified parent folder cannot be found.</li><li><i>DF-006</i> - The specified owner cannot be found.</li><li><i>DF-007</i> - A connection corresponding to the specified space cannot be found.</li><li><i>DF-008</i> - THe specified ID must correspond to a folder, not a file.</li><li><i>DF-009</i> - The specified space cannot be found.</li><li><i>DF-010</i> - The specified file name contains an invalid file extension.</li><li><i>DF-011</i> - The specified file name is missing a file extension.</li><li><i>DF-012</i> - The specified temporary content file could not be found.</li><li><i>DF-013</i> - Access to the specified space is forbidden.</li><li><i>DF-014</i> - The specified connection cannot be found.</li><li><i>DF-015</i> - The provided filename must be in canonical form.</li><li><i>DF-016</i> - The datafile size quota for the given personal space has been exceeded.</li><li><i>DF-017</i> - The specified source file or folder could not be found.</li><li><i>DF-018</i> - The source and target of a datafile operation must either both be folders or both be files, but they are\n            not.</li><li><i>DF-019</i> - The specified target folder is a child of the specified source folder, which is not allowed.</li><li><i>DF-020</i> - The specified folder does not exist in the specified space.</li><li><i>DF-021</i> - The specified source file or folder is already locked.</li><li><i>DF-022</i> - The automatic creation of a missing parent folder failed.</li><li><i>DF-023</i> - An attempt to lock a parent folder of a given data file item failed.</li><li><i>DF-024</i> - The attempt to copy a source file or folder to a target failed.</li><li><i>DF-025</i> - The specified target file or folder is already locked.</li><li><i>DF-026</i> - The request results in the creation of a folder hierarchy which is beyond the max allowed folder\n            hierarchy depth.</li></ul>"
+        "description": "Fine-grained error codes for data-files REST operations.  For operations which do not have a more fine-grained\nerror code, the error code is set to the HTTP status code.<p>Members:</p><ul><li><i>DF-001</i> - The page cursor passed as a parameter to the GET operation is invalid.</li><li><i>DF-002</i> - The sort specification passed as a parameter to the GET operation is invalid.</li><li><i>DF-003</i> - FolderPath and FolderId are mutually exclusive, they cannot both be passed as parameters.</li><li><i>DF-004</i> - The provided FolderPath must be in canonical form.</li><li><i>DF-005</i> - The specified parent folder cannot be found.</li><li><i>DF-006</i> - The specified owner cannot be found.</li><li><i>DF-007</i> - A connection corresponding to the specified space cannot be found.</li><li><i>DF-008</i> - THe specified ID must correspond to a folder, not a file.</li><li><i>DF-009</i> - The specified space cannot be found.</li><li><i>DF-010</i> - The specified file name contains an invalid file extension.</li><li><i>DF-011</i> - The specified file name is missing a file extension.</li><li><i>DF-012</i> - The specified temporary content file could not be found.</li><li><i>DF-013</i> - Access to the specified space is forbidden.</li><li><i>DF-014</i> - The specified connection cannot be found.</li><li><i>DF-015</i> - The provided filename must be in canonical form.</li><li><i>DF-016</i> - The datafile size quota for the given personal space has been exceeded.</li><li><i>DF-017</i> - The specified source file or folder could not be found.</li><li><i>DF-018</i> - The source and target of a datafile operation must either both be folders or both be files, but they are\n            not.</li><li><i>DF-019</i> - The specified target folder is a child of the specified source folder, which is not allowed.</li><li><i>DF-020</i> - The specified folder does not exist in the specified space.</li><li><i>DF-021</i> - The specified source file or folder is already locked.</li><li><i>DF-022</i> - The automatic creation of a missing parent folder failed.</li><li><i>DF-023</i> - An attempt to lock a parent folder of a given data file item failed.</li><li><i>DF-024</i> - The attempt to copy a source file or folder to a target failed.</li><li><i>DF-025</i> - The specified target file or folder is already locked.</li><li><i>DF-026</i> - The request results in the creation of a folder hierarchy which is beyond the max allowed folder\n            hierarchy depth.</li></ul>"
       },
       "ErrorResponseItem": {
         "type": "object",
@@ -74215,7 +74816,7 @@
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of data files that reside as direct and indirect children of the given folder and it's sub-folder\r\nhierarchy."
+            "description": "The number of data files that reside as direct and indirect children of the given folder and it's sub-folder\nhierarchy."
           },
           "directFileCount": {
             "type": "integer",
@@ -74227,13 +74828,13 @@
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of folders that reside as direct and indirect children of the given folder and it's sub-folder\r\nhierarchy."
+            "description": "The number of folders that reside as direct and indirect children of the given folder and it's sub-folder\nhierarchy."
           },
           "aggregateFileSize": {
             "type": "integer",
             "format": "int64",
             "example": 10000,
-            "description": "The sum of the file sizes, in bytes, of all data files that reside as direct and indirect children of the given\r\nfolder and it's sub-folder hierarchy."
+            "description": "The sum of the file sizes, in bytes, of all data files that reside as direct and indirect children of the given\nfolder and it's sub-folder hierarchy."
           },
           "directFolderCount": {
             "type": "integer",
@@ -74245,19 +74846,19 @@
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\r\ndirect and indirect children of the given folder and it's sub-folder hierarchy."
+            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\ndirect and indirect children of the given folder and it's sub-folder hierarchy."
           },
           "directInternalFileCount": {
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\r\ndirect children of the given folder."
+            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\ndirect children of the given folder."
           },
           "totalAppScopedFileCount": {
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of app-scoped data files that reside as direct and indirect children of the given folder and it's\r\nsub-folder hierarchy."
+            "description": "The number of app-scoped data files that reside as direct and indirect children of the given folder and it's\nsub-folder hierarchy."
           },
           "directAppScopedFileCount": {
             "type": "integer",
@@ -74269,13 +74870,13 @@
             "type": "integer",
             "format": "int64",
             "example": 10000,
-            "description": "The sum of the file sizes, in bytes, of all internal data files that reside as direct and indirect children of\r\nthe given folder and it's sub-folder hierarchy."
+            "description": "The sum of the file sizes, in bytes, of all internal data files that reside as direct and indirect children of\nthe given folder and it's sub-folder hierarchy."
           },
           "aggregateAppScopedFileSize": {
             "type": "integer",
             "format": "int64",
             "example": 10000,
-            "description": "The sum of the file sizes, in bytes, of all app-scoped data files that reside as direct and indirect children of\r\nthe given folder and it's sub-folder hierarchy."
+            "description": "The sum of the file sizes, in bytes, of all app-scoped data files that reside as direct and indirect children of\nthe given folder and it's sub-folder hierarchy."
           }
         },
         "additionalProperties": false
@@ -74413,7 +75014,7 @@
         ],
         "type": "string",
         "example": "merge",
-        "description": "If a SourceId is specified, and a folder is being updated by this PUT operation, this specifies how the\r\nsource folder contents should be applied to the target folder, if the target folder is not empty.  'merge'\r\nimplies the contents of the source folder should be merged with the existing target contents.  That is, all\r\nexisting direct or indirect child items in the target folder are replaced by the same items in the source folder.\r\nAll existing items in the target folder that are not present in the source folder are left, as is, in the target.\r\n'replace' implies the contents of the source folder should replace the contents of the target folder.  That is,\r\nall direct or indirect items in the target folder are removed before the items from the source folder are copied\r\nover.  The resulting target folder only contains the items from the source folder.  If not specified, the default\r\nbehavior is 'merge'.<p>Members:</p><ul></ul>"
+        "description": "If a SourceId is specified, and a folder is being updated by this PUT operation, this specifies how the\nsource folder contents should be applied to the target folder, if the target folder is not empty.  'merge'\nimplies the contents of the source folder should be merged with the existing target contents.  That is, all\nexisting direct or indirect child items in the target folder are replaced by the same items in the source folder.\nAll existing items in the target folder that are not present in the source folder are left, as is, in the target.\n'replace' implies the contents of the source folder should replace the contents of the target folder.  That is,\nall direct or indirect items in the target folder are removed before the items from the source folder are copied\nover.  The resulting target folder only contains the items from the source folder.  If not specified, the default\nbehavior is 'merge'.<p>Members:</p><ul></ul>"
       },
       "QuotaResponse": {
         "type": "object",
@@ -74430,7 +75031,7 @@
             "type": "integer",
             "format": "int64",
             "example": 5000,
-            "description": "The current aggregate size of all files uploaded by a given user.  If the current aggregate size is greater\r\nthan the maximum aggregate size, this is a quota violation."
+            "description": "The current aggregate size of all files uploaded by a given user.  If the current aggregate size is greater\nthan the maximum aggregate size, this is a quota violation."
           },
           "maxSize": {
             "type": "integer",
@@ -74448,25 +75049,27 @@
             "type": "integer",
             "format": "int64",
             "example": 6442450944,
-            "description": "Maximum allowable size for a single uploaded large data file (in bytes).  This is a file that was indirectly\r\nuploaded using the temp content service chunked upload capability."
+            "description": "Maximum allowable size for a single uploaded large data file (in bytes).  This is a file that was indirectly\nuploaded using the temp content service chunked upload capability."
           },
           "allowedExtensions": {
             "type": "array",
             "items": {
               "type": "string",
-              "example": "example string",
+              "example": "csv, xlsx, txt, qvd",
               "description": "The allowed file extensions on files that are uploaded."
             },
+            "example": "csv, xlsx, txt, qvd",
             "description": "The allowed file extensions on files that are uploaded."
           },
           "allowedInternalExtensions": {
             "type": "array",
             "items": {
               "type": "string",
-              "example": "example string",
-              "description": "The allowed file extensions for files that are only used internally by the system (and thus not typically\r\nshown to end users)."
+              "example": "dxf, gml, qrep",
+              "description": "The allowed file extensions for files that are only used internally by the system (and thus not typically\nshown to end users)."
             },
-            "description": "The allowed file extensions for files that are only used internally by the system (and thus not typically\r\nshown to end users)."
+            "example": "dxf, gml, qrep",
+            "description": "The allowed file extensions for files that are only used internally by the system (and thus not typically\nshown to end users)."
           }
         },
         "additionalProperties": false
@@ -74491,7 +75094,7 @@
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of data files that reside as direct and indirect children of the given folder and it's sub-folder\r\nhierarchy."
+            "description": "The number of data files that reside as direct and indirect children of the given folder and it's sub-folder\nhierarchy."
           },
           "directFileCount": {
             "type": "integer",
@@ -74503,13 +75106,13 @@
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of folders that reside as direct and indirect children of the given folder and it's sub-folder\r\nhierarchy."
+            "description": "The number of folders that reside as direct and indirect children of the given folder and it's sub-folder\nhierarchy."
           },
           "aggregateFileSize": {
             "type": "integer",
             "format": "int64",
             "example": 10000,
-            "description": "The sum of the file sizes, in bytes, of all data files that reside as direct and indirect children of the given\r\nfolder and it's sub-folder hierarchy."
+            "description": "The sum of the file sizes, in bytes, of all data files that reside as direct and indirect children of the given\nfolder and it's sub-folder hierarchy."
           },
           "directFolderCount": {
             "type": "integer",
@@ -74521,19 +75124,19 @@
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\r\ndirect and indirect children of the given folder and it's sub-folder hierarchy."
+            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\ndirect and indirect children of the given folder and it's sub-folder hierarchy."
           },
           "directInternalFileCount": {
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\r\ndirect children of the given folder."
+            "description": "The number of 'internal' data files (IE, those that are not visible to end users by default) that reside as\ndirect children of the given folder."
           },
           "totalAppScopedFileCount": {
             "type": "integer",
             "format": "int64",
             "example": 50,
-            "description": "The number of app-scoped data files that reside as direct and indirect children of the given folder and it's\r\nsub-folder hierarchy."
+            "description": "The number of app-scoped data files that reside as direct and indirect children of the given folder and it's\nsub-folder hierarchy."
           },
           "directAppScopedFileCount": {
             "type": "integer",
@@ -74545,13 +75148,13 @@
             "type": "integer",
             "format": "int64",
             "example": 10000,
-            "description": "The sum of the file sizes, in bytes, of all internal data files that reside as direct and indirect children of\r\nthe given folder and it's sub-folder hierarchy."
+            "description": "The sum of the file sizes, in bytes, of all internal data files that reside as direct and indirect children of\nthe given folder and it's sub-folder hierarchy."
           },
           "aggregateAppScopedFileSize": {
             "type": "integer",
             "format": "int64",
             "example": 10000,
-            "description": "The sum of the file sizes, in bytes, of all app-scoped data files that reside as direct and indirect children of\r\nthe given folder and it's sub-folder hierarchy."
+            "description": "The sum of the file sizes, in bytes, of all app-scoped data files that reside as direct and indirect children of\nthe given folder and it's sub-folder hierarchy."
           }
         },
         "additionalProperties": false
@@ -74651,6 +75254,19 @@
             "type": "string"
           }
         }
+      },
+      "ComputationResponse": {
+        "type": "object",
+        "required": [
+          "computationId"
+        ],
+        "properties": {
+          "computationId": {
+            "type": "string",
+            "description": "The unique identifier of the triggered computation. Use this value to poll for status."
+          }
+        },
+        "description": "Response returned when a data quality computation is successfully triggered."
       },
       "CreateDataProductRequest": {
         "type": "object",
@@ -74936,6 +75552,43 @@
           }
         }
       },
+      "DatasetIdType": {
+        "type": "string",
+        "pattern": "^[0-9a-zA-Z-]{1,36}$",
+        "description": "The ID of the dataset"
+      },
+      "DatasetsComputationResponse": {
+        "type": "object",
+        "required": [
+          "batchComputationId",
+          "datasetResponses"
+        ],
+        "properties": {
+          "datasetResponses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ComputationResponse"
+            },
+            "description": "List of computation results, one entry per dataset in the data product."
+          },
+          "batchComputationId": {
+            "type": "string",
+            "description": "Unique identifier for the data quality batch computation job."
+          }
+        },
+        "description": "Response containing the batch computation identifier and per-dataset quality computation results."
+      },
+      "ExecutionStatus": {
+        "enum": [
+          "PROFILE_REQUESTED",
+          "PROFILE_FAILED",
+          "REQUESTED",
+          "SUBMITTED",
+          "SUCCEEDED",
+          "FAILED"
+        ],
+        "type": "string"
+      },
       "GenerateProviderUrlResponse": {
         "type": "object",
         "required": [
@@ -75035,19 +75688,26 @@
       "Quality": {
         "type": "object",
         "required": [
-          "validity",
-          "completeness"
+          "type",
+          "aggregated",
+          "rules"
         ],
         "properties": {
-          "validity": {
-            "type": "number",
-            "format": "float"
+          "type": {
+            "$ref": "#/components/schemas/SchemaTypeQuality"
           },
-          "completeness": {
-            "type": "number",
-            "format": "float"
+          "rules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaRulesQuality"
+            },
+            "description": "Quality results per rule applied to this field."
+          },
+          "aggregated": {
+            "$ref": "#/components/schemas/AggregatedQualityMetrics"
           }
-        }
+        },
+        "description": "Quality metrics for the field."
       },
       "TrustScore": {
         "type": "object",
@@ -75100,18 +75760,115 @@
           }
         }
       },
-      "ComputationResponse": {
+      "AggregatedQualityMetrics": {
         "type": "object",
         "required": [
+          "valid",
+          "invalid",
+          "empty",
+          "total"
+        ],
+        "properties": {
+          "empty": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of empty entries."
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of entries."
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of valid entries."
+          },
+          "invalid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of invalid entries."
+          }
+        },
+        "description": "Aggregated metrics for the field."
+      },
+      "BatchComputationAggregatedStatus": {
+        "enum": [
+          "IN_PROGRESS",
+          "FINISHED"
+        ],
+        "type": "string",
+        "example": "IN_PROGRESS",
+        "description": "Overall status aggregated across all datasets in the batch."
+      },
+      "BatchComputationDatasetStatusResponse": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "status",
           "computationId"
         ],
         "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ExecutionStatus"
+          },
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          },
+          "errorCode": {
+            "$ref": "#/components/schemas/ComputationErrorCode"
+          },
           "computationId": {
             "type": "string",
-            "description": "The unique identifier of the triggered computation. Use this value to poll for status."
+            "description": "The unique identifier of the individual computation for this dataset."
           }
         },
-        "description": "Response returned when a data quality computation is successfully triggered."
+        "description": "Status of a single dataset within a batch computation."
+      },
+      "BatchComputationStatusResponse": {
+        "type": "object",
+        "required": [
+          "batchComputationId",
+          "status",
+          "computationStatuses"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/BatchComputationAggregatedStatus"
+          },
+          "batchComputationId": {
+            "type": "string",
+            "description": "The unique identifier of the batch computation."
+          },
+          "computationStatuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BatchComputationDatasetStatusResponse"
+            },
+            "description": "Status of each individual dataset computation within the batch."
+          }
+        },
+        "description": "Status of a batch computation, including per-dataset breakdown."
+      },
+      "ComputationErrorCode": {
+        "enum": [
+          "DQ-100",
+          "DQ-110",
+          "DQ-120",
+          "DQ-121",
+          "DQ-130",
+          "DQ-140",
+          "DQ-150",
+          "DQ-200",
+          "DQ-300",
+          "DQ-310",
+          "DQ-320",
+          "DQ-400",
+          "DQ-500",
+          "DQ-160"
+        ],
+        "type": "string",
+        "description": "Error code indicating the reason for failure."
       },
       "ComputationStatusResponse": {
         "type": "object",
@@ -75124,10 +75881,58 @@
           }
         }
       },
+      "ComputedInformation": {
+        "type": "object",
+        "required": [
+          "at",
+          "by"
+        ],
+        "properties": {
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-10-01T12:00:00Z",
+            "description": "When the computation occurred."
+          },
+          "by": {
+            "$ref": "#/components/schemas/ComputedUserInformation"
+          }
+        },
+        "description": "Metadata about the computation."
+      },
+      "ComputedUserInformation": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the user."
+          }
+        },
+        "description": "Details about the user who computed the quality."
+      },
       "ConnectionIdType": {
         "type": "string",
         "pattern": "^[0-9a-zA-Z-]{1,36}$",
         "description": "The ID of the connection"
+      },
+      "DataQualityByDatasetIdResponse": {
+        "type": "object",
+        "required": [
+          "dataQualities"
+        ],
+        "properties": {
+          "dataQualities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QualitiesAndErrorsResponse"
+            },
+            "description": "List of data quality results, one per dataset and connection pair."
+          }
+        },
+        "description": "Response containing data quality global results grouped by dataset."
       },
       "DataQualityComputationRequest": {
         "type": "object",
@@ -75159,10 +75964,57 @@
         ],
         "description": "Request payload for triggering a data quality computation. The `connectionId` is optional for file-based datasets.\nIf none of the sampling parameters are provided, the following defaults apply:\n- `executionMode: PULLUP`\n- `sampleMode: ABSOLUTE`\n- `sampleSize: 1000`\n"
       },
-      "DatasetIdType": {
-        "type": "string",
-        "pattern": "^[0-9a-zA-Z-]{1,36}$",
-        "description": "The ID of the dataset"
+      "DatasetFieldQualityRequestItem": {
+        "type": "object",
+        "required": [
+          "datasetId"
+        ],
+        "properties": {
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          }
+        },
+        "description": "A single dataset identifier in a field quality filter request."
+      },
+      "DatasetFieldQualityResult": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "computed",
+          "fields"
+        ],
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldQuality"
+            },
+            "description": "List of fields and their quality metrics."
+          },
+          "computed": {
+            "$ref": "#/components/schemas/ComputedInformation"
+          },
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          }
+        },
+        "description": "Field quality results for a single dataset."
+      },
+      "DatasetListRequest": {
+        "type": "object",
+        "required": [
+          "datasetIds"
+        ],
+        "properties": {
+          "datasetIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetIdType"
+            },
+            "description": "List of dataset IDs to retrieve results for."
+          }
+        },
+        "description": "Request containing a list of dataset IDs to filter on."
       },
       "DatasetQualityGlobalResultsResponse": {
         "type": "object",
@@ -75183,16 +76035,157 @@
           }
         }
       },
-      "ExecutionStatus": {
-        "enum": [
-          "PROFILE_REQUESTED",
-          "PROFILE_FAILED",
-          "REQUESTED",
-          "SUBMITTED",
-          "SUCCEEDED",
-          "FAILED"
+      "ExecutionError": {
+        "type": "object",
+        "required": [
+          "errorCode"
         ],
-        "type": "string"
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "A human-readable explanation of the failure."
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code identifying the failure reason."
+          },
+          "executedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-10-01T12:00:00Z",
+            "description": "Timestamp when the execution failed."
+          }
+        },
+        "description": "Details of an execution failure."
+      },
+      "FieldInformation": {
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/FieldTypeEnum"
+          },
+          "name": {
+            "type": "string",
+            "example": "customer_id",
+            "description": "The name of the standard type (if applicable)."
+          },
+          "precision": {
+            "$ref": "#/components/schemas/PrecisionEnum"
+          },
+          "semanticTypeId": {
+            "type": "string",
+            "example": "9996fbb942b02a6987534999",
+            "description": "The ID of the semantic type (if applicable)."
+          }
+        },
+        "description": "Information about the type of the field."
+      },
+      "FieldQualitiesFilterRequest": {
+        "type": "object",
+        "required": [
+          "datasets"
+        ],
+        "properties": {
+          "datasets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetFieldQualityRequestItem"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "nullable": false,
+            "description": "List of datasets to retrieve field qualities for."
+          }
+        }
+      },
+      "FieldQualitiesFilterResponse": {
+        "type": "object",
+        "required": [
+          "fieldQualities"
+        ],
+        "properties": {
+          "fieldQualities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetFieldQualityResult"
+            },
+            "description": "List of field quality results per dataset."
+          }
+        },
+        "description": "Response containing field quality results for the requested datasets."
+      },
+      "FieldQuality": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "quality"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the field."
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldInformation"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/Quality"
+          }
+        },
+        "description": "Quality metrics for a single field."
+      },
+      "FieldTypeEnum": {
+        "enum": [
+          "STANDARD",
+          "SEMANTIC"
+        ],
+        "type": "string",
+        "example": "STANDARD",
+        "description": "The kind of the field type."
+      },
+      "PrecisionEnum": {
+        "enum": [
+          "timestamp-millis",
+          "timestamp-micros",
+          "time-millis",
+          "time-micros",
+          "date"
+        ],
+        "type": "string",
+        "example": "timestamp-millis",
+        "description": "The precision of the type (e.g., for date/time fields)."
+      },
+      "QualitiesAndErrorsResponse": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "connectionId",
+          "status"
+        ],
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ExecutionError"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExecutionStatus"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityGlobalResultsResponse"
+          },
+          "datasetId": {
+            "type": "string",
+            "description": "The ID of the dataset"
+          },
+          "connectionId": {
+            "type": "string",
+            "description": "The ID of the connection"
+          }
+        },
+        "description": "Data quality global results or error for a specific dataset and connection."
       },
       "QualitiesGlobalResultsResponse": {
         "type": "object",
@@ -75274,6 +76267,313 @@
             "description": "Specifies where the data quality computation takes place. In `PUSHDOWN` mode, it runs within the Cloud Data Warehouse (e.g., Snowflake, Databricks), whereas in `PULLUP` mode, it runs in Qlik Cloud."
           }
         }
+      },
+      "SchemaRuleQuality": {
+        "type": "object",
+        "required": [
+          "valid",
+          "invalid",
+          "notApplicable",
+          "notExecutable",
+          "total"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of cells evaluated by the rule."
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells that passed the rule."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "DISABLED_SEMANTIC_TYPE"
+            ],
+            "description": "List of error identifiers encountered during rule execution."
+          },
+          "invalid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells that failed the rule."
+          },
+          "notApplicable": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells where the rule does not apply."
+          },
+          "notExecutable": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells where the rule could not be executed."
+          }
+        },
+        "description": "Detailed quality counts for a single rule."
+      },
+      "SchemaRulesQuality": {
+        "type": "object",
+        "properties": {
+          "ruleId": {
+            "type": "string",
+            "description": "The unique identifier of the rule."
+          },
+          "quality": {
+            "$ref": "#/components/schemas/SchemaRuleQuality"
+          },
+          "ruleMappingId": {
+            "type": "string",
+            "description": "The unique identifier of the rule mapping."
+          }
+        },
+        "description": "Quality assessment for a specific rule applied to a field."
+      },
+      "SchemaTypeQuality": {
+        "type": "object",
+        "required": [
+          "valid",
+          "invalid",
+          "empty",
+          "total"
+        ],
+        "properties": {
+          "empty": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of empty sample cells."
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of cells in the sample."
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of valid sample cells."
+          },
+          "invalid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of invalid sample cells."
+          }
+        },
+        "description": "Quality metrics based on type validation."
+      },
+      "AxisId": {
+        "enum": [
+          "VALIDITY",
+          "COMPLETENESS",
+          "USAGE",
+          "DISCOVERABILITY",
+          "ACCURACY",
+          "DIVERSITY",
+          "TIMELINESS"
+        ],
+        "type": "string",
+        "example": "TIMELINESS",
+        "description": "Defines the axis of the Trust Score."
+      },
+      "AxisResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "weight",
+          "metrics"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/AxisId"
+          },
+          "score": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Computed score for this axis [0, 100]. Omitted when axis is not applicable."
+          },
+          "weight": {
+            "$ref": "#/components/schemas/GenericWeight"
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this axis is enabled in the tenant configuration. Disabled axes have a `weight` of `0` and do not affect the overall score."
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetricResponse"
+            },
+            "description": "Per-metric breakdown contributing to this axis score."
+          },
+          "applicable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this axis is applicable for the dataset. An axis may be enabled but not applicable (for example, `TIMELINESS` when no freshness threshold is set)."
+          },
+          "previousScore": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Axis score from the previous computation, for change tracking."
+          }
+        },
+        "description": "Score and configuration for a single Trust Score axis."
+      },
+      "DatasetFilterRequest": {
+        "type": "object",
+        "required": [
+          "datasetIds"
+        ],
+        "properties": {
+          "datasetIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetId"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "description": "List of dataset IDs to retrieve Trust Scores for. Maximum 100 IDs per request."
+          }
+        },
+        "description": "Request body for batch-filtering Trust Score results by dataset IDs."
+      },
+      "DatasetId": {
+        "type": "string",
+        "example": "Jjk5NNHiUObQe8xTyeLgP5nQjKTpEr8R",
+        "pattern": "^[0-9a-zA-Z-]{1,36}$",
+        "description": "Unique identifier of the dataset."
+      },
+      "GenericScore": {
+        "type": "number",
+        "format": "float",
+        "maximum": 100,
+        "minimum": 0,
+        "description": "A numeric score value in the range [0, 100]."
+      },
+      "GenericWeight": {
+        "type": "integer",
+        "format": "int32",
+        "example": 50,
+        "maximum": 100,
+        "minimum": 0,
+        "description": "Defines the weight of the axis or metric in the Trust Score."
+      },
+      "MetricId": {
+        "enum": [
+          "VALIDITY_QUALITY",
+          "COMPLETENESS_QUALITY",
+          "USAGE_APPS",
+          "USAGE_APP_VIEWS",
+          "DISCOVERABILITY_DESCRIPTION",
+          "DISCOVERABILITY_TAGS",
+          "DISCOVERABILITY_ACTIVATED",
+          "DISCOVERABILITY_FIELD_DESCRIPTION",
+          "DISCOVERABILITY_FIELD_TAGS",
+          "ACCURACY_QUALITY",
+          "DIVERSITY_SOURCE",
+          "DIVERSITY_VOLUME",
+          "DIVERSITY_EVENNESS",
+          "TIMELINESS_FRESHNESS"
+        ],
+        "type": "string",
+        "example": "TIMELINESS_FRESHNESS",
+        "description": "Defines the metric of the axis in the Trust Score."
+      },
+      "MetricResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "weight"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/MetricId"
+          },
+          "score": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Computed score for this metric [0, 100]. Omitted when metric is not applicable."
+          },
+          "weight": {
+            "$ref": "#/components/schemas/GenericWeight"
+          }
+        },
+        "description": "Score and configuration for a single Trust Score metric within an axis."
+      },
+      "TrustScoreResponse": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "score",
+          "axes",
+          "updatedAt"
+        ],
+        "properties": {
+          "axes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AxisResponse"
+            },
+            "description": "Per-axis breakdown of the Trust Score."
+          },
+          "score": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Overall weighted Trust Score across all enabled axes [0, 100]."
+          },
+          "datasetId": {
+            "type": "string",
+            "example": "Jjk5NNHiUObQe8xTyeLgP5nQjKTpEr8R",
+            "description": "Unique identifier of the dataset this score belongs to."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-03-20T09:12:28Z",
+            "description": "Timestamp of the last Trust Score computation for this dataset."
+          },
+          "previousScore": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GenericScore"
+              }
+            ],
+            "description": "Overall Trust Score from the previous computation, for change tracking."
+          }
+        },
+        "description": "Current Trust Score for a single dataset, including the overall weighted score, a per-axis breakdown, and per-metric details within each axis."
+      },
+      "TrustScoreResultListResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TrustScoreResponse"
+            },
+            "description": "List of Trust Score results, one entry per dataset found."
+          }
+        },
+        "description": "Trust Score results for the requested datasets. Datasets with no computed Trust Score are omitted."
       },
       "BinnedFrequency": {
         "type": "object",
@@ -94974,7 +96274,8 @@
               "MAX_UNIQUE_REPORTS_LIMIT_REACHED",
               "MISSING_DISTRIBUTION_LIST",
               "SECTION_ACCESS_NOT_SUPPORTED",
-              "REPORTING_DAILY_QUOTA_EXCEEDED"
+              "REPORTING_DAILY_QUOTA_EXCEEDED",
+              "EMAIL_DELIVERY_FAILURE"
             ],
             "type": "string",
             "description": "Identifier for type of error occurring on sharing task"
