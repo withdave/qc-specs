@@ -172,17 +172,7 @@
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "migrateFrom",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "When provided, specifies the unique identifier of a legacy reload-task to migrate from the previous scheduling system."
-          }
-        ],
+        "parameters": [],
         "description": "Creates a new task for the specified resource. The task is owned by the requesting user and is disabled by default until explicitly enabled. The `resourceId` is derived automatically from the task's state definitions and cannot be set directly in the request body.",
         "operationId": "createTask",
         "requestBody": {
@@ -1589,32 +1579,6 @@
     "schemas": {
       "action": {
         "type": "object",
-        "oneOf": [
-          {
-            "required": [
-              "name",
-              "functionRef"
-            ]
-          },
-          {
-            "required": [
-              "name",
-              "publish"
-            ]
-          },
-          {
-            "required": [
-              "name",
-              "subscribe"
-            ]
-          },
-          {
-            "required": [
-              "name",
-              "subFlowRef"
-            ]
-          }
-        ],
         "properties": {
           "name": {
             "type": "string",
@@ -1699,6 +1663,7 @@
         "oneOf": [
           {
             "type": "string",
+            "example": "0 0 * * *",
             "minLength": 1,
             "description": "A cron expression defining when workflow instances should be created automatically."
           },
@@ -1710,11 +1675,13 @@
             "properties": {
               "expression": {
                 "type": "string",
+                "example": "0 0 * * *",
                 "minLength": 1,
                 "description": "A cron expression describing when the workflow instance should be created."
               },
               "validUntil": {
                 "type": "string",
+                "example": "2024-09-30T23:59:59Z",
                 "description": "The date and time (ISO 8601 format) after which this cron expression is no longer active."
               }
             },
@@ -1797,24 +1764,6 @@
       },
       "eventstate": {
         "type": "object",
-        "oneOf": [
-          {
-            "required": [
-              "name",
-              "type",
-              "onEvents",
-              "end"
-            ]
-          },
-          {
-            "required": [
-              "name",
-              "type",
-              "onEvents",
-              "transition"
-            ]
-          }
-        ],
         "properties": {
           "end": {
             "$ref": "#/components/schemas/end"
@@ -1910,6 +1859,7 @@
                   "app.reload"
                 ],
                 "type": "string",
+                "example": "app.reload",
                 "description": "The name of the function to invoke."
               },
               "arguments": {
@@ -1923,6 +1873,7 @@
               },
               "selectionSet": {
                 "type": "string",
+                "example": "{id n}",
                 "description": "A GraphQL selection set string. Only applicable when the function type is `graphql`."
               }
             },
@@ -2241,50 +2192,41 @@
         "oneOf": [
           {
             "type": "string",
+            "example": "PT15M",
             "minLength": 1,
             "description": "A repeating time interval in ISO 8601 format that defines when workflow instances are automatically created. UTC timezone is assumed."
           },
           {
             "type": "object",
-            "oneOf": [
-              {
-                "example": {
-                  "interval": "PT15M"
-                },
-                "required": [
-                  "interval"
-                ]
-              },
-              {
-                "required": [
-                  "cron"
-                ]
-              }
-            ],
             "properties": {
               "cron": {
                 "$ref": "#/components/schemas/crondef"
               },
               "interval": {
                 "type": "string",
+                "example": "PT15M",
                 "minLength": 1,
                 "description": "A repeating time interval in ISO 8601 format that defines when workflow instances are automatically created."
               },
               "timezone": {
                 "type": "string",
                 "default": "UTC",
+                "example": "Australia/Sydney",
                 "description": "The timezone name used to evaluate the interval and cron expression. Defaults to `UTC`."
               },
               "recurrence": {
                 "type": "string",
+                "example": "RRULE:FREQ=DAILY;INTERVAL=1",
                 "description": "An RRULE recurrence rule string defining when the workflow recurs."
               },
               "endDateTime": {
                 "type": "string",
+                "example": "2024-09-30T23:59:59Z",
                 "description": "The date and time (ISO 8601 format) when the workflow schedule ends."
               },
               "startDateTime": {
                 "type": "string",
+                "example": "2024-08-13T09:45:00Z",
                 "description": "The date and time (ISO 8601 format) when the workflow schedule begins."
               }
             },
@@ -2307,6 +2249,7 @@
               },
               "stateName": {
                 "type": "string",
+                "example": "init_state",
                 "pattern": "^[a-z0-9](-?[a-z0-9])*$",
                 "minLength": 1,
                 "description": "The name of the starting workflow state."

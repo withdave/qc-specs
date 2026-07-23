@@ -1315,6 +1315,11 @@
             "format": "date-time",
             "example": "2025-11-11T13:45:30Z"
           },
+          "sourceLinkId": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The ID of the original link this was copied from. Present only on deep-copied links."
+          },
           "includeScript": {
             "type": "boolean",
             "default": false,

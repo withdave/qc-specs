@@ -1818,7 +1818,18 @@
               "OVERRIDE_CHUNKS_CACHE_DIR",
               "CHUNK_RECOVERY_RESUME_THRESHOLD_MINUTES",
               "REST_ALLOW_LOCALHOST_CONNECTION",
-              "OPTIONAL_CAPABILITIES"
+              "OPTIONAL_CAPABILITIES",
+              "AGENT_LOG_MAX_FILE_SIZE_MB",
+              "AGENT_LOG_RETENTION_DAYS",
+              "METRICS_LOG_MAX_FILE_SIZE_MB",
+              "METRICS_LOG_RETENTION_DAYS",
+              "DCAAS_LOG_RETENTION_DAYS",
+              "ODBC_LOG_RETENTION_DAYS",
+              "SAPBW_LOG_RETENTION_DAYS",
+              "SAPSQL_LOG_RETENTION_DAYS",
+              "SAPPACKAGE_LOG_RETENTION_DAYS",
+              "REST_LOG_RETENTION_DAYS",
+              "FILE_LOG_RETENTION_DAYS"
             ],
             "type": "string"
           },

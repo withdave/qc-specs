@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.50",
+    "version": "1.0.51",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -22570,8 +22570,8 @@
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
         "x-qlik-tier": {
-          "tier": "2",
-          "limit": 100
+          "tier": "special",
+          "limit": 10
         }
       }
     },
@@ -23301,8 +23301,8 @@
           }
         ],
         "x-qlik-tier": {
-          "tier": "2",
-          "limit": 100
+          "tier": "special",
+          "limit": 10
         }
       }
     },
@@ -47302,17 +47302,7 @@
             "$ref": "#/components/responses/ServiceUnavailable"
           }
         },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "migrateFrom",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "When provided, specifies the unique identifier of a legacy reload-task to migrate from the previous scheduling system."
-          }
-        ],
+        "parameters": [],
         "description": "Creates a new task for the specified resource. The task is owned by the requesting user and is disabled by default until explicitly enabled. The `resourceId` is derived automatically from the task's state definitions and cannot be set directly in the request body.",
         "operationId": "createTask",
         "requestBody": {
@@ -58378,6 +58368,66 @@
         }
       }
     },
+    "/api/workflows/automation-connectors/{connectorId}/webhooks/configuration": {
+      "get": {
+        "tags": [
+          "automation-connectors"
+        ],
+        "summary": "Get webhook configuration for an automation connector",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectorWebhookConfiguration"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectorId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2"
+            },
+            "required": true,
+            "description": "The unique identifier of the automation connector."
+          }
+        ],
+        "description": "Retrieves the webhook configuration for an automation connector, including its events and event parameters.",
+        "operationId": "getConnectorWebhookConfiguration",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/workflows/automations": {
       "get": {
         "tags": [
@@ -62791,6 +62841,11 @@
             "type": "string",
             "format": "date-time",
             "example": "2025-11-11T13:45:30Z"
+          },
+          "sourceLinkId": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The ID of the original link this was copied from. Present only on deep-copied links."
           },
           "includeScript": {
             "type": "boolean",
@@ -100078,6 +100133,126 @@
             "type": "boolean",
             "default": false,
             "description": "If enabled the certificate chain of the configured URL will be checked for revocation before sending the webhook."
+          }
+        }
+      },
+      "AutomationConnectorWebhookConfiguration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "description": "The unique identifier of the webhook configuration."
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorWebhookEvent"
+            },
+            "description": "The available webhook events for this connector."
+          },
+          "automatic": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the webhook is set up automatically."
+          }
+        }
+      },
+      "AutomationConnectorWebhookEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "description": "The unique identifier of the webhook event."
+          },
+          "name": {
+            "type": "string",
+            "example": "Record Created",
+            "description": "The name of the webhook event."
+          },
+          "role": {
+            "type": "string",
+            "example": "create",
+            "description": "The role of the webhook event."
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorWebhookEventParam"
+            },
+            "description": "The parameters available for this webhook event."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The description of the webhook event."
+          },
+          "exampleOutput": {
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "nullable": true,
+            "description": "An example of the payload this event produces."
+          }
+        }
+      },
+      "AutomationConnectorWebhookEventParam": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "description": "The unique identifier of the webhook event parameter."
+          },
+          "name": {
+            "type": "string",
+            "example": "table_id",
+            "description": "The name of the parameter."
+          },
+          "type": {
+            "type": "string",
+            "example": "text",
+            "description": "The type of the parameter."
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The available options for this parameter."
+          },
+          "required": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the parameter is required."
           }
         }
       },
