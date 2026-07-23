@@ -107,6 +107,66 @@
           "limit": 1000
         }
       }
+    },
+    "/api/workflows/automation-connectors/{connectorId}/webhooks/configuration": {
+      "get": {
+        "tags": [
+          "automation-connectors"
+        ],
+        "summary": "Get webhook configuration for an automation connector",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectorWebhookConfiguration"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectorId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2"
+            },
+            "required": true,
+            "description": "The unique identifier of the automation connector."
+          }
+        ],
+        "description": "Retrieves the webhook configuration for an automation connector, including its events and event parameters.",
+        "operationId": "getConnectorWebhookConfiguration",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
     }
   },
   "openapi": "3.0.0",
@@ -141,6 +201,16 @@
           }
         },
         "description": "Internal Server Error"
+      },
+      "NotFound": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "Not found"
       },
       "ServiceUnavailable": {
         "content": {
@@ -226,6 +296,126 @@
             "type": "boolean",
             "example": "true",
             "description": "Indicates if the connector supports webhooks."
+          }
+        }
+      },
+      "AutomationConnectorWebhookConfiguration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "description": "The unique identifier of the webhook configuration."
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorWebhookEvent"
+            },
+            "description": "The available webhook events for this connector."
+          },
+          "automatic": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the webhook is set up automatically."
+          }
+        }
+      },
+      "AutomationConnectorWebhookEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "description": "The unique identifier of the webhook event."
+          },
+          "name": {
+            "type": "string",
+            "example": "Record Created",
+            "description": "The name of the webhook event."
+          },
+          "role": {
+            "type": "string",
+            "example": "create",
+            "description": "The role of the webhook event."
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorWebhookEventParam"
+            },
+            "description": "The parameters available for this webhook event."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The description of the webhook event."
+          },
+          "exampleOutput": {
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "nullable": true,
+            "description": "An example of the payload this event produces."
+          }
+        }
+      },
+      "AutomationConnectorWebhookEventParam": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "description": "The unique identifier of the webhook event parameter."
+          },
+          "name": {
+            "type": "string",
+            "example": "table_id",
+            "description": "The name of the parameter."
+          },
+          "type": {
+            "type": "string",
+            "example": "text",
+            "description": "The type of the parameter."
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The available options for this parameter."
+          },
+          "required": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the parameter is required."
           }
         }
       },
