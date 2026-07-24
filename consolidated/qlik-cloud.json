@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.51",
+    "version": "1.0.52",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -58368,6 +58368,66 @@
         }
       }
     },
+    "/api/workflows/automation-connectors/{connectorId}": {
+      "get": {
+        "tags": [
+          "automation-connectors"
+        ],
+        "summary": "Get an automation connector",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationConnectorDetail"
+                }
+              }
+            },
+            "description": "OK Response"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectorId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2"
+            },
+            "required": true,
+            "description": "The unique identifier of the automation connector."
+          }
+        ],
+        "description": "Retrieves the full details of an automation connector, including its connection parameters, blocks, and snippets.",
+        "operationId": "getAutomationConnector",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/workflows/automation-connectors/{connectorId}/webhooks/configuration": {
       "get": {
         "tags": [
@@ -100133,6 +100193,295 @@
             "type": "boolean",
             "default": false,
             "description": "If enabled the certificate chain of the configured URL will be checked for revocation before sending the webhook."
+          }
+        }
+      },
+      "AutomationConnectorBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9d94bef0-b28c-11eb-8dba-01593c457362",
+            "description": "The unique identifier of the block."
+          },
+          "name": {
+            "type": "string",
+            "example": "List Records",
+            "description": "The name of the block."
+          },
+          "role": {
+            "type": "string",
+            "example": "list",
+            "description": "The role of the block."
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorParam"
+            },
+            "description": "The input parameters for this block."
+          },
+          "objectType": {
+            "type": "string",
+            "example": "Record",
+            "nullable": true,
+            "description": "The object type this block operates on."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The description of the block."
+          },
+          "exampleOutput": {
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "nullable": true,
+            "description": "An example of the output this block produces."
+          }
+        }
+      },
+      "AutomationConnectorDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Airtable",
+            "description": "The name of the automation connector."
+          },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorBlock"
+            },
+            "description": "The available blocks (endpoints) for this connector."
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorParam"
+            },
+            "description": "The connection parameters required to authenticate with this connector."
+          },
+          "billable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates if the connector is billable."
+          },
+          "snippets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorSnippet"
+            },
+            "description": "The available snippet templates for this connector."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The description of the automation connector."
+          },
+          "hasWebhooks": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates if the connector supports webhooks."
+          },
+          "connectDocumentation": {
+            "type": "string",
+            "nullable": true,
+            "description": "Documentation for setting up a connection with this connector."
+          }
+        }
+      },
+      "AutomationConnectorParam": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "0d87347d-27c0-11ea-921c-022e6b5ea1e2",
+            "description": "The unique identifier of the parameter."
+          },
+          "name": {
+            "type": "string",
+            "example": "API Key",
+            "description": "The name of the parameter."
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The available options for the parameter."
+          },
+          "setting": {
+            "type": "boolean",
+            "example": false,
+            "description": "Indicates whether the parameter is a setting."
+          },
+          "optional": {
+            "type": "boolean",
+            "example": false,
+            "description": "Indicates whether the parameter is optional."
+          },
+          "fieldType": {
+            "type": "string",
+            "example": "text",
+            "description": "The field type of the parameter."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The description of the parameter."
+          },
+          "exampleValue": {
+            "type": "string",
+            "nullable": true,
+            "description": "An example value for the parameter."
+          }
+        }
+      },
+      "AutomationConnectorSnippet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "description": "The unique identifier of the snippet."
+          },
+          "name": {
+            "type": "string",
+            "example": "Sync Records",
+            "description": "The name of the snippet."
+          },
+          "role": {
+            "type": "string",
+            "nullable": true,
+            "description": "The role of the snippet."
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnectorSnippetInput"
+            },
+            "description": "The input fields for this snippet."
+          },
+          "objectType": {
+            "type": "string",
+            "example": "Record",
+            "nullable": true,
+            "description": "The object type this snippet operates on."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The description of the snippet."
+          },
+          "exampleOutput": {
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "nullable": true,
+            "description": "An example of the output this snippet produces."
+          }
+        }
+      },
+      "AutomationConnectorSnippetInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "description": "The unique identifier of the snippet input."
+          },
+          "name": {
+            "type": "string",
+            "example": "Table Name",
+            "description": "The display name (prompt) of the input."
+          },
+          "options": {
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {}
+              }
+            ],
+            "nullable": true,
+            "description": "The available options for this input."
+          },
+          "optional": {
+            "type": "boolean",
+            "example": false,
+            "description": "Indicates whether the input is optional."
+          },
+          "fieldType": {
+            "type": "string",
+            "example": "text",
+            "description": "The field type of the input."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The help text for this input."
           }
         }
       },
