@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.52",
+    "version": "1.0.53",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -11247,7 +11247,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
-        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned one of the following roles: `TenantAdmin`, `AnalyticsAdmin` or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
+        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned `TenantAdmin` role or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
         "operationId": "automationChangeOwner",
         "requestBody": {
           "content": {
@@ -11611,7 +11611,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
-        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned one of the following roles: `TenantAdmin`, `AnalyticsAdmin` or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
+        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned `TenantAdmin` role or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
         "operationId": "moveAutomation",
         "requestBody": {
           "content": {
@@ -58919,7 +58919,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
-        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned one of the following roles: `TenantAdmin`, `AnalyticsAdmin` or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
+        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned `TenantAdmin` role or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
         "operationId": "automationChangeOwner",
         "requestBody": {
           "content": {
@@ -59011,7 +59011,7 @@
                   "spaceId": {
                     "type": "string",
                     "example": "5f0f78b239ff4f0001234567",
-                    "description": "The unique identifier of the new space."
+                    "description": "The unique identifier of the new space. Leave empty to move to the owner's personal space."
                   }
                 }
               }
@@ -59284,7 +59284,7 @@
             "description": "The unique identifier for the automation."
           }
         ],
-        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned one of the following roles: `TenantAdmin`, `AnalyticsAdmin` or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
+        "description": "Changes the owner of an automation to another user. This action removes the history and change logs of this automation. All linked connections used in the automation are detached and not moved to the new owner. The requesting user must be assigned `TenantAdmin` role or have at least one of the following scopes: `admin.automations`, `admin.automations:strict`.",
         "operationId": "moveAutomation",
         "requestBody": {
           "content": {
