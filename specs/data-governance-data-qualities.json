@@ -727,7 +727,8 @@
           "DQ-320",
           "DQ-400",
           "DQ-500",
-          "DQ-160"
+          "DQ-160",
+          "DQ-330"
         ],
         "type": "string",
         "description": "Error code indicating the reason for failure."
