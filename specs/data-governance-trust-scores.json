@@ -136,7 +136,6 @@
           },
           "enabled": {
             "type": "boolean",
-            "example": true,
             "description": "Whether this axis is enabled in the tenant configuration. Disabled axes have a `weight` of `0` and do not affect the overall score."
           },
           "metrics": {
@@ -148,7 +147,6 @@
           },
           "applicable": {
             "type": "boolean",
-            "example": true,
             "description": "Whether this axis is applicable for the dataset. An axis may be enabled but not applicable (for example, `TIMELINESS` when no freshness threshold is set)."
           },
           "previousScore": {

@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.53",
+    "version": "1.0.54",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -5979,8 +5979,11 @@
         "description": "Find all evaluations for an app GUID.\nSupports paging via next, prev which are sent in the response body\n",
         "operationId": "evaluation#getEvaluations",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-deprecated": false,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-06",
+        "x-qlik-deprecated-description": "Replaced by namespaced API",
         "x-qlik-replaced-by": [
           {
             "namespace": "analytics",
@@ -6064,8 +6067,11 @@
         "description": "Queue an app evaluation by its app guid.\n",
         "operationId": "evaluation#queueEvaluation",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-deprecated": false,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-06",
+        "x-qlik-deprecated-description": "Replaced by namespaced API",
         "x-qlik-replaced-by": [
           {
             "namespace": "analytics",
@@ -6159,8 +6165,11 @@
         "description": "Accepts two evaluation ids and returns a comparison denoting the differences between the two.\n",
         "operationId": "evaluation#compareTwo",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-deprecated": false,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-06",
+        "x-qlik-deprecated-description": "Replaced by namespaced API",
         "x-qlik-replaced-by": [
           {
             "namespace": "analytics",
@@ -6237,8 +6246,11 @@
         "description": "Accepts two evaluation ids and downloads a log, in XML format, denoting the differences between the two.\n",
         "operationId": "evaluation#downloadCompareTwo",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-deprecated": false,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-06",
+        "x-qlik-deprecated-description": "Replaced by namespaced API",
         "x-qlik-replaced-by": [
           {
             "namespace": "analytics",
@@ -6322,8 +6334,11 @@
         "description": "Find an evaluation by a specific id.\n",
         "operationId": "evaluation#getOneEvaluation",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-deprecated": false,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-06",
+        "x-qlik-deprecated-description": "Replaced by namespaced API",
         "x-qlik-replaced-by": [
           {
             "namespace": "analytics",
@@ -6390,8 +6405,11 @@
         "description": "Find and download an evaluation log by a specific evaluation id.\n",
         "operationId": "evaluation#downloadOneEvaluation",
         "x-qlik-stability": "stable",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
-        "x-qlik-deprecated": false,
+        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-version": "2026-06",
+        "x-qlik-deprecated-description": "Replaced by namespaced API",
         "x-qlik-replaced-by": [
           {
             "namespace": "analytics",
@@ -75980,7 +75998,8 @@
           "DQ-320",
           "DQ-400",
           "DQ-500",
-          "DQ-160"
+          "DQ-160",
+          "DQ-330"
         ],
         "type": "string",
         "description": "Error code indicating the reason for failure."
@@ -76518,7 +76537,6 @@
           },
           "enabled": {
             "type": "boolean",
-            "example": true,
             "description": "Whether this axis is enabled in the tenant configuration. Disabled axes have a `weight` of `0` and do not affect the overall score."
           },
           "metrics": {
@@ -76530,7 +76548,6 @@
           },
           "applicable": {
             "type": "boolean",
-            "example": true,
             "description": "Whether this axis is applicable for the dataset. An axis may be enabled but not applicable (for example, `TIMELINESS` when no freshness threshold is set)."
           },
           "previousScore": {
