@@ -995,6 +995,10 @@
             },
             "description": "Specifies which levels that are supported for this event type."
           },
+          "category": {
+            "type": "string",
+            "description": "Category of the event type."
+          },
           "description": {
             "type": "string",
             "description": "Description of the event type."

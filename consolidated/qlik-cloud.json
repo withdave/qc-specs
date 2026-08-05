@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.54",
+    "version": "1.0.55",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -29037,6 +29037,14 @@
                 }
               }
             },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "URL to check the status of the benchmark"
+              }
+            },
             "description": "The cancellation was requested successfully."
           },
           "403": {
@@ -29429,7 +29437,8 @@
                 "PlainTextConfiguration",
                 "AllowedPaths",
                 "AllowedDrivers",
-                "AllowedDsns"
+                "AllowedDsns",
+                "CustomAllowedExtensions"
               ],
               "type": "string"
             },
@@ -29520,7 +29529,8 @@
                 "PlainTextConfiguration",
                 "AllowedPaths",
                 "AllowedDrivers",
-                "AllowedDsns"
+                "AllowedDsns",
+                "CustomAllowedExtensions"
               ],
               "type": "string"
             },
@@ -29602,7 +29612,7 @@
         "tags": [
           "direct-access-agent-configuration"
         ],
-        "summary": "Set connector allowed paths configuration",
+        "summary": "Set file connector allowed paths configuration",
         "responses": {
           "204": {
             "description": "Updated."
@@ -29878,6 +29888,16 @@
               }
             },
             "description": "Configuration file not found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict."
           }
         },
         "parameters": [
@@ -76575,6 +76595,11 @@
             "maxItems": 100,
             "minItems": 1,
             "description": "List of dataset IDs to retrieve Trust Scores for. Maximum 100 IDs per request."
+          },
+          "recomputeUsage": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, refreshes the USAGE and TIMELINESS axes from source before returning the Trust Scores."
           }
         },
         "description": "Request body for batch-filtering Trust Score results by dataset IDs."
@@ -79419,7 +79444,9 @@
           "spaces": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "default": "",
+              "description": "Space identifier that has access to this path"
             },
             "example": [
               "Foo",
@@ -79538,10 +79565,12 @@
           "scrapeIntervalSeconds": {
             "type": "integer",
             "format": "int32",
+            "default": 30,
             "description": "Frequency in seconds at which metrics are collected from this connector."
           },
           "metricsCollectionEnabled": {
             "type": "boolean",
+            "default": false,
             "description": "Indicates whether metrics collection is enabled for this connector."
           }
         },
@@ -79587,10 +79616,12 @@
           "scrapeIntervalSeconds": {
             "type": "integer",
             "format": "int32",
+            "default": 30,
             "description": "Frequency in seconds at which metrics are collected from this connector."
           },
           "metricsCollectionEnabled": {
             "type": "boolean",
+            "default": false,
             "description": "Indicates whether metrics collection is enabled for this connector."
           }
         },
@@ -79609,31 +79640,43 @@
           "port": {
             "type": "integer",
             "format": "int32",
+            "default": 5052,
             "description": "The port number that the metrics collector API will run on.\nThis must match the port that the SYSTEM connector runs on to enable network metrics collection."
           },
           "enabled": {
             "type": "boolean",
+            "default": false,
             "description": "Indicates whether the metrics collector is enabled."
           },
           "localDataRetentionDays": {
             "type": "integer",
             "format": "int32",
+            "default": 30,
             "description": "The number of days to retain local data."
           },
           "baseScrapeIntervalSeconds": {
             "type": "integer",
             "format": "int32",
+            "default": 1,
             "description": "The base interval in seconds for the metrics collection loop.\nThis defines how frequently the collector checks whether to scrape each connector, not the interval at which each connector is scraped. Must be equal to or less than the lowest individual connector scrape interval."
           },
           "localDatabaseFileLocation": {
             "type": "string",
+            "default": "",
             "nullable": true,
             "description": "The file location for the local metrics database. If not specified, defaults to `C:\\ProgramData\\Qlik\\Gateway\\tmp`."
           },
           "dataRetentionCheckIntervalMinutes": {
             "type": "integer",
             "format": "int32",
+            "default": 60,
             "description": "The interval in minutes the metrics collector checks for and deletes old data."
+          },
+          "localDataRetentionDatabaseSizeInMb": {
+            "type": "integer",
+            "format": "int32",
+            "default": 500,
+            "description": "The maximum size of the local database in megabytes."
           }
         },
         "additionalProperties": false
@@ -79874,12 +79917,14 @@
           "port": {
             "type": "integer",
             "format": "int32",
+            "default": 5052,
             "maximum": 65535,
             "minimum": 1,
             "description": "The port number that the metrics collector API will run on.\nThis must match the port that the SYSTEM connector runs on to enable network metrics collection."
           },
           "enabled": {
             "type": "boolean",
+            "default": false,
             "maximum": 1,
             "minimum": 0,
             "description": "Indicates whether the metrics collector is enabled."
@@ -79887,6 +79932,7 @@
           "localDataRetentionDays": {
             "type": "integer",
             "format": "int32",
+            "default": 30,
             "maximum": 2147483647,
             "minimum": 1,
             "description": "The number of days to retain local data."
@@ -79894,20 +79940,31 @@
           "baseScrapeIntervalSeconds": {
             "type": "integer",
             "format": "int32",
+            "default": 1,
             "maximum": 2147483647,
             "minimum": 1,
             "description": "The base interval in seconds for the metrics collection loop.\nThis defines how frequently the collector checks whether to scrape each connector, not the interval at which each connector is scraped. Must be equal to or less than the lowest individual connector scrape interval."
           },
           "localDatabaseFileLocation": {
             "type": "string",
+            "default": "",
             "description": "The file location for the local metrics database. If not specified, defaults to `C:\\ProgramData\\Qlik\\Gateway\\tmp`."
           },
           "dataRetentionCheckIntervalMinutes": {
             "type": "integer",
             "format": "int32",
+            "default": 60,
             "maximum": 2147483647,
             "minimum": 1,
             "description": "The interval in minutes the metrics collector checks for and deletes old data."
+          },
+          "localDataRetentionDatabaseSizeInMb": {
+            "type": "integer",
+            "format": "int32",
+            "default": 500,
+            "maximum": 2147483647,
+            "minimum": 1,
+            "description": "The maximum size of the local database in megabytes. Default is 500 MB."
           }
         },
         "additionalProperties": false
@@ -99804,6 +99861,10 @@
               "type": "string"
             },
             "description": "Specifies which levels that are supported for this event type."
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the event type."
           },
           "description": {
             "type": "string",
