@@ -174,6 +174,11 @@
             "maxItems": 100,
             "minItems": 1,
             "description": "List of dataset IDs to retrieve Trust Scores for. Maximum 100 IDs per request."
+          },
+          "recomputeUsage": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, refreshes the USAGE and TIMELINESS axes from source before returning the Trust Scores."
           }
         },
         "description": "Request body for batch-filtering Trust Score results by dataset IDs."
