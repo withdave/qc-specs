@@ -728,7 +728,9 @@
           "DQ-400",
           "DQ-500",
           "DQ-160",
-          "DQ-330"
+          "DQ-330",
+          "DQ-170",
+          "DQ-171"
         ],
         "type": "string",
         "description": "Error code indicating the reason for failure."
@@ -1128,8 +1130,7 @@
       "QualitiesGlobalResultsResponse": {
         "type": "object",
         "required": [
-          "connectionId",
-          "quality"
+          "connectionId"
         ],
         "properties": {
           "quality": {

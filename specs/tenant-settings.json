@@ -748,7 +748,8 @@
         "enum": [
           "analytics-hub",
           "data-integration-hub",
-          "management-console"
+          "management-console",
+          "analytics-creation-hub"
         ],
         "type": "string"
       },
@@ -893,6 +894,10 @@
                 "$ref": "#/components/schemas/StartPageConfigConsole"
               }
             ]
+          },
+          "sessionReplayOptOut": {
+            "type": "boolean",
+            "description": "Tenant-wide preference for opting out of session replay. When set, this value overrides individual user preferences. EU regions default to true (opted out) if this is not explicitly configured."
           },
           "crossRegionDataProcessing": {
             "$ref": "#/components/schemas/SetCrossRegionDataProcessingConfig"

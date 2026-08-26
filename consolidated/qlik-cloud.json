@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.55",
+    "version": "1.0.56",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -337,6 +337,17 @@
         ],
         "description": "Queues a performance and scalability evaluation for the specified app, scheduling\nit for execution by the evaluation engine. The evaluation measures object response\ntimes, CPU usage, document size, and data model metrics. Once queued, use the\nreturned `id` with the retrieval operations to poll for results.\n",
         "operationId": "queueEvaluation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/evaluationRequest"
+              }
+            }
+          },
+          "required": false,
+          "description": "Optional evaluation settings. The body may be omitted entirely.\n"
+        },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
@@ -13523,6 +13534,16 @@
           }
         },
         "parameters": [
+          {
+            "in": "header",
+            "name": "Accept",
+            "schema": {
+              "type": "string",
+              "default": "*/*"
+            },
+            "required": false,
+            "description": "Media type accepted for the downloaded brand file."
+          },
           {
             "$ref": "#/components/parameters/brand-id"
           },
@@ -54728,7 +54749,7 @@
     "/api/v1/ui-config/pinned-links": {
       "get": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "List pinned links",
         "responses": {
@@ -54773,7 +54794,7 @@
       },
       "post": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Create pinned link",
         "responses": {
@@ -54839,7 +54860,7 @@
     "/api/v1/ui-config/pinned-links/{id}": {
       "get": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Get pinned link",
         "responses": {
@@ -54898,7 +54919,7 @@
       },
       "patch": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Update pinned link",
         "responses": {
@@ -54966,7 +54987,7 @@
       },
       "delete": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Delete pinned link",
         "responses": {
@@ -54982,6 +55003,16 @@
               }
             },
             "description": "Forbidden error response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Pinned link not found."
           },
           "default": {
             "content": {
@@ -55020,7 +55051,7 @@
     "/api/v1/ui-config/pinned-links/actions/bulk-create-pinned-links": {
       "post": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Create multiple pinned links",
         "responses": {
@@ -55087,7 +55118,7 @@
     "/api/v1/ui-config/pinned-links/actions/delete-all-pinned-links": {
       "post": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Delete all pinned links",
         "responses": {
@@ -60596,6 +60627,16 @@
             "type": "string",
             "format": "string",
             "example": "my sheet"
+          }
+        }
+      },
+      "evaluationRequest": {
+        "type": "object",
+        "properties": {
+          "engineSizeHint": {
+            "type": "string",
+            "example": "80",
+            "description": "Overrides the automatic engine size calculation with the supplied number of GiB.\nThe value is forwarded to the engine session request when acquiring an engine.\nOptional.\n"
           }
         }
       },
@@ -72190,7 +72231,8 @@
         "properties": {
           "alertingTaskID": {
             "type": "string",
-            "example": "a1b2c3d4f5"
+            "example": "a1b2c3d4f5",
+            "description": "Identifier of the alerting task to trigger."
           }
         }
       },
@@ -72566,11 +72608,13 @@
         "properties": {
           "name": {
             "type": "string",
+            "example": "Sales threshold alert",
             "maxLength": 78,
             "description": "name associated to alerting task"
           },
           "appId": {
             "type": "string",
+            "example": "e0e3187e-4f8c-4c1f-9d2a-1234567890ab",
             "description": "appId associated to this alert definition"
           },
           "enabled": {
@@ -72580,10 +72624,12 @@
           },
           "sheetId": {
             "type": "string",
+            "example": "abcABC1",
             "description": "sheetId associated to this alert definition"
           },
           "bookmarkId": {
             "type": "string",
+            "example": "def-456",
             "description": "bookmarkId associated to this alert definition"
           },
           "recipients": {
@@ -72594,10 +72640,12 @@
           },
           "conditionId": {
             "type": "string",
+            "example": "cond-789",
             "description": "the id of the condition that determines if this data alert should be triggered"
           },
           "description": {
             "type": "string",
+            "example": "Notifies when sales drop below target.",
             "maxLength": 255,
             "description": "description associated to alerting task"
           },
@@ -72607,6 +72655,7 @@
               "SCHEDULED"
             ],
             "type": "string",
+            "example": "SCHEDULED",
             "description": "Type of job that triggered the task"
           },
           "scheduleOptions": {
@@ -72682,6 +72731,7 @@
               "GROUP_IS_DELETED"
             ],
             "type": "string",
+            "example": "GROUP_WITH_NO_APP_ACCESS",
             "description": "Identifier for type of error occurring on alerting task"
           }
         }
@@ -72770,6 +72820,7 @@
               "MAX_ALERTS_LIMIT_REACHED"
             ],
             "type": "string",
+            "example": "NO_ACCESS_TO_APP",
             "description": "Identifier for type of error occurring on alerting task"
           }
         }
@@ -73217,7 +73268,9 @@
             "type": "array"
           },
           "DLListId": {
-            "type": "string"
+            "type": "string",
+            "example": "dl-12345",
+            "description": "Identifier of the distribution list the recipients belong to."
           },
           "groupIds": {
             "type": "array",
@@ -73253,7 +73306,9 @@
           "recurrence": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "RRULE:FREQ=WEEKLY;INTERVAL=1",
+              "description": "A recurrence rule (RRULE) describing the schedule."
             },
             "example": [
               "RRULE:FREQ=HOURLY;INTERVAL=2"
@@ -73269,6 +73324,7 @@
           },
           "chronosJobID": {
             "type": "string",
+            "example": "chronos-job-123",
             "readOnly": true,
             "description": "The chronos job identifier. It is set once the related chronos job is created."
           },
@@ -73307,6 +73363,7 @@
               "GROUP_DISABLED_IN_DL"
             ],
             "type": "string",
+            "example": "GROUP_WITH_NO_APP_ACCESS",
             "description": "Identifier for type of error occurring on sharing task specific for group recipient"
           },
           "timestamp": {
@@ -73338,6 +73395,7 @@
               "BOOKMARK_NOT_FOUND"
             ],
             "type": "string",
+            "example": "NO_ACCESS_TO_APP",
             "description": "Identifier for type of error occurring on sharing task specific for recipient"
           },
           "timestamp": {
@@ -73352,6 +73410,7 @@
         "properties": {
           "capacity": {
             "type": "integer",
+            "example": 10,
             "description": "the maximum number of tokens that the bucket can contain"
           },
           "timezone": {
@@ -73361,18 +73420,22 @@
           },
           "replenishRate": {
             "type": "integer",
+            "example": 1,
             "description": "the amount of tokens to insert into the bucket on the specified interval. (tokens exceeding capacity are discarded)"
           },
           "recurrenceRule": {
             "type": "string",
+            "example": "RRULE:FREQ=DAILY",
             "description": "A string that supports a subset of RFC5545 recurrence rule directives."
           },
           "initialTokenCount": {
             "type": "integer",
+            "example": 10,
             "description": "the initial amount of tokens in the bucket upon creation. cannot exceed capacity."
           },
           "referenceTimestamp": {
             "type": "string",
+            "example": "2021-07-14T10:00:00Z",
             "description": "a date and time reference specified in RFC3339 format"
           }
         },
@@ -73389,7 +73452,9 @@
           "groups": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "sales",
+              "description": "Name of a group that the user is a member of."
             },
             "example": [
               "addedIndividually",
@@ -76019,7 +76084,9 @@
           "DQ-400",
           "DQ-500",
           "DQ-160",
-          "DQ-330"
+          "DQ-330",
+          "DQ-170",
+          "DQ-171"
         ],
         "type": "string",
         "description": "Error code indicating the reason for failure."
@@ -90066,6 +90133,13 @@
           "clientId"
         ],
         "properties": {
+          "jwksUri": {
+            "type": "string",
+            "example": "https://example.com/.well-known/jwks.json",
+            "maxLength": 2048,
+            "description": "URI of the JSON Web Key Set (JWKS) for the client",
+            "x-qlik-private": true
+          },
           "clientId": {
             "type": "string",
             "readOnly": true,
@@ -90154,6 +90228,13 @@
           "clientId"
         ],
         "properties": {
+          "jwksUri": {
+            "type": "string",
+            "example": "https://example.com/.well-known/jwks.json",
+            "maxLength": 2048,
+            "description": "URI of the JSON Web Key Set (JWKS) for the client",
+            "x-qlik-private": true
+          },
           "clientId": {
             "type": "string",
             "readOnly": true,
@@ -90223,6 +90304,13 @@
             "type": "string",
             "maxLength": 64,
             "description": "Application type"
+          },
+          "jwksUri": {
+            "type": "string",
+            "example": "https://example.com/.well-known/jwks.json",
+            "maxLength": 2048,
+            "description": "URI of the JSON Web Key Set (JWKS) for the client",
+            "x-qlik-private": true
           },
           "logoUri": {
             "type": "string",
@@ -90375,6 +90463,13 @@
             "type": "string",
             "maxLength": 64,
             "description": "Application type"
+          },
+          "jwksUri": {
+            "type": "string",
+            "example": "https://example.com/.well-known/jwks.json",
+            "maxLength": 2048,
+            "description": "URI of the JSON Web Key Set (JWKS) for the client",
+            "x-qlik-private": true
           },
           "logoUri": {
             "type": "string",
@@ -90665,7 +90760,8 @@
               "/allowedScopes",
               "/allowedGrantTypes",
               "/publicKeys",
-              "/allowedAuthMethods"
+              "/allowedAuthMethods",
+              "/jwksUri"
             ],
             "type": "string",
             "description": "The path for the given resource field to patch"
@@ -94985,6 +95081,7 @@
           },
           "persistentBookmarkIncludeVariables": {
             "type": "boolean",
+            "example": true,
             "description": "Flag to configure the persistent bookmark to use variables.",
             "x-qlik-stability": "stable",
             "x-qlik-visibility": "public"
@@ -95031,11 +95128,13 @@
         "properties": {
           "body": {
             "type": "string",
-            "example": "report body string"
+            "example": "report body string",
+            "description": "Body content of the email sent to recipients."
           },
           "subject": {
             "type": "string",
-            "example": "report subject"
+            "example": "report subject",
+            "description": "Subject line of the email sent to recipients."
           }
         },
         "x-omitempty": false
@@ -95165,6 +95264,8 @@
           },
           "jsOptsById": {
             "type": "object",
+            "example": {},
+            "description": "Map of Qlik Sense object id to rendering options applied when generating the report.",
             "additionalProperties": {
               "type": "object",
               "properties": {},
@@ -95178,10 +95279,13 @@
               "autofit"
             ],
             "type": "string",
+            "example": "none",
             "description": "Currently only autofit is supported.\nIf omitted, autofit is the default.\nThe type of resize to be performed:\n  - none is used to export a visualization, sheet as is (e.g. normal size), regardless its size. This may result in cropping.\n  - autofit automatically fits the visualization, sheet into the output size (i.e. A4, A3 etc.). Any provided resizeData parameter will be ignored for this configuration.\n  - fit fits the visualization, sheet into the area specified in resizeData. The content will be rescaled to fit in that area.\n"
           },
           "patchesById": {
             "type": "object",
+            "example": {},
+            "description": "Map of Qlik Sense object id to patches applied when generating the report.",
             "additionalProperties": {
               "type": "array",
               "items": {
@@ -95193,6 +95297,7 @@
           },
           "persistentBookmarkIncludeVariables": {
             "type": "boolean",
+            "example": true,
             "description": "Flag to configure the persistent bookmark to use variables",
             "x-qlik-stability": "stable",
             "x-qlik-visibility": "public"
@@ -95260,27 +95365,39 @@
         ],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Country",
+            "description": "Name of the field the selection applies to."
           },
           "values": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "Germany",
+              "description": "A selected value for the field."
             }
           },
           "isNumeric": {
-            "type": "boolean"
+            "type": "boolean",
+            "example": false,
+            "description": "Whether the selected values are numeric."
           },
           "stateName": {
-            "type": "string"
+            "type": "string",
+            "example": "$",
+            "description": "Name of the selection state the values belong to."
           },
           "displayName": {
-            "type": "string"
+            "type": "string",
+            "example": "Country",
+            "description": "Human-readable name of the field the selection applies to."
           },
           "displayValues": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "Germany",
+              "description": "A human-readable selected value for the field."
             }
           }
         }
@@ -95293,7 +95410,8 @@
         "properties": {
           "sharingTaskID": {
             "type": "string",
-            "example": "a1b2c3d4f5"
+            "example": "a1b2c3d4f5",
+            "description": "Identifier of the sharing task to trigger."
           }
         }
       },
@@ -95738,7 +95856,9 @@
           "tags": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "finance",
+              "description": "A tag associated with the sharing task."
             },
             "description": "used to assign sharing task to a collection bucket (tags)"
           },
@@ -95750,6 +95870,7 @@
               "template-sharing"
             ],
             "type": "string",
+            "example": "chart-monitoring",
             "description": "the sharing task resource type."
           },
           "state": {
@@ -95757,6 +95878,7 @@
           },
           "appName": {
             "type": "string",
+            "example": "Sales Dashboard",
             "minLength": 1,
             "description": "Name of the app associated (through the templates) with this sharing task",
             "x-qlik-deprecated": true
@@ -95774,6 +95896,7 @@
           },
           "spaceId": {
             "type": "string",
+            "example": "5f7b1a2c3d4e5f6a7b8c9d0e",
             "maxLength": 255,
             "description": "Space ID of the sharing task"
           },
@@ -95786,6 +95909,7 @@
               "docx"
             ],
             "type": "string",
+            "example": "pdf",
             "description": "the sharing task resource mashup sub type.",
             "x-qlik-deprecated": true
           },
@@ -95801,7 +95925,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TemplateResult"
-            }
+            },
+            "description": "Templates associated with the sharing task"
           },
           "expiration": {
             "type": "string",
@@ -95813,6 +95938,7 @@
           },
           "description": {
             "type": "string",
+            "example": "Weekly sales report subscription.",
             "maxLength": 255,
             "description": "Description of the sharing task"
           },
@@ -95830,10 +95956,12 @@
           },
           "dataConnectionID": {
             "type": "string",
+            "example": "data-connection-123",
             "description": "the id of the data connection"
           },
           "sharePointFolder": {
             "type": "string",
+            "example": "Shared Documents/Reports",
             "description": "the SharePoint folder to upload the report to"
           },
           "executeOnCreation": {
@@ -95848,7 +95976,9 @@
                 "email",
                 "sharepoint"
               ],
-              "type": "string"
+              "type": "string",
+              "example": "email",
+              "description": "Channel used to deliver the report to recipients."
             },
             "description": "the transport type for the report"
           },
@@ -96341,6 +96471,8 @@
           },
           "jsOptsById": {
             "type": "object",
+            "example": {},
+            "description": "Map of Qlik Sense object id to rendering options applied when generating the report.",
             "additionalProperties": {
               "type": "object",
               "properties": {},
@@ -96349,6 +96481,8 @@
           },
           "patchesById": {
             "type": "object",
+            "example": {},
+            "description": "Map of Qlik Sense object id to patches applied when generating the report.",
             "additionalProperties": {
               "type": "array",
               "items": {
@@ -96496,7 +96630,8 @@
               "word"
             ],
             "type": "string",
-            "example": "file"
+            "example": "file",
+            "description": "The type of template used to generate the report output."
           },
           "subType": {
             "enum": [
@@ -96510,10 +96645,12 @@
               "docx"
             ],
             "type": "string",
-            "default": "image"
+            "default": "image",
+            "description": "The output sub-type produced for the template."
           },
           "fileName": {
             "type": "string",
+            "example": "sales-report",
             "description": "fileName to be used when generating the report"
           },
           "chartData": {
@@ -96521,6 +96658,7 @@
           },
           "fileAlias": {
             "type": "string",
+            "example": "file1",
             "description": "fileAlias provide an opaqueId for the client which can be used to filter and select the report generated"
           },
           "sheetData": {
@@ -96544,6 +96682,7 @@
               "yyyyMMdd_HH-mm"
             ],
             "type": "string",
+            "example": "yyyy-MM-dd",
             "description": "file name timestamp to be used when generating the report"
           },
           "multiSheetData": {
@@ -96574,13 +96713,16 @@
           "recurrence": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "RRULE:FREQ=WEEKLY;INTERVAL=1",
+              "description": "A recurrence rule (RRULE) describing when the task is triggered."
             },
             "nullable": true,
             "description": "List of RRULE lines for a recurring event, as specified in RFC5545. Note that DTSTART and DTEND, UNTIL lines are not allowed in this field; event start and end times are specified in the start and end fields. RDATE and EXDATE lines are not currently supported. EXRULE is not supported since it is deprecated by RFC5545. This field is omitted for single events."
           },
           "chronosJobID": {
             "type": "string",
+            "example": "chronos-job-123",
             "readOnly": true,
             "description": "The chronosJobId which triggers the sharing task",
             "x-omitempty": false
@@ -96601,6 +96743,7 @@
               "yearly"
             ],
             "type": "string",
+            "example": "daily",
             "description": "To prevent overflow in the history, setting this to daily store the chart of a previous day in the history and maintain the live version with the tag latest."
           }
         }
@@ -97532,7 +97675,8 @@
         "enum": [
           "analytics-hub",
           "data-integration-hub",
-          "management-console"
+          "management-console",
+          "analytics-creation-hub"
         ],
         "type": "string"
       },
@@ -97677,6 +97821,10 @@
                 "$ref": "#/components/schemas/StartPageConfigConsole"
               }
             ]
+          },
+          "sessionReplayOptOut": {
+            "type": "boolean",
+            "description": "Tenant-wide preference for opting out of session replay. When set, this value overrides individual user preferences. EU regions default to true (opted out) if this is not explicitly configured."
           },
           "crossRegionDataProcessing": {
             "$ref": "#/components/schemas/SetCrossRegionDataProcessingConfig"

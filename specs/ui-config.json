@@ -7,7 +7,7 @@
     "/api/v1/ui-config/pinned-links": {
       "get": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "List pinned links",
         "responses": {
@@ -52,7 +52,7 @@
       },
       "post": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Create pinned link",
         "responses": {
@@ -118,7 +118,7 @@
     "/api/v1/ui-config/pinned-links/{id}": {
       "get": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Get pinned link",
         "responses": {
@@ -177,7 +177,7 @@
       },
       "patch": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Update pinned link",
         "responses": {
@@ -245,7 +245,7 @@
       },
       "delete": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Delete pinned link",
         "responses": {
@@ -261,6 +261,16 @@
               }
             },
             "description": "Forbidden error response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Pinned link not found."
           },
           "default": {
             "content": {
@@ -299,7 +309,7 @@
     "/api/v1/ui-config/pinned-links/actions/bulk-create-pinned-links": {
       "post": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Create multiple pinned links",
         "responses": {
@@ -366,7 +376,7 @@
     "/api/v1/ui-config/pinned-links/actions/delete-all-pinned-links": {
       "post": {
         "tags": [
-          "Pinned Links"
+          "pinned links"
         ],
         "summary": "Delete all pinned links",
         "responses": {
@@ -471,6 +481,7 @@
         }
       },
       "Error": {
+        "type": "object",
         "properties": {
           "code": {
             "type": "integer",

@@ -478,6 +478,16 @@
         },
         "parameters": [
           {
+            "in": "header",
+            "name": "Accept",
+            "schema": {
+              "type": "string",
+              "default": "*/*"
+            },
+            "required": false,
+            "description": "Media type accepted for the downloaded brand file."
+          },
+          {
             "$ref": "#/components/parameters/brand-id"
           },
           {

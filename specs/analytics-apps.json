@@ -320,6 +320,17 @@
         ],
         "description": "Queues a performance and scalability evaluation for the specified app, scheduling\nit for execution by the evaluation engine. The evaluation measures object response\ntimes, CPU usage, document size, and data model metrics. Once queued, use the\nreturned `id` with the retrieval operations to poll for results.\n",
         "operationId": "queueEvaluation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/evaluationRequest"
+              }
+            }
+          },
+          "required": false,
+          "description": "Optional evaluation settings. The body may be omitted entirely.\n"
+        },
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
@@ -1137,6 +1148,16 @@
           },
           "reloadInformation": {
             "$ref": "#/components/schemas/reloadInformation"
+          }
+        }
+      },
+      "evaluationRequest": {
+        "type": "object",
+        "properties": {
+          "engineSizeHint": {
+            "type": "string",
+            "example": "80",
+            "description": "Overrides the automatic engine size calculation with the supplied number of GiB.\nThe value is forwarded to the engine session request when acquiring an engine.\nOptional.\n"
           }
         }
       },
