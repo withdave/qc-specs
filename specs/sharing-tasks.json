@@ -1270,6 +1270,7 @@
               "GROUP_IS_DELETED"
             ],
             "type": "string",
+            "example": "GROUP_WITH_NO_APP_ACCESS",
             "description": "Identifier for type of error occurring on alerting task"
           }
         }
@@ -1293,6 +1294,7 @@
               "MAX_ALERTS_LIMIT_REACHED"
             ],
             "type": "string",
+            "example": "NO_ACCESS_TO_APP",
             "description": "Identifier for type of error occurring on alerting task"
           }
         }
@@ -1374,6 +1376,7 @@
           },
           "persistentBookmarkIncludeVariables": {
             "type": "boolean",
+            "example": true,
             "description": "Flag to configure the persistent bookmark to use variables.",
             "x-qlik-stability": "stable",
             "x-qlik-visibility": "public"
@@ -1420,11 +1423,13 @@
         "properties": {
           "body": {
             "type": "string",
-            "example": "report body string"
+            "example": "report body string",
+            "description": "Body content of the email sent to recipients."
           },
           "subject": {
             "type": "string",
-            "example": "report subject"
+            "example": "report subject",
+            "description": "Subject line of the email sent to recipients."
           }
         },
         "x-omitempty": false
@@ -1633,6 +1638,8 @@
           },
           "jsOptsById": {
             "type": "object",
+            "example": {},
+            "description": "Map of Qlik Sense object id to rendering options applied when generating the report.",
             "additionalProperties": {
               "type": "object",
               "properties": {},
@@ -1646,10 +1653,13 @@
               "autofit"
             ],
             "type": "string",
+            "example": "none",
             "description": "Currently only autofit is supported.\nIf omitted, autofit is the default.\nThe type of resize to be performed:\n  - none is used to export a visualization, sheet as is (e.g. normal size), regardless its size. This may result in cropping.\n  - autofit automatically fits the visualization, sheet into the output size (i.e. A4, A3 etc.). Any provided resizeData parameter will be ignored for this configuration.\n  - fit fits the visualization, sheet into the area specified in resizeData. The content will be rescaled to fit in that area.\n"
           },
           "patchesById": {
             "type": "object",
+            "example": {},
+            "description": "Map of Qlik Sense object id to patches applied when generating the report.",
             "additionalProperties": {
               "type": "array",
               "items": {
@@ -1661,6 +1671,7 @@
           },
           "persistentBookmarkIncludeVariables": {
             "type": "boolean",
+            "example": true,
             "description": "Flag to configure the persistent bookmark to use variables",
             "x-qlik-stability": "stable",
             "x-qlik-visibility": "public"
@@ -1754,7 +1765,9 @@
           "recurrence": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "RRULE:FREQ=WEEKLY;INTERVAL=1",
+              "description": "A recurrence rule (RRULE) describing the schedule."
             },
             "example": [
               "RRULE:FREQ=HOURLY;INTERVAL=2"
@@ -1770,6 +1783,7 @@
           },
           "chronosJobID": {
             "type": "string",
+            "example": "chronos-job-123",
             "readOnly": true,
             "description": "The chronos job identifier. It is set once the related chronos job is created."
           },
@@ -1805,27 +1819,39 @@
         ],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Country",
+            "description": "Name of the field the selection applies to."
           },
           "values": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "Germany",
+              "description": "A selected value for the field."
             }
           },
           "isNumeric": {
-            "type": "boolean"
+            "type": "boolean",
+            "example": false,
+            "description": "Whether the selected values are numeric."
           },
           "stateName": {
-            "type": "string"
+            "type": "string",
+            "example": "$",
+            "description": "Name of the selection state the values belong to."
           },
           "displayName": {
-            "type": "string"
+            "type": "string",
+            "example": "Country",
+            "description": "Human-readable name of the field the selection applies to."
           },
           "displayValues": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "Germany",
+              "description": "A human-readable selected value for the field."
             }
           }
         }
@@ -1848,7 +1874,8 @@
         "properties": {
           "sharingTaskID": {
             "type": "string",
-            "example": "a1b2c3d4f5"
+            "example": "a1b2c3d4f5",
+            "description": "Identifier of the sharing task to trigger."
           }
         }
       },
@@ -2293,7 +2320,9 @@
           "tags": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "finance",
+              "description": "A tag associated with the sharing task."
             },
             "description": "used to assign sharing task to a collection bucket (tags)"
           },
@@ -2305,6 +2334,7 @@
               "template-sharing"
             ],
             "type": "string",
+            "example": "chart-monitoring",
             "description": "the sharing task resource type."
           },
           "state": {
@@ -2312,6 +2342,7 @@
           },
           "appName": {
             "type": "string",
+            "example": "Sales Dashboard",
             "minLength": 1,
             "description": "Name of the app associated (through the templates) with this sharing task",
             "x-qlik-deprecated": true
@@ -2329,6 +2360,7 @@
           },
           "spaceId": {
             "type": "string",
+            "example": "5f7b1a2c3d4e5f6a7b8c9d0e",
             "maxLength": 255,
             "description": "Space ID of the sharing task"
           },
@@ -2341,6 +2373,7 @@
               "docx"
             ],
             "type": "string",
+            "example": "pdf",
             "description": "the sharing task resource mashup sub type.",
             "x-qlik-deprecated": true
           },
@@ -2356,7 +2389,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TemplateResult"
-            }
+            },
+            "description": "Templates associated with the sharing task"
           },
           "expiration": {
             "type": "string",
@@ -2368,6 +2402,7 @@
           },
           "description": {
             "type": "string",
+            "example": "Weekly sales report subscription.",
             "maxLength": 255,
             "description": "Description of the sharing task"
           },
@@ -2385,10 +2420,12 @@
           },
           "dataConnectionID": {
             "type": "string",
+            "example": "data-connection-123",
             "description": "the id of the data connection"
           },
           "sharePointFolder": {
             "type": "string",
+            "example": "Shared Documents/Reports",
             "description": "the SharePoint folder to upload the report to"
           },
           "executeOnCreation": {
@@ -2403,7 +2440,9 @@
                 "email",
                 "sharepoint"
               ],
-              "type": "string"
+              "type": "string",
+              "example": "email",
+              "description": "Channel used to deliver the report to recipients."
             },
             "description": "the transport type for the report"
           },
@@ -2896,6 +2935,8 @@
           },
           "jsOptsById": {
             "type": "object",
+            "example": {},
+            "description": "Map of Qlik Sense object id to rendering options applied when generating the report.",
             "additionalProperties": {
               "type": "object",
               "properties": {},
@@ -2904,6 +2945,8 @@
           },
           "patchesById": {
             "type": "object",
+            "example": {},
+            "description": "Map of Qlik Sense object id to patches applied when generating the report.",
             "additionalProperties": {
               "type": "array",
               "items": {
@@ -3062,6 +3105,7 @@
               "GROUP_DISABLED_IN_DL"
             ],
             "type": "string",
+            "example": "GROUP_WITH_NO_APP_ACCESS",
             "description": "Identifier for type of error occurring on sharing task specific for group recipient"
           },
           "timestamp": {
@@ -3093,6 +3137,7 @@
               "BOOKMARK_NOT_FOUND"
             ],
             "type": "string",
+            "example": "NO_ACCESS_TO_APP",
             "description": "Identifier for type of error occurring on sharing task specific for recipient"
           },
           "timestamp": {
@@ -3122,7 +3167,8 @@
               "word"
             ],
             "type": "string",
-            "example": "file"
+            "example": "file",
+            "description": "The type of template used to generate the report output."
           },
           "subType": {
             "enum": [
@@ -3136,10 +3182,12 @@
               "docx"
             ],
             "type": "string",
-            "default": "image"
+            "default": "image",
+            "description": "The output sub-type produced for the template."
           },
           "fileName": {
             "type": "string",
+            "example": "sales-report",
             "description": "fileName to be used when generating the report"
           },
           "chartData": {
@@ -3147,6 +3195,7 @@
           },
           "fileAlias": {
             "type": "string",
+            "example": "file1",
             "description": "fileAlias provide an opaqueId for the client which can be used to filter and select the report generated"
           },
           "sheetData": {
@@ -3170,6 +3219,7 @@
               "yyyyMMdd_HH-mm"
             ],
             "type": "string",
+            "example": "yyyy-MM-dd",
             "description": "file name timestamp to be used when generating the report"
           },
           "multiSheetData": {
@@ -3200,13 +3250,16 @@
           "recurrence": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "RRULE:FREQ=WEEKLY;INTERVAL=1",
+              "description": "A recurrence rule (RRULE) describing when the task is triggered."
             },
             "nullable": true,
             "description": "List of RRULE lines for a recurring event, as specified in RFC5545. Note that DTSTART and DTEND, UNTIL lines are not allowed in this field; event start and end times are specified in the start and end fields. RDATE and EXDATE lines are not currently supported. EXRULE is not supported since it is deprecated by RFC5545. This field is omitted for single events."
           },
           "chronosJobID": {
             "type": "string",
+            "example": "chronos-job-123",
             "readOnly": true,
             "description": "The chronosJobId which triggers the sharing task",
             "x-omitempty": false
@@ -3227,6 +3280,7 @@
               "yearly"
             ],
             "type": "string",
+            "example": "daily",
             "description": "To prevent overflow in the history, setting this to daily store the chart of a previous day in the history and maintain the live version with the tag latest."
           }
         }
@@ -3242,7 +3296,9 @@
           "groups": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "sales",
+              "description": "Name of a group that the user is a member of."
             },
             "example": [
               "addedIndividually",

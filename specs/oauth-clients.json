@@ -988,6 +988,13 @@
           "clientId"
         ],
         "properties": {
+          "jwksUri": {
+            "type": "string",
+            "example": "https://example.com/.well-known/jwks.json",
+            "maxLength": 2048,
+            "description": "URI of the JSON Web Key Set (JWKS) for the client",
+            "x-qlik-private": true
+          },
           "clientId": {
             "type": "string",
             "readOnly": true,
@@ -1076,6 +1083,13 @@
           "clientId"
         ],
         "properties": {
+          "jwksUri": {
+            "type": "string",
+            "example": "https://example.com/.well-known/jwks.json",
+            "maxLength": 2048,
+            "description": "URI of the JSON Web Key Set (JWKS) for the client",
+            "x-qlik-private": true
+          },
           "clientId": {
             "type": "string",
             "readOnly": true,
@@ -1145,6 +1159,13 @@
             "type": "string",
             "maxLength": 64,
             "description": "Application type"
+          },
+          "jwksUri": {
+            "type": "string",
+            "example": "https://example.com/.well-known/jwks.json",
+            "maxLength": 2048,
+            "description": "URI of the JSON Web Key Set (JWKS) for the client",
+            "x-qlik-private": true
           },
           "logoUri": {
             "type": "string",
@@ -1297,6 +1318,13 @@
             "type": "string",
             "maxLength": 64,
             "description": "Application type"
+          },
+          "jwksUri": {
+            "type": "string",
+            "example": "https://example.com/.well-known/jwks.json",
+            "maxLength": 2048,
+            "description": "URI of the JSON Web Key Set (JWKS) for the client",
+            "x-qlik-private": true
           },
           "logoUri": {
             "type": "string",
@@ -1587,7 +1615,8 @@
               "/allowedScopes",
               "/allowedGrantTypes",
               "/publicKeys",
-              "/allowedAuthMethods"
+              "/allowedAuthMethods",
+              "/jwksUri"
             ],
             "type": "string",
             "description": "The path for the given resource field to patch"

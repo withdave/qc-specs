@@ -1621,7 +1621,8 @@
         "properties": {
           "alertingTaskID": {
             "type": "string",
-            "example": "a1b2c3d4f5"
+            "example": "a1b2c3d4f5",
+            "description": "Identifier of the alerting task to trigger."
           }
         }
       },
@@ -1997,11 +1998,13 @@
         "properties": {
           "name": {
             "type": "string",
+            "example": "Sales threshold alert",
             "maxLength": 78,
             "description": "name associated to alerting task"
           },
           "appId": {
             "type": "string",
+            "example": "e0e3187e-4f8c-4c1f-9d2a-1234567890ab",
             "description": "appId associated to this alert definition"
           },
           "enabled": {
@@ -2011,10 +2014,12 @@
           },
           "sheetId": {
             "type": "string",
+            "example": "abcABC1",
             "description": "sheetId associated to this alert definition"
           },
           "bookmarkId": {
             "type": "string",
+            "example": "def-456",
             "description": "bookmarkId associated to this alert definition"
           },
           "recipients": {
@@ -2025,10 +2030,12 @@
           },
           "conditionId": {
             "type": "string",
+            "example": "cond-789",
             "description": "the id of the condition that determines if this data alert should be triggered"
           },
           "description": {
             "type": "string",
+            "example": "Notifies when sales drop below target.",
             "maxLength": 255,
             "description": "description associated to alerting task"
           },
@@ -2038,6 +2045,7 @@
               "SCHEDULED"
             ],
             "type": "string",
+            "example": "SCHEDULED",
             "description": "Type of job that triggered the task"
           },
           "scheduleOptions": {
@@ -2113,6 +2121,7 @@
               "GROUP_IS_DELETED"
             ],
             "type": "string",
+            "example": "GROUP_WITH_NO_APP_ACCESS",
             "description": "Identifier for type of error occurring on alerting task"
           }
         }
@@ -2201,6 +2210,7 @@
               "MAX_ALERTS_LIMIT_REACHED"
             ],
             "type": "string",
+            "example": "NO_ACCESS_TO_APP",
             "description": "Identifier for type of error occurring on alerting task"
           }
         }
@@ -2821,7 +2831,9 @@
             "type": "array"
           },
           "DLListId": {
-            "type": "string"
+            "type": "string",
+            "example": "dl-12345",
+            "description": "Identifier of the distribution list the recipients belong to."
           },
           "groupIds": {
             "type": "array",
@@ -2857,7 +2869,9 @@
           "recurrence": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "RRULE:FREQ=WEEKLY;INTERVAL=1",
+              "description": "A recurrence rule (RRULE) describing the schedule."
             },
             "example": [
               "RRULE:FREQ=HOURLY;INTERVAL=2"
@@ -2873,6 +2887,7 @@
           },
           "chronosJobID": {
             "type": "string",
+            "example": "chronos-job-123",
             "readOnly": true,
             "description": "The chronos job identifier. It is set once the related chronos job is created."
           },
@@ -2939,6 +2954,7 @@
               "GROUP_DISABLED_IN_DL"
             ],
             "type": "string",
+            "example": "GROUP_WITH_NO_APP_ACCESS",
             "description": "Identifier for type of error occurring on sharing task specific for group recipient"
           },
           "timestamp": {
@@ -2970,6 +2986,7 @@
               "BOOKMARK_NOT_FOUND"
             ],
             "type": "string",
+            "example": "NO_ACCESS_TO_APP",
             "description": "Identifier for type of error occurring on sharing task specific for recipient"
           },
           "timestamp": {
@@ -2984,6 +3001,7 @@
         "properties": {
           "capacity": {
             "type": "integer",
+            "example": 10,
             "description": "the maximum number of tokens that the bucket can contain"
           },
           "timezone": {
@@ -2993,18 +3011,22 @@
           },
           "replenishRate": {
             "type": "integer",
+            "example": 1,
             "description": "the amount of tokens to insert into the bucket on the specified interval. (tokens exceeding capacity are discarded)"
           },
           "recurrenceRule": {
             "type": "string",
+            "example": "RRULE:FREQ=DAILY",
             "description": "A string that supports a subset of RFC5545 recurrence rule directives."
           },
           "initialTokenCount": {
             "type": "integer",
+            "example": 10,
             "description": "the initial amount of tokens in the bucket upon creation. cannot exceed capacity."
           },
           "referenceTimestamp": {
             "type": "string",
+            "example": "2021-07-14T10:00:00Z",
             "description": "a date and time reference specified in RFC3339 format"
           }
         },
@@ -3021,7 +3043,9 @@
           "groups": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "sales",
+              "description": "Name of a group that the user is a member of."
             },
             "example": [
               "addedIndividually",
