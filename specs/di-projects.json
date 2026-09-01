@@ -1505,7 +1505,7 @@
         "tags": [
           "task run history"
         ],
-        "summary": "Get run state",
+        "summary": "Get task run history state",
         "responses": {
           "200": {
             "content": {
@@ -1598,7 +1598,7 @@
         "tags": [
           "task run history"
         ],
-        "summary": "List run dataset states",
+        "summary": "List dataset run history states",
         "responses": {
           "200": {
             "content": {
@@ -1880,7 +1880,7 @@
         "tags": [
           "data task runtime"
         ],
-        "summary": "List runtime dataset states",
+        "summary": "List dataset runtime states",
         "responses": {
           "200": {
             "content": {
