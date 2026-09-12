@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.57",
+    "version": "1.0.58",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -4639,10 +4639,9 @@
         "responses": {
           "200": {
             "content": {
-              "application/octet-stream": {
+              "text/plain": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "string"
                 }
               }
             },
@@ -5596,6 +5595,14 @@
             },
             "headers": {},
             "description": "OK"
+          },
+          "403": {
+            "headers": {},
+            "description": "Forbidden"
+          },
+          "404": {
+            "headers": {},
+            "description": "Not Found"
           }
         },
         "parameters": [
@@ -23734,6 +23741,287 @@
         }
       }
     },
+    "/api/data-governance/semantic-types/actions/export": {
+      "post": {
+        "tags": [
+          "import-export"
+        ],
+        "summary": "Export semantic types",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SemanticTypesExportEnvelope"
+                }
+              }
+            },
+            "headers": {
+              "Content-Disposition": {
+                "schema": {
+                  "type": "string",
+                  "example": "attachment; filename=\"semantic-types-20260604143052.json\""
+                },
+                "description": "Suggested filename for the download. Includes timestamp in UTC (format: YYYYMMDDHHMMSS) and the type filter (lowercase) when applicable. Examples: `semantic-types-20260604143052.json`, `semantic-types-regex-20260604143052.json`.\n"
+              }
+            },
+            "description": "Export file containing the requested semantic types."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Exports semantic types from the current tenant as a downloadable JSON file. Supports optional filtering by type IDs, category, creator, or search term.  Without filters, all types (user-created and Qlik defaults) are exported.\n",
+        "operationId": "exportSemanticTypes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/semantic-types/actions/import": {
+      "post": {
+        "tags": [
+          "import-export"
+        ],
+        "summary": "Import semantic types",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportConflictResponse"
+                },
+                "examples": {
+                  "importReport": {
+                    "value": {},
+                    "summary": "Import report (resolved import with conflicts)"
+                  },
+                  "conflictResponse": {
+                    "value": {
+                      "code": "IMPORT_CONFLICT",
+                      "types": [
+                        {
+                          "type": "REGEX",
+                          "label": "Email Address",
+                          "status": "CONFLICT"
+                        }
+                      ],
+                      "message": "Conflicts: 1 of 3."
+                    },
+                    "summary": "Conflict / preview response"
+                  }
+                }
+              }
+            },
+            "description": "Nothing was imported. The body is an `ImportConflictResponse`:\n- when `skipConfirmation=true` but real conflicts or in-file\n  duplicates exist — nothing was imported;\n\n- when `skipConfirmation` is false/absent (preview) — nothing was\n  imported. Re-submit with `skipConfirmation=true` or\n  `conflictResolutions` to apply.\n"
+          },
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportReport"
+                },
+                "examples": {
+                  "importReportNoConflicts": {
+                    "value": {
+                      "summary": {
+                        "errored": {
+                          "count": 0
+                        },
+                        "skipped": {
+                          "count": 0
+                        },
+                        "updated": {
+                          "count": 0
+                        },
+                        "duplicates": {
+                          "count": 0
+                        },
+                        "totalCreated": {
+                          "count": 3,
+                          "items": [
+                            {
+                              "id": "abc-1",
+                              "label": "Email Address"
+                            }
+                          ],
+                          "labels": [
+                            "Email Address"
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Import report (no conflicts)"
+                  },
+                  "importReportWithConflicts": {
+                    "value": {
+                      "summary": {
+                        "errored": {
+                          "count": 0
+                        },
+                        "skipped": {
+                          "count": 0
+                        },
+                        "updated": {
+                          "count": 1,
+                          "items": [
+                            {
+                              "id": "abc-1",
+                              "label": "Email Address"
+                            }
+                          ],
+                          "labels": [
+                            "Email Address"
+                          ]
+                        },
+                        "duplicates": {
+                          "count": 0
+                        },
+                        "totalCreated": {
+                          "count": 0
+                        }
+                      }
+                    },
+                    "summary": "Import report (resolved import with conflicts)"
+                  }
+                }
+              }
+            },
+            "description": "Import applied. The report contains summary counts and a detailed error list for any types that could not be processed. Returned in both the no-conflict case and when `conflictResolutions` were provided (regardless of whether conflicts were present).\n"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid payload — malformed JSON, unknown format, or structural error."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Imports semantic types from a JSON file. Supports Qlik Cloud format (`QlikSemanticTypesExport`) and Talend legacy format (`DQDictionaryImportExport`). Format is auto-detected from the `exportFormat` field in the payload.\n\n**Conflict handling** is controlled by the `skipConfirmation` flag and the optional `conflictResolutions` array:\n\n- **Preview** (`skipConfirmation` false/absent, no `conflictResolutions`):\n  the file is analysed but nothing is imported. Returns `200` with a\n  per-type conflict/summary body. Re-submit with `skipConfirmation=true`\n  or `conflictResolutions` to actually apply the import.\n\n\n- **One-shot** (`skipConfirmation=true`, no `conflictResolutions`):\n  if real conflicts or in-file duplicates exist, returns `200` with the\n  conflict body and imports nothing; otherwise the import is applied and\n  `201` is returned with the import report.\n\n\n- **Resolved** (`conflictResolutions` provided): the import is applied using\n  the per-label strategies, falling back to `defaultConflictStrategy`\n  (defaults to `SKIP`) for unlisted labels. Returns `201` in both cases\n  (conflicts present or not), with the import report.\n\n\nImport is best-effort: each type is processed independently. Failures are logged in the response report without blocking other types.\n",
+        "operationId": "importSemanticTypes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/data-governance/trust-scores/results/data-sets/actions/filter": {
       "post": {
         "tags": [
@@ -24189,7 +24477,7 @@
         "tags": [
           "data-set"
         ],
-        "summary": "Save new data set",
+        "summary": "Save a new data set",
         "responses": {
           "201": {
             "content": {
@@ -24209,7 +24497,7 @@
                 }
               }
             },
-            "description": "The request is in incorrect format."
+            "description": "The request is in incorrect format. Also returned when field aliases are not unique within a schema or conflict with another field's name."
           },
           "401": {
             "content": {
@@ -24272,6 +24560,7 @@
             "description": "Requested service is not available."
           }
         },
+        "description": "Creates and saves a new data set in the catalog.",
         "operationId": "saveDataSet",
         "requestBody": {
           "content": {
@@ -24545,7 +24834,7 @@
                 }
               }
             },
-            "description": "The request is in incorrect format."
+            "description": "The request is in incorrect format. Also returned when field aliases are not unique within a schema or conflict with another field's name."
           },
           "401": {
             "content": {
@@ -24666,7 +24955,7 @@
                 }
               }
             },
-            "description": "The request is in incorrect format."
+            "description": "The request is in incorrect format. Also returned when field aliases are not unique within a schema or conflict with another field's name."
           },
           "401": {
             "content": {
@@ -40392,7 +40681,7 @@
         "summary": "Activate the model for this deployment",
         "responses": {
           "204": {
-            "$ref": "#/components/responses/204NoContent"
+            "$ref": "#/components/responses/204NoContentModelState"
           },
           "400": {
             "$ref": "#/components/responses/400BadRequest"
@@ -40424,6 +40713,7 @@
             "$ref": "#/components/parameters/deploymentId"
           }
         ],
+        "description": "Activates the deployed model on this deployment's default alias. The\nresponse reports which model was targeted and whether its state\nactually changed via the `qlik-model-id` and `qlik-state-change`\nresponse headers. If the model was already active, the request still\nsucceeds but `qlik-state-change` is `NO_CHANGE`.\n",
         "operationId": "activateDeploymentModels",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -40442,7 +40732,7 @@
         "summary": "Deactivate the model for this deployment",
         "responses": {
           "204": {
-            "$ref": "#/components/responses/204NoContent"
+            "$ref": "#/components/responses/204NoContentModelState"
           },
           "400": {
             "$ref": "#/components/responses/400BadRequest"
@@ -40474,6 +40764,7 @@
             "$ref": "#/components/parameters/deploymentId"
           }
         ],
+        "description": "Deactivates the deployed model on this deployment's default alias.\nThe response reports which model was targeted and whether its state\nactually changed via the `qlik-model-id` and `qlik-state-change`\nresponse headers. If the model was already inactive, the request\nstill succeeds but `qlik-state-change` is `NO_CHANGE`.\n",
         "operationId": "deactivateDeploymentModels",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -76586,6 +76877,547 @@
         },
         "description": "Quality metrics based on type validation."
       },
+      "ConflictResolution": {
+        "type": "object",
+        "required": [
+          "label",
+          "strategy"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "example": "Email Address",
+            "description": "Label of the conflicting semantic type."
+          },
+          "strategy": {
+            "enum": [
+              "OVERWRITE",
+              "SKIP",
+              "KEEP_BOTH"
+            ],
+            "type": "string",
+            "example": "SKIP",
+            "description": "`OVERWRITE`: replace the existing type with the version from the file. `SKIP`: keep the existing type unchanged, do not import. `KEEP_BOTH`: keep the existing type and create the version from the file with a deduplicated label.\n"
+          }
+        },
+        "description": "Resolution decision for a single conflicting semantic type."
+      },
+      "DiffEntry": {
+        "type": "object",
+        "required": [
+          "fromFile",
+          "existing"
+        ],
+        "properties": {
+          "existing": {
+            "description": "Value currently in the tenant."
+          },
+          "fromFile": {
+            "description": "Value from the import file."
+          }
+        },
+        "description": "A single field difference between the file value and the existing type."
+      },
+      "ExportCompoundChild": {
+        "type": "object",
+        "required": [
+          "label"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Label of the child type. Primary resolution key at import time. The importer resolves children using a three-step cascade: first against types created earlier in the same import batch (by label), then against existing types in the target tenant (by label), and finally by `parentId` fallback.\n"
+          },
+          "parentId": {
+            "type": "string",
+            "description": "Identifier of the child's parent default semantic type (Qlik-provisioned). Null for user-created children. Used as a fallback resolution key at import time: when the child's label does not match any type in the target tenant (e.g. because it was renamed after export), the importer looks up a type whose own `parentId` matches this value. If a child cannot be resolved by either label or `parentId`, the entire COMPOUND type is rejected with `IMPORT_COMPOUND_CHILDREN_NOT_FOUND`. Only that COMPOUND type is affected; the rest of the import proceeds normally (best-effort).\n"
+          }
+        },
+        "description": "Reference to a child type in a COMPOUND export. Contains resolution info (label + parentId) instead of a tenant-specific ID.\n"
+      },
+      "ExportRequest": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "3b179e2b028c4306ab108b68116ae639",
+              "description": "A unique identifier for a semantic type."
+            },
+            "example": [
+              "3b179e2b028c4306ab108b68116ae639",
+              "4d237dd47e594f789617041b0d09c66f"
+            ],
+            "description": "List of semantic type IDs to export. When provided, only these types are included.",
+            "uniqueItems": true
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "REGEX",
+                "DICTIONARY",
+                "COMPOUND"
+              ],
+              "type": "string",
+              "example": "REGEX",
+              "description": "A semantic type category."
+            },
+            "example": [
+              "REGEX",
+              "DICTIONARY"
+            ],
+            "description": "Filter by semantic type categories. Supports multiple values for OR logic. When provided, only types matching the specified categories are included.\n",
+            "uniqueItems": true
+          },
+          "search": {
+            "type": "string",
+            "example": "email",
+            "maxLength": 500,
+            "description": "Case-insensitive substring search on label and description fields. Returns only semantic types where the label or description contains the search term. Special regex characters are automatically escaped for literal matching. Maximum length: 500 characters. Empty string returns no results.\n"
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "712020:291adc5e-c210-408b-a43a-776448c35ef4",
+            "description": "Filter by creator user ID. When provided, only types created by this user are included."
+          }
+        },
+        "description": "Request body for exporting semantic types with optional filters."
+      },
+      "ExportSemanticType": {
+        "type": "object",
+        "required": [
+          "label",
+          "type",
+          "useForValidation",
+          "activated",
+          "config"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "REGEX",
+              "DICTIONARY",
+              "COMPOUND"
+            ],
+            "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "config": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SemanticTypeRegex"
+              },
+              {
+                "$ref": "#/components/schemas/SemanticTypeDictionary"
+              },
+              {
+                "$ref": "#/components/schemas/ExportSemanticTypeCompound"
+              }
+            ]
+          },
+          "activated": {
+            "type": "boolean"
+          },
+          "defaultId": {
+            "type": "string",
+            "description": "Identifier of the parent default semantic type (Qlik-provisioned). Null for user-created types. Used for identity preservation during cross-tenant import and as fallback for COMPOUND children resolution when labels differ across tenants.\n"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "useForValidation": {
+            "type": "boolean"
+          }
+        },
+        "description": "A semantic type in the export file, stripped of internal fields."
+      },
+      "ExportSemanticTypeCompound": {
+        "type": "object",
+        "required": [
+          "children"
+        ],
+        "properties": {
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExportCompoundChild"
+            }
+          }
+        },
+        "description": "COMPOUND config in the export file. Children are represented as enriched references with label and parentId for cross-tenant resolution, instead of raw IDs which are tenant-specific.\n"
+      },
+      "ImportConfigDiff": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "$ref": "#/components/schemas/DiffEntry"
+          },
+          "children": {
+            "$ref": "#/components/schemas/DiffEntry"
+          },
+          "validationContent": {
+            "$ref": "#/components/schemas/DiffEntry"
+          },
+          "validationPattern": {
+            "$ref": "#/components/schemas/DiffEntry"
+          },
+          "validationCriteria": {
+            "$ref": "#/components/schemas/DiffEntry"
+          }
+        },
+        "description": "Type-specific config differences. Only the fields relevant to the type's category are present (REGEX → validationContent/validationPattern, DICTIONARY → validationCriteria/values, COMPOUND → children), and only when they differ.\n"
+      },
+      "ImportConflictResponse": {
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "types"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "IMPORT_CONFLICT"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportTypeStatus"
+            },
+            "description": "Every type from the import file with its status. `CONFLICT` types include a `diff` showing field-level differences. `ERROR` types include an `error` message describing the validation failure. `DUPLICATE` types are either repeated labels within the same file, or types whose definition is identical to one already in the tenant (auto-skipped, no conflict resolution needed).\n"
+          },
+          "message": {
+            "type": "string",
+            "example": "Conflicts: 2 of 10, Unchanged: 3."
+          }
+        },
+        "description": "Returned when conflicts are detected and no resolutions were provided. Contains ALL types from the import file, each with a status indicating whether it is new or conflicts with an existing type.\n"
+      },
+      "ImportItemError": {
+        "type": "object",
+        "required": [
+          "label",
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Application error code identifying the failure reason."
+          },
+          "label": {
+            "type": "string",
+            "description": "Label of the semantic type that failed."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error description in English."
+          }
+        },
+        "description": "Error detail for a single semantic type that could not be imported."
+      },
+      "ImportReport": {
+        "type": "object",
+        "required": [
+          "summary",
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportItemError"
+            }
+          },
+          "summary": {
+            "$ref": "#/components/schemas/ImportSummary"
+          }
+        },
+        "description": "Result of a best-effort import operation."
+      },
+      "ImportRequest": {
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "properties": {
+          "file": {
+            "type": "object",
+            "example": {
+              "exportedAt": "2024-01-01T00:00:00Z",
+              "exportFormat": "QlikSemanticTypesExport",
+              "semanticTypes": []
+            },
+            "description": "The export file payload as-is. Format is detected from the `exportFormat` field. Accepts `QlikSemanticTypesExport` (Qlik native) or `DQDictionaryImportExport` (Talend legacy).\n"
+          },
+          "skipConfirmation": {
+            "type": "boolean",
+            "default": false,
+            "description": "Controls preview vs. one-shot import when no `conflictResolutions` are supplied. When `false` (default) the call is a **preview**: the file is analysed and a per-type conflict/summary body is returned (HTTP 200) without importing anything. When `true` the import is attempted **one-shot**: if real conflicts or in-file duplicates exist the conflict body is returned (HTTP 200) and nothing is imported; otherwise all types are imported (HTTP 201). Ignored when `conflictResolutions` are provided (those always apply the import).\n"
+          },
+          "conflictResolutions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConflictResolution"
+            },
+            "nullable": true,
+            "description": "Per-type conflict resolution. Each entry maps a conflicting label to its strategy. Labels not listed fall back to `defaultConflictStrategy`. Omit entirely (or send `null`) on the first call to trigger conflict detection. Sending an array — even an empty one — applies the import, using `defaultConflictStrategy` for every conflict not listed.\n"
+          },
+          "defaultConflictStrategy": {
+            "enum": [
+              "OVERWRITE",
+              "SKIP",
+              "KEEP_BOTH"
+            ],
+            "type": "string",
+            "default": "SKIP",
+            "description": "Fallback strategy applied to conflicting types not listed in `conflictResolutions`. Defaults to `SKIP`.\n"
+          }
+        },
+        "description": "Import request wrapping the export file and optional conflict resolutions."
+      },
+      "ImportStatusDetail": {
+        "type": "object",
+        "required": [
+          "count",
+          "labels",
+          "items"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "Number of types in this category."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportStatusItem"
+            },
+            "description": "Affected semantic types paired with their persisted resource id. Ids are present for created, updated, skipped and duplicate outcomes, and null for errored types that were never persisted.\n"
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Labels of the affected semantic types."
+          }
+        },
+        "description": "Count and affected types for one import outcome."
+      },
+      "ImportStatusItem": {
+        "type": "object",
+        "required": [
+          "label"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Persisted resource id of the semantic type, or null when no resource exists for this outcome (for example, an errored type that was never created).\n"
+          },
+          "label": {
+            "type": "string",
+            "description": "Label of the affected semantic type."
+          }
+        },
+        "description": "A single affected semantic type with its persisted resource id when available."
+      },
+      "ImportSummary": {
+        "type": "object",
+        "required": [
+          "totalCreated",
+          "updated",
+          "skipped",
+          "errored",
+          "duplicates"
+        ],
+        "properties": {
+          "errored": {
+            "$ref": "#/components/schemas/ImportStatusDetail"
+          },
+          "skipped": {
+            "$ref": "#/components/schemas/ImportStatusDetail"
+          },
+          "updated": {
+            "$ref": "#/components/schemas/ImportStatusDetail"
+          },
+          "duplicates": {
+            "$ref": "#/components/schemas/ImportStatusDetail"
+          },
+          "totalCreated": {
+            "$ref": "#/components/schemas/ImportStatusDetail"
+          }
+        },
+        "description": "Aggregate counts and per-status label details for the import result. Each status group includes a count and the list of affected type labels.\n"
+      },
+      "ImportTypeDiff": {
+        "type": "object",
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/ImportConfigDiff"
+          },
+          "category": {
+            "$ref": "#/components/schemas/DiffEntry"
+          },
+          "activated": {
+            "$ref": "#/components/schemas/DiffEntry"
+          },
+          "description": {
+            "$ref": "#/components/schemas/DiffEntry"
+          },
+          "useForValidation": {
+            "$ref": "#/components/schemas/DiffEntry"
+          }
+        },
+        "description": "Field-by-field comparison between the type from the import file and the existing type in the tenant. Only present when status is `CONFLICT`. Each field shows the value from the file and the existing value so the user can make an informed OVERWRITE / SKIP / KEEP_BOTH decision.\n"
+      },
+      "ImportTypeStatus": {
+        "type": "object",
+        "required": [
+          "label",
+          "type",
+          "status"
+        ],
+        "properties": {
+          "diff": {
+            "$ref": "#/components/schemas/ImportTypeDiff"
+          },
+          "type": {
+            "enum": [
+              "REGEX",
+              "DICTIONARY",
+              "COMPOUND"
+            ],
+            "type": "string",
+            "description": "Category of the semantic type."
+          },
+          "error": {
+            "type": "string",
+            "description": "Human-readable error message. Only present when status is `ERROR`.\n"
+          },
+          "label": {
+            "type": "string",
+            "description": "Label of the semantic type."
+          },
+          "status": {
+            "enum": [
+              "NEW",
+              "CONFLICT",
+              "ERROR",
+              "DUPLICATE"
+            ],
+            "type": "string",
+            "description": "`NEW`: no type with this label exists in the tenant. `CONFLICT`: a type with this label already exists but differs from the imported version. `ERROR`: the type has a validation error (missing field, invalid regex, etc.). `DUPLICATE`: the type is a duplicate — either another type with the same label appears earlier in the import file, or the imported type is identical to an existing type in the tenant (all user-visible fields match; auto-skipped with no conflict resolution needed).\n"
+          },
+          "errorCode": {
+            "enum": [
+              "IMPORT_REGEX_PATTERN_MISSING",
+              "IMPORT_REGEX_PATTERN_TOO_LONG",
+              "IMPORT_REGEX_PATTERN_INVALID",
+              "IMPORT_DICTIONARY_VALUES_MISSING",
+              "IMPORT_DICTIONARY_VALUE_BLANK",
+              "IMPORT_COMPOUND_CHILDREN_MISSING",
+              "IMPORT_COMPOUND_CHILDREN_NOT_FOUND"
+            ],
+            "type": "string",
+            "description": "Machine-readable error code. Only present when status is `ERROR`."
+          }
+        },
+        "description": "Status of a single type from the import file."
+      },
+      "SemanticTypeDictionary": {
+        "type": "object",
+        "required": [
+          "values"
+        ],
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "blue",
+              "description": "Values for dictionary"
+            }
+          },
+          "validationCriteria": {
+            "enum": [
+              "EXACT_VALUE",
+              "IGNORE_CASE_AND_ACCENTS"
+            ],
+            "type": "string",
+            "default": "IGNORE_CASE_AND_ACCENTS",
+            "description": "one of EXACT_VALUE / IGNORE_CASE_AND_ACCENTS,\nEXACT_VALUE: matches only the exact values in dictionary,\nIGNORE_CASE_AND_ACCENTS: case and accents are ignored\n"
+          }
+        },
+        "description": "A semantic type for words matching a value in the list of values"
+      },
+      "SemanticTypeRegex": {
+        "type": "object",
+        "required": [
+          "validationPattern"
+        ],
+        "properties": {
+          "validationContent": {
+            "enum": [
+              "ANY_CHARACTER",
+              "ALPHABETIC",
+              "NUMERIC"
+            ],
+            "type": "string",
+            "default": "ANY_CHARACTER",
+            "example": "ANY_CHARACTER",
+            "description": "one of ANY_CHARACTER / ALPHABETIC / NUMERIC,\nANY_CHARACTER: validates all characters,\nALPHABETIC: validates only alphabetic content,\nNUMERIC: validate only number\n"
+          },
+          "validationPattern": {
+            "type": "string",
+            "example": "^(\\\\S+)\\\\s+(\\\\S+)$",
+            "description": "Regular expression"
+          }
+        },
+        "description": "A semantic type for words matching a regex pattern"
+      },
+      "SemanticTypesExportEnvelope": {
+        "type": "object",
+        "required": [
+          "exportFormat",
+          "version",
+          "semanticTypes"
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "example": "1.0",
+            "description": "Schema version for forward compatibility."
+          },
+          "exportFormat": {
+            "enum": [
+              "QlikSemanticTypesExport"
+            ],
+            "type": "string",
+            "description": "Format identifier for auto-detection on import."
+          },
+          "exportedCount": {
+            "type": "integer",
+            "format": "int32",
+            "example": 42,
+            "description": "Total number of semantic types included in this export. Helps API consumers quickly determine export size without parsing the entire array.\n"
+          },
+          "semanticTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExportSemanticType"
+            }
+          }
+        },
+        "description": "Self-describing export envelope for Qlik Cloud semantic types."
+      },
       "AxisId": {
         "enum": [
           "VALIDITY",
@@ -76872,7 +77704,8 @@
             "uniqueItems": true
           },
           "alias": {
-            "type": "string"
+            "type": "string",
+            "description": "Alias of the field. Must be unique within the schema and must not match another field's name. Returns `400` if violated."
           },
           "index": {
             "type": "integer",
@@ -87334,10 +88167,6 @@
         "minItems": 0,
         "description": "A optional date column name to index"
       },
-      "DeletedAt": {
-        "type": "string",
-        "description": "Timestamp when this is deleted"
-      },
       "DeployedModelIds": {
         "type": "array",
         "items": {
@@ -87529,7 +88358,7 @@
         "type": "string",
         "format": "uuid",
         "description": "ID of a model deployment",
-        "x-qlik-fiterable": true
+        "x-qlik-filterable": true
       },
       "DeploymentInput": {
         "type": "object",
@@ -89313,18 +90142,15 @@
           "tenantId",
           "createdBy",
           "jobType",
-          "parentJobId",
           "corrType",
           "corrId",
           "status",
           "name",
           "parentName",
-          "experimentVersionNumber",
           "details",
           "deploymentId",
           "trigger",
           "success",
-          "rowsPredicted",
           "modelId"
         ],
         "properties": {
@@ -89351,7 +90177,6 @@
           "details": {
             "type": "object",
             "required": [
-              "lineageSchemaUpdated",
               "outputFiles",
               "isScheduled"
             ],
@@ -89377,7 +90202,8 @@
             "$ref": "#/components/schemas/ModelId"
           },
           "success": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "trigger": {
             "type": "string"
@@ -89396,7 +90222,9 @@
             "description": "ID of the owner/user that created this entity"
           },
           "deletedAt": {
-            "$ref": "#/components/schemas/DeletedAt"
+            "type": "string",
+            "nullable": true,
+            "description": "Timestamp when this is deleted"
           },
           "updatedAt": {
             "$ref": "#/components/schemas/UpdatedAt"

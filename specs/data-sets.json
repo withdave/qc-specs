@@ -9,7 +9,7 @@
         "tags": [
           "data-set"
         ],
-        "summary": "Save new data set",
+        "summary": "Save a new data set",
         "responses": {
           "201": {
             "content": {
@@ -29,7 +29,7 @@
                 }
               }
             },
-            "description": "The request is in incorrect format."
+            "description": "The request is in incorrect format. Also returned when field aliases are not unique within a schema or conflict with another field's name."
           },
           "401": {
             "content": {
@@ -92,6 +92,7 @@
             "description": "Requested service is not available."
           }
         },
+        "description": "Creates and saves a new data set in the catalog.",
         "operationId": "saveDataSet",
         "requestBody": {
           "content": {
@@ -365,7 +366,7 @@
                 }
               }
             },
-            "description": "The request is in incorrect format."
+            "description": "The request is in incorrect format. Also returned when field aliases are not unique within a schema or conflict with another field's name."
           },
           "401": {
             "content": {
@@ -486,7 +487,7 @@
                 }
               }
             },
-            "description": "The request is in incorrect format."
+            "description": "The request is in incorrect format. Also returned when field aliases are not unique within a schema or conflict with another field's name."
           },
           "401": {
             "content": {
@@ -845,7 +846,8 @@
             "uniqueItems": true
           },
           "alias": {
-            "type": "string"
+            "type": "string",
+            "description": "Alias of the field. Must be unique within the schema and must not match another field's name. Returns `400` if violated."
           },
           "index": {
             "type": "integer",
