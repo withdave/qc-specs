@@ -1429,7 +1429,8 @@
             "uniqueItems": true
           },
           "alias": {
-            "type": "string"
+            "type": "string",
+            "description": "Alias of the field. Must be unique within the schema and must not match another field's name. Returns `400` if violated."
           },
           "index": {
             "type": "integer",

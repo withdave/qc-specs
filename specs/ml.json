@@ -296,7 +296,7 @@
         "summary": "Activate the model for this deployment",
         "responses": {
           "204": {
-            "$ref": "#/components/responses/204NoContent"
+            "$ref": "#/components/responses/204NoContentModelState"
           },
           "400": {
             "$ref": "#/components/responses/400BadRequest"
@@ -328,6 +328,7 @@
             "$ref": "#/components/parameters/deploymentId"
           }
         ],
+        "description": "Activates the deployed model on this deployment's default alias. The\nresponse reports which model was targeted and whether its state\nactually changed via the `qlik-model-id` and `qlik-state-change`\nresponse headers. If the model was already active, the request still\nsucceeds but `qlik-state-change` is `NO_CHANGE`.\n",
         "operationId": "activateDeploymentModels",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -346,7 +347,7 @@
         "summary": "Deactivate the model for this deployment",
         "responses": {
           "204": {
-            "$ref": "#/components/responses/204NoContent"
+            "$ref": "#/components/responses/204NoContentModelState"
           },
           "400": {
             "$ref": "#/components/responses/400BadRequest"
@@ -378,6 +379,7 @@
             "$ref": "#/components/parameters/deploymentId"
           }
         ],
+        "description": "Deactivates the deployed model on this deployment's default alias.\nThe response reports which model was targeted and whether its state\nactually changed via the `qlik-model-id` and `qlik-state-change`\nresponse headers. If the model was already inactive, the request\nstill succeeds but `qlik-state-change` is `NO_CHANGE`.\n",
         "operationId": "deactivateDeploymentModels",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
@@ -2865,6 +2867,32 @@
       "204NoContent": {
         "description": "`No Content`"
       },
+      "204NoContentModelState": {
+        "headers": {
+          "qlik-model-id": {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            },
+            "required": true,
+            "description": "UUID of the deployed model that was actually targeted by this\naction.\n"
+          },
+          "qlik-state-change": {
+            "schema": {
+              "enum": [
+                "CHANGED",
+                "NO_CHANGE"
+              ],
+              "type": "string",
+              "example": "CHANGED"
+            },
+            "required": true,
+            "description": "Whether the targeted model's state actually changed as a result\nof this request. `NO_CHANGE` means the model was already in the\nrequested state.\n"
+          }
+        },
+        "description": "`No Content`"
+      },
       "400BadRequest": {
         "content": {
           "application/json": {
@@ -4006,10 +4034,6 @@
         "minItems": 0,
         "description": "A optional date column name to index"
       },
-      "DeletedAt": {
-        "type": "string",
-        "description": "Timestamp when this is deleted"
-      },
       "DeployedModelIds": {
         "type": "array",
         "items": {
@@ -4201,7 +4225,7 @@
         "type": "string",
         "format": "uuid",
         "description": "ID of a model deployment",
-        "x-qlik-fiterable": true
+        "x-qlik-filterable": true
       },
       "DeploymentInput": {
         "type": "object",
@@ -6118,18 +6142,15 @@
           "tenantId",
           "createdBy",
           "jobType",
-          "parentJobId",
           "corrType",
           "corrId",
           "status",
           "name",
           "parentName",
-          "experimentVersionNumber",
           "details",
           "deploymentId",
           "trigger",
           "success",
-          "rowsPredicted",
           "modelId"
         ],
         "properties": {
@@ -6156,7 +6177,6 @@
           "details": {
             "type": "object",
             "required": [
-              "lineageSchemaUpdated",
               "outputFiles",
               "isScheduled"
             ],
@@ -6182,7 +6202,8 @@
             "$ref": "#/components/schemas/ModelId"
           },
           "success": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "trigger": {
             "type": "string"
@@ -6201,7 +6222,9 @@
             "description": "ID of the owner/user that created this entity"
           },
           "deletedAt": {
-            "$ref": "#/components/schemas/DeletedAt"
+            "type": "string",
+            "nullable": true,
+            "description": "Timestamp when this is deleted"
           },
           "updatedAt": {
             "$ref": "#/components/schemas/UpdatedAt"

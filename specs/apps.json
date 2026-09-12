@@ -1336,10 +1336,9 @@
         "responses": {
           "200": {
             "content": {
-              "application/octet-stream": {
+              "text/plain": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "string"
                 }
               }
             },
@@ -2293,6 +2292,14 @@
             },
             "headers": {},
             "description": "OK"
+          },
+          "403": {
+            "headers": {},
+            "description": "Forbidden"
+          },
+          "404": {
+            "headers": {},
+            "description": "Not Found"
           }
         },
         "parameters": [
