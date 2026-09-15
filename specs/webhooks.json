@@ -1319,15 +1319,6 @@
               "description": "More information about the SCIM filter syntax (RFC7644)"
             }
           },
-          "secret": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 32,
-            "description": "String used as secret for calculating HMAC hash sent as header.",
-            "x-qlik-deprecated": true,
-            "x-qlik-deprecated-sunset": "2025-11",
-            "x-qlik-deprecated-description": "secret field in response will be removed to make it non-retrievable and secretKeyAdded field will provide status if the secret key is added or not"
-          },
           "enabled": {
             "type": "boolean",
             "default": false,

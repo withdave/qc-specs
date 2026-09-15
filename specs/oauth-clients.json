@@ -1640,35 +1640,43 @@
       },
       "OAuthConnectionConfigUpdate": {
         "type": "object",
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "op",
+              "path",
+              "value"
+            ],
+            "properties": {
+              "op": {
+                "enum": [
+                  "replace"
+                ],
+                "type": "string"
+              },
+              "path": {
+                "enum": [
+                  "/consentMethod"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "enum": [
+                  "required",
+                  "trusted"
+                ],
+                "type": "string"
+              }
+            },
+            "description": "Patch the consent method. Only `replace` is supported."
+          }
+        ],
         "required": [
           "op",
           "path",
           "value"
         ],
-        "properties": {
-          "op": {
-            "enum": [
-              "replace"
-            ],
-            "type": "string",
-            "description": "The operation to be performed"
-          },
-          "path": {
-            "enum": [
-              "/consentMethod"
-            ],
-            "type": "string",
-            "description": "The path for the given resource field to patch"
-          },
-          "value": {
-            "enum": [
-              "required",
-              "trusted"
-            ],
-            "type": "string",
-            "description": "The value to be used for this operation."
-          }
-        },
         "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902"
       }
     }

@@ -137,10 +137,17 @@
             "headers": {
               "Set-Cookie": {
                 "schema": {
-                  "type": "string",
-                  "example": "eas.sid=spn3PWVdGDmSs2NH6kEgpIwZft2utI2m;eas.sid.sig=s43MYzD54Z7NsayOdPD0pXm24fc;_csrfToken=jQrrL9KC-OomYaTw2vY8B2sR1uddfwH2q_js;_csrfToken.sig=GRB6I20vR-tlgmFceq8a9mSGyCE"
+                  "type": "string"
                 },
-                "description": "session cookie and CSRF token along with their signatures"
+                "examples": {
+                  "csrf": {
+                    "value": "_csrfToken=jQrrL9KC-OomYaTw2vY8B2sR1uddfwH2q_js"
+                  },
+                  "session": {
+                    "value": "eas.sid=spn3PWVdGDmSs2NH6kEgpIwZft2utI2m.s43MYzD54Z7NsayOdPD0pXm24fc"
+                  }
+                },
+                "description": "The response contains separate Set-Cookie header instances for the session cookie and CSRF token. The session signature is embedded in the eas.sid value."
               }
             },
             "description": "Successfully exchanged JWT for session."
