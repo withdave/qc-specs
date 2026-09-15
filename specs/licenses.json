@@ -1258,6 +1258,7 @@
           "origin": "Internal",
           "status": "Ok",
           "product": "Qlik Sense Enterprise SaaS",
+          "version": "A1B2-C3D4-E5F6-G7H8-J9K0",
           "allotments": [
             {
               "name": "analyzer_time",
@@ -1297,7 +1298,8 @@
           "status",
           "trial",
           "valid",
-          "secondaryNumber"
+          "secondaryNumber",
+          "version"
         ],
         "properties": {
           "trial": {
@@ -1332,6 +1334,10 @@
           "updated": {
             "type": "string",
             "description": "An ISO 8601 timestamp for when the license was last updated."
+          },
+          "version": {
+            "type": "string",
+            "description": "The version of the license definition, used to track whether changes have propagated. Typically a content hash; its exact form depends on the origin."
           },
           "allotments": {
             "type": "array",

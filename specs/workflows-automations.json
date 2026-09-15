@@ -2530,6 +2530,11 @@
             "type": "string",
             "example": "Europe/Stockholm",
             "description": "The timezone applied to the start and end times."
+          },
+          "recurrence": {
+            "type": "string",
+            "example": "RRULE:FREQ=DAILY;INTERVAL=1;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
+            "description": "The RRULE that defines when the automation runs. When provided, it takes precedence over interval."
           }
         }
       },
@@ -2558,6 +2563,16 @@
           "timezone": {
             "type": "string",
             "example": "Europe/Stockholm"
+          },
+          "nextRunAt": {
+            "type": "string",
+            "example": "2021-12-01 00:00:00",
+            "description": "The date and time for the next scheduled run."
+          },
+          "recurrence": {
+            "type": "string",
+            "example": "RRULE:FREQ=DAILY;INTERVAL=1;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
+            "description": "The RRULE that defines when the automation runs."
           },
           "lastStartedAt": {
             "type": "string",
