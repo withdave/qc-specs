@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.58",
+    "version": "1.0.59",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -40360,10 +40360,17 @@
             "headers": {
               "Set-Cookie": {
                 "schema": {
-                  "type": "string",
-                  "example": "eas.sid=spn3PWVdGDmSs2NH6kEgpIwZft2utI2m;eas.sid.sig=s43MYzD54Z7NsayOdPD0pXm24fc;_csrfToken=jQrrL9KC-OomYaTw2vY8B2sR1uddfwH2q_js;_csrfToken.sig=GRB6I20vR-tlgmFceq8a9mSGyCE"
+                  "type": "string"
                 },
-                "description": "session cookie and CSRF token along with their signatures"
+                "examples": {
+                  "csrf": {
+                    "value": "_csrfToken=jQrrL9KC-OomYaTw2vY8B2sR1uddfwH2q_js"
+                  },
+                  "session": {
+                    "value": "eas.sid=spn3PWVdGDmSs2NH6kEgpIwZft2utI2m.s43MYzD54Z7NsayOdPD0pXm24fc"
+                  }
+                },
+                "description": "The response contains separate Set-Cookie header instances for the session cookie and CSRF token. The session signature is embedded in the eas.sid value."
               }
             },
             "description": "Successfully exchanged JWT for session."
@@ -69656,6 +69663,11 @@
             "type": "string",
             "example": "Europe/Stockholm",
             "description": "The timezone applied to the start and end times."
+          },
+          "recurrence": {
+            "type": "string",
+            "example": "RRULE:FREQ=DAILY;INTERVAL=1;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
+            "description": "The RRULE that defines when the automation runs. When provided, it takes precedence over interval."
           }
         }
       },
@@ -69684,6 +69696,16 @@
           "timezone": {
             "type": "string",
             "example": "Europe/Stockholm"
+          },
+          "nextRunAt": {
+            "type": "string",
+            "example": "2021-12-01 00:00:00",
+            "description": "The date and time for the next scheduled run."
+          },
+          "recurrence": {
+            "type": "string",
+            "example": "RRULE:FREQ=DAILY;INTERVAL=1;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
+            "description": "The RRULE that defines when the automation runs."
           },
           "lastStartedAt": {
             "type": "string",
@@ -86369,6 +86391,7 @@
           "origin": "Internal",
           "status": "Ok",
           "product": "Qlik Sense Enterprise SaaS",
+          "version": "A1B2-C3D4-E5F6-G7H8-J9K0",
           "allotments": [
             {
               "name": "analyzer_time",
@@ -86408,7 +86431,8 @@
           "status",
           "trial",
           "valid",
-          "secondaryNumber"
+          "secondaryNumber",
+          "version"
         ],
         "properties": {
           "trial": {
@@ -86443,6 +86467,10 @@
           "updated": {
             "type": "string",
             "description": "An ISO 8601 timestamp for when the license was last updated."
+          },
+          "version": {
+            "type": "string",
+            "description": "The version of the license definition, used to track whether changes have propagated. Typically a content hash; its exact form depends on the origin."
           },
           "allotments": {
             "type": "array",
@@ -91613,35 +91641,43 @@
       },
       "OAuthConnectionConfigUpdate": {
         "type": "object",
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "op",
+              "path",
+              "value"
+            ],
+            "properties": {
+              "op": {
+                "enum": [
+                  "replace"
+                ],
+                "type": "string"
+              },
+              "path": {
+                "enum": [
+                  "/consentMethod"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "enum": [
+                  "required",
+                  "trusted"
+                ],
+                "type": "string"
+              }
+            },
+            "description": "Patch the consent method. Only `replace` is supported."
+          }
+        ],
         "required": [
           "op",
           "path",
           "value"
         ],
-        "properties": {
-          "op": {
-            "enum": [
-              "replace"
-            ],
-            "type": "string",
-            "description": "The operation to be performed"
-          },
-          "path": {
-            "enum": [
-              "/consentMethod"
-            ],
-            "type": "string",
-            "description": "The path for the given resource field to patch"
-          },
-          "value": {
-            "enum": [
-              "required",
-              "trusted"
-            ],
-            "type": "string",
-            "description": "The value to be used for this operation."
-          }
-        },
         "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902"
       },
       "link": {
@@ -101150,15 +101186,6 @@
               "url": "https://datatracker.ietf.org/doc/html/rfc7644#section-3.4.2.2",
               "description": "More information about the SCIM filter syntax (RFC7644)"
             }
-          },
-          "secret": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 32,
-            "description": "String used as secret for calculating HMAC hash sent as header.",
-            "x-qlik-deprecated": true,
-            "x-qlik-deprecated-sunset": "2025-11",
-            "x-qlik-deprecated-description": "secret field in response will be removed to make it non-retrievable and secretKeyAdded field will provide status if the secret key is added or not"
           },
           "enabled": {
             "type": "boolean",
