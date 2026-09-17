@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Delete existing API specs branch (local and remote)
         run: |
@@ -36,7 +36,7 @@ jobs:
       commit_sha: ${{ steps.commit.outputs.commit_sha }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install dependencies
         run: |
@@ -147,7 +147,7 @@ jobs:
       commit_sha: ${{ steps.commit.outputs.commit_sha }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ env.API_SPECS_BRANCH }}
 
@@ -206,7 +206,7 @@ jobs:
       BASE_COMMIT: ${{ needs.update-api-specs.outputs.commit_sha }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Wait for commit to be indexed by GitHub
         uses: actions/github-script@v7

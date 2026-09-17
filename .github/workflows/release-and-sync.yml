@@ -19,7 +19,7 @@ jobs:
     outputs:
       version: ${{ steps.get_version.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Extract version and name from OpenAPI JSON
         id: get_version
@@ -59,7 +59,7 @@ jobs:
       POSTMAN_WORKSPACE_ID: ${{ vars.POSTMAN_WORKSPACE_ID }}
       SPEC_FILE: consolidated/qlik-cloud.json
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Extract version & name from OpenAPI JSON
         id: get_version
