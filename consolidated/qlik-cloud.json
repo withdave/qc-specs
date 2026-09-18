@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.59",
+    "version": "1.0.60",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -58040,6 +58040,34 @@
         }
       }
     },
+    "/.well-known/oauth-authorization-server": {
+      "get": {
+        "tags": [
+          "metadata"
+        ],
+        "summary": "Get authorization server metadata",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oauth-metadata"
+                }
+              }
+            },
+            "description": "Returns authorization server metadata."
+          }
+        },
+        "description": "Returns authorization server metadata.",
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/workflows/automation-connections": {
       "get": {
         "tags": [
@@ -101274,6 +101302,48 @@
             "type": "boolean",
             "default": false,
             "description": "If enabled the certificate chain of the configured URL will be checked for revocation before sending the webhook."
+          }
+        }
+      },
+      "oauth-metadata": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "example": "https://your-tenant.us.qlikcloud.com",
+            "description": "The issuer of the tokens."
+          },
+          "jwks_uri": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://your-tenant.us.qlikcloud.com/.well-known/jwks.json",
+            "description": "The public keys endpoint."
+          },
+          "token_endpoint": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://your-tenant.us.qlikcloud.com/oauth/token",
+            "description": "The token endpoint."
+          },
+          "revocation_endpoint": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://your-tenant.us.qlikcloud.com/oauth/revoke",
+            "description": "The token endpoint."
+          },
+          "grant_types_supported": {
+            "type": "array",
+            "description": "List of supported grant types."
+          },
+          "authorization_endpoint": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://your-tenant.us.qlikcloud.com/oauth/authorize",
+            "description": "The authorization endpoint."
+          },
+          "response_types_supported": {
+            "type": "array",
+            "description": "List of supported authorization code responses."
           }
         }
       },
