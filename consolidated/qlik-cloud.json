@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.60",
+    "version": "1.0.61",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -75776,7 +75776,10 @@
               "/tags",
               "/activatedOn",
               "/apiConsumableDatasetIds",
-              "/semanticModel"
+              "/semanticModel",
+              "/semanticModel/relationships",
+              "/semanticModel/measures",
+              "/semanticModel/dimensions"
             ],
             "type": "string"
           },
@@ -75785,7 +75788,7 @@
               {
                 "type": "string",
                 "nullable": true,
-                "description": "Value is expected to be null or a string if the path is either /name, /description, /readMe or /spaceId."
+                "description": "Value is expected to be null or a string if the path is either /name, /description, /readMe,\n/spaceId, /semanticModel/relationships, /semanticModel/measures or /semanticModel/dimensions.\nFor the semantic model sub-paths, the string is the identifier of the affected relationship,\nmeasure or dimension entity.\n"
               },
               {
                 "$ref": "#/components/schemas/ArrayOfUniqueStrings"
@@ -75941,6 +75944,13 @@
           "createdBy": {
             "type": "string",
             "description": "Identifier of the user who made these changes."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-03-20T09:12:28Z",
+            "nullable": true,
+            "description": "Timestamp of the last event included in this aggregated changelog entry.\nOnly set for aggregated events that span multiple source events.\n"
           }
         }
       },
@@ -77374,7 +77384,8 @@
               "IMPORT_DICTIONARY_VALUES_MISSING",
               "IMPORT_DICTIONARY_VALUE_BLANK",
               "IMPORT_COMPOUND_CHILDREN_MISSING",
-              "IMPORT_COMPOUND_CHILDREN_NOT_FOUND"
+              "IMPORT_COMPOUND_CHILDREN_NOT_FOUND",
+              "IMPORT_DICTIONARY_VALIDATION_CRITERIA_INVALID"
             ],
             "type": "string",
             "description": "Machine-readable error code. Only present when status is `ERROR`."
