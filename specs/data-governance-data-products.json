@@ -1291,7 +1291,10 @@
               "/tags",
               "/activatedOn",
               "/apiConsumableDatasetIds",
-              "/semanticModel"
+              "/semanticModel",
+              "/semanticModel/relationships",
+              "/semanticModel/measures",
+              "/semanticModel/dimensions"
             ],
             "type": "string"
           },
@@ -1300,7 +1303,7 @@
               {
                 "type": "string",
                 "nullable": true,
-                "description": "Value is expected to be null or a string if the path is either /name, /description, /readMe or /spaceId."
+                "description": "Value is expected to be null or a string if the path is either /name, /description, /readMe,\n/spaceId, /semanticModel/relationships, /semanticModel/measures or /semanticModel/dimensions.\nFor the semantic model sub-paths, the string is the identifier of the affected relationship,\nmeasure or dimension entity.\n"
               },
               {
                 "$ref": "#/components/schemas/ArrayOfUniqueStrings"
@@ -1468,6 +1471,13 @@
           "createdBy": {
             "type": "string",
             "description": "Identifier of the user who made these changes."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-03-20T09:12:28Z",
+            "nullable": true,
+            "description": "Timestamp of the last event included in this aggregated changelog entry.\nOnly set for aggregated events that span multiple source events.\n"
           }
         }
       },

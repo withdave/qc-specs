@@ -1728,6 +1728,11 @@
           "code": {
             "type": "string"
           },
+          "meta": {
+            "type": "object",
+            "description": "Optional free-form metadata associated with the error.",
+            "additionalProperties": true
+          },
           "title": {
             "type": "string"
           },
