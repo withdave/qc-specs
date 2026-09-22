@@ -836,12 +836,13 @@
           "sampleMode": "ABSOLUTE",
           "sampleSize": 10000,
           "connectionId": "2b855c3d-426c-4aac-90cf-0edf9fc294d3",
+          "sampleMethod": "HEAD",
           "executionMode": "PULLUP"
         },
         "required": [
           "datasetId"
         ],
-        "description": "Request payload for triggering a data quality computation. The `connectionId` is optional for file-based datasets.\nIf none of the sampling parameters are provided, the following defaults apply:\n- `executionMode: PULLUP`\n- `sampleMode: ABSOLUTE`\n- `sampleSize: 1000`\n"
+        "description": "Request payload for triggering a data quality computation. The `connectionId` is optional for file-based datasets.\nIf none of the sampling parameters are provided, the following defaults apply:\n- `executionMode: PULLUP`\n- `sampleMode: ABSOLUTE`\n- `sampleSize: 1000`\n- `sampleMethod: HEAD` when `executionMode` is `PULLUP`, or `RANDOM` when `executionMode` is `PUSHDOWN`\n"
       },
       "DatasetFieldQualityRequestItem": {
         "type": "object",
@@ -1223,6 +1224,15 @@
             "maximum": 100000,
             "minimum": 1,
             "description": "The actual value of the selected sampling method size (either a fixed number for `ABSOLUTE` mode or a percentage for `RELATIVE` mode). Maximum allowed value for `ABSOLUTE` mode is `100000`."
+          },
+          "sampleMethod": {
+            "enum": [
+              "HEAD",
+              "RANDOM"
+            ],
+            "type": "string",
+            "example": "HEAD",
+            "description": "Specifies how rows are selected from the dataset. `HEAD` reads the first rows, while `RANDOM` reads a random selection of rows.\nIf omitted, defaults to `HEAD` when `executionMode` is `PULLUP`, or `RANDOM` when `executionMode` is `PUSHDOWN`.\nSelecting `RANDOM` while `executionMode` is `PULLUP` is currently only supported for QVD datasets.\n"
           },
           "executionMode": {
             "enum": [

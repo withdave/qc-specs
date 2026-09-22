@@ -767,7 +767,8 @@
               "IMPORT_DICTIONARY_VALUES_MISSING",
               "IMPORT_DICTIONARY_VALUE_BLANK",
               "IMPORT_COMPOUND_CHILDREN_MISSING",
-              "IMPORT_COMPOUND_CHILDREN_NOT_FOUND"
+              "IMPORT_COMPOUND_CHILDREN_NOT_FOUND",
+              "IMPORT_DICTIONARY_VALIDATION_CRITERIA_INVALID"
             ],
             "type": "string",
             "description": "Machine-readable error code. Only present when status is `ERROR`."
