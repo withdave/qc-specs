@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.61",
+    "version": "1.0.62",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -15935,6 +15935,509 @@
         }
       }
     },
+    "/api/connectivity/direct-access-agents/{agentId}/benchmarks": {
+      "get": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "List benchmark statuses",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllBenchmarkStatusResponse"
+                }
+              }
+            },
+            "description": "The benchmark status."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The gateway was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "How long to wait before retrying, in seconds."
+              }
+            },
+            "description": "Too many requests."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "501": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "All or part of the request has not yet been implemented."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "example": "status eq \"Completed\"",
+            "description": "SCIM style filter string as defined in RFC 7644 section 3.4.2.2"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The page size"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "maximum": 2147483647,
+              "minimum": 1
+            },
+            "description": "The page number"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "-benchmarkStartTime",
+                "+benchmarkStartTime",
+                "benchmarkStartTime",
+                "-benchmarkEndTime",
+                "+benchmarkEndTime",
+                "benchmarkEndTime",
+                "-dataTransmissionStartTime",
+                "+dataTransmissionStartTime",
+                "dataTransmissionStartTime",
+                "-dataTransmissionEndTime",
+                "+dataTransmissionEndTime",
+                "dataTransmissionEndTime"
+              ],
+              "type": "string",
+              "default": "-benchmarkStartTime"
+            },
+            "description": "The field to sort by with +/- prefix indicating sort order"
+          }
+        ],
+        "description": "Retrieves paginated statuses for benchmarks run by the specified Direct Access agent. Use the filters and sort order to find benchmark runs and review their progress or completed results. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.17+.",
+        "operationId": "getAllBenchmarkStatus",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Start an agent benchmark",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunBenchmarkResponse"
+                }
+              }
+            },
+            "description": "Benchmark task created successfully with a unique identifier."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The agent was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "How long to wait before retrying, in seconds."
+              }
+            },
+            "description": "Too many requests."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "501": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "All or part of the request has not yet been implemented."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "description",
+            "schema": {
+              "type": "string",
+              "default": "",
+              "maxLength": 200,
+              "minLength": 0
+            },
+            "description": "The description for the benchmark task."
+          },
+          {
+            "in": "query",
+            "name": "force",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Forces the benchmark to start regardless of the state of the agent. Does not override QCS resource limits. Use with caution."
+          },
+          {
+            "in": "query",
+            "name": "gigaBytesToTransfer",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            },
+            "description": "The volume of data in GB to transfer during the throughput measurement part of the benchmark."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string",
+              "default": "",
+              "maxLength": 50,
+              "minLength": 0
+            },
+            "description": "The name to assign to the benchmark task."
+          }
+        ],
+        "description": "Starts a background benchmark task that measures the throughput and latency of a Direct Access agent. Use the returned `benchmarkId` to monitor progress and retrieve performance metrics for capacity planning or performance optimization. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "operationId": "runBenchmark",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-replaces": [
+          {
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/direct-access-agents/{agentId}/benchmarks"
+          }
+        ],
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/connectivity/direct-access-agents/{agentId}/load-performance-metrics": {
+      "get": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Get load performance metrics",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLoadPerformanceMetricsResponse"
+                }
+              }
+            },
+            "description": "Load performance metrics retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The gateway was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "How long to wait before retrying, in seconds."
+              }
+            },
+            "description": "Too many requests."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "example": "dataSourceId eq \"File_local\"",
+            "description": "SCIM style filter string as defined in RFC 7644 section 3.4.2.2"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The page size"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "maximum": 2147483647,
+              "minimum": 1
+            },
+            "description": "The page number"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "-benchmarkStartTime",
+                "+benchmarkStartTime",
+                "benchmarkStartTime",
+                "-benchmarkEndTime",
+                "+benchmarkEndTime",
+                "benchmarkEndTime",
+                "-dataTransmissionStartTime",
+                "+dataTransmissionStartTime",
+                "dataTransmissionStartTime",
+                "-dataTransmissionEndTime",
+                "+dataTransmissionEndTime",
+                "dataTransmissionEndTime"
+              ],
+              "type": "string",
+              "default": "-benchmarkStartTime"
+            },
+            "description": "The field to sort by with +/- prefix indicating sort order"
+          }
+        ],
+        "description": "Retrieves performance metrics for loads processed by the gateway, either for all loads or a filtered subset. Use these metrics to evaluate reload throughput, connector latency, and concurrent reload activity. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Load performance recording is disabled by default and is controlled by the `BENCHMARK_LOAD_PERFORMANCE_METRICS_RECORDING_ENABLED` configuration property. Available in Direct Access Gateway V1.7.17+.",
+        "operationId": "getLoadPerformanceMetrics",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/v1/consumption/executions": {
       "get": {
         "tags": [
@@ -23741,6 +24244,635 @@
         }
       }
     },
+    "/api/data-governance/semantic-types": {
+      "get": {
+        "tags": [
+          "semantic-types"
+        ],
+        "summary": "List semantic types",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SemanticTypeListResponse"
+                }
+              }
+            },
+            "headers": {
+              "ETag": {
+                "$ref": "#/components/headers/ETagHeader"
+              }
+            },
+            "description": "List of semantic type definitions"
+          },
+          "304": {
+            "headers": {
+              "ETag": {
+                "$ref": "#/components/headers/ETagHeader"
+              }
+            },
+            "description": "The semantic type list has not changed since the ETag provided in the `If-None-Match` request header."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request contains invalid fields."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IfNoneMatchHeader"
+          },
+          {
+            "$ref": "#/components/parameters/FieldsFilterQuery"
+          },
+          {
+            "$ref": "#/components/parameters/IdsListQuery"
+          },
+          {
+            "$ref": "#/components/parameters/ParentIdsListQuery"
+          }
+        ],
+        "description": "Retrieves all semantic types for a tenant. Supports conditional requests via the `If-None-Match` header.\n",
+        "operationId": "listSemanticTypes",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "semantic-types"
+        ],
+        "summary": "Create a semantic type",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SemanticTypeResponse"
+                }
+              }
+            },
+            "description": "Semantic type created successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format, or the semantic type failed validation (for example, a duplicate `label`, an invalid `validationPattern`, or missing dictionary `values`)."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The payload Too Large."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Creates a new semantic type for the current tenant. A semantic type can be defined as a regular expression, a dictionary of values, or a compound of other semantic types, as specified by the `type` field in the request body.\n",
+        "operationId": "createSemanticType",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateSemanticTypeRegexRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateSemanticTypeCompoundRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateSemanticTypeDictionaryRequest"
+                  }
+                ],
+                "example": {
+                  "type": "REGEX",
+                  "label": "Qlik email",
+                  "description": "qlik email is a trigram followed by @qlik",
+                  "validationPattern": "^[a-z]{3}@qlik\\.com$"
+                },
+                "description": "A semantic type definition, expressed as a `REGEX` pattern, a `DICTIONARY` of values, or a `COMPOUND` of other semantic types.",
+                "discriminator": {
+                  "mapping": {
+                    "REGEX": "#/components/schemas/CreateSemanticTypeRegexRequest",
+                    "COMPOUND": "#/components/schemas/CreateSemanticTypeCompoundRequest",
+                    "DICTIONARY": "#/components/schemas/CreateSemanticTypeDictionaryRequest"
+                  },
+                  "propertyName": "type"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/semantic-types/{semanticTypeId}": {
+      "get": {
+        "tags": [
+          "semantic-types"
+        ],
+        "summary": "Get a semantic type",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SemanticTypeResponse"
+                }
+              }
+            },
+            "description": "Semantic type retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/FieldsFilterQuery"
+          },
+          {
+            "$ref": "#/components/parameters/SemanticTypeIdPath"
+          }
+        ],
+        "description": "Returns the definition of a single semantic type identified by its ID, including its configuration (regex, dictionary, or compound rules).\n",
+        "operationId": "getSemanticType",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "semantic-types"
+        ],
+        "summary": "Update a semantic type",
+        "responses": {
+          "204": {
+            "description": "Semantic type updated successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The payload Too Large."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SemanticTypeIdPath"
+          }
+        ],
+        "description": "Partially updates an existing semantic type identified by its ID. Only the fields included in the request payload are modified; omitted fields keep their current values.\n",
+        "operationId": "patchSemanticType",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchSemanticTypeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      },
+      "delete": {
+        "tags": [
+          "semantic-types"
+        ],
+        "summary": "Delete a semantic type",
+        "responses": {
+          "204": {
+            "description": "Semantic type deleted successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format, or the semantic type cannot be deleted because it is used as a child of a `COMPOUND` type."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SemanticTypeIdPath"
+          }
+        ],
+        "description": "Permanently deletes a semantic type identified by its ID. This operation cannot be undone. Any dataset fields previously associated with the semantic type will no longer be classified by it. A semantic type used as a child of a `COMPOUND` type cannot be deleted until it is removed from that `COMPOUND` type.\n",
+        "operationId": "deleteSemanticType",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/semantic-types/{semanticTypeId}/dataset-fields": {
+      "get": {
+        "tags": [
+          "semantic-types"
+        ],
+        "summary": "List dataset fields affected by a semantic type",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetFieldsPageResponse"
+                }
+              }
+            },
+            "description": "Dataset fields retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SemanticTypeIdPath"
+          },
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitQuery"
+          },
+          {
+            "$ref": "#/components/parameters/SortQuery"
+          }
+        ],
+        "description": "Returns a paginated list of datasets and their field names that are associated with the specified semantic type. Data is pre-computed from the dataset relationship collection and populated lazily when data quality events are processed.\n",
+        "operationId": "getDatasetFields",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/data-governance/semantic-types/actions/export": {
       "post": {
         "tags": [
@@ -29139,7 +30271,7 @@
         "tags": [
           "direct-access-agent-benchmarking"
         ],
-        "summary": "Start agent benchmark",
+        "summary": "Start an agent benchmark",
         "responses": {
           "201": {
             "content": {
@@ -29150,6 +30282,16 @@
               }
             },
             "description": "Benchmark task created successfully with a unique identifier."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
           },
           "403": {
             "content": {
@@ -29214,6 +30356,17 @@
           },
           {
             "in": "query",
+            "name": "description",
+            "schema": {
+              "type": "string",
+              "default": "",
+              "maxLength": 200,
+              "minLength": 0
+            },
+            "description": "The description for the benchmark task."
+          },
+          {
+            "in": "query",
             "name": "force",
             "schema": {
               "type": "boolean",
@@ -29230,13 +30383,30 @@
               "default": 1
             },
             "description": "The volume of data in GB to transfer during the throughput measurement part of the benchmark."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string",
+              "default": "",
+              "maxLength": 50,
+              "minLength": 0
+            },
+            "description": "The name to assign to the benchmark task."
           }
         ],
-        "description": "Starts a background benchmark task to measure the performance of a Direct Access agent. Use this endpoint to evaluate agent throughput and latency for capacity planning and performance optimization. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "description": "Starts a background benchmark task that measures the throughput and latency of a Direct Access agent. Use the returned `benchmarkId` to monitor progress and retrieve performance metrics for capacity planning or performance optimization. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
         "operationId": "runBenchmark",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "connectivity",
+            "uniqueIdentifier": "POST:/connectivity/direct-access-agents/{agentId}/benchmarks"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -29321,7 +30491,7 @@
             "description": "The benchmark ID"
           }
         ],
-        "description": "Retrieves the current status and progress of a running or completed benchmark task. Use this endpoint to monitor benchmark execution and retrieve performance metrics once the task is completed. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "description": "Retrieves the current status, progress, and performance metrics for a benchmark task. Use this operation to monitor a running benchmark or inspect its completed results. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
         "operationId": "getBenchmarkStatus",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -29337,7 +30507,7 @@
         "tags": [
           "direct-access-agent-benchmarking"
         ],
-        "summary": "Requests a cancellation on a running benchmark",
+        "summary": "Request benchmark cancellation",
         "responses": {
           "202": {
             "content": {
@@ -29418,7 +30588,7 @@
             "description": "The benchmark ID"
           }
         ],
-        "description": "Requests a cancellation on a running benchmark by id for the specified agent. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "description": "Requests cancellation of a running benchmark for the specified agent. The request is asynchronous. Use the returned status URL to monitor when cancellation completes. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
         "operationId": "cancelBenchmark",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -29440,7 +30610,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConfigurationResponse"
+                  "$ref": "#/components/schemas/ConfigurationResponseWithGatewayMetadata"
                 }
               }
             },
@@ -71693,6 +72863,340 @@
           }
         }
       },
+      "ErrorMessage": {
+        "type": "string",
+        "description": "JSON string of error object"
+      },
+      "GetAllBenchmarkStatusResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetBenchmarkStatusResponse"
+            },
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "description": "Contains a paginated collection of benchmark statuses for an agent.",
+        "additionalProperties": false
+      },
+      "GetBenchmarkStatusResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark name"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark status"
+          },
+          "results": {
+            "$ref": "#/components/schemas/GetBenchmarkStatusResults"
+          },
+          "benchmarkId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark ID"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark description"
+          },
+          "statusMessage": {
+            "type": "string",
+            "nullable": true,
+            "description": "Additional details about the benchmark status"
+          },
+          "benchmarkEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:54:34.438Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when the benchmark task completed or was cancelled"
+          },
+          "concurrentReloads": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of concurrent benchmarks/reloads observed when this benchmark was started"
+          },
+          "benchmarkStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:15.927Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when the benchmark task started execution"
+          },
+          "totalBytesRequested": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The total bytes requested to be transferred during the benchmark"
+          },
+          "getReloadSlotEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:22.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when get reload slot completed"
+          },
+          "dataGenerationEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:40.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data generation completed"
+          },
+          "getReloadSlotStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:20.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when get reload slot started"
+          },
+          "dataGenerationStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:23.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data generation started"
+          }
+        },
+        "description": "Represents the status and performance data for a benchmark task.",
+        "additionalProperties": false
+      },
+      "GetBenchmarkStatusResults": {
+        "type": "object",
+        "properties": {
+          "latency": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The latency in ms measured during data transmission"
+          },
+          "throughput": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The data throughput in KB/s measured during data transmission"
+          },
+          "connectorLatency": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true,
+            "description": "The average latency in ms measured on the connector side during data transmission. Null if no connector benchmark data is available."
+          },
+          "totalBytesTransferred": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The total number of bytes successfully transferred during data transmission"
+          },
+          "dataTransmissionEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:54:34.437Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission completed"
+          },
+          "dataTransmissionStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:52:05.308Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission start"
+          }
+        },
+        "description": "Contains throughput, latency, transfer volume, and transmission timing for a benchmark.",
+        "additionalProperties": false
+      },
+      "GetLoadPerformanceMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoadPerformanceMetric"
+            },
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "description": "Contains a paginated collection of load performance metrics for an agent.",
+        "additionalProperties": false
+      },
+      "LinkResponseObject": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true,
+            "description": "The URL to the related resource"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoadPerformanceMetric": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "description": "The name of the load performance metric, typically in the format \"reload-YYYY-MM-DDTHH:mm:ssK\""
+          },
+          "appId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The app id associated with the reload"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "description": "The status of the load, e.g. \"Completed\", \"Failed\", \"Cancelled\""
+          },
+          "metricId": {
+            "type": "string",
+            "nullable": true,
+            "description": "A unique identifier generated for this metric"
+          },
+          "reloadId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The reload id that this load is a part of"
+          },
+          "statement": {
+            "type": "string",
+            "nullable": true,
+            "description": "The load script statement for the load"
+          },
+          "throughput": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The data throughput in KB/s measured during data transmission"
+          },
+          "connectorUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "The url of the connector"
+          },
+          "dataSourceId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The data source id"
+          },
+          "dataSourceName": {
+            "type": "string",
+            "nullable": true,
+            "description": "The data source name"
+          },
+          "sessionAppLoad": {
+            "type": "boolean",
+            "description": "A flag indicating whether this load is part of a session app load or not."
+          },
+          "connectorLatency": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The connector latency in ms measured during data transmission"
+          },
+          "concurrentReloads": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of concurrent benchmarks/reloads observed when this load was started"
+          },
+          "benchmarkingReload": {
+            "type": "boolean",
+            "description": "A flag indicating whether this load is part of a benchmarking reload or not."
+          },
+          "totalBytesTransferred": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The total bytes transferred during the load"
+          },
+          "dataTransmissionEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T21:54:33.595Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission completed"
+          },
+          "dataTransmissionStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T21:54:19.352Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission started"
+          },
+          "approximateMaxConnectorThroughput": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Approximation of the maximum connector throughput in KB/s, excluding downstream write time"
+          }
+        },
+        "description": "Represents performance data captured for a load processed by the gateway.",
+        "additionalProperties": false
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/PaginationLink"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/PaginationLink"
+          },
+          "self": {
+            "$ref": "#/components/schemas/PaginationLink"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RunBenchmarkResponse": {
+        "type": "object",
+        "properties": {
+          "benchmarkId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Enforcement": {
         "type": "object",
         "properties": {
@@ -76962,6 +78466,162 @@
         },
         "description": "Resolution decision for a single conflicting semantic type."
       },
+      "CreateSemanticTypeCompoundRequest": {
+        "type": "object",
+        "required": [
+          "label",
+          "type",
+          "config"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "COMPOUND",
+            "description": "Category of the semantic type. `REGEX`, `DICTIONARY`, or `COMPOUND`. Determines which `config` schema applies."
+          },
+          "label": {
+            "type": "string",
+            "example": "regex for semantic type",
+            "maxLength": 200,
+            "description": "label of semantic type"
+          },
+          "config": {
+            "$ref": "#/components/schemas/SemanticTypeCompound"
+          },
+          "activated": {
+            "type": "boolean",
+            "default": true,
+            "example": true,
+            "description": "When `true`, the semantic type can be used in data quality compute."
+          },
+          "description": {
+            "type": "string",
+            "example": "semantic type based on regex",
+            "maxLength": 500
+          },
+          "useForValidation": {
+            "type": "boolean",
+            "default": true,
+            "example": true,
+            "description": "When `true`, the semantic type is used for validation."
+          }
+        },
+        "description": "Request to create a compound semantic type composed of multiple child semantic types."
+      },
+      "CreateSemanticTypeDictionaryRequest": {
+        "type": "object",
+        "required": [
+          "label",
+          "type",
+          "config"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "DICTIONARY",
+            "description": "Category of the semantic type. `REGEX`, `DICTIONARY`, or `COMPOUND`. Determines which `config` schema applies."
+          },
+          "label": {
+            "type": "string",
+            "example": "regex for semantic type",
+            "maxLength": 200,
+            "description": "label of semantic type"
+          },
+          "config": {
+            "$ref": "#/components/schemas/SemanticTypeDictionary"
+          },
+          "activated": {
+            "type": "boolean",
+            "default": true,
+            "example": true,
+            "description": "When `true`, the semantic type can be used in data quality compute."
+          },
+          "description": {
+            "type": "string",
+            "example": "semantic type based on regex",
+            "maxLength": 500
+          },
+          "useForValidation": {
+            "type": "boolean",
+            "default": true,
+            "example": true,
+            "description": "When `true`, the semantic type is used for validation."
+          }
+        },
+        "description": "Request to create a semantic type that matches words against a list of dictionary values."
+      },
+      "CreateSemanticTypeRegexRequest": {
+        "type": "object",
+        "required": [
+          "label",
+          "type",
+          "config"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "REGEX",
+            "description": "Category of the semantic type. `REGEX`, `DICTIONARY`, or `COMPOUND`. Determines which `config` schema applies."
+          },
+          "label": {
+            "type": "string",
+            "example": "regex for semantic type",
+            "maxLength": 200,
+            "description": "label of semantic type"
+          },
+          "config": {
+            "$ref": "#/components/schemas/SemanticTypeRegex"
+          },
+          "activated": {
+            "type": "boolean",
+            "default": true,
+            "example": true,
+            "description": "When `true`, the semantic type can be used in data quality compute."
+          },
+          "description": {
+            "type": "string",
+            "example": "semantic type based on regex",
+            "maxLength": 500
+          },
+          "useForValidation": {
+            "type": "boolean",
+            "default": true,
+            "example": true,
+            "description": "When `true`, the semantic type is used for validation."
+          }
+        },
+        "description": "Request to create a semantic type that matches words against a regex pattern."
+      },
+      "DatasetFieldsItem": {
+        "type": "object",
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "description": "The unique identifier of the dataset."
+          },
+          "fieldNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The list of field names in the dataset associated with the semantic type."
+          }
+        }
+      },
+      "DatasetFieldsPageResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetFieldsItem"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          }
+        }
+      },
       "DiffEntry": {
         "type": "object",
         "required": [
@@ -77393,6 +79053,75 @@
         },
         "description": "Status of a single type from the import file."
       },
+      "PatchSemanticTypeRequest": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "op",
+            "path"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "replace"
+              ],
+              "type": "string"
+            },
+            "path": {
+              "enum": [
+                "/label",
+                "/description",
+                "/useForValidation",
+                "/activated",
+                "/config/validationContent",
+                "/config/validationPattern",
+                "/config/validationCriteria",
+                "/config/values",
+                "/config/children"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "$ref": "#/components/schemas/PatchSemanticTypeRequestValue"
+            }
+          }
+        }
+      },
+      "PatchSemanticTypeRequestValue": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "array",
+            "items": {}
+          }
+        ],
+        "nullable": true,
+        "description": "The new value to apply at the given `path`. The accepted type depends on the target path: a string for `/label`, `/description`, `/config/validationContent`, `/config/validationPattern`, and `/config/validationCriteria`; a boolean for `/useForValidation` and `/activated`; an array for `/config/values` and `/config/children`."
+      },
+      "SemanticTypeCompound": {
+        "type": "object",
+        "required": [
+          "children"
+        ],
+        "properties": {
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "a0c94cd5-9c84-4d16-8165-0d65d064a322",
+              "description": "Identifier of a child semantic type."
+            },
+            "default": []
+          }
+        },
+        "description": "A coumpound of multiple kinds of semantic types"
+      },
       "SemanticTypeDictionary": {
         "type": "object",
         "required": [
@@ -77419,6 +79148,26 @@
         },
         "description": "A semantic type for words matching a value in the list of values"
       },
+      "SemanticTypeIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": "3b179e2b028c4306ab108b68116ae639",
+          "description": "Semantic type id."
+        },
+        "description": "List of semantic type ids.",
+        "uniqueItems": true
+      },
+      "SemanticTypeListResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/SemanticTypeResponse"
+            }
+          }
+        }
+      },
       "SemanticTypeRegex": {
         "type": "object",
         "required": [
@@ -77443,6 +79192,94 @@
           }
         },
         "description": "A semantic type for words matching a regex pattern"
+      },
+      "SemanticTypeResponse": {
+        "type": "object",
+        "example": {
+          "type": "REGEX",
+          "label": "Qlik email",
+          "config": {
+            "validationContent": "ANY_CHARACTER",
+            "validationPattern": "^[a-z]{3}@qlik\\.com$"
+          },
+          "activated": true,
+          "createdAt": "2025-07-16T13:38:03Z",
+          "createdBy": "685bc460dcdf02ef734cd2e6",
+          "updatedAt": "2025-07-16T13:38:03Z",
+          "updatedBy": "685bc460dcdf02ef734cd2e6",
+          "description": "qlik email is a trigram followed by @qlik",
+          "useForValidation": true
+        },
+        "required": [
+          "id",
+          "label",
+          "type",
+          "useForValidation",
+          "activated",
+          "createdAt",
+          "createdBy",
+          "updatedAt",
+          "updatedBy",
+          "config"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "REGEX",
+              "DICTIONARY",
+              "COMPOUND"
+            ],
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "config": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SemanticTypeRegex"
+              },
+              {
+                "$ref": "#/components/schemas/SemanticTypeDictionary"
+              },
+              {
+                "$ref": "#/components/schemas/SemanticTypeCompound"
+              }
+            ]
+          },
+          "parentId": {
+            "type": "string",
+            "description": "Parent semantic type identifier. This field is omitted from the default response and is only returned when explicitly requested with `fields=parentId`."
+          },
+          "activated": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-16T13:38:03Z"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-16T13:38:03Z"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "useForValidation": {
+            "type": "boolean"
+          }
+        }
       },
       "SemanticTypesExportEnvelope": {
         "type": "object",
@@ -80234,6 +82071,9 @@
             "type": "string",
             "nullable": true
           },
+          "skipValidation": {
+            "type": "boolean"
+          },
           "permittedRangeEnd": {
             "type": "integer",
             "format": "int32"
@@ -80307,6 +82147,9 @@
             "type": "string",
             "nullable": true
           },
+          "skipValidation": {
+            "type": "boolean"
+          },
           "permittedValues": {
             "type": "array",
             "items": {
@@ -80326,7 +82169,7 @@
         },
         "additionalProperties": false
       },
-      "ConfigurationResponse": {
+      "ConfigurationResponseWithGatewayMetadata": {
         "type": "object",
         "properties": {
           "connectors": {
@@ -80336,11 +82179,19 @@
             },
             "nullable": true
           },
+          "environment": {
+            "type": "string",
+            "nullable": true
+          },
           "dcaasSettings": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ConfigurationLineBase"
             },
+            "nullable": true
+          },
+          "productVersion": {
+            "type": "string",
             "nullable": true
           },
           "connectorAgentSettings": {
@@ -80386,10 +82237,6 @@
         },
         "additionalProperties": false
       },
-      "ErrorMessage": {
-        "type": "string",
-        "description": "JSON string of error object"
-      },
       "FileConnectorAllowedPath": {
         "type": "object",
         "required": [
@@ -80414,7 +82261,7 @@
               "Bar"
             ],
             "nullable": true,
-            "description": "The Spaces property in the Odbc custom type mappings file."
+            "description": "The Spaces property in the File connector allowed paths file."
           }
         },
         "additionalProperties": false
@@ -80431,87 +82278,6 @@
           },
           "errorMessage": {
             "$ref": "#/components/schemas/ErrorResponse"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetBenchmarkStatusResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "nullable": true,
-            "description": "The benchmark status"
-          },
-          "results": {
-            "$ref": "#/components/schemas/GetBenchmarkStatusResults"
-          },
-          "benchmarkId": {
-            "type": "string",
-            "nullable": true,
-            "description": "The benchmark ID"
-          },
-          "statusMessage": {
-            "type": "string",
-            "nullable": true,
-            "description": "Additional details about the benchmark status"
-          },
-          "benchmarkEndTime": {
-            "type": "string",
-            "nullable": true,
-            "description": "The ISO 8601 formatted timestamp when the benchmark task completed or was cancelled"
-          },
-          "benchmarkStartTime": {
-            "type": "string",
-            "nullable": true,
-            "description": "The ISO 8601 formatted timestamp when the benchmark task started execution"
-          },
-          "totalBytesRequested": {
-            "type": "integer",
-            "format": "int64",
-            "description": "The total bytes requested to be transferred during the benchmark"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetBenchmarkStatusResults": {
-        "type": "object",
-        "properties": {
-          "latency": {
-            "type": "integer",
-            "format": "int64",
-            "description": "The latency in ms measured during data transmission"
-          },
-          "throughput": {
-            "type": "integer",
-            "format": "int64",
-            "description": "The data throughput in KB/s measured during data transmission"
-          },
-          "totalBytesTransferred": {
-            "type": "integer",
-            "format": "int64",
-            "description": "The total number of bytes successfully transferred during data transmission"
-          },
-          "dataTransmissionEndTime": {
-            "type": "string",
-            "nullable": true,
-            "description": "The ISO 8601 formatted timestamp when data transmission completed"
-          },
-          "dataTransmissionStartTime": {
-            "type": "string",
-            "nullable": true,
-            "description": "The ISO 8601 formatted timestamp when data transmission start"
-          }
-        },
-        "additionalProperties": false
-      },
-      "LinkResponseObject": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string",
-            "nullable": true,
-            "description": "The URL to the related resource"
           }
         },
         "additionalProperties": false
@@ -80625,7 +82391,7 @@
             "type": "string",
             "default": "",
             "nullable": true,
-            "description": "The file location for the local metrics database. If not specified, defaults to `C:\\ProgramData\\Qlik\\Gateway\\tmp`."
+            "description": "The file location for the local metrics database. If not specified, defaults to `%ProgramData%\\Qlik\\Gateway\\tmp`."
           },
           "dataRetentionCheckIntervalMinutes": {
             "type": "integer",
@@ -80778,16 +82544,6 @@
             "$ref": "#/components/schemas/Operation"
           },
           "validationResult": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "RunBenchmarkResponse": {
-        "type": "object",
-        "properties": {
-          "benchmarkId": {
             "type": "string",
             "nullable": true
           }
@@ -92755,21 +94511,6 @@
             "description": "The attributes of the quota."
           }
         }
-      },
-      "PaginationLinks": {
-        "type": "object",
-        "properties": {
-          "next": {
-            "$ref": "#/components/schemas/PaginationLink"
-          },
-          "prev": {
-            "$ref": "#/components/schemas/PaginationLink"
-          },
-          "self": {
-            "$ref": "#/components/schemas/PaginationLink"
-          }
-        },
-        "additionalProperties": false
       },
       "PostTaskBody": {
         "allOf": [
