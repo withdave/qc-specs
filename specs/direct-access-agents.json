@@ -101,7 +101,7 @@
         "tags": [
           "direct-access-agent-benchmarking"
         ],
-        "summary": "Start agent benchmark",
+        "summary": "Start an agent benchmark",
         "responses": {
           "201": {
             "content": {
@@ -112,6 +112,16 @@
               }
             },
             "description": "Benchmark task created successfully with a unique identifier."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
           },
           "403": {
             "content": {
@@ -176,6 +186,17 @@
           },
           {
             "in": "query",
+            "name": "description",
+            "schema": {
+              "type": "string",
+              "default": "",
+              "maxLength": 200,
+              "minLength": 0
+            },
+            "description": "The description for the benchmark task."
+          },
+          {
+            "in": "query",
             "name": "force",
             "schema": {
               "type": "boolean",
@@ -192,13 +213,30 @@
               "default": 1
             },
             "description": "The volume of data in GB to transfer during the throughput measurement part of the benchmark."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string",
+              "default": "",
+              "maxLength": 50,
+              "minLength": 0
+            },
+            "description": "The name to assign to the benchmark task."
           }
         ],
-        "description": "Starts a background benchmark task to measure the performance of a Direct Access agent. Use this endpoint to evaluate agent throughput and latency for capacity planning and performance optimization. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "description": "Starts a background benchmark task that measures the throughput and latency of a Direct Access agent. Use the returned `benchmarkId` to monitor progress and retrieve performance metrics for capacity planning or performance optimization. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
         "operationId": "runBenchmark",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "connectivity",
+            "uniqueIdentifier": "POST:/connectivity/direct-access-agents/{agentId}/benchmarks"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -283,7 +321,7 @@
             "description": "The benchmark ID"
           }
         ],
-        "description": "Retrieves the current status and progress of a running or completed benchmark task. Use this endpoint to monitor benchmark execution and retrieve performance metrics once the task is completed. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "description": "Retrieves the current status, progress, and performance metrics for a benchmark task. Use this operation to monitor a running benchmark or inspect its completed results. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
         "operationId": "getBenchmarkStatus",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -299,7 +337,7 @@
         "tags": [
           "direct-access-agent-benchmarking"
         ],
-        "summary": "Requests a cancellation on a running benchmark",
+        "summary": "Request benchmark cancellation",
         "responses": {
           "202": {
             "content": {
@@ -380,7 +418,7 @@
             "description": "The benchmark ID"
           }
         ],
-        "description": "Requests a cancellation on a running benchmark by id for the specified agent. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "description": "Requests cancellation of a running benchmark for the specified agent. The request is asynchronous. Use the returned status URL to monitor when cancellation completes. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
         "operationId": "cancelBenchmark",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -402,7 +440,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConfigurationResponse"
+                  "$ref": "#/components/schemas/ConfigurationResponseWithGatewayMetadata"
                 }
               }
             },
@@ -1286,6 +1324,9 @@
             "type": "string",
             "nullable": true
           },
+          "skipValidation": {
+            "type": "boolean"
+          },
           "permittedRangeEnd": {
             "type": "integer",
             "format": "int32"
@@ -1359,6 +1400,9 @@
             "type": "string",
             "nullable": true
           },
+          "skipValidation": {
+            "type": "boolean"
+          },
           "permittedValues": {
             "type": "array",
             "items": {
@@ -1378,7 +1422,7 @@
         },
         "additionalProperties": false
       },
-      "ConfigurationResponse": {
+      "ConfigurationResponseWithGatewayMetadata": {
         "type": "object",
         "properties": {
           "connectors": {
@@ -1388,11 +1432,19 @@
             },
             "nullable": true
           },
+          "environment": {
+            "type": "string",
+            "nullable": true
+          },
           "dcaasSettings": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ConfigurationLineBase"
             },
+            "nullable": true
+          },
+          "productVersion": {
+            "type": "string",
             "nullable": true
           },
           "connectorAgentSettings": {
@@ -1501,7 +1553,7 @@
               "Bar"
             ],
             "nullable": true,
-            "description": "The Spaces property in the Odbc custom type mappings file."
+            "description": "The Spaces property in the File connector allowed paths file."
           }
         },
         "additionalProperties": false
@@ -1525,6 +1577,11 @@
       "GetBenchmarkStatusResponse": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark name"
+          },
           "status": {
             "type": "string",
             "nullable": true,
@@ -1538,6 +1595,11 @@
             "nullable": true,
             "description": "The benchmark ID"
           },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark description"
+          },
           "statusMessage": {
             "type": "string",
             "nullable": true,
@@ -1545,11 +1607,20 @@
           },
           "benchmarkEndTime": {
             "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:54:34.438Z",
             "nullable": true,
             "description": "The ISO 8601 formatted timestamp when the benchmark task completed or was cancelled"
           },
+          "concurrentReloads": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of concurrent benchmarks/reloads observed when this benchmark was started"
+          },
           "benchmarkStartTime": {
             "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:15.927Z",
             "nullable": true,
             "description": "The ISO 8601 formatted timestamp when the benchmark task started execution"
           },
@@ -1557,8 +1628,37 @@
             "type": "integer",
             "format": "int64",
             "description": "The total bytes requested to be transferred during the benchmark"
+          },
+          "getReloadSlotEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:22.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when get reload slot completed"
+          },
+          "dataGenerationEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:40.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data generation completed"
+          },
+          "getReloadSlotStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:20.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when get reload slot started"
+          },
+          "dataGenerationStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:23.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data generation started"
           }
         },
+        "description": "Represents the status and performance data for a benchmark task.",
         "additionalProperties": false
       },
       "GetBenchmarkStatusResults": {
@@ -1574,6 +1674,12 @@
             "format": "int64",
             "description": "The data throughput in KB/s measured during data transmission"
           },
+          "connectorLatency": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true,
+            "description": "The average latency in ms measured on the connector side during data transmission. Null if no connector benchmark data is available."
+          },
           "totalBytesTransferred": {
             "type": "integer",
             "format": "int64",
@@ -1581,15 +1687,20 @@
           },
           "dataTransmissionEndTime": {
             "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:54:34.437Z",
             "nullable": true,
             "description": "The ISO 8601 formatted timestamp when data transmission completed"
           },
           "dataTransmissionStartTime": {
             "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:52:05.308Z",
             "nullable": true,
             "description": "The ISO 8601 formatted timestamp when data transmission start"
           }
         },
+        "description": "Contains throughput, latency, transfer volume, and transmission timing for a benchmark.",
         "additionalProperties": false
       },
       "LinkResponseObject": {
@@ -1712,7 +1823,7 @@
             "type": "string",
             "default": "",
             "nullable": true,
-            "description": "The file location for the local metrics database. If not specified, defaults to `C:\\ProgramData\\Qlik\\Gateway\\tmp`."
+            "description": "The file location for the local metrics database. If not specified, defaults to `%ProgramData%\\Qlik\\Gateway\\tmp`."
           },
           "dataRetentionCheckIntervalMinutes": {
             "type": "integer",
@@ -1867,7 +1978,13 @@
               "SAPSQL_LOG_RETENTION_DAYS",
               "SAPPACKAGE_LOG_RETENTION_DAYS",
               "REST_LOG_RETENTION_DAYS",
-              "FILE_LOG_RETENTION_DAYS"
+              "FILE_LOG_RETENTION_DAYS",
+              "BENCHMARK_LOAD_PERFORMANCE_METRICS_RECORDING_ENABLED",
+              "BENCHMARK_RETENTION_CLEANUP_ENABLED",
+              "BENCHMARK_RETENTION_DAYS",
+              "BENCHMARK_RETENTION_CHECK_INTERVAL_MINUTES",
+              "BENCHMARK_RETENTION_DB_SIZE_MB",
+              "BENCHMARK_RETENTION_CLEANUP_BATCH_SIZE"
             ],
             "type": "string"
           },
