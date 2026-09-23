@@ -1,0 +1,900 @@
+{
+  "info": {
+    "title": "connectivity/direct-access-agents",
+    "version": ""
+  },
+  "paths": {
+    "/api/connectivity/direct-access-agents/{agentId}/benchmarks": {
+      "get": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "List benchmark statuses",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllBenchmarkStatusResponse"
+                }
+              }
+            },
+            "description": "The benchmark status."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The gateway was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "How long to wait before retrying, in seconds."
+              }
+            },
+            "description": "Too many requests."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "501": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "All or part of the request has not yet been implemented."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "example": "status eq \"Completed\"",
+            "description": "SCIM style filter string as defined in RFC 7644 section 3.4.2.2"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The page size"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "maximum": 2147483647,
+              "minimum": 1
+            },
+            "description": "The page number"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "-benchmarkStartTime",
+                "+benchmarkStartTime",
+                "benchmarkStartTime",
+                "-benchmarkEndTime",
+                "+benchmarkEndTime",
+                "benchmarkEndTime",
+                "-dataTransmissionStartTime",
+                "+dataTransmissionStartTime",
+                "dataTransmissionStartTime",
+                "-dataTransmissionEndTime",
+                "+dataTransmissionEndTime",
+                "dataTransmissionEndTime"
+              ],
+              "type": "string",
+              "default": "-benchmarkStartTime"
+            },
+            "description": "The field to sort by with +/- prefix indicating sort order"
+          }
+        ],
+        "description": "Retrieves paginated statuses for benchmarks run by the specified Direct Access agent. Use the filters and sort order to find benchmark runs and review their progress or completed results. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.17+.",
+        "operationId": "getAllBenchmarkStatus",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "post": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Start an agent benchmark",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunBenchmarkResponse"
+                }
+              }
+            },
+            "description": "Benchmark task created successfully with a unique identifier."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The agent was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "How long to wait before retrying, in seconds."
+              }
+            },
+            "description": "Too many requests."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "501": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "All or part of the request has not yet been implemented."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "description",
+            "schema": {
+              "type": "string",
+              "default": "",
+              "maxLength": 200,
+              "minLength": 0
+            },
+            "description": "The description for the benchmark task."
+          },
+          {
+            "in": "query",
+            "name": "force",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Forces the benchmark to start regardless of the state of the agent. Does not override QCS resource limits. Use with caution."
+          },
+          {
+            "in": "query",
+            "name": "gigaBytesToTransfer",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            },
+            "description": "The volume of data in GB to transfer during the throughput measurement part of the benchmark."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string",
+              "default": "",
+              "maxLength": 50,
+              "minLength": 0
+            },
+            "description": "The name to assign to the benchmark task."
+          }
+        ],
+        "description": "Starts a background benchmark task that measures the throughput and latency of a Direct Access agent. Use the returned `benchmarkId` to monitor progress and retrieve performance metrics for capacity planning or performance optimization. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Available in Direct Access Gateway V1.7.8+.",
+        "operationId": "runBenchmark",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-replaces": [
+          {
+            "namespace": "",
+            "uniqueIdentifier": "POST:/v1/direct-access-agents/{agentId}/benchmarks"
+          }
+        ],
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/connectivity/direct-access-agents/{agentId}/load-performance-metrics": {
+      "get": {
+        "tags": [
+          "direct-access-agent-benchmarking"
+        ],
+        "summary": "Get load performance metrics",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLoadPerformanceMetricsResponse"
+                }
+              }
+            },
+            "description": "Load performance metrics retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The gateway was not found."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "How long to wait before retrying, in seconds."
+              }
+            },
+            "description": "Too many requests."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "There was an error processing the request."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service is unavailable."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "example": "dataSourceId eq \"File_local\"",
+            "description": "SCIM style filter string as defined in RFC 7644 section 3.4.2.2"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "description": "The page size"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "maximum": 2147483647,
+              "minimum": 1
+            },
+            "description": "The page number"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "enum": [
+                "-benchmarkStartTime",
+                "+benchmarkStartTime",
+                "benchmarkStartTime",
+                "-benchmarkEndTime",
+                "+benchmarkEndTime",
+                "benchmarkEndTime",
+                "-dataTransmissionStartTime",
+                "+dataTransmissionStartTime",
+                "dataTransmissionStartTime",
+                "-dataTransmissionEndTime",
+                "+dataTransmissionEndTime",
+                "dataTransmissionEndTime"
+              ],
+              "type": "string",
+              "default": "-benchmarkStartTime"
+            },
+            "description": "The field to sort by with +/- prefix indicating sort order"
+          }
+        ],
+        "description": "Retrieves performance metrics for loads processed by the gateway, either for all loads or a filtered subset. Use these metrics to evaluate reload throughput, connector latency, and concurrent reload activity. The requestor must have the `TenantAdmin` role and be either the gateway's space owner or a member of the gateway's space with the `Can Consume Data` role. Load performance recording is disabled by default and is controlled by the `BENCHMARK_LOAD_PERFORMANCE_METRICS_RECORDING_ENABLED` configuration property. Available in Direct Access Gateway V1.7.17+.",
+        "operationId": "getLoadPerformanceMetrics",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "hasErrors": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAllBenchmarkStatusResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetBenchmarkStatusResponse"
+            },
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "description": "Contains a paginated collection of benchmark statuses for an agent.",
+        "additionalProperties": false
+      },
+      "GetBenchmarkStatusResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark name"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark status"
+          },
+          "results": {
+            "$ref": "#/components/schemas/GetBenchmarkStatusResults"
+          },
+          "benchmarkId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark ID"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "The benchmark description"
+          },
+          "statusMessage": {
+            "type": "string",
+            "nullable": true,
+            "description": "Additional details about the benchmark status"
+          },
+          "benchmarkEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:54:34.438Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when the benchmark task completed or was cancelled"
+          },
+          "concurrentReloads": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of concurrent benchmarks/reloads observed when this benchmark was started"
+          },
+          "benchmarkStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:15.927Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when the benchmark task started execution"
+          },
+          "totalBytesRequested": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The total bytes requested to be transferred during the benchmark"
+          },
+          "getReloadSlotEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:22.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when get reload slot completed"
+          },
+          "dataGenerationEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:40.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data generation completed"
+          },
+          "getReloadSlotStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:20.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when get reload slot started"
+          },
+          "dataGenerationStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:51:23.000Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data generation started"
+          }
+        },
+        "description": "Represents the status and performance data for a benchmark task.",
+        "additionalProperties": false
+      },
+      "GetBenchmarkStatusResults": {
+        "type": "object",
+        "properties": {
+          "latency": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The latency in ms measured during data transmission"
+          },
+          "throughput": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The data throughput in KB/s measured during data transmission"
+          },
+          "connectorLatency": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true,
+            "description": "The average latency in ms measured on the connector side during data transmission. Null if no connector benchmark data is available."
+          },
+          "totalBytesTransferred": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The total number of bytes successfully transferred during data transmission"
+          },
+          "dataTransmissionEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:54:34.437Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission completed"
+          },
+          "dataTransmissionStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T20:52:05.308Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission start"
+          }
+        },
+        "description": "Contains throughput, latency, transfer volume, and transmission timing for a benchmark.",
+        "additionalProperties": false
+      },
+      "GetLoadPerformanceMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoadPerformanceMetric"
+            },
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "description": "Contains a paginated collection of load performance metrics for an agent.",
+        "additionalProperties": false
+      },
+      "LinkResponseObject": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true,
+            "description": "The URL to the related resource"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoadPerformanceMetric": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "description": "The name of the load performance metric, typically in the format \"reload-YYYY-MM-DDTHH:mm:ssK\""
+          },
+          "appId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The app id associated with the reload"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "description": "The status of the load, e.g. \"Completed\", \"Failed\", \"Cancelled\""
+          },
+          "metricId": {
+            "type": "string",
+            "nullable": true,
+            "description": "A unique identifier generated for this metric"
+          },
+          "reloadId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The reload id that this load is a part of"
+          },
+          "statement": {
+            "type": "string",
+            "nullable": true,
+            "description": "The load script statement for the load"
+          },
+          "throughput": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The data throughput in KB/s measured during data transmission"
+          },
+          "connectorUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "The url of the connector"
+          },
+          "dataSourceId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The data source id"
+          },
+          "dataSourceName": {
+            "type": "string",
+            "nullable": true,
+            "description": "The data source name"
+          },
+          "sessionAppLoad": {
+            "type": "boolean",
+            "description": "A flag indicating whether this load is part of a session app load or not."
+          },
+          "connectorLatency": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The connector latency in ms measured during data transmission"
+          },
+          "concurrentReloads": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of concurrent benchmarks/reloads observed when this load was started"
+          },
+          "benchmarkingReload": {
+            "type": "boolean",
+            "description": "A flag indicating whether this load is part of a benchmarking reload or not."
+          },
+          "totalBytesTransferred": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The total bytes transferred during the load"
+          },
+          "dataTransmissionEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T21:54:33.595Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission completed"
+          },
+          "dataTransmissionStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T21:54:19.352Z",
+            "nullable": true,
+            "description": "The ISO 8601 formatted timestamp when data transmission started"
+          },
+          "approximateMaxConnectorThroughput": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Approximation of the maximum connector throughput in KB/s, excluding downstream write time"
+          }
+        },
+        "description": "Represents performance data captured for a load processed by the gateway.",
+        "additionalProperties": false
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/LinkResponseObject"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/LinkResponseObject"
+          },
+          "self": {
+            "$ref": "#/components/schemas/LinkResponseObject"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RunBenchmarkResponse": {
+        "type": "object",
+        "properties": {
+          "benchmarkId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}
