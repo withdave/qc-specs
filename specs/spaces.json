@@ -1907,22 +1907,34 @@
           "code": {
             "type": "string",
             "description": "The error code.",
-            "x-qlik-deprecated": true
+            "x-qlik-deprecated": true,
+            "x-qlik-deprecated-sunset": "2026-12",
+            "x-qlik-deprecated-version": "2020-08",
+            "x-qlik-deprecated-description": "Use errors[].code instead. The legacy top-level code will be removed after the sunset date."
           },
           "meta": {
             "type": "object",
             "description": "Additional properties relating to the error.",
-            "x-qlik-deprecated": true
+            "x-qlik-deprecated": true,
+            "x-qlik-deprecated-sunset": "2026-12",
+            "x-qlik-deprecated-version": "2020-08",
+            "x-qlik-deprecated-description": "Use errors[].meta instead. The legacy top-level meta will be removed after the sunset date."
           },
           "title": {
             "type": "string",
             "description": "Summary of the problem.",
-            "x-qlik-deprecated": true
+            "x-qlik-deprecated": true,
+            "x-qlik-deprecated-sunset": "2026-12",
+            "x-qlik-deprecated-version": "2020-08",
+            "x-qlik-deprecated-description": "Use errors[].title instead. The legacy top-level title will be removed after the sunset date."
           },
           "detail": {
             "type": "string",
             "description": "A human-readable explanation specific to the occurrence of this problem.",
-            "x-qlik-deprecated": true
+            "x-qlik-deprecated": true,
+            "x-qlik-deprecated-sunset": "2026-12",
+            "x-qlik-deprecated-version": "2020-08",
+            "x-qlik-deprecated-description": "Use errors[].detail instead. The legacy top-level detail will be removed after the sunset date."
           },
           "errors": {
             "type": "array",
@@ -1943,7 +1955,10 @@
               }
             },
             "description": "References to the source of the error.",
-            "x-qlik-deprecated": true
+            "x-qlik-deprecated": true,
+            "x-qlik-deprecated-sunset": "2026-12",
+            "x-qlik-deprecated-version": "2020-08",
+            "x-qlik-deprecated-description": "Use errors[].meta.source instead. The legacy top-level source will be removed after the sunset date."
           },
           "traceId": {
             "type": "string"

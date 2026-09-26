@@ -1681,6 +1681,19 @@
           "code": {
             "type": "string"
           },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "cycle": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TableRef"
+                },
+                "description": "Present only for `CIRCULAR_REFERENCE` errors. The tables forming the detected cycle, in order (first and last entries repeated to close the loop)."
+              }
+            },
+            "description": "Optional. MAY be used to provide more arbitrary, structured data to the client, e.g. `cycle` for `CIRCULAR_REFERENCE` errors."
+          },
           "title": {
             "type": "string"
           },
@@ -1853,6 +1866,21 @@
           "completeness": {
             "type": "number",
             "format": "float"
+          }
+        }
+      },
+      "TableRef": {
+        "type": "object",
+        "required": [
+          "tableId",
+          "tableName"
+        ],
+        "properties": {
+          "tableId": {
+            "type": "string"
+          },
+          "tableName": {
+            "type": "string"
           }
         }
       },
