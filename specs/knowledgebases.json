@@ -951,6 +951,17 @@
               }
             },
             "description": "The resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The data connection credentials are missing, expired, or no longer valid and must be reauthenticated."
           }
         },
         "parameters": [
@@ -2323,6 +2334,56 @@
         "example": "parse_failed",
         "description": "Stable, machine-readable error category for an indexing failure, shared across services (worker, indexer, assistants) and the UI so failures can be mapped to friendly messages without brittle string matching."
       },
+      "indexingProgress": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "notStarted",
+              "inProgress",
+              "completed",
+              "completedWithError",
+              "cancelled"
+            ],
+            "type": "string",
+            "example": "inProgress",
+            "description": "Aggregate indexing status for the knowledgebase."
+          },
+          "syncId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "Identifier of the sync currently driving this progress."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "description": "When this progress snapshot was last updated."
+          },
+          "filesTotal": {
+            "type": "integer",
+            "example": 100,
+            "description": "Total number of files to index in the current sync."
+          },
+          "filesFailed": {
+            "type": "integer",
+            "example": 2,
+            "description": "Number of files that failed to index."
+          },
+          "filesProcessed": {
+            "type": "integer",
+            "example": 45,
+            "description": "Number of files processed so far."
+          },
+          "overallPercent": {
+            "type": "integer",
+            "example": 45,
+            "description": "Aggregate indexing progress across the knowledgebase, 0-100."
+          }
+        },
+        "description": "Aggregate indexing progress for the knowledgebase across the current sync."
+      },
       "JSONPatch": {
         "type": "object",
         "required": [
@@ -2437,6 +2498,9 @@
                 "items": {
                   "$ref": "#/components/schemas/dataSource"
                 }
+              },
+              "indexingProgress": {
+                "$ref": "#/components/schemas/indexingProgress"
               }
             }
           }
