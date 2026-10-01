@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.64",
+    "version": "1.0.65",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -38852,6 +38852,17 @@
               }
             },
             "description": "The resource does not exist."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponseCopy",
+                  "x-qlik-merge-conflict": true
+                }
+              }
+            },
+            "description": "The data connection credentials are missing, expired, or no longer valid and must be reauthenticated."
           }
         },
         "parameters": [
@@ -54628,12 +54639,6 @@
         "x-qlik-deprecated-sunset": "2026-05",
         "x-qlik-deprecated-version": "2026-05",
         "x-qlik-deprecated-description": "Use `/tenant-settings/actions/toggle-cross-region-inference` instead. This endpoint uses outdated terminology.",
-        "x-qlik-replaced-by": [
-          {
-            "namespace": "",
-            "uniqueIdentifier": "POST:/v1/tenant-settings/actions/toggle-cross-region-inference"
-          }
-        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -54713,12 +54718,6 @@
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
-        "x-qlik-replaces": [
-          {
-            "namespace": "",
-            "uniqueIdentifier": "POST:/v1/tenant-settings/actions/toggle-cross-region-data-processing"
-          }
-        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -87131,6 +87130,56 @@
         "example": "parse_failed",
         "description": "Stable, machine-readable error category for an indexing failure, shared across services (worker, indexer, assistants) and the UI so failures can be mapped to friendly messages without brittle string matching."
       },
+      "indexingProgress": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "notStarted",
+              "inProgress",
+              "completed",
+              "completedWithError",
+              "cancelled"
+            ],
+            "type": "string",
+            "example": "inProgress",
+            "description": "Aggregate indexing status for the knowledgebase."
+          },
+          "syncId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
+            "description": "Identifier of the sync currently driving this progress."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-10-02T14:20:50.52Z",
+            "description": "When this progress snapshot was last updated."
+          },
+          "filesTotal": {
+            "type": "integer",
+            "example": 100,
+            "description": "Total number of files to index in the current sync."
+          },
+          "filesFailed": {
+            "type": "integer",
+            "example": 2,
+            "description": "Number of files that failed to index."
+          },
+          "filesProcessed": {
+            "type": "integer",
+            "example": 45,
+            "description": "Number of files processed so far."
+          },
+          "overallPercent": {
+            "type": "integer",
+            "example": 45,
+            "description": "Aggregate indexing progress across the knowledgebase, 0-100."
+          }
+        },
+        "description": "Aggregate indexing progress for the knowledgebase across the current sync."
+      },
       "knowledgeBase": {
         "allOf": [
           {
@@ -87157,6 +87206,9 @@
                 "items": {
                   "$ref": "#/components/schemas/dataSource"
                 }
+              },
+              "indexingProgress": {
+                "$ref": "#/components/schemas/indexingProgress"
               }
             }
           }
@@ -100480,6 +100532,11 @@
                 "$ref": "#/components/schemas/StartPageConfigConsole"
               }
             ]
+          },
+          "publicPreviewOptIn": {
+            "type": "boolean",
+            "example": false,
+            "description": "Whether the tenant has opted in to public preview features."
           },
           "sessionReplayOptOut": {
             "type": "boolean",

@@ -275,12 +275,6 @@
         "x-qlik-deprecated-sunset": "2026-05",
         "x-qlik-deprecated-version": "2026-05",
         "x-qlik-deprecated-description": "Use `/tenant-settings/actions/toggle-cross-region-inference` instead. This endpoint uses outdated terminology.",
-        "x-qlik-replaced-by": [
-          {
-            "namespace": "",
-            "uniqueIdentifier": "POST:/v1/tenant-settings/actions/toggle-cross-region-inference"
-          }
-        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -360,12 +354,6 @@
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
         "x-qlik-deprecated": false,
-        "x-qlik-replaces": [
-          {
-            "namespace": "",
-            "uniqueIdentifier": "POST:/v1/tenant-settings/actions/toggle-cross-region-data-processing"
-          }
-        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -894,6 +882,11 @@
                 "$ref": "#/components/schemas/StartPageConfigConsole"
               }
             ]
+          },
+          "publicPreviewOptIn": {
+            "type": "boolean",
+            "example": false,
+            "description": "Whether the tenant has opted in to public preview features."
           },
           "sessionReplayOptOut": {
             "type": "boolean",

@@ -2692,11 +2692,12 @@
               "OWNER-DELETED",
               "OWNER-DISABLED",
               "APP-MOVED-SPACE",
-              "OWNER-MOVED"
+              "OWNER-MOVED",
+              "SCHEDULE-EXPIRED"
             ],
             "type": "string",
             "example": "MANUALLY",
-            "description": "The reason the task is currently disabled."
+            "description": "The reason the task is currently disabled. `SCHEDULE-EXPIRED` is reserved for tasks migrated from a legacy reload-task whose schedule had already ended; it is stripped when supplied on create or update."
           },
           "migratedFrom": {
             "type": "string",
