@@ -1339,6 +1339,10 @@
             "type": "string",
             "description": "The version of the license definition, used to track whether changes have propagated. Typically a content hash; its exact form depends on the origin."
           },
+          "validTime": {
+            "type": "string",
+            "description": "An ISO 8601 timestamp interval representing the same validity period as \"valid\", but with second precision instead of day precision."
+          },
           "allotments": {
             "type": "array",
             "items": {
