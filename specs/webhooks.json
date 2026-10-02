@@ -1002,6 +1002,13 @@
           "description": {
             "type": "string",
             "description": "Description of the event type."
+          },
+          "allowedFilters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterInfo"
+            },
+            "description": "The set of fields that can be used to filter this specific event type for webhook delivery. Different event types may support different filter paths."
           }
         }
       },
@@ -1015,6 +1022,31 @@
             }
           }
         }
+      },
+      "FilterInfo": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "example": "data.status",
+            "description": "The field name or path that can be used as a filter."
+          },
+          "allowedValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "success",
+              "fail"
+            ],
+            "description": "Optional allowed values for this filter path. If omitted, the path is treated as free-form and clients are responsible for valid usage."
+          }
+        },
+        "description": "Describes a single field that can be used as a filter."
       },
       "Link": {
         "required": [

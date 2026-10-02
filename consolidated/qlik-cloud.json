@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.65",
+    "version": "1.0.66",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -1544,6 +1544,16 @@
               }
             },
             "description": "Invalid referenced object ID (see detailed error message)."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Link was created but registering it on the selection Analytics Application failed. Retrying is safe."
           }
         },
         "parameters": [
@@ -1555,6 +1565,16 @@
             },
             "required": false,
             "description": "Determines whether master charts of the template Analytics Application are included in the response."
+          },
+          {
+            "in": "query",
+            "name": "registerOnSelectionApp",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "description": "When true, ODAG also creates a generic object on the selection Analytics Application referencing the new link (`qType: odagapplink`, or `dynamicappview` for dynamic-view links), so the link shows up in the app's list of links. Idempotent on retry; must not be combined with a client-side registration of the same link."
           }
         ],
         "description": "Creates a new link that enables ODAG navigation from a designated selection Analytics Application to a generated Analytics Application that is created by copying the designated template Analytics Application, injecting values for bind variables harvested from the selection Analytics Application and dynamically loaded with data using those bindings. The Bindings will be initialized by searching the load script of the template Analytics Application for patterns of the form `$(od_FIELDNAME)[M-N]` where `FIELDNAME` is the name of a field in the model of the selection Analytics Application and the optional pattern `[M-N]` identifies the lower bound `M` and the upper bound `N` for the number of values for that field which must be in the active selection state of the selection Analytics Application for binding to occur.  The active selection state defaults to `selected` (i.e. green) unless the `od` prefix is immediately followed by some combination of the letters `s`, `o`, or `x`, in that order, specifically designating the `selected`, `optional` (i.e. white) and/or `excluded` (i.e. gray) groups of values to be harvested from the selection Analytics Application's selection state. The bindings in the `bindings` array in the request payload override the properties of the corresponding field bindings found in the script of the template Analytics Application.",
@@ -88334,6 +88354,10 @@
             "type": "string",
             "description": "The version of the license definition, used to track whether changes have propagated. Typically a content hash; its exact form depends on the origin."
           },
+          "validTime": {
+            "type": "string",
+            "description": "An ISO 8601 timestamp interval representing the same validity period as \"valid\", but with second precision instead of day precision."
+          },
           "allotments": {
             "type": "array",
             "items": {
@@ -102733,6 +102757,13 @@
           "description": {
             "type": "string",
             "description": "Description of the event type."
+          },
+          "allowedFilters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterInfo"
+            },
+            "description": "The set of fields that can be used to filter this specific event type for webhook delivery. Different event types may support different filter paths."
           }
         }
       },
@@ -102746,6 +102777,31 @@
             }
           }
         }
+      },
+      "FilterInfo": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "example": "data.status",
+            "description": "The field name or path that can be used as a filter."
+          },
+          "allowedValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "success",
+              "fail"
+            ],
+            "description": "Optional allowed values for this filter path. If omitted, the path is treated as free-form and clients are responsible for valid usage."
+          }
+        },
+        "description": "Describes a single field that can be used as a filter."
       },
       "WebhookBase": {
         "type": "object",

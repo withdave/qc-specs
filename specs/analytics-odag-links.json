@@ -133,6 +133,16 @@
               }
             },
             "description": "Invalid referenced object ID (see detailed error message)."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorV2"
+                }
+              }
+            },
+            "description": "Link was created but registering it on the selection Analytics Application failed. Retrying is safe."
           }
         },
         "parameters": [
@@ -144,6 +154,16 @@
             },
             "required": false,
             "description": "Determines whether master charts of the template Analytics Application are included in the response."
+          },
+          {
+            "in": "query",
+            "name": "registerOnSelectionApp",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "description": "When true, ODAG also creates a generic object on the selection Analytics Application referencing the new link (`qType: odagapplink`, or `dynamicappview` for dynamic-view links), so the link shows up in the app's list of links. Idempotent on retry; must not be combined with a client-side registration of the same link."
           }
         ],
         "description": "Creates a new link that enables ODAG navigation from a designated selection Analytics Application to a generated Analytics Application that is created by copying the designated template Analytics Application, injecting values for bind variables harvested from the selection Analytics Application and dynamically loaded with data using those bindings. The Bindings will be initialized by searching the load script of the template Analytics Application for patterns of the form `$(od_FIELDNAME)[M-N]` where `FIELDNAME` is the name of a field in the model of the selection Analytics Application and the optional pattern `[M-N]` identifies the lower bound `M` and the upper bound `N` for the number of values for that field which must be in the active selection state of the selection Analytics Application for binding to occur.  The active selection state defaults to `selected` (i.e. green) unless the `od` prefix is immediately followed by some combination of the letters `s`, `o`, or `x`, in that order, specifically designating the `selected`, `optional` (i.e. white) and/or `excluded` (i.e. gray) groups of values to be harvested from the selection Analytics Application's selection state. The bindings in the `bindings` array in the request payload override the properties of the corresponding field bindings found in the script of the template Analytics Application.",
