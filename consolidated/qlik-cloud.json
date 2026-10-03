@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.66",
+    "version": "1.0.67",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -24072,6 +24072,99 @@
         }
       }
     },
+    "/api/data-governance/data-qualities/fields-structures": {
+      "put": {
+        "tags": [
+          "data-quality"
+        ],
+        "summary": "Assign types to fields",
+        "responses": {
+          "204": {
+            "description": "The requested field types were assigned successfully. The response body is empty."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The dataset's field structure, or a referenced semantic type, was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Assigns a standard or semantic type to one or more fields in a dataset. This is a partial update:\nonly the fields included in the request are modified; any field not included in the request keeps\nits current assigned structure unchanged.\n",
+        "operationId": "updateFieldsStructures",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignTypeListRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "The `datasetId` of the target dataset and the list of fields to update, each with the standard or\nsemantic type to assign. Only the fields present in this list are affected.\n"
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/data-governance/data-qualities/global-results": {
       "get": {
         "tags": [
@@ -38872,17 +38965,6 @@
               }
             },
             "description": "The resource does not exist."
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errorResponseCopy",
-                  "x-qlik-merge-conflict": true
-                }
-              }
-            },
-            "description": "The data connection credentials are missing, expired, or no longer valid and must be reauthenticated."
           }
         },
         "parameters": [
@@ -77899,6 +77981,42 @@
         },
         "description": "Aggregated metrics for the field."
       },
+      "AssignTypeListRequest": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "fields"
+        ],
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignTypeRequest"
+            },
+            "description": "List of fields to update with their assigned types."
+          },
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          }
+        }
+      },
+      "AssignTypeRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "customer_id",
+            "description": "The name of the field."
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldInformation"
+          }
+        }
+      },
       "BatchComputationAggregatedStatus": {
         "enum": [
           "IN_PROGRESS",
@@ -87150,56 +87268,6 @@
         "example": "parse_failed",
         "description": "Stable, machine-readable error category for an indexing failure, shared across services (worker, indexer, assistants) and the UI so failures can be mapped to friendly messages without brittle string matching."
       },
-      "indexingProgress": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "enum": [
-              "notStarted",
-              "inProgress",
-              "completed",
-              "completedWithError",
-              "cancelled"
-            ],
-            "type": "string",
-            "example": "inProgress",
-            "description": "Aggregate indexing status for the knowledgebase."
-          },
-          "syncId": {
-            "type": "string",
-            "format": "uuid",
-            "example": "f256b3e4-03e0-4f74-ae46-a4d43882ee5d",
-            "description": "Identifier of the sync currently driving this progress."
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2021-10-02T14:20:50.52Z",
-            "description": "When this progress snapshot was last updated."
-          },
-          "filesTotal": {
-            "type": "integer",
-            "example": 100,
-            "description": "Total number of files to index in the current sync."
-          },
-          "filesFailed": {
-            "type": "integer",
-            "example": 2,
-            "description": "Number of files that failed to index."
-          },
-          "filesProcessed": {
-            "type": "integer",
-            "example": 45,
-            "description": "Number of files processed so far."
-          },
-          "overallPercent": {
-            "type": "integer",
-            "example": 45,
-            "description": "Aggregate indexing progress across the knowledgebase, 0-100."
-          }
-        },
-        "description": "Aggregate indexing progress for the knowledgebase across the current sync."
-      },
       "knowledgeBase": {
         "allOf": [
           {
@@ -87226,9 +87294,6 @@
                 "items": {
                   "$ref": "#/components/schemas/dataSource"
                 }
-              },
-              "indexingProgress": {
-                "$ref": "#/components/schemas/indexingProgress"
               }
             }
           }
