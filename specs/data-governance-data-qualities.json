@@ -406,6 +406,99 @@
         }
       }
     },
+    "/api/data-governance/data-qualities/fields-structures": {
+      "put": {
+        "tags": [
+          "data-quality"
+        ],
+        "summary": "Assign types to fields",
+        "responses": {
+          "204": {
+            "description": "The requested field types were assigned successfully. The response body is empty."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The dataset's field structure, or a referenced semantic type, was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "description": "Assigns a standard or semantic type to one or more fields in a dataset. This is a partial update:\nonly the fields included in the request are modified; any field not included in the request keeps\nits current assigned structure unchanged.\n",
+        "operationId": "updateFieldsStructures",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignTypeListRequest"
+              }
+            }
+          },
+          "required": true,
+          "description": "The `datasetId` of the target dataset and the list of fields to update, each with the standard or\nsemantic type to assign. Only the fields present in this list are affected.\n"
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/data-governance/data-qualities/global-results": {
       "get": {
         "tags": [
@@ -653,6 +746,42 @@
           }
         },
         "description": "Aggregated metrics for the field."
+      },
+      "AssignTypeListRequest": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "fields"
+        ],
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignTypeRequest"
+            },
+            "description": "List of fields to update with their assigned types."
+          },
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          }
+        }
+      },
+      "AssignTypeRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "customer_id",
+            "description": "The name of the field."
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldInformation"
+          }
+        }
       },
       "BatchComputationAggregatedStatus": {
         "enum": [
