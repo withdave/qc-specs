@@ -93,9 +93,9 @@
         ],
         "description": "Retrieves a list of automation connectors.",
         "operationId": "getAutomationConnectors",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",

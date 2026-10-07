@@ -154,9 +154,9 @@
         ],
         "description": "Finds and returns the tasks that the user has access to.",
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -220,6 +220,16 @@
             },
             "description": "Not Found."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The reload-tasks API is deprecated and will be removed in a future release. Please refer to the documentation for alternative approaches."
+          },
           "500": {
             "content": {
               "application/json": {
@@ -265,9 +275,9 @@
           "description": "Request body specifying the task parameters."
         },
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -386,9 +396,9 @@
         ],
         "description": "Finds and returns a task.",
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks/{id}` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks/{id}` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -452,6 +462,16 @@
             },
             "description": "Not Found."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "the task cannot be updated as it has already been migrated to Enterprise-Scheduling."
+          },
           "500": {
             "content": {
               "application/json": {
@@ -506,9 +526,9 @@
           "description": "Request body specifying the task parameters."
         },
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks/{id}` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks/{id}` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -565,6 +585,16 @@
             },
             "description": "Not Found."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "the task cannot be updated as it has already been migrated to Enterprise-Scheduling."
+          },
           "500": {
             "content": {
               "application/json": {
@@ -598,9 +628,9 @@
         ],
         "description": "Deletes a task",
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks/{id}` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks/{id}` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -667,7 +697,9 @@
           "href": {
             "type": "string",
             "format": "uri",
-            "example": "http://example.com"
+            "example": "http://example.com",
+            "readOnly": true,
+            "description": "href link to the resource."
           }
         }
       },
@@ -715,21 +747,7 @@
       "PutTaskBody": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/TaskBase"
-          },
-          {
-            "properties": {
-              "state": {
-                "enum": [
-                  "Enabled",
-                  "Disabled",
-                  "Completed"
-                ],
-                "type": "string",
-                "example": "Disabled",
-                "description": "Toggle for enabling and disabling the reload task"
-              }
-            }
+            "$ref": "#/components/schemas/Task"
           }
         ]
       },
@@ -764,13 +782,27 @@
               "id": {
                 "type": "string",
                 "example": "5be59decca62aa00097268a4",
+                "readOnly": true,
                 "description": "The ID of the task."
               },
               "log": {
                 "type": "string",
                 "example": "Scheduled reload has been disabled since exceeded limit of 5 consecutive reload failures. Please fix error and re-enable schedule.",
+                "readOnly": true,
                 "description": "The reason why the task was disabled.",
                 "x-qlik-deprecated": true
+              },
+              "appId": {
+                "type": "string",
+                "example": "116dbfae-7fb9-4983-8e23-5ccd8c508722",
+                "readOnly": true,
+                "description": "The ID of the app."
+              },
+              "jobId": {
+                "type": "string",
+                "example": "5be59decca62aa00097268a5",
+                "readOnly": true,
+                "description": "The ID of the scheduler job associated with the task."
               },
               "links": {
                 "$ref": "#/components/schemas/SelfLink"
@@ -788,26 +820,31 @@
               "userId": {
                 "type": "string",
                 "example": "FyPG6xWp6prDU6BXQ3g7LY9gWR_YRkkx",
+                "readOnly": true,
                 "description": "The ID of the user who owns the task."
               },
               "spaceId": {
                 "type": "string",
                 "example": "602c2c2be2be220002a22a22",
+                "readOnly": true,
                 "description": "The space ID of the application"
               },
               "migrated": {
                 "type": "boolean",
                 "default": false,
+                "readOnly": true,
                 "description": "A flag indicating whether the task has been migrated to the new scheduling service."
               },
               "tenantId": {
                 "type": "string",
                 "example": "efSCcpNYuayTysONkUcE3F80zYQ_LV9w",
+                "readOnly": true,
                 "description": "The ID of the tenant who owns the task."
               },
               "fortressId": {
                 "type": "string",
                 "example": "5c5b097116d25a0001a48b06",
+                "readOnly": true,
                 "description": "The fortress ID of the application",
                 "x-qlik-deprecated": true
               },
@@ -820,16 +857,19 @@
                 ],
                 "type": "string",
                 "example": "CONSECUTIVE-FAILURES",
+                "readOnly": true,
                 "description": "The reason why the task was disabled."
               },
               "lastExecutionTime": {
                 "type": "string",
                 "example": "2022-09-20T17:17:00Z",
+                "readOnly": true,
                 "description": "The last time the task executed."
               },
               "nextExecutionTime": {
                 "type": "string",
                 "example": "2022-09-20T17:17:00Z",
+                "readOnly": true,
                 "description": "The next time the task will execute."
               }
             }

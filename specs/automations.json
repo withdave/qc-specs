@@ -124,9 +124,9 @@
         ],
         "description": "Retrieves a list of the automations that the requesting user has access to.",
         "operationId": "getAutomations",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -183,9 +183,9 @@
           "required": true,
           "description": "Automation object to create"
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -248,9 +248,9 @@
         ],
         "description": "Retrieves the full definition of an automation. The requesting user must be the owner of the automation and either be assigned one of the roles: `AutomationsCreator`, `TenantAdmin` or have at least one of the following scopes (depending on whether the automation is in a private or shared space): `automations`, `automations.private` or `automations.shared`.",
         "operationId": "getAutomation",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -322,9 +322,9 @@
           "required": true,
           "description": "Automation object to update"
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -375,9 +375,9 @@
         ],
         "description": "Deletes an automation. The requesting user must meet at least one of the following conditions:\n- be the owner of the automation\n- be assigned one of the following roles: `AnalyticsAdmin`, `TenantAdmin`\n- have at least one of the following scopes: `admin.automations`, `admin.automations:strict`, `automations.private`, or `automations.shared`",
         "operationId": "deleteAutomation",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -454,9 +454,9 @@
           },
           "required": true
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -531,9 +531,9 @@
             }
           }
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -623,9 +623,9 @@
           },
           "required": true
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -681,9 +681,9 @@
         ],
         "description": "Disables an automation so that it cannot be run. To disable an automation, the requesting user must meet at least one of the following conditions:\n- be the owner of the automation\n- be assigned one of the following roles: `TenantAdmin`, `AnalyticsAdmin`\n- have at least one of the following scopes: `admin.automations`, `admin.automations:strict`, `automations.private`, or `automations.shared`",
         "operationId": "disableAutomation",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -739,9 +739,9 @@
         ],
         "description": "Enables an automation so that it can be run. To enable an automation, the requesting user must meet at least one of the following conditions:\n- be the owner of the automation\n- be assigned one of the following roles: `AnalyticsAdmin`, `TenantAdmin`\n- have at least one of the following scopes: `admin.automations`, `admin.automations:strict`, `automations.private`, or `automations.shared`",
         "operationId": "enableAutomation",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -817,9 +817,9 @@
           },
           "required": true
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -938,9 +938,9 @@
         ],
         "description": "Retrieves a list of runs for a specific automation. The requesting user must be the owner of the automation, or be assigned the one of roles: `TenantAdmin`, `AnalyticsAdmin`. Alternatively, the user must have at least one of the following scopes: `admin.automation-runs`, `automation-runs.private`, or `automation-runs.shared`.",
         "operationId": "getRuns",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -1012,9 +1012,9 @@
           "required": true,
           "description": "Run object to create"
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -1087,9 +1087,9 @@
         ],
         "description": "Retrieves a specific run for an automation. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
         "operationId": "getRun",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -1168,9 +1168,9 @@
         ],
         "description": "Retrieves the URL for the debug log of a specific automation run. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
         "operationId": "exportRun",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -1236,9 +1236,9 @@
         ],
         "description": "Retries a specific run by creating a new run using the same inputs. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
         "operationId": "retryRun",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -1304,9 +1304,9 @@
         ],
         "description": "Forcefully stops an automation run immediately. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
         "operationId": "stopRun",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -1393,9 +1393,9 @@
         ],
         "description": "Retrieves paginated usage metrics for automations. The requesting user must be assigned the `TenantAdmin` or `AnalyticsAdmin` role.",
         "operationId": "getUsageMetrics",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
