@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.67",
+    "version": "1.0.68",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -21,6 +21,236 @@
     }
   ],
   "paths": {
+    "/api/alerting/sharing-tasks/{taskId}/task-executions": {
+      "get": {
+        "tags": [
+          "sharing task-executions"
+        ],
+        "summary": "Lists all sharing-task executions, excluding all inProgress executions.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskExecutionsGetResponse"
+                }
+              }
+            },
+            "description": "The list of task executions that has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The task id."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "status eq 'successful'"
+            },
+            "required": false,
+            "description": "The filter for finding entries."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of entries to return."
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            },
+            "required": false,
+            "description": "The number of elements elements to skip for pagination."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the page of data."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "status",
+                  "-status",
+                  "+status",
+                  "startedAt",
+                  "-startedAt",
+                  "+startedAt"
+                ],
+                "type": "string"
+              }
+            },
+            "example": "-startedAt,status",
+            "required": false,
+            "description": "Sort the returned result set by the specified field"
+          }
+        ],
+        "operationId": "getSharingTaskExecutions",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/alerting/sharing-tasks/{taskId}/task-executions/{taskExecutionId}": {
+      "get": {
+        "tags": [
+          "sharing task-executions"
+        ],
+        "summary": "Get a sharing-task execution.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SharingTaskExecution"
+                }
+              }
+            },
+            "description": "The TaskExecution has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskExecutionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The taskExecution ID."
+          },
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The sharing task ID."
+          }
+        ],
+        "operationId": "sharingTaskExecutionsIDGet",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
     "/api/analytics/apps/{appId}/actions/restore": {
       "post": {
         "summary": "Restore an application",
@@ -10289,9 +10519,9 @@
         ],
         "description": "Retrieves a list of automation connections the requesting user has access to.",
         "operationId": "getAutomationConnections",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -10348,9 +10578,9 @@
           "required": true,
           "description": "The automation object to create."
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -10413,9 +10643,9 @@
         ],
         "description": "Returns details about the specified automation connection.",
         "operationId": "getAutomationConnection",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -10487,9 +10717,9 @@
           "required": true,
           "description": "The automation connection object to update."
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -10553,9 +10783,9 @@
         ],
         "description": "Deletes the specified automation connection.",
         "operationId": "deleteAutomationConnection",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -10622,9 +10852,9 @@
           "required": true,
           "description": "The new owner of the automation connection."
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -10691,9 +10921,9 @@
           "required": true,
           "description": "The new space of the automation connection."
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -10756,9 +10986,9 @@
         ],
         "description": "Tries to validate and checks the connection status of an automation connection.",
         "operationId": "checkAutomationConnection",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -10860,9 +11090,9 @@
         ],
         "description": "Retrieves a list of automation connectors.",
         "operationId": "getAutomationConnectors",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -10995,9 +11225,9 @@
         ],
         "description": "Retrieves a list of the automations that the requesting user has access to.",
         "operationId": "getAutomations",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11054,9 +11284,9 @@
           "required": true,
           "description": "Automation object to create"
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11119,9 +11349,9 @@
         ],
         "description": "Retrieves the full definition of an automation. The requesting user must be the owner of the automation and either be assigned one of the roles: `AutomationsCreator`, `TenantAdmin` or have at least one of the following scopes (depending on whether the automation is in a private or shared space): `automations`, `automations.private` or `automations.shared`.",
         "operationId": "getAutomation",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11193,9 +11423,9 @@
           "required": true,
           "description": "Automation object to update"
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11246,9 +11476,9 @@
         ],
         "description": "Deletes an automation. The requesting user must meet at least one of the following conditions:\n- be the owner of the automation\n- be assigned one of the following roles: `AnalyticsAdmin`, `TenantAdmin`\n- have at least one of the following scopes: `admin.automations`, `admin.automations:strict`, `automations.private`, or `automations.shared`",
         "operationId": "deleteAutomation",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11325,9 +11555,9 @@
           },
           "required": true
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11402,9 +11632,9 @@
             }
           }
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11494,9 +11724,9 @@
           },
           "required": true
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11552,9 +11782,9 @@
         ],
         "description": "Disables an automation so that it cannot be run. To disable an automation, the requesting user must meet at least one of the following conditions:\n- be the owner of the automation\n- be assigned one of the following roles: `TenantAdmin`, `AnalyticsAdmin`\n- have at least one of the following scopes: `admin.automations`, `admin.automations:strict`, `automations.private`, or `automations.shared`",
         "operationId": "disableAutomation",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11610,9 +11840,9 @@
         ],
         "description": "Enables an automation so that it can be run. To enable an automation, the requesting user must meet at least one of the following conditions:\n- be the owner of the automation\n- be assigned one of the following roles: `AnalyticsAdmin`, `TenantAdmin`\n- have at least one of the following scopes: `admin.automations`, `admin.automations:strict`, `automations.private`, or `automations.shared`",
         "operationId": "enableAutomation",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11688,9 +11918,9 @@
           },
           "required": true
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11809,9 +12039,9 @@
         ],
         "description": "Retrieves a list of runs for a specific automation. The requesting user must be the owner of the automation, or be assigned the one of roles: `TenantAdmin`, `AnalyticsAdmin`. Alternatively, the user must have at least one of the following scopes: `admin.automation-runs`, `automation-runs.private`, or `automation-runs.shared`.",
         "operationId": "getRuns",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11883,9 +12113,9 @@
           "required": true,
           "description": "Run object to create"
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -11958,9 +12188,9 @@
         ],
         "description": "Retrieves a specific run for an automation. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
         "operationId": "getRun",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -12039,9 +12269,9 @@
         ],
         "description": "Retrieves the URL for the debug log of a specific automation run. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
         "operationId": "exportRun",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -12107,9 +12337,9 @@
         ],
         "description": "Retries a specific run by creating a new run using the same inputs. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
         "operationId": "retryRun",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -12175,9 +12405,9 @@
         ],
         "description": "Forcefully stops an automation run immediately. Depending on the space the automation belongs to, the requesting user must meet the following requirement:\n- Private space: be the owner of the automation and have the `automations.private` scope\n- Shared space: be editor or operator in shared space and have `automations.shared` scope.",
         "operationId": "stopRun",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -12264,9 +12494,9 @@
         ],
         "description": "Retrieves paginated usage metrics for automations. The requesting user must be assigned the `TenantAdmin` or `AnalyticsAdmin` role.",
         "operationId": "getUsageMetrics",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -46149,9 +46379,9 @@
         ],
         "description": "Finds and returns the tasks that the user has access to.",
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -46215,6 +46445,16 @@
             },
             "description": "Not Found."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The reload-tasks API is deprecated and will be removed in a future release. Please refer to the documentation for alternative approaches."
+          },
           "500": {
             "content": {
               "application/json": {
@@ -46260,9 +46500,9 @@
           "description": "Request body specifying the task parameters."
         },
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -46381,9 +46621,9 @@
         ],
         "description": "Finds and returns a task.",
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks/{id}` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks/{id}` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -46447,6 +46687,16 @@
             },
             "description": "Not Found."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "the task cannot be updated as it has already been migrated to Enterprise-Scheduling."
+          },
           "500": {
             "content": {
               "application/json": {
@@ -46501,9 +46751,9 @@
           "description": "Request body specifying the task parameters."
         },
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks/{id}` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks/{id}` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -46560,6 +46810,16 @@
             },
             "description": "Not Found."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "the task cannot be updated as it has already been migrated to Enterprise-Scheduling."
+          },
           "500": {
             "content": {
               "application/json": {
@@ -46593,9 +46853,9 @@
         ],
         "description": "Deletes a task",
         "x-qlik-deprecated": true,
-        "x-qlik-deprecated-sunset": "2026-09",
+        "x-qlik-deprecated-sunset": "2026-11",
         "x-qlik-deprecated-version": "2026-03",
-        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-09. Use the `/scheduling/tasks/{id}` endpoint instead.",
+        "x-qlik-deprecated-description": "This endpoint is deprecated and will be removed after 2026-11. Use the `/scheduling/tasks/{id}` endpoint instead.",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-tier": {
@@ -61734,6 +61994,307 @@
   },
   "components": {
     "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The unique code for the error"
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of what went wrong"
+          },
+          "detail": {
+            "type": "string",
+            "description": "May be used to provide additional details"
+          }
+        }
+      },
+      "Error_meta": {
+        "type": "object",
+        "properties": {
+          "httpCode": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "HTTP error code."
+          }
+        }
+      },
+      "Errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        },
+        "description": "A representation of the errors encountered from the HTTP request."
+      },
+      "ListLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Self"
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items?limit=12",
+            "description": "URL to particular set of elements"
+          },
+          "type": {
+            "enum": [
+              "prev",
+              "next"
+            ],
+            "type": "string",
+            "example": "next",
+            "description": "Page type, can be next or prev"
+          },
+          "token": {
+            "type": "string",
+            "example": "JwAAAAJfaWQAGQAAADVjZjUwM2NjMjVkYzlhMTM1MzYwZTVjZAAA",
+            "description": "Page unique token"
+          }
+        }
+      },
+      "Self": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items/5da5825325dc9a0dd0260af9"
+          }
+        },
+        "description": "Object with Href to a particular element or set of elements"
+      },
+      "SharingTaskExecution": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The task execution ID."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharingTaskExecutionError"
+            },
+            "description": "Task Execution errors"
+          },
+          "status": {
+            "type": "string",
+            "description": "Task execution status",
+            "x-qlik-filterable": true
+          },
+          "eventId": {
+            "type": "string",
+            "description": "The event ID"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant ID"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The creator of the task, represented by user ID",
+            "x-qlik-filterable": true
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "The start timestamp",
+            "x-qlik-filterable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The update timestamp"
+          },
+          "finishedAt": {
+            "type": "string",
+            "description": "The finish timestamp",
+            "x-qlik-filterable": true
+          },
+          "triggerType": {
+            "enum": [
+              "manual",
+              "onSchedule",
+              "onReload"
+            ],
+            "type": "string",
+            "description": "The type of trigger.",
+            "x-qlik-filterable": true
+          },
+          "sharingTaskId": {
+            "type": "string",
+            "description": "The sharing task ID"
+          },
+          "eventTimestamp": {
+            "type": "string",
+            "description": "The event timestamp"
+          },
+          "recipientsCount": {
+            "type": "integer",
+            "description": "The number of recipients.",
+            "x-qlik-filterable": true
+          },
+          "templateMetadata": {
+            "type": "object",
+            "description": "A map of template metadata, where the key is the task template ID.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/TemplateMetadata"
+            }
+          },
+          "failedReportCount": {
+            "type": "integer",
+            "description": "The number of failed reports.",
+            "x-qlik-filterable": true
+          },
+          "transportChannels": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "email",
+                "sharepoint"
+              ],
+              "type": "string"
+            },
+            "example": [
+              "email",
+              "sharepoint"
+            ],
+            "description": "A list of transport channels."
+          },
+          "successReportCount": {
+            "type": "integer",
+            "description": "The number of successful reports.",
+            "x-qlik-filterable": true
+          },
+          "recurrenceFrequency": {
+            "enum": [
+              "SECONDLY",
+              "MINUTELY",
+              "HOURLY",
+              "DAILY",
+              "WEEKLY",
+              "MONTHLY",
+              "YEARLY"
+            ],
+            "type": "string",
+            "description": "The 'FREQ' component of the RRULE at execution time, empty when triggered by a non-scheduled execution"
+          },
+          "cancelledReportCount": {
+            "type": "integer",
+            "description": "The number of cancelled reports.",
+            "x-qlik-filterable": true
+          },
+          "reportOnSharePointCount": {
+            "type": "integer",
+            "description": "The number of reports on SharePoint."
+          }
+        }
+      },
+      "SharingTaskExecutionError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the error."
+          },
+          "detail": {
+            "type": "string",
+            "description": "The details about the error."
+          }
+        }
+      },
+      "StandardListResponseProps": {
+        "type": "object",
+        "required": [
+          "currentPageCount",
+          "totalCount"
+        ],
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "description": "total count of entries in the collection as a whole"
+          },
+          "currentPageCount": {
+            "type": "integer",
+            "description": "count of entries on the currently shown page"
+          }
+        },
+        "description": "properties that should be added to every list response"
+      },
+      "TaskExecutionsGetResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StandardListResponseProps"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SharingTaskExecution"
+                },
+                "description": "List of task executions"
+              },
+              "links": {
+                "$ref": "#/components/schemas/ListLinks"
+              }
+            }
+          }
+        ]
+      },
+      "TemplateMetadata": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of template"
+          },
+          "type": {
+            "type": "string",
+            "description": "The template type."
+          },
+          "fileName": {
+            "type": "string",
+            "description": "fileName to be used when generating the report."
+          },
+          "cycleFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The fields used for report cycles."
+          },
+          "outputFormat": {
+            "type": "string",
+            "description": "The output format of the template"
+          }
+        }
+      },
       "classification": {
         "allOf": [
           {
@@ -63184,27 +63745,6 @@
           }
         }
       },
-      "Error": {
-        "type": "object",
-        "required": [
-          "code",
-          "title"
-        ],
-        "properties": {
-          "code": {
-            "type": "string",
-            "description": "The unique code for the error"
-          },
-          "title": {
-            "type": "string",
-            "description": "A summary of what went wrong"
-          },
-          "detail": {
-            "type": "string",
-            "description": "May be used to provide additional details"
-          }
-        }
-      },
       "GetChangesData": {
         "type": "object",
         "properties": {
@@ -63703,18 +64243,6 @@
         "type": "string",
         "example": "general",
         "description": "Condition evaluation type"
-      },
-      "Errors": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        },
-        "description": "A representation of the errors encountered from the HTTP request."
       },
       "FormattedInAppMetricDefinition": {
         "type": "object",
@@ -69750,20 +70278,6 @@
           }
         }
       },
-      "ListLinks": {
-        "type": "object",
-        "properties": {
-          "next": {
-            "$ref": "#/components/schemas/Page"
-          },
-          "prev": {
-            "$ref": "#/components/schemas/Page"
-          },
-          "self": {
-            "$ref": "#/components/schemas/Self"
-          }
-        }
-      },
       "AutomationConnectionChangeOwnerObject": {
         "type": "object",
         "properties": {
@@ -73583,58 +74097,6 @@
           }
         ]
       },
-      "Page": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string",
-            "example": "http://localhost:8787/v1/items?limit=12",
-            "description": "URL to particular set of elements"
-          },
-          "type": {
-            "enum": [
-              "prev",
-              "next"
-            ],
-            "type": "string",
-            "example": "next",
-            "description": "Page type, can be next or prev"
-          },
-          "token": {
-            "type": "string",
-            "example": "JwAAAAJfaWQAGQAAADVjZjUwM2NjMjVkYzlhMTM1MzYwZTVjZAAA",
-            "description": "Page unique token"
-          }
-        }
-      },
-      "Self": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string",
-            "example": "http://localhost:8787/v1/items/5da5825325dc9a0dd0260af9"
-          }
-        },
-        "description": "Object with Href to a particular element or set of elements"
-      },
-      "StandardListResponseProps": {
-        "type": "object",
-        "required": [
-          "currentPageCount",
-          "totalCount"
-        ],
-        "properties": {
-          "totalCount": {
-            "type": "integer",
-            "description": "total count of entries in the collection as a whole"
-          },
-          "currentPageCount": {
-            "type": "integer",
-            "description": "count of entries on the currently shown page"
-          }
-        },
-        "description": "properties that should be added to every list response"
-      },
       "AuthSettingsJSONPatch": {
         "type": "object",
         "required": [
@@ -75118,16 +75580,6 @@
             "items": {
               "$ref": "#/components/schemas/AlertingTaskValidation"
             }
-          }
-        }
-      },
-      "Error_meta": {
-        "type": "object",
-        "properties": {
-          "httpCode": {
-            "type": "integer",
-            "readOnly": true,
-            "description": "HTTP error code."
           }
         }
       },
@@ -77384,7 +77836,8 @@
               "/semanticModel",
               "/semanticModel/relationships",
               "/semanticModel/measures",
-              "/semanticModel/dimensions"
+              "/semanticModel/dimensions",
+              "/semanticModel/tables"
             ],
             "type": "string"
           },
@@ -77397,6 +77850,9 @@
               },
               {
                 "$ref": "#/components/schemas/ArrayOfUniqueStrings"
+              },
+              {
+                "$ref": "#/components/schemas/ChangelogTableUpdate"
               },
               {
                 "type": "array",
@@ -77416,11 +77872,41 @@
             "enum": [
               "replace",
               "add",
-              "remove"
+              "remove",
+              "removedFromCatalog",
+              "update"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "`removedFromCatalog` is a removal applied by the system after a catalog event (dataset updated or\ndeleted), as opposed to `remove`, which is a removal deliberately performed by a user.\n`update` is a partial modification of an existing entity applied by the system after a catalog event\n(dataset schema updated). It is currently only used with the `/semanticModel/tables` path, where the\nvalue describes the fields added to and removed from a table.\n"
           }
         }
+      },
+      "ChangelogTableUpdate": {
+        "type": "object",
+        "required": [
+          "tableId"
+        ],
+        "properties": {
+          "tableId": {
+            "type": "string",
+            "description": "Identifier of the updated table."
+          },
+          "addedFieldIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Identifiers of the fields added to the table. Empty when no field was added."
+          },
+          "removedFieldIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Identifiers of the fields removed from the table. Empty when no field was removed."
+          }
+        },
+        "description": "Fields added to and removed from a semantic model table by a dataset schema change."
       },
       "ComputationResponse": {
         "type": "object",
@@ -94695,21 +95181,7 @@
       "PutTaskBody": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/TaskBase"
-          },
-          {
-            "properties": {
-              "state": {
-                "enum": [
-                  "Enabled",
-                  "Disabled",
-                  "Completed"
-                ],
-                "type": "string",
-                "example": "Disabled",
-                "description": "Toggle for enabling and disabling the reload task"
-              }
-            }
+            "$ref": "#/components/schemas/Task"
           }
         ]
       },

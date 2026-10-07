@@ -1,0 +1,573 @@
+{
+  "info": {
+    "title": "alerting/sharing-tasks",
+    "version": ""
+  },
+  "paths": {
+    "/api/alerting/sharing-tasks/{taskId}/task-executions": {
+      "get": {
+        "tags": [
+          "sharing task-executions"
+        ],
+        "summary": "Lists all sharing-task executions, excluding all inProgress executions.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskExecutionsGetResponse"
+                }
+              }
+            },
+            "description": "The list of task executions that has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The task id."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "status eq 'successful'"
+            },
+            "required": false,
+            "description": "The filter for finding entries."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "required": false,
+            "description": "The maximum number of entries to return."
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            },
+            "required": false,
+            "description": "The number of elements elements to skip for pagination."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The cursor to the page of data."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "status",
+                  "-status",
+                  "+status",
+                  "startedAt",
+                  "-startedAt",
+                  "+startedAt"
+                ],
+                "type": "string"
+              }
+            },
+            "example": "-startedAt,status",
+            "required": false,
+            "description": "Sort the returned result set by the specified field"
+          }
+        ],
+        "operationId": "getSharingTaskExecutions",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    },
+    "/api/alerting/sharing-tasks/{taskId}/task-executions/{taskExecutionId}": {
+      "get": {
+        "tags": [
+          "sharing task-executions"
+        ],
+        "summary": "Get a sharing-task execution.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SharingTaskExecution"
+                }
+              }
+            },
+            "description": "The TaskExecution has been successfully returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Bad request, malformed syntax or errors in parameters."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Resource does not exist."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Internal server error."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Error response."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "taskExecutionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The taskExecution ID."
+          },
+          {
+            "in": "path",
+            "name": "taskId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The sharing task ID."
+          }
+        ],
+        "operationId": "sharingTaskExecutionsIDGet",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error code specific to sharing service."
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Error_meta"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error title."
+          },
+          "detail": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Error cause."
+          }
+        }
+      },
+      "Error_meta": {
+        "type": "object",
+        "properties": {
+          "httpCode": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "HTTP error code."
+          }
+        }
+      },
+      "Errors": {
+        "type": "object",
+        "example": {
+          "errors": [
+            {
+              "code": "HTTP-123",
+              "title": "short error message",
+              "details": "detailed error message"
+            }
+          ],
+          "traceId": "7975401f3954aa47"
+        },
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ListLinks": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "prev": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Self"
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items?limit=12",
+            "description": "URL to particular set of elements"
+          },
+          "type": {
+            "enum": [
+              "prev",
+              "next"
+            ],
+            "type": "string",
+            "example": "next",
+            "description": "Page type, can be next or prev"
+          },
+          "token": {
+            "type": "string",
+            "example": "JwAAAAJfaWQAGQAAADVjZjUwM2NjMjVkYzlhMTM1MzYwZTVjZAAA",
+            "description": "Page unique token"
+          }
+        }
+      },
+      "Self": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://localhost:8787/v1/items/5da5825325dc9a0dd0260af9"
+          }
+        },
+        "description": "Object with Href to a particular element or set of elements"
+      },
+      "SharingTaskExecution": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The task execution ID."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharingTaskExecutionError"
+            },
+            "description": "Task Execution errors"
+          },
+          "status": {
+            "type": "string",
+            "description": "Task execution status",
+            "x-qlik-filterable": true
+          },
+          "eventId": {
+            "type": "string",
+            "description": "The event ID"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant ID"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The creator of the task, represented by user ID",
+            "x-qlik-filterable": true
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "The start timestamp",
+            "x-qlik-filterable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The update timestamp"
+          },
+          "finishedAt": {
+            "type": "string",
+            "description": "The finish timestamp",
+            "x-qlik-filterable": true
+          },
+          "triggerType": {
+            "enum": [
+              "manual",
+              "onSchedule",
+              "onReload"
+            ],
+            "type": "string",
+            "description": "The type of trigger.",
+            "x-qlik-filterable": true
+          },
+          "sharingTaskId": {
+            "type": "string",
+            "description": "The sharing task ID"
+          },
+          "eventTimestamp": {
+            "type": "string",
+            "description": "The event timestamp"
+          },
+          "recipientsCount": {
+            "type": "integer",
+            "description": "The number of recipients.",
+            "x-qlik-filterable": true
+          },
+          "templateMetadata": {
+            "type": "object",
+            "description": "A map of template metadata, where the key is the task template ID.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/TemplateMetadata"
+            }
+          },
+          "failedReportCount": {
+            "type": "integer",
+            "description": "The number of failed reports.",
+            "x-qlik-filterable": true
+          },
+          "transportChannels": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "email",
+                "sharepoint"
+              ],
+              "type": "string"
+            },
+            "example": [
+              "email",
+              "sharepoint"
+            ],
+            "description": "A list of transport channels."
+          },
+          "successReportCount": {
+            "type": "integer",
+            "description": "The number of successful reports.",
+            "x-qlik-filterable": true
+          },
+          "recurrenceFrequency": {
+            "enum": [
+              "SECONDLY",
+              "MINUTELY",
+              "HOURLY",
+              "DAILY",
+              "WEEKLY",
+              "MONTHLY",
+              "YEARLY"
+            ],
+            "type": "string",
+            "description": "The 'FREQ' component of the RRULE at execution time, empty when triggered by a non-scheduled execution"
+          },
+          "cancelledReportCount": {
+            "type": "integer",
+            "description": "The number of cancelled reports.",
+            "x-qlik-filterable": true
+          },
+          "reportOnSharePointCount": {
+            "type": "integer",
+            "description": "The number of reports on SharePoint."
+          }
+        }
+      },
+      "SharingTaskExecutionError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the error."
+          },
+          "detail": {
+            "type": "string",
+            "description": "The details about the error."
+          }
+        }
+      },
+      "StandardListResponseProps": {
+        "type": "object",
+        "required": [
+          "currentPageCount",
+          "totalCount"
+        ],
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "description": "total count of entries in the collection as a whole"
+          },
+          "currentPageCount": {
+            "type": "integer",
+            "description": "count of entries on the currently shown page"
+          }
+        },
+        "description": "properties that should be added to every list response"
+      },
+      "TaskExecutionsGetResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StandardListResponseProps"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SharingTaskExecution"
+                },
+                "description": "List of task executions"
+              },
+              "links": {
+                "$ref": "#/components/schemas/ListLinks"
+              }
+            }
+          }
+        ]
+      },
+      "TemplateMetadata": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of template"
+          },
+          "type": {
+            "type": "string",
+            "description": "The template type."
+          },
+          "fileName": {
+            "type": "string",
+            "description": "fileName to be used when generating the report."
+          },
+          "cycleFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The fields used for report cycles."
+          },
+          "outputFormat": {
+            "type": "string",
+            "description": "The output format of the template"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}

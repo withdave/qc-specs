@@ -109,9 +109,9 @@
         ],
         "description": "Retrieves a list of automation connections the requesting user has access to.",
         "operationId": "getAutomationConnections",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -168,9 +168,9 @@
           "required": true,
           "description": "The automation object to create."
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -233,9 +233,9 @@
         ],
         "description": "Returns details about the specified automation connection.",
         "operationId": "getAutomationConnection",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -307,9 +307,9 @@
           "required": true,
           "description": "The automation connection object to update."
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -373,9 +373,9 @@
         ],
         "description": "Deletes the specified automation connection.",
         "operationId": "deleteAutomationConnection",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -442,9 +442,9 @@
           "required": true,
           "description": "The new owner of the automation connection."
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -511,9 +511,9 @@
           "required": true,
           "description": "The new space of the automation connection."
         },
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",
@@ -576,9 +576,9 @@
         ],
         "description": "Tries to validate and checks the connection status of an automation connection.",
         "operationId": "checkAutomationConnection",
+        "x-qlik-deprecated": true,
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
-        "x-qlik-deprecated": false,
         "x-qlik-replaced-by": [
           {
             "namespace": "workflows",

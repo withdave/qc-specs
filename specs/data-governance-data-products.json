@@ -1294,7 +1294,8 @@
               "/semanticModel",
               "/semanticModel/relationships",
               "/semanticModel/measures",
-              "/semanticModel/dimensions"
+              "/semanticModel/dimensions",
+              "/semanticModel/tables"
             ],
             "type": "string"
           },
@@ -1307,6 +1308,9 @@
               },
               {
                 "$ref": "#/components/schemas/ArrayOfUniqueStrings"
+              },
+              {
+                "$ref": "#/components/schemas/ChangelogTableUpdate"
               },
               {
                 "type": "array",
@@ -1326,11 +1330,41 @@
             "enum": [
               "replace",
               "add",
-              "remove"
+              "remove",
+              "removedFromCatalog",
+              "update"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "`removedFromCatalog` is a removal applied by the system after a catalog event (dataset updated or\ndeleted), as opposed to `remove`, which is a removal deliberately performed by a user.\n`update` is a partial modification of an existing entity applied by the system after a catalog event\n(dataset schema updated). It is currently only used with the `/semanticModel/tables` path, where the\nvalue describes the fields added to and removed from a table.\n"
           }
         }
+      },
+      "ChangelogTableUpdate": {
+        "type": "object",
+        "required": [
+          "tableId"
+        ],
+        "properties": {
+          "tableId": {
+            "type": "string",
+            "description": "Identifier of the updated table."
+          },
+          "addedFieldIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Identifiers of the fields added to the table. Empty when no field was added."
+          },
+          "removedFieldIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Identifiers of the fields removed from the table. Empty when no field was removed."
+          }
+        },
+        "description": "Fields added to and removed from a semantic model table by a dataset schema change."
       },
       "ComputationResponse": {
         "type": "object",
