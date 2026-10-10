@@ -186,6 +186,16 @@
             },
             "description": "Space created."
           },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space Payload invalid."
+          },
           "401": {
             "content": {
               "application/json": {
@@ -434,6 +444,16 @@
               }
             },
             "description": "Space updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space Update Payload invalid."
           },
           "401": {
             "content": {
