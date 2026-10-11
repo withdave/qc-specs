@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.68",
+    "version": "1.0.69",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -26,7 +26,7 @@
         "tags": [
           "sharing task-executions"
         ],
-        "summary": "Lists all sharing-task executions, excluding all inProgress executions.",
+        "summary": "List sharing task executions",
         "responses": {
           "200": {
             "content": {
@@ -36,7 +36,7 @@
                 }
               }
             },
-            "description": "The list of task executions that has been successfully returned."
+            "description": "The task executions list has been successfully returned."
           },
           "400": {
             "content": {
@@ -87,7 +87,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The task id."
+            "description": "The sharing task identifier."
           },
           {
             "in": "query",
@@ -120,7 +120,7 @@
               "minimum": 0
             },
             "required": false,
-            "description": "The number of elements elements to skip for pagination."
+            "description": "The number of elements to skip for pagination."
           },
           {
             "in": "query",
@@ -153,6 +153,7 @@
             "description": "Sort the returned result set by the specified field"
           }
         ],
+        "description": "Returns the execution history of a sharing task. Executions that are in progress are not included.",
         "operationId": "getSharingTaskExecutions",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -168,7 +169,7 @@
         "tags": [
           "sharing task-executions"
         ],
-        "summary": "Get a sharing-task execution.",
+        "summary": "Get a sharing task execution by ID",
         "responses": {
           "200": {
             "content": {
@@ -178,7 +179,7 @@
                 }
               }
             },
-            "description": "The TaskExecution has been successfully returned."
+            "description": "The task execution has been successfully returned."
           },
           "400": {
             "content": {
@@ -229,7 +230,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The taskExecution ID."
+            "description": "The task execution identifier."
           },
           {
             "in": "path",
@@ -238,7 +239,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The sharing task ID."
+            "description": "The sharing task identifier."
           }
         ],
         "operationId": "sharingTaskExecutionsIDGet",
@@ -4565,7 +4566,7 @@
             }
           },
           "required": true,
-          "description": "New owner."
+          "description": "New owner of the object."
         },
         "x-qlik-access-control": [
           "update"
@@ -4955,7 +4956,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "Identifier of the app"
+            "description": "Identifier of the app."
           },
           {
             "in": "query",
@@ -4963,7 +4964,7 @@
             "schema": {
               "type": "boolean"
             },
-            "description": "Include metadata for reloads ran with SkipStore flag set to true. Default: false"
+            "description": "Include metadata for reloads ran with SkipStore flag set to true. Default: false."
           },
           {
             "in": "query",
@@ -4971,7 +4972,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Maximum number of records to return from this request. Default: 100"
+            "description": "Maximum number of records to return from this request. The default value is 100."
           },
           {
             "in": "query",
@@ -6740,7 +6741,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The import mode. In `new` mode (default), the source app will be imported as a new app.<div class=note>The `autoreplace` mode is an internal mode only and is not permitted for external use.</div>\n\nOne of:\n* NEW\n* AUTOREPLACE"
+            "description": "The import mode. In `new` mode (default), the source app is imported as a new app.<div class=note>The `autoreplace` mode is intended for internal use only and is not permitted for external use.</div>\n\nOne of:\n* NEW\n* AUTOREPLACE"
           },
           {
             "in": "query",
@@ -51882,6 +51883,16 @@
             },
             "description": "Space created."
           },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space Payload invalid."
+          },
           "401": {
             "content": {
               "application/json": {
@@ -52130,6 +52141,16 @@
               }
             },
             "description": "Space updated."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space Update Payload invalid."
           },
           "401": {
             "content": {
@@ -62097,38 +62118,38 @@
             "items": {
               "$ref": "#/components/schemas/SharingTaskExecutionError"
             },
-            "description": "Task Execution errors"
+            "description": "The errors that occurred during the task execution."
           },
           "status": {
             "type": "string",
-            "description": "Task execution status",
+            "description": "The status of the task execution.",
             "x-qlik-filterable": true
           },
           "eventId": {
             "type": "string",
-            "description": "The event ID"
+            "description": "The event ID."
           },
           "tenantId": {
             "type": "string",
-            "description": "Tenant ID"
+            "description": "The tenant ID."
           },
           "createdBy": {
             "type": "string",
-            "description": "The creator of the task, represented by user ID",
+            "description": "The creator of the task, represented by user ID.",
             "x-qlik-filterable": true
           },
           "startedAt": {
             "type": "string",
-            "description": "The start timestamp",
+            "description": "The start timestamp.",
             "x-qlik-filterable": true
           },
           "updatedAt": {
             "type": "string",
-            "description": "The update timestamp"
+            "description": "The update timestamp."
           },
           "finishedAt": {
             "type": "string",
-            "description": "The finish timestamp",
+            "description": "The finish timestamp.",
             "x-qlik-filterable": true
           },
           "triggerType": {
@@ -62143,11 +62164,11 @@
           },
           "sharingTaskId": {
             "type": "string",
-            "description": "The sharing task ID"
+            "description": "The sharing task ID."
           },
           "eventTimestamp": {
             "type": "string",
-            "description": "The event timestamp"
+            "description": "The event timestamp."
           },
           "recipientsCount": {
             "type": "integer",
@@ -62197,7 +62218,7 @@
               "YEARLY"
             ],
             "type": "string",
-            "description": "The 'FREQ' component of the RRULE at execution time, empty when triggered by a non-scheduled execution"
+            "description": "The 'FREQ' component of the RRULE at execution time, empty when triggered by a non-scheduled execution."
           },
           "cancelledReportCount": {
             "type": "integer",
@@ -62258,7 +62279,7 @@
                 "items": {
                   "$ref": "#/components/schemas/SharingTaskExecution"
                 },
-                "description": "List of task executions"
+                "description": "The list of task executions."
               },
               "links": {
                 "$ref": "#/components/schemas/ListLinks"
@@ -62272,7 +62293,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of template"
+            "description": "The name of the template."
           },
           "type": {
             "type": "string",
@@ -62280,7 +62301,7 @@
           },
           "fileName": {
             "type": "string",
-            "description": "fileName to be used when generating the report."
+            "description": "The file name to use when generating the report."
           },
           "cycleFields": {
             "type": "array",
@@ -67471,10 +67492,10 @@
             "items": {
               "type": "string"
             },
-            "description": "Application object privileges.\nHints to the client what actions the user is allowed to perform.\nCould be any of:\n* read\n* create\n* update\n* delete\n* publish\n* exportdata\n* change_owner"
+            "description": "App object privileges.\nHints to the client regarding actions the user can perform.\nPossible values:\n* read\n* create\n* update\n* delete\n* publish\n* exportdata\n* change_owner"
           }
         },
-        "description": "Application object attributes and user privileges."
+        "description": "Attributes and user privileges for an app object."
       },
       "NxAttributes": {
         "type": "object",
@@ -67489,7 +67510,7 @@
           },
           "owner": {
             "type": "string",
-            "description": "Deprecated. Use the Users API to fetch user metadata.",
+            "description": "Deprecated: Use the Users API to fetch user metadata.",
             "x-qlik-deprecated": true
           },
           "usage": {
@@ -67555,14 +67576,14 @@
             "description": "True if the app is a Direct Query app, false if not"
           }
         },
-        "description": "App attributes. This structure can also contain extra user-defined attributes."
+        "description": "App attributes. This structure can include additional user-defined attributes."
       },
       "NxObjectAttributes": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "The object Id."
+            "description": "Identifier of the object."
           },
           "name": {
             "type": "string",
@@ -67570,11 +67591,11 @@
           },
           "ownerId": {
             "type": "string",
-            "description": "The object owner's Id."
+            "description": "Identifier of the object owner."
           },
           "approved": {
             "type": "boolean",
-            "description": "True if the object is approved."
+            "description": "When true, the object is approved."
           },
           "createdAt": {
             "type": "string",
@@ -67603,7 +67624,7 @@
             "description": "The date and time when the object was published, empty if unpublished."
           }
         },
-        "description": "App object attributes. This structure can also contain extra user-defined attributes."
+        "description": "App object attributes. This structure can include additional user-defined attributes."
       },
       "NxPatch": {
         "required": [
@@ -67751,7 +67772,7 @@
           "moveApp": {
             "type": "boolean",
             "default": false,
-            "description": "The original is moved instead of copied. The current published state of all objects is kept."
+            "description": "When true, the original is moved instead of copied, keeping the current published state of all objects. The default value is false."
           },
           "spaceId": {
             "type": "string",
@@ -67762,7 +67783,7 @@
           },
           "originAppId": {
             "type": "string",
-            "description": "If app is moved, originAppId needs to be provided."
+            "description": "Required when moving the app, specifying the identifier of the original app."
           }
         }
       },
@@ -67939,7 +67960,7 @@
             "type": "integer",
             "format": "int64",
             "default": -1,
-            "description": "If greater than or equal 0, defines max number of rows loaded from a data source."
+            "description": "If greater than or equal to 0, defines the maximum number of rows loaded from a data source."
           },
           "appDbHash": {
             "type": "string",
@@ -68258,7 +68279,7 @@
           },
           "versionMessage": {
             "type": "string",
-            "description": "Description of this script version"
+            "description": "Description of this script version."
           }
         }
       },
