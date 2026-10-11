@@ -9,7 +9,7 @@
         "tags": [
           "sharing task-executions"
         ],
-        "summary": "Lists all sharing-task executions, excluding all inProgress executions.",
+        "summary": "List sharing task executions",
         "responses": {
           "200": {
             "content": {
@@ -19,7 +19,7 @@
                 }
               }
             },
-            "description": "The list of task executions that has been successfully returned."
+            "description": "The task executions list has been successfully returned."
           },
           "400": {
             "content": {
@@ -70,7 +70,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The task id."
+            "description": "The sharing task identifier."
           },
           {
             "in": "query",
@@ -103,7 +103,7 @@
               "minimum": 0
             },
             "required": false,
-            "description": "The number of elements elements to skip for pagination."
+            "description": "The number of elements to skip for pagination."
           },
           {
             "in": "query",
@@ -136,6 +136,7 @@
             "description": "Sort the returned result set by the specified field"
           }
         ],
+        "description": "Returns the execution history of a sharing task. Executions that are in progress are not included.",
         "operationId": "getSharingTaskExecutions",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -151,7 +152,7 @@
         "tags": [
           "sharing task-executions"
         ],
-        "summary": "Get a sharing-task execution.",
+        "summary": "Get a sharing task execution by ID",
         "responses": {
           "200": {
             "content": {
@@ -161,7 +162,7 @@
                 }
               }
             },
-            "description": "The TaskExecution has been successfully returned."
+            "description": "The task execution has been successfully returned."
           },
           "400": {
             "content": {
@@ -212,7 +213,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The taskExecution ID."
+            "description": "The task execution identifier."
           },
           {
             "in": "path",
@@ -221,7 +222,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "The sharing task ID."
+            "description": "The sharing task identifier."
           }
         ],
         "operationId": "sharingTaskExecutionsIDGet",
@@ -355,38 +356,38 @@
             "items": {
               "$ref": "#/components/schemas/SharingTaskExecutionError"
             },
-            "description": "Task Execution errors"
+            "description": "The errors that occurred during the task execution."
           },
           "status": {
             "type": "string",
-            "description": "Task execution status",
+            "description": "The status of the task execution.",
             "x-qlik-filterable": true
           },
           "eventId": {
             "type": "string",
-            "description": "The event ID"
+            "description": "The event ID."
           },
           "tenantId": {
             "type": "string",
-            "description": "Tenant ID"
+            "description": "The tenant ID."
           },
           "createdBy": {
             "type": "string",
-            "description": "The creator of the task, represented by user ID",
+            "description": "The creator of the task, represented by user ID.",
             "x-qlik-filterable": true
           },
           "startedAt": {
             "type": "string",
-            "description": "The start timestamp",
+            "description": "The start timestamp.",
             "x-qlik-filterable": true
           },
           "updatedAt": {
             "type": "string",
-            "description": "The update timestamp"
+            "description": "The update timestamp."
           },
           "finishedAt": {
             "type": "string",
-            "description": "The finish timestamp",
+            "description": "The finish timestamp.",
             "x-qlik-filterable": true
           },
           "triggerType": {
@@ -401,11 +402,11 @@
           },
           "sharingTaskId": {
             "type": "string",
-            "description": "The sharing task ID"
+            "description": "The sharing task ID."
           },
           "eventTimestamp": {
             "type": "string",
-            "description": "The event timestamp"
+            "description": "The event timestamp."
           },
           "recipientsCount": {
             "type": "integer",
@@ -455,7 +456,7 @@
               "YEARLY"
             ],
             "type": "string",
-            "description": "The 'FREQ' component of the RRULE at execution time, empty when triggered by a non-scheduled execution"
+            "description": "The 'FREQ' component of the RRULE at execution time, empty when triggered by a non-scheduled execution."
           },
           "cancelledReportCount": {
             "type": "integer",
@@ -516,7 +517,7 @@
                 "items": {
                   "$ref": "#/components/schemas/SharingTaskExecution"
                 },
-                "description": "List of task executions"
+                "description": "The list of task executions."
               },
               "links": {
                 "$ref": "#/components/schemas/ListLinks"
@@ -530,7 +531,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of template"
+            "description": "The name of the template."
           },
           "type": {
             "type": "string",
@@ -538,7 +539,7 @@
           },
           "fileName": {
             "type": "string",
-            "description": "fileName to be used when generating the report."
+            "description": "The file name to use when generating the report."
           },
           "cycleFields": {
             "type": "array",
