@@ -2524,7 +2524,10 @@
           "interval": {
             "type": "integer",
             "example": 60,
-            "description": "Interval in seconds; must be a multiple of 60. Values are rounded to the nearest minute (≥30 seconds rounded up, otherwise down)."
+            "description": "Interval in seconds; must be a multiple of 60. Values are rounded to the nearest minute (≥30 seconds rounded up, otherwise down).",
+            "x-qlik-deprecated-version": "2026-11",
+            "x-qlik-deprecated-sunset": "2027-11",
+            "x-qlik-deprecated-description": "Scheduling is now managed through the recurrence field."
           },
           "timezone": {
             "type": "string",
@@ -2558,7 +2561,10 @@
           "interval": {
             "type": "integer",
             "example": 60,
-            "description": "Interval in seconds."
+            "description": "Interval in seconds.",
+            "x-qlik-deprecated-version": "2026-11",
+            "x-qlik-deprecated-sunset": "2027-11",
+            "x-qlik-deprecated-description": "Scheduling is now managed through the recurrence field."
           },
           "timezone": {
             "type": "string",
