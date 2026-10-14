@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.69",
+    "version": "1.0.70",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -16521,6 +16521,83 @@
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
+        }
+      }
+    },
+    "/api/connectivity/direct-access-agents/{agentId}/configurations": {
+      "get": {
+        "tags": [
+          "direct-access-agent-configuration"
+        ],
+        "summary": "Get agent configuration",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigurationResponseWithGatewayMetadata"
+                }
+              }
+            },
+            "description": "The dictionary of key/value pairs retrieved from the configuration file."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The requestor does not have the required permissions for the gateway's space."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Configuration file not found."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The agent ID"
+          },
+          {
+            "in": "query",
+            "name": "queryProperties",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Individual properties within the agent configuration"
+          }
+        ],
+        "description": "Retrieves the connector agent configuration from the specified agent. Requestor must be assigned the `TenantAdmin` role and needs to be either a Gateway's space owner or a member in the Gateway's space with `Can Consume Data` role. Available in Direct Access Gateway V1.7.2+.",
+        "operationId": "getConnectorAgentConfigAsync",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-replaces": [
+          {
+            "namespace": "",
+            "uniqueIdentifier": "GET:/v1/direct-access-agents/{agentId}/configurations"
+          }
+        ],
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
         }
       }
     },
@@ -51883,16 +51960,6 @@
             },
             "description": "Space created."
           },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Errors"
-                }
-              }
-            },
-            "description": "Space Payload invalid."
-          },
           "401": {
             "content": {
               "application/json": {
@@ -52141,16 +52208,6 @@
               }
             },
             "description": "Space updated."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Errors"
-                }
-              }
-            },
-            "description": "Space Update Payload invalid."
           },
           "401": {
             "content": {
@@ -71491,7 +71548,10 @@
           "interval": {
             "type": "integer",
             "example": 60,
-            "description": "Interval in seconds; must be a multiple of 60. Values are rounded to the nearest minute (≥30 seconds rounded up, otherwise down)."
+            "description": "Interval in seconds; must be a multiple of 60. Values are rounded to the nearest minute (≥30 seconds rounded up, otherwise down).",
+            "x-qlik-deprecated-version": "2026-11",
+            "x-qlik-deprecated-sunset": "2027-11",
+            "x-qlik-deprecated-description": "Scheduling is now managed through the recurrence field."
           },
           "timezone": {
             "type": "string",
@@ -71525,7 +71585,10 @@
           "interval": {
             "type": "integer",
             "example": 60,
-            "description": "Interval in seconds."
+            "description": "Interval in seconds.",
+            "x-qlik-deprecated-version": "2026-11",
+            "x-qlik-deprecated-sunset": "2027-11",
+            "x-qlik-deprecated-description": "Scheduling is now managed through the recurrence field."
           },
           "timezone": {
             "type": "string",
@@ -73498,6 +73561,221 @@
             "description": "Error cause."
           }
         }
+      },
+      "ConfigurationLineBase": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ConfigurationLineNumeric"
+          },
+          {
+            "$ref": "#/components/schemas/ConfigurationLineString"
+          }
+        ],
+        "additionalProperties": false
+      },
+      "ConfigurationLineNumeric": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "connector": {
+            "type": "string",
+            "nullable": true
+          },
+          "uiActions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Read",
+                "Write"
+              ],
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "apiActions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Read",
+                "Write"
+              ],
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "defaultValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "pendingValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "skipValidation": {
+            "type": "boolean"
+          },
+          "permittedRangeEnd": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pendingApplication": {
+            "type": "boolean"
+          },
+          "allowMultipleValues": {
+            "type": "boolean"
+          },
+          "applyWithoutRestart": {
+            "type": "boolean"
+          },
+          "permittedRangeStart": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigurationLineString": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "connector": {
+            "type": "string",
+            "nullable": true
+          },
+          "uiActions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Read",
+                "Write"
+              ],
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "apiActions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Read",
+                "Write"
+              ],
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "defaultValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "pendingValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "skipValidation": {
+            "type": "boolean"
+          },
+          "permittedValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "pendingApplication": {
+            "type": "boolean"
+          },
+          "allowMultipleValues": {
+            "type": "boolean"
+          },
+          "applyWithoutRestart": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigurationResponseWithGatewayMetadata": {
+        "type": "object",
+        "properties": {
+          "connectors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectorSettings"
+            },
+            "nullable": true
+          },
+          "environment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dcaasSettings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigurationLineBase"
+            },
+            "nullable": true
+          },
+          "productVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "connectorAgentSettings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigurationLineBase"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConnectorSettings": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigurationLineBase"
+            },
+            "nullable": true
+          },
+          "connectorName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "ErrorMessage": {
         "type": "string",
@@ -82665,204 +82943,6 @@
         },
         "additionalProperties": false
       },
-      "ConfigurationLineBase": {
-        "type": "object",
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/ConfigurationLineNumeric"
-          },
-          {
-            "$ref": "#/components/schemas/ConfigurationLineString"
-          }
-        ],
-        "additionalProperties": false
-      },
-      "ConfigurationLineNumeric": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          },
-          "connector": {
-            "type": "string",
-            "nullable": true
-          },
-          "uiActions": {
-            "type": "array",
-            "items": {
-              "enum": [
-                "Read",
-                "Write"
-              ],
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "apiActions": {
-            "type": "array",
-            "items": {
-              "enum": [
-                "Read",
-                "Write"
-              ],
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "displayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "defaultValue": {
-            "type": "string",
-            "nullable": true
-          },
-          "pendingValue": {
-            "type": "string",
-            "nullable": true
-          },
-          "skipValidation": {
-            "type": "boolean"
-          },
-          "permittedRangeEnd": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pendingApplication": {
-            "type": "boolean"
-          },
-          "allowMultipleValues": {
-            "type": "boolean"
-          },
-          "applyWithoutRestart": {
-            "type": "boolean"
-          },
-          "permittedRangeStart": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ConfigurationLineString": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          },
-          "connector": {
-            "type": "string",
-            "nullable": true
-          },
-          "uiActions": {
-            "type": "array",
-            "items": {
-              "enum": [
-                "Read",
-                "Write"
-              ],
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "apiActions": {
-            "type": "array",
-            "items": {
-              "enum": [
-                "Read",
-                "Write"
-              ],
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "displayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "defaultValue": {
-            "type": "string",
-            "nullable": true
-          },
-          "pendingValue": {
-            "type": "string",
-            "nullable": true
-          },
-          "skipValidation": {
-            "type": "boolean"
-          },
-          "permittedValues": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "pendingApplication": {
-            "type": "boolean"
-          },
-          "allowMultipleValues": {
-            "type": "boolean"
-          },
-          "applyWithoutRestart": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ConfigurationResponseWithGatewayMetadata": {
-        "type": "object",
-        "properties": {
-          "connectors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ConnectorSettings"
-            },
-            "nullable": true
-          },
-          "environment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dcaasSettings": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ConfigurationLineBase"
-            },
-            "nullable": true
-          },
-          "productVersion": {
-            "type": "string",
-            "nullable": true
-          },
-          "connectorAgentSettings": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ConfigurationLineBase"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "ConnectorFlatFileConfigurationResponse": {
         "type": "object",
         "properties": {
@@ -82875,23 +82955,6 @@
           },
           "errorMessage": {
             "$ref": "#/components/schemas/ErrorResponse"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ConnectorSettings": {
-        "type": "object",
-        "properties": {
-          "settings": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ConfigurationLineBase"
-            },
-            "nullable": true
-          },
-          "connectorName": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
