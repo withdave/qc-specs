@@ -49,7 +49,7 @@
                 }
               }
             },
-            "description": "User does not have access to the resource."
+            "description": "User does not have access to the resource or one or more linked glossary entries."
           },
           "404": {
             "content": {
@@ -442,7 +442,7 @@
                 }
               }
             },
-            "description": "Created"
+            "description": "Data product activated successfully. Glossary links are reconciled asynchronously after publication."
           },
           "400": {
             "content": {
@@ -503,6 +503,16 @@
               }
             },
             "description": "Internal server error."
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Business Glossary source links could not be captured before publication."
           },
           "503": {
             "content": {
@@ -1724,9 +1734,23 @@
                   "$ref": "#/components/schemas/TableRef"
                 },
                 "description": "Present only for `CIRCULAR_REFERENCE` errors. The tables forming the detected cycle, in order (first and last entries repeated to close the loop)."
+              },
+              "measures": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Semantic-model measure IDs linked to inaccessible glossary entries. Present only for DP-101."
+              },
+              "dimensions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Semantic-model dimension IDs linked to inaccessible glossary entries. Present only for DP-101."
               }
             },
-            "description": "Optional. MAY be used to provide more arbitrary, structured data to the client, e.g. `cycle` for `CIRCULAR_REFERENCE` errors."
+            "description": "Optional structured context. `cycle` is present for `CIRCULAR_REFERENCE` errors. `dimensions` and `measures` contain semantic-model element IDs that reference inaccessible glossary entries for DP-101."
           },
           "title": {
             "type": "string"
