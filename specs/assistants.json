@@ -4168,6 +4168,12 @@
             "example": "What is LLM?",
             "description": "Query text or question to search."
           },
+          "documentId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "description": "Optional document ID to restrict search results to chunks from a single document."
+          },
           "searchMode": {
             "enum": [
               "SIMPLE",
