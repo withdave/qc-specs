@@ -269,7 +269,7 @@ jobs:
 
       - name: Download changes.md artifact
         if: ${{ steps.find-or-create-pr.outputs.is_new_pr == 'true' }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: changes-md
       - name: Post PR comment with spec changes
