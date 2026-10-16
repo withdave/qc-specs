@@ -122,6 +122,9 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
+          "424": {
+            "$ref": "#/components/responses/FailedDependency"
+          },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
@@ -314,6 +317,9 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
+          "424": {
+            "$ref": "#/components/responses/FailedDependency"
+          },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
@@ -472,6 +478,9 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
+          "424": {
+            "$ref": "#/components/responses/FailedDependency"
+          },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
@@ -531,6 +540,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "424": {
+            "$ref": "#/components/responses/FailedDependency"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
@@ -605,6 +617,9 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
+          "424": {
+            "$ref": "#/components/responses/FailedDependency"
+          },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
@@ -670,6 +685,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "424": {
+            "$ref": "#/components/responses/FailedDependency"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
@@ -764,6 +782,16 @@
           }
         },
         "description": "Bad Request"
+      },
+      "FailedDependency": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse424"
+            }
+          }
+        },
+        "description": "Failed Dependency. Brand file storage is not available, so the brand file operation cannot be completed."
       },
       "Forbidden": {
         "content": {
@@ -1047,6 +1075,34 @@
                 "detail": {
                   "type": "string",
                   "example": "The resource was not found."
+                }
+              }
+            }
+          },
+          "traceId": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse424": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "CUSTOMIZATION-184"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Brand file storage is unavailable"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "This feature is not available right now because brand file storage has not been set up for this environment."
                 }
               }
             }
