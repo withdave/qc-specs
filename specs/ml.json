@@ -4108,7 +4108,10 @@
             "$ref": "#/components/schemas/Errors"
           },
           "modelId": {
-            "$ref": "#/components/schemas/ModelId"
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the model currently assigned to the default alias.",
+            "x-qlik-filterable": true
           },
           "ownerId": {
             "$ref": "#/components/schemas/OwnerId"
@@ -4939,6 +4942,9 @@
           "trainingDuration": {
             "$ref": "#/components/schemas/TrainingDuration"
           },
+          "maxTrainingDuration": {
+            "$ref": "#/components/schemas/TrainingDuration"
+          },
           "preprocessedInsights": {
             "type": "array",
             "items": {
@@ -5100,7 +5106,10 @@
                     "$ref": "#/components/schemas/ExperimentType"
                   },
                   "trainingDuration": {
-                    "$ref": "#/components/schemas/TrainingDuration"
+                    "$ref": "#/components/schemas/TrainingDurationInput"
+                  },
+                  "maxTrainingDuration": {
+                    "$ref": "#/components/schemas/TrainingDurationInput"
                   }
                 },
                 "additionalProperties": false
@@ -5751,6 +5760,11 @@
           },
           "timeseries": {
             "$ref": "#/components/schemas/ModelMetricsTimeseries"
+          },
+          "predictionSpeed": {
+            "type": "number",
+            "nullable": true,
+            "description": "Model prediction speed in rows/second (from recommend-models endpoint)"
           }
         },
         "description": "Model metrics based on the type of model\n",
@@ -6787,7 +6801,13 @@
         "type": "integer",
         "maximum": 21600,
         "minimum": 900,
-        "description": "Optional training duration in seconds. If not provided, max value used.\nIf provided, min 900 (15m) and max 21600 (6h).\n"
+        "description": "Maximum allowed training duration in seconds, not elapsed training time.\n"
+      },
+      "TrainingDurationInput": {
+        "type": "integer",
+        "maximum": 21600,
+        "minimum": 900,
+        "description": "Maximum allowed training duration in seconds, not elapsed training time.\nmaxTrainingDuration takes precedence over trainingDuration when both are provided.\nIf neither field is provided, the maximum for the experiment type is used.\nAccepted ranges:\n- min 900 (15m), max 21600 (6h)\n"
       },
       "Transform": {
         "type": "object",

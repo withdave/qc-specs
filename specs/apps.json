@@ -310,7 +310,7 @@
           },
           "400": {
             "headers": {},
-            "description": "Bad request"
+            "description": "Bad Request"
           },
           "401": {
             "headers": {},
@@ -975,7 +975,7 @@
           },
           "400": {
             "headers": {},
-            "description": "Bad request"
+            "description": "Bad Request"
           },
           "404": {
             "headers": {},
