@@ -186,6 +186,16 @@
             },
             "description": "Space created."
           },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space Payload invalid."
+          },
           "401": {
             "content": {
               "application/json": {
@@ -435,6 +445,16 @@
             },
             "description": "Space updated."
           },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space Update Payload invalid."
+          },
           "401": {
             "content": {
               "application/json": {
@@ -548,6 +568,16 @@
             },
             "description": "Space not found or access denied."
           },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "Space contains content or has a delete restriction."
+          },
           "412": {
             "content": {
               "application/json": {
@@ -556,7 +586,7 @@
                 }
               }
             },
-            "description": "Space delete precondition (space not empty) failed."
+            "description": "Legacy space-delete precondition failure. The non-empty-space deletion protection returns 409."
           },
           "500": {
             "content": {
@@ -581,7 +611,7 @@
             "description": "The ID of the space to delete."
           }
         ],
-        "description": "Deletes a space. Ensure that you first delete all resources from the space to avoid orphaning content.",
+        "description": "Deletes a space. Ensure that you first delete all resources from the space to avoid orphaning content. When non-empty-space deletion protection is enabled for the tenant, deletion is rejected if Collections contains any items in the space.",
         "operationId": "deleteSpaceById",
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
