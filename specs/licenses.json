@@ -1444,6 +1444,10 @@
             "type": "string",
             "description": "the capability bank id"
           },
+          "payingCustomerId": {
+            "type": "string",
+            "description": "Customer ID of the license's parent, when this license is part of a parent-child license relationship. Omitted when there is no parent"
+          },
           "parentLicenseNumber": {
             "type": "string",
             "description": "the parent number of the license. can be shared by multiple license numbers"

@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.73",
+    "version": "1.0.74",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -89138,6 +89138,10 @@
           "capabilityBankId": {
             "type": "string",
             "description": "the capability bank id"
+          },
+          "payingCustomerId": {
+            "type": "string",
+            "description": "Customer ID of the license's parent, when this license is part of a parent-child license relationship. Omitted when there is no parent"
           },
           "parentLicenseNumber": {
             "type": "string",
