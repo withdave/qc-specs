@@ -2514,12 +2514,14 @@
           "stopAt": {
             "type": "string",
             "example": "2022-12-01 00:00:00",
-            "description": "The date and time until the schedule is active."
+            "nullable": true,
+            "description": "The date and time until the schedule is active. If omitted or null, any existing end date is removed."
           },
           "startAt": {
             "type": "string",
             "example": "2022-01-01 00:00:00",
-            "description": "The date and time when the schedule becomes active."
+            "nullable": true,
+            "description": "The date and time when the schedule becomes active. If null, any existing start date is removed and the schedule is active from now. If omitted, an existing start date that is still in the future is removed; one that is already in the past is kept."
           },
           "interval": {
             "type": "integer",
