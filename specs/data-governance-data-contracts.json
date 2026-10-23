@@ -1,0 +1,1511 @@
+{
+  "info": {
+    "title": "data-governance/data-contracts",
+    "version": ""
+  },
+  "paths": {
+    "/api/data-governance/data-contracts/datasets/{datasetId}": {
+      "delete": {
+        "tags": [
+          "data-contract"
+        ],
+        "summary": "Delete a data contract",
+        "responses": {
+          "204": {
+            "description": "The data contract, its expectations, and its evaluation history were deleted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "invalidDatasetId": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "datasetId: must match '^[0-9a-zA-Z-]{1,36}$'"
+                        }
+                      ]
+                    },
+                    "summary": "datasetId does not match the required pattern"
+                  }
+                }
+              }
+            },
+            "description": "The datasetId path parameter is malformed."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "datasetForbidden": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-007",
+                          "title": "Forbidden.",
+                          "detail": "Insufficient permissions on dataset."
+                        }
+                      ]
+                    },
+                    "summary": "Caller lacks update access on the dataset's space"
+                  },
+                  "dataQualityDenied": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-004",
+                          "title": "Forbidden.",
+                          "detail": "Insufficient permissions to compute data quality."
+                        }
+                      ]
+                    },
+                    "summary": "Caller lacks the \"Compute data quality\" privilege"
+                  },
+                  "featureUnavailable": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-001",
+                          "title": "Feature not available.",
+                          "detail": "This feature is not yet available for your tenant."
+                        }
+                      ]
+                    },
+                    "summary": "Feature not available for this tenant"
+                  }
+                }
+              }
+            },
+            "description": "User does not have access to the resource, or the feature is not available for this tenant."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "datasetNotFound": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-006",
+                          "title": "Dataset not found."
+                        }
+                      ]
+                    },
+                    "summary": "Dataset not found"
+                  },
+                  "dataContractNotFound": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-003",
+                          "title": "Resource not found.",
+                          "detail": "No data contract found for dataset: 66a3aa9800358457159ecd12"
+                        }
+                      ]
+                    },
+                    "summary": "No data contract found for the dataset"
+                  }
+                }
+              }
+            },
+            "description": "Dataset or data contract not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "catalogUnavailable": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "HTTP-502",
+                          "title": "Error"
+                        }
+                      ]
+                    },
+                    "summary": "Catalog service unavailable"
+                  }
+                }
+              }
+            },
+            "description": "The Catalog service could not be reached to verify the dataset."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DatasetIdPath"
+          }
+        ],
+        "description": "Permanently deletes the data contract for the given dataset, along with every expectation and evaluation belonging to it. This is a hard delete: unlike deactivation, nothing is preserved and the operation cannot be undone.",
+        "operationId": "deleteDataContractByDatasetId",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/data-contracts/datasets/{datasetId}/expectations": {
+      "get": {
+        "tags": [
+          "expectation"
+        ],
+        "summary": "Get dataset expectations",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExpectationsResponse"
+                }
+              }
+            },
+            "description": "Expectations retrieved successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "invalidDatasetId": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "datasetId: must match '^[0-9a-zA-Z-]{1,36}$'"
+                        }
+                      ]
+                    },
+                    "summary": "datasetId does not match the required pattern"
+                  }
+                }
+              }
+            },
+            "description": "The datasetId path parameter is malformed."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "dataQualityDenied": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-004",
+                          "title": "Forbidden.",
+                          "detail": "Insufficient permissions to compute data quality."
+                        }
+                      ]
+                    },
+                    "summary": "Caller lacks the \"Compute data quality\" read privilege"
+                  },
+                  "featureUnavailable": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-001",
+                          "title": "Feature not available.",
+                          "detail": "This feature is not yet available for your tenant."
+                        }
+                      ]
+                    },
+                    "summary": "Feature not available for this tenant"
+                  }
+                }
+              }
+            },
+            "description": "User does not have access to the resource, or the feature is not available for this tenant."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "datasetNotFound": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-006",
+                          "title": "Dataset not found."
+                        }
+                      ]
+                    },
+                    "summary": "Dataset not found"
+                  }
+                }
+              }
+            },
+            "description": "Dataset not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "catalogUnavailable": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "HTTP-502",
+                          "title": "Error"
+                        }
+                      ]
+                    },
+                    "summary": "Catalog service unavailable"
+                  }
+                }
+              }
+            },
+            "description": "The Catalog service could not be reached to verify the dataset."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DatasetIdPath"
+          }
+        ],
+        "description": "Returns every expectation for the dataset — the Trust Score dimension expectations and the data volume expectation — with their current activation status, configured thresholds or bounds, latest actual value, and last evaluation result. If the dataset has no data contract, the operation still returns 200 with the default, non-activated expectations. For non-activated expectations, the actual value (Trust Score) or row count (volume) is fetched live while the response is built and is omitted if it cannot be retrieved.",
+        "operationId": "getExpectations",
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "1",
+          "limit": 1000
+        }
+      },
+      "patch": {
+        "tags": [
+          "expectation"
+        ],
+        "summary": "Update dataset expectations",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateExpectationsResponse"
+                }
+              }
+            },
+            "description": "Per-item results are returned. Individual items may have succeeded or failed."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "emptyArray": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "trustScore expectations list must not be empty"
+                        }
+                      ]
+                    },
+                    "summary": "Empty trustScore array"
+                  },
+                  "duplicateName": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "Duplicate expectation name in trustScore: validity"
+                        }
+                      ]
+                    },
+                    "summary": "Duplicate name in trustScore array"
+                  },
+                  "invalidDatasetId": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "datasetId: must match '^[0-9a-zA-Z-]{1,36}$'"
+                        }
+                      ]
+                    },
+                    "summary": "datasetId does not match the required pattern"
+                  },
+                  "noActivationStatus": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-008",
+                          "title": "Activation status required to create a data contract.",
+                          "detail": "To create a data contract, at least one item must have status ACTIVATED for dataset: 66a3aa9800358457159ecd12"
+                        }
+                      ]
+                    },
+                    "summary": "No activation status when no contract exists"
+                  }
+                }
+              }
+            },
+            "description": "Request-level validation failure."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "datasetForbidden": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-007",
+                          "title": "Forbidden.",
+                          "detail": "Insufficient permissions on dataset."
+                        }
+                      ]
+                    },
+                    "summary": "Caller lacks update access on the dataset's space"
+                  },
+                  "dataQualityDenied": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-004",
+                          "title": "Forbidden.",
+                          "detail": "Insufficient permissions to compute data quality."
+                        }
+                      ]
+                    },
+                    "summary": "Caller lacks the \"Compute data quality\" privilege"
+                  },
+                  "featureUnavailable": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-001",
+                          "title": "Feature not available.",
+                          "detail": "This feature is not yet available for your tenant."
+                        }
+                      ]
+                    },
+                    "summary": "Feature not available for this tenant"
+                  }
+                }
+              }
+            },
+            "description": "User does not have access to the resource, or the feature is not available for this tenant."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "datasetNotFound": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-006",
+                          "title": "Dataset not found."
+                        }
+                      ]
+                    },
+                    "summary": "Dataset not found"
+                  }
+                }
+              }
+            },
+            "description": "Dataset not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "catalogUnavailable": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "HTTP-502",
+                          "title": "Error"
+                        }
+                      ]
+                    },
+                    "summary": "Catalog service unavailable"
+                  }
+                }
+              }
+            },
+            "description": "The Catalog service could not be reached to verify the dataset."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DatasetIdPath"
+          }
+        ],
+        "description": "Updates, activates, or deactivates the dataset's expectations in a single call. Trust Score and data volume expectations are supplied in their respective arrays, and each item is processed independently: some items may succeed while others fail, and the per-item outcome is reported in the response with HTTP 200. When the dataset has no data contract yet, activating at least one expectation creates the contract; a request that would create a contract without activating any expectation is rejected with HTTP 400. For Trust Score items, threshold and warning must be within 0-100 and warning, when set, must be strictly greater than threshold.",
+        "operationId": "updateExpectations",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExpectationsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/data-governance/data-contracts/datasets/actions/create": {
+      "post": {
+        "tags": [
+          "data-contract"
+        ],
+        "summary": "Create data contracts in bulk",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDataContractsResponse"
+                }
+              }
+            },
+            "description": "Per-dataset results are returned. Individual datasets may have succeeded or failed."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "emptyArray": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "trustScore expectations list must not be empty"
+                        }
+                      ]
+                    },
+                    "summary": "Empty trustScore array for one of the datasets"
+                  },
+                  "duplicateName": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "Duplicate expectation name in trustScore: validity"
+                        }
+                      ]
+                    },
+                    "summary": "Duplicate name in a dataset's trustScore array"
+                  },
+                  "tooManyDatasets": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "datasets: size must be between 1 and 100"
+                        }
+                      ]
+                    },
+                    "summary": "More than 100 datasets in the batch"
+                  },
+                  "duplicateDatasetId": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "Duplicate datasetId in request: 66a3aa9800358457159ecd12"
+                        }
+                      ]
+                    },
+                    "summary": "Duplicate datasetId in the batch"
+                  }
+                }
+              }
+            },
+            "description": "Request-level validation failure. No contract is created for any dataset."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "dataQualityDenied": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-004",
+                          "title": "Forbidden.",
+                          "detail": "Insufficient permissions to compute data quality."
+                        }
+                      ]
+                    },
+                    "summary": "Caller lacks the \"Compute data quality\" privilege"
+                  },
+                  "featureUnavailable": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-001",
+                          "title": "Feature not available.",
+                          "detail": "This feature is not yet available for your tenant."
+                        }
+                      ]
+                    },
+                    "summary": "Feature not available for this tenant"
+                  }
+                }
+              }
+            },
+            "description": "The feature is not available for this tenant, or the caller lacks the \"Compute data quality\" privilege."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          }
+        },
+        "description": "Creates a data contract for each listed dataset ID, notably to apply a contract to every dataset of a data product at once. The caller's \"Compute data quality\" write privilege is checked once for the whole request, before any dataset is processed: it does not depend on any single dataset, so a caller lacking it is rejected upfront with HTTP 403, rather than failing every dataset entry individually. Each dataset is then processed independently and concurrently: a failure on one dataset (no write permission on its space, dataset not found, or a contract already existing for that dataset) does not block the others. An existing contract is never overwritten. The request is capped at 100 datasets; a larger batch is rejected upfront with HTTP 400, before any contract is created.",
+        "operationId": "createDataContracts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDataContractsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "parameters": {
+      "DatasetIdPath": {
+        "in": "path",
+        "name": "datasetId",
+        "schema": {
+          "type": "string",
+          "pattern": "^[0-9a-zA-Z-]{1,36}$"
+        },
+        "example": "66a3aa9800358457159ecd12",
+        "required": true
+      }
+    },
+    "schemas": {
+      "CreateDataContractResultItem": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "updateStatus"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "DCI-013",
+            "description": "Diagnostic error code for the failure (only present when updateStatus is ERROR). Provided to help troubleshooting; the example values shown are not an exhaustive list of possible codes."
+          },
+          "reason": {
+            "type": "string",
+            "example": "Data contract already exists for dataset: 66a3aa9800358457159ecd12",
+            "description": "The reason for failure (only present when updateStatus is ERROR)."
+          },
+          "datasetId": {
+            "type": "string",
+            "example": "66a3aa9800358457159ecd12"
+          },
+          "expectations": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UpdateExpectationResultsByCategory"
+              }
+            ],
+            "description": "Per-expectation results (only present when updateStatus is SUCCESS)."
+          },
+          "updateStatus": {
+            "$ref": "#/components/schemas/ItemUpdateStatus"
+          }
+        }
+      },
+      "CreateDataContractsDatasetEntry": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "expectations"
+        ],
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "example": "66a3aa9800358457159ecd12",
+            "pattern": "^[0-9a-zA-Z-]{1,36}$",
+            "description": "Identifier of the dataset the data contract must be created for."
+          },
+          "expectations": {
+            "$ref": "#/components/schemas/UpdateExpectationsByCategory"
+          }
+        }
+      },
+      "CreateDataContractsRequest": {
+        "type": "object",
+        "required": [
+          "datasets"
+        ],
+        "properties": {
+          "datasets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateDataContractsDatasetEntry"
+            },
+            "maxItems": 100,
+            "minItems": 1
+          }
+        }
+      },
+      "CreateDataContractsResponse": {
+        "type": "object",
+        "required": [
+          "datasets"
+        ],
+        "properties": {
+          "datasets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateDataContractResultItem"
+            }
+          }
+        }
+      },
+      "DimensionStatus": {
+        "enum": [
+          "AVAILABLE",
+          "NOT_AVAILABLE"
+        ],
+        "type": "string",
+        "example": "AVAILABLE",
+        "description": "The availability status of the trust score dimension."
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "meta": {
+            "type": "object",
+            "nullable": true,
+            "description": "Optional additional context for the error. Null when none is provided.",
+            "additionalProperties": true
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "traceId": {
+            "type": "string",
+            "example": "0af7651916cd43dd8448eb211c80319c",
+            "description": "Identifier of the request trace. Quote it when reporting a problem so the request can be located in the logs."
+          }
+        }
+      },
+      "EvaluationStatus": {
+        "enum": [
+          "PASS",
+          "WARN",
+          "FAIL",
+          "ERROR"
+        ],
+        "type": "string",
+        "example": "PASS",
+        "description": "The outcome of an evaluation. `PASS`: the measured value meets the expectation. `WARN`: the measured value is in the warning range — above the threshold but below the warning level. `FAIL`: the measured value does not meet the expectation. `ERROR`: the expectation could not be evaluated (for example the source value could not be resolved)."
+      },
+      "EvaluationTrigger": {
+        "enum": [
+          "PROFILE_EVENT",
+          "TRUST_SCORE_EVENT",
+          "INITIALISATION",
+          "MANUAL"
+        ],
+        "type": "string",
+        "example": "TRUST_SCORE_EVENT",
+        "description": "What triggered the evaluation. `PROFILE_EVENT`: a new data profile was computed for the dataset. `TRUST_SCORE_EVENT`: a new data quality (Trust Score) result was computed for the dataset. `INITIALISATION`: the expectation was activated. `MANUAL`: an on-demand evaluation requested through the evaluate endpoint."
+      },
+      "ExpectationLastEvaluation": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Service unreachable"
+          },
+          "status": {
+            "$ref": "#/components/schemas/EvaluationStatus"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/EvaluationTrigger"
+          },
+          "errorCode": {
+            "type": "string",
+            "example": "DCI-001",
+            "description": "Diagnostic error code, present only when status is ERROR. Provided to help troubleshooting; the example values shown are not an exhaustive list of possible codes."
+          },
+          "actualValue": {
+            "type": "number",
+            "format": "float",
+            "example": 85,
+            "description": "The score value that was recorded at evaluation time (historical snapshot). Unlike the top-level `actualValue` on GetExpectationItem which is fetched live, this value reflects the score at the moment the evaluation was performed. Omitted when `status` is `ERROR` (an error evaluation carries no real measurement; never reported as `0`)."
+          },
+          "evaluatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-03-20T09:12:28Z"
+          },
+          "expectedWarning": {
+            "type": "number",
+            "format": "float",
+            "example": 90,
+            "description": "The warning range that was in effect when the evaluation was performed."
+          },
+          "expectedThreshold": {
+            "type": "number",
+            "format": "float",
+            "example": 85,
+            "description": "The threshold that was in effect when the evaluation was performed."
+          }
+        },
+        "description": "The last evaluation result. Only present when the expectation status is ACTIVATED or DEACTIVATED."
+      },
+      "ExpectationStatus": {
+        "enum": [
+          "ACTIVATED",
+          "DEACTIVATED",
+          "NOT_ACTIVATED"
+        ],
+        "type": "string",
+        "example": "ACTIVATED",
+        "description": "Activation status of an expectation. `ACTIVATED` means the expectation is enforced, `DEACTIVATED` means it was explicitly turned off, and `NOT_ACTIVATED` means it has never been activated."
+      },
+      "GetExpectationItem": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/GetTrustScoreExpectationItem"
+          },
+          {
+            "$ref": "#/components/schemas/GetVolumeExpectationItem"
+          }
+        ],
+        "discriminator": {
+          "mapping": {
+            "trust_score": "#/components/schemas/GetTrustScoreExpectationItem",
+            "data_profile": "#/components/schemas/GetVolumeExpectationItem"
+          },
+          "propertyName": "category"
+        }
+      },
+      "GetExpectationItemBase": {
+        "type": "object",
+        "required": [
+          "category",
+          "name",
+          "status"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the expectation."
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExpectationStatus"
+          },
+          "category": {
+            "type": "string",
+            "description": "The expectations category."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-15T10:30:00Z",
+            "description": "When the expectation was last updated. Absent for NOT_ACTIVATED items."
+          },
+          "activatable": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether the expectation can be activated right now. Present only for non-active items (NOT_ACTIVATED and DEACTIVATED); omitted for ACTIVATED items. For trust_score expectations it is true only when the dataset has a computed Trust Score and the dimension is available, and false otherwise (quality not computed, dimension disabled, or the Trust Score service is unreachable). Always true for data_profile expectations."
+          }
+        }
+      },
+      "GetExpectationsResponse": {
+        "type": "object",
+        "required": [
+          "expectations"
+        ],
+        "properties": {
+          "expectations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetExpectationItem"
+            }
+          }
+        }
+      },
+      "GetTrustScoreExpectationDetails": {
+        "type": "object",
+        "properties": {
+          "warning": {
+            "type": "number",
+            "format": "float",
+            "example": 90
+          },
+          "threshold": {
+            "type": "number",
+            "format": "float",
+            "example": 85
+          },
+          "actualValue": {
+            "type": "number",
+            "format": "float",
+            "example": 85.1,
+            "description": "The current score for this expectation. For ACTIVATED expectations this is the score recorded by the latest evaluation. For NOT_ACTIVATED and DEACTIVATED expectations it is fetched live from the Trust Score service when the response is built, because evaluations only run while an expectation is activated. Omitted when the external service is unreachable (fail-open behavior)."
+          },
+          "lastEvaluation": {
+            "$ref": "#/components/schemas/ExpectationLastEvaluation"
+          },
+          "dimensionStatus": {
+            "$ref": "#/components/schemas/DimensionStatus"
+          }
+        }
+      },
+      "GetTrustScoreExpectationItem": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/GetExpectationItemBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "trustScore"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/components/schemas/TrustScoreDimensionName"
+              },
+              "trustScore": {
+                "$ref": "#/components/schemas/GetTrustScoreExpectationDetails"
+              }
+            }
+          }
+        ]
+      },
+      "GetVolumeExpectationDetails": {
+        "type": "object",
+        "properties": {
+          "max": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10500,
+            "minimum": 0,
+            "description": "Upper bound (inclusive) on the row count. Omitted when the upper bound is disabled."
+          },
+          "min": {
+            "type": "integer",
+            "format": "int64",
+            "example": 9500,
+            "minimum": 0,
+            "description": "Lower bound (inclusive) on the row count. Omitted when the lower bound is disabled."
+          },
+          "actualRowCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10120,
+            "minimum": 0,
+            "description": "The current row count. For ACTIVATED expectations this is the count recorded by the latest evaluation. For NOT_ACTIVATED and DEACTIVATED expectations it is fetched live from Catalog when the response is built, because evaluations only run while an expectation is activated. Omitted when Catalog is unreachable (fail-open behavior)."
+          },
+          "lastEvaluation": {
+            "$ref": "#/components/schemas/GetVolumeLastEvaluation"
+          }
+        }
+      },
+      "GetVolumeExpectationItem": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/GetExpectationItemBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "dataProfile"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/components/schemas/VolumeExpectationName"
+              },
+              "dataProfile": {
+                "$ref": "#/components/schemas/GetVolumeExpectationDetails"
+              }
+            }
+          }
+        ]
+      },
+      "GetVolumeLastEvaluation": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Human-readable error detail, present only when status is ERROR. A volume evaluation is ERROR when the row count cannot be retrieved; a row count outside the configured bounds is reported as FAIL, not ERROR."
+          },
+          "status": {
+            "$ref": "#/components/schemas/EvaluationStatus"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/EvaluationTrigger"
+          },
+          "errorCode": {
+            "type": "string",
+            "example": "DCI-005",
+            "description": "Diagnostic error code, present only when status is ERROR. The example values shown are not an exhaustive list of possible codes."
+          },
+          "evaluatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-15T10:00:00Z"
+          },
+          "expectedMax": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10500,
+            "minimum": 0,
+            "description": "The upper bound in effect when the evaluation was performed."
+          },
+          "expectedMin": {
+            "type": "integer",
+            "format": "int64",
+            "example": 9500,
+            "minimum": 0,
+            "description": "The lower bound in effect when the evaluation was performed."
+          },
+          "actualRowCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10000,
+            "minimum": 0,
+            "description": "The row count recorded at evaluation time (historical snapshot)."
+          }
+        },
+        "description": "The last volume evaluation result. Present only when the expectation status is ACTIVATED or DEACTIVATED."
+      },
+      "ItemUpdateStatus": {
+        "enum": [
+          "SUCCESS",
+          "ERROR"
+        ],
+        "type": "string",
+        "example": "SUCCESS"
+      },
+      "TrustScoreDimensionName": {
+        "enum": [
+          "global",
+          "validity",
+          "completeness",
+          "accuracy",
+          "diversity",
+          "discoverability",
+          "usage",
+          "timeliness"
+        ],
+        "type": "string",
+        "example": "validity",
+        "description": "The name of a trust score dimension."
+      },
+      "UpdateExpectationLastEvaluation": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Service unreachable"
+          },
+          "status": {
+            "$ref": "#/components/schemas/EvaluationStatus"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/EvaluationTrigger"
+          },
+          "errorCode": {
+            "type": "string",
+            "example": "DCI-001",
+            "description": "Diagnostic error code, present only when status is ERROR. Provided to help troubleshooting; the example values shown are not an exhaustive list of possible codes."
+          },
+          "actualValue": {
+            "type": "number",
+            "format": "float",
+            "example": 92,
+            "description": "The score recorded at evaluation time. Omitted when `status` is `ERROR` (an error evaluation carries no real measurement; never reported as `0`)."
+          },
+          "evaluatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-05-13T10:00:00Z"
+          },
+          "expectedWarning": {
+            "type": "number",
+            "format": "float",
+            "example": 90
+          },
+          "expectedThreshold": {
+            "type": "number",
+            "format": "float",
+            "example": 85
+          }
+        },
+        "description": "The last evaluation result (only present when updateStatus is SUCCESS)."
+      },
+      "UpdateExpectationResultItem": {
+        "type": "object",
+        "required": [
+          "name",
+          "updateStatus"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "DCI-001",
+            "description": "The error code for failure (only present when updateStatus is ERROR)."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the expectation. For trust score items, one of: global, validity, completeness, accuracy, diversity, discoverability, usage, timeliness. May also contain the raw input name for per-item error responses.\n"
+          },
+          "reason": {
+            "type": "string",
+            "example": "Unknown trust score dimension: Foo",
+            "description": "The reason for failure (only present when updateStatus is ERROR)."
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExpectationStatus"
+          },
+          "warning": {
+            "type": "number",
+            "format": "float",
+            "example": 90,
+            "description": "The current warning range (only present when updateStatus is SUCCESS)."
+          },
+          "category": {
+            "type": "string",
+            "example": "trust_score",
+            "description": "The expectation category (only present when updateStatus is SUCCESS)."
+          },
+          "threshold": {
+            "type": "number",
+            "format": "float",
+            "example": 85,
+            "description": "The current threshold (only present when updateStatus is SUCCESS)."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-05-13T10:00:00Z",
+            "description": "When the expectation was last updated (only present when updateStatus is SUCCESS)."
+          },
+          "updateStatus": {
+            "$ref": "#/components/schemas/ItemUpdateStatus"
+          },
+          "lastEvaluation": {
+            "$ref": "#/components/schemas/UpdateExpectationLastEvaluation"
+          },
+          "dimensionStatus": {
+            "$ref": "#/components/schemas/DimensionStatus"
+          }
+        }
+      },
+      "UpdateExpectationResultsByCategory": {
+        "type": "object",
+        "properties": {
+          "trustScore": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateExpectationResultItem"
+            }
+          },
+          "dataProfile": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateVolumeResultItem"
+            }
+          }
+        }
+      },
+      "UpdateExpectationsByCategory": {
+        "type": "object",
+        "properties": {
+          "trustScore": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateTrustScoreExpectationItem"
+            }
+          },
+          "dataProfile": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateVolumeExpectationItem"
+            }
+          }
+        }
+      },
+      "UpdateExpectationsRequest": {
+        "type": "object",
+        "required": [
+          "expectations"
+        ],
+        "properties": {
+          "expectations": {
+            "$ref": "#/components/schemas/UpdateExpectationsByCategory"
+          }
+        }
+      },
+      "UpdateExpectationsResponse": {
+        "type": "object",
+        "required": [
+          "expectations"
+        ],
+        "properties": {
+          "expectations": {
+            "$ref": "#/components/schemas/UpdateExpectationResultsByCategory"
+          }
+        }
+      },
+      "UpdateTrustScoreExpectationItem": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "global",
+            "description": "The name of the trust score dimension. One of: global, validity, completeness, accuracy, diversity, discoverability, usage, timeliness. Unknown names produce a per-item error in the response.\n"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExpectationStatus"
+          },
+          "warning": {
+            "type": "number",
+            "format": "float",
+            "example": 90,
+            "nullable": true,
+            "description": "New warning range value (0-100 inclusive). Must be strictly greater than threshold. Set to null to remove."
+          },
+          "threshold": {
+            "type": "number",
+            "format": "float",
+            "example": 85,
+            "description": "New failure threshold value (0-100 inclusive)."
+          }
+        }
+      },
+      "UpdateVolumeExpectationItem": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "max": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10500,
+            "minimum": 0,
+            "nullable": true,
+            "description": "New upper bound (inclusive). Absent = unchanged, null = remove the bound, value = set."
+          },
+          "min": {
+            "type": "integer",
+            "format": "int64",
+            "example": 9500,
+            "minimum": 0,
+            "nullable": true,
+            "description": "New lower bound (inclusive). Absent = unchanged, null = remove the bound, value = set."
+          },
+          "name": {
+            "type": "string",
+            "example": "volume",
+            "description": "The name of the volume expectation. Currently only \"volume\" is supported."
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExpectationStatus"
+          }
+        }
+      },
+      "UpdateVolumeLastEvaluation": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Human-readable error detail, present only when status is ERROR. A volume evaluation is ERROR when the row count cannot be retrieved ; a row count outside the configured bounds is reported as FAIL, not ERROR."
+          },
+          "status": {
+            "$ref": "#/components/schemas/EvaluationStatus"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/EvaluationTrigger"
+          },
+          "errorCode": {
+            "type": "string",
+            "example": "DCI-005",
+            "description": "Diagnostic error code, present only when status is ERROR . The example values shown are not an exhaustive list of possible codes."
+          },
+          "evaluatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-15T10:00:00Z"
+          },
+          "expectedMax": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10500,
+            "minimum": 0
+          },
+          "expectedMin": {
+            "type": "integer",
+            "format": "int64",
+            "example": 9500,
+            "minimum": 0
+          },
+          "actualRowCount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10000,
+            "minimum": 0
+          }
+        },
+        "description": "The last volume evaluation result (only present when updateStatus is SUCCESS)."
+      },
+      "UpdateVolumeResultItem": {
+        "type": "object",
+        "required": [
+          "name",
+          "updateStatus"
+        ],
+        "properties": {
+          "max": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10500,
+            "minimum": 0,
+            "description": "The current upper bound (only present when updateStatus is SUCCESS)."
+          },
+          "min": {
+            "type": "integer",
+            "format": "int64",
+            "example": 9500,
+            "minimum": 0,
+            "description": "The current lower bound (only present when updateStatus is SUCCESS)."
+          },
+          "code": {
+            "type": "string",
+            "example": "DCI-008",
+            "description": "Diagnostic error code for the failure (only present when updateStatus is ERROR). Provided to help troubleshooting; the example values shown are not an exhaustive list of possible codes."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the volume expectation. Currently only \"volume\" is supported."
+          },
+          "reason": {
+            "type": "string",
+            "example": "Invalid volume bounds: min must be less than or equal to max.",
+            "description": "The reason for failure (only present when updateStatus is ERROR)."
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExpectationStatus"
+          },
+          "category": {
+            "type": "string",
+            "example": "data_profile",
+            "description": "The expectation category (only present when updateStatus is SUCCESS)."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-15T10:00:00Z",
+            "description": "When the expectation was last updated (only present when updateStatus is SUCCESS)."
+          },
+          "updateStatus": {
+            "$ref": "#/components/schemas/ItemUpdateStatus"
+          },
+          "lastEvaluation": {
+            "$ref": "#/components/schemas/UpdateVolumeLastEvaluation"
+          }
+        }
+      },
+      "VolumeExpectationName": {
+        "enum": [
+          "volume"
+        ],
+        "type": "string",
+        "example": "volume",
+        "description": "The name of a volume expectation."
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.{region}.qlikcloud.com",
+      "variables": {
+        "region": {
+          "default": "us",
+          "description": "The region the tenant is hosted in"
+        },
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Name of the tenant that will be called"
+        }
+      }
+    }
+  ]
+}
