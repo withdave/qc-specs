@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.75",
+    "version": "1.0.76",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -6115,579 +6115,6 @@
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
-        }
-      }
-    },
-    "/api/v1/apps/{guid}/evaluations": {
-      "get": {
-        "tags": [
-          "evaluation"
-        ],
-        "summary": "Retrieve a list of all historic evaluations for an app GUID",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/evaluations"
-                }
-              }
-            },
-            "description": "Evaluation(s) retrieved successfully."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Bad request."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Not Found."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Internal server error."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "guid",
-            "schema": {
-              "type": "string"
-            },
-            "example": "abcdefghijklmnopq",
-            "required": true,
-            "description": "The app guid."
-          },
-          {
-            "in": "query",
-            "name": "all",
-            "schema": {
-              "type": "boolean"
-            },
-            "required": false,
-            "description": "Get the full data of the evaluation"
-          },
-          {
-            "in": "query",
-            "name": "fileMode",
-            "schema": {
-              "type": "boolean"
-            },
-            "required": false,
-            "description": "Add file transfer headers to response"
-          },
-          {
-            "in": "query",
-            "name": "format",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Specify output format, currently supported are 'json' and 'xml'"
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 20,
-              "maximum": 100,
-              "minimum": 1
-            },
-            "required": false,
-            "description": "Number of results to return per page."
-          },
-          {
-            "in": "query",
-            "name": "next",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "The app evaluation id to get next page from"
-          },
-          {
-            "in": "query",
-            "name": "prev",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "The app evaluation id to get previous page from"
-          },
-          {
-            "in": "query",
-            "name": "sort",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Property to sort list on"
-          }
-        ],
-        "description": "Find all evaluations for an app GUID.\nSupports paging via next, prev which are sent in the response body\n",
-        "operationId": "evaluation#getEvaluations",
-        "x-qlik-stability": "stable",
-        "x-qlik-deprecated": true,
-        "x-qlik-visibility": "public",
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-06",
-        "x-qlik-deprecated-description": "Replaced by namespaced API",
-        "x-qlik-replaced-by": [
-          {
-            "namespace": "analytics",
-            "uniqueIdentifier": "GET:/analytics/apps/{guid}/evaluations"
-          }
-        ],
-        "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
-        }
-      },
-      "post": {
-        "tags": [
-          "evaluation"
-        ],
-        "summary": "Queue an app evaluation",
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/evaluation"
-                }
-              }
-            },
-            "description": "App evaluation queued."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Bad request, incorrect body."
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "User lacks permissions to evaluate app."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "App does not exist."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Internal server error."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "guid",
-            "schema": {
-              "type": "string"
-            },
-            "example": "abcdefghijklmnopq",
-            "required": true,
-            "description": "Guid of the app."
-          }
-        ],
-        "description": "Queue an app evaluation by its app guid.\n",
-        "operationId": "evaluation#queueEvaluation",
-        "x-qlik-stability": "stable",
-        "x-qlik-deprecated": true,
-        "x-qlik-visibility": "public",
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-06",
-        "x-qlik-deprecated-description": "Replaced by namespaced API",
-        "x-qlik-replaced-by": [
-          {
-            "namespace": "analytics",
-            "uniqueIdentifier": "POST:/analytics/apps/{guid}/evaluations"
-          }
-        ],
-        "x-qlik-tier": {
-          "tier": "2",
-          "limit": 100
-        }
-      }
-    },
-    "/api/v1/apps/evaluations/{baseid}/actions/compare/{comparisonid}": {
-      "get": {
-        "tags": [
-          "evaluation"
-        ],
-        "summary": "Compare two evaluations",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/comparison"
-                }
-              }
-            },
-            "description": "Comparison executed successfully."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Not Found."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Internal server error."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "baseid",
-            "schema": {
-              "type": "string"
-            },
-            "example": "abcdefghijklmnopq",
-            "required": true,
-            "description": "Id of the baseline evaluation"
-          },
-          {
-            "in": "path",
-            "name": "comparisonid",
-            "schema": {
-              "type": "string"
-            },
-            "example": "abcdefghijklmnopq",
-            "required": true,
-            "description": "Id of the comparison evaluation"
-          },
-          {
-            "in": "query",
-            "name": "all",
-            "schema": {
-              "type": "boolean"
-            },
-            "required": false,
-            "description": "Get the full list of comparisons including non-significant diffs"
-          },
-          {
-            "in": "query",
-            "name": "format",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Specify output format, currently supported are 'json' and 'xml'"
-          }
-        ],
-        "description": "Accepts two evaluation ids and returns a comparison denoting the differences between the two.\n",
-        "operationId": "evaluation#compareTwo",
-        "x-qlik-stability": "stable",
-        "x-qlik-deprecated": true,
-        "x-qlik-visibility": "public",
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-06",
-        "x-qlik-deprecated-description": "Replaced by namespaced API",
-        "x-qlik-replaced-by": [
-          {
-            "namespace": "analytics",
-            "uniqueIdentifier": "GET:/analytics/apps/evaluations/{baselineId}/compare/{comparisonId}"
-          }
-        ],
-        "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
-        }
-      }
-    },
-    "/api/v1/apps/evaluations/{baseid}/actions/compare/{comparisonid}/actions/download": {
-      "get": {
-        "tags": [
-          "evaluation"
-        ],
-        "summary": "Download a comparison log of two evaluations",
-        "responses": {
-          "200": {
-            "content": {
-              "application/xml": {},
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/comparison"
-                }
-              }
-            },
-            "description": "Comparison executed successfully."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Not Found."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Internal server error."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "baseid",
-            "schema": {
-              "type": "string"
-            },
-            "example": "abcdefghijklmnopq",
-            "required": true,
-            "description": "Id of the baseline evaluation"
-          },
-          {
-            "in": "path",
-            "name": "comparisonid",
-            "schema": {
-              "type": "string"
-            },
-            "example": "abcdefghijklmnopq",
-            "required": true,
-            "description": "Id of the comparison evaluation"
-          }
-        ],
-        "description": "Accepts two evaluation ids and downloads a log, in XML format, denoting the differences between the two.\n",
-        "operationId": "evaluation#downloadCompareTwo",
-        "x-qlik-stability": "stable",
-        "x-qlik-deprecated": true,
-        "x-qlik-visibility": "public",
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-06",
-        "x-qlik-deprecated-description": "Replaced by namespaced API",
-        "x-qlik-replaced-by": [
-          {
-            "namespace": "analytics",
-            "uniqueIdentifier": "GET:/analytics/apps/evaluations/{baselineId}/compare/{comparisonId}/actions/download"
-          }
-        ],
-        "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
-        }
-      }
-    },
-    "/api/v1/apps/evaluations/{id}": {
-      "get": {
-        "tags": [
-          "evaluation"
-        ],
-        "summary": "Retrieve a specific evaluation",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/evaluation"
-                }
-              }
-            },
-            "description": "Evaluation(s) retrieved successfully."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Not Found."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Internal server error."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "example": "abcdefghijklmnopq",
-            "required": true,
-            "description": "Id of the desired evaluation."
-          },
-          {
-            "in": "query",
-            "name": "all",
-            "schema": {
-              "type": "boolean"
-            },
-            "required": false,
-            "description": "Get the full data of the evaluation"
-          },
-          {
-            "in": "query",
-            "name": "format",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Specify output format, currently supported are 'json' and 'xml'"
-          }
-        ],
-        "description": "Find an evaluation by a specific id.\n",
-        "operationId": "evaluation#getOneEvaluation",
-        "x-qlik-stability": "stable",
-        "x-qlik-deprecated": true,
-        "x-qlik-visibility": "public",
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-06",
-        "x-qlik-deprecated-description": "Replaced by namespaced API",
-        "x-qlik-replaced-by": [
-          {
-            "namespace": "analytics",
-            "uniqueIdentifier": "GET:/analytics/apps/evaluations/{id}"
-          }
-        ],
-        "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
-        }
-      }
-    },
-    "/api/v1/apps/evaluations/{id}/actions/download": {
-      "get": {
-        "tags": [
-          "evaluation"
-        ],
-        "summary": "Download a detailed XML log of a specific evaluation",
-        "responses": {
-          "200": {
-            "content": {
-              "application/xml": {},
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/evaluation"
-                }
-              }
-            },
-            "description": "Evaluation(s) retrieved successfully."
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Not Found."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluatorError"
-                }
-              }
-            },
-            "description": "Internal server error."
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "example": "abcdefghijklmnopq",
-            "required": true,
-            "description": "Id of the desired evaluation."
-          }
-        ],
-        "description": "Find and download an evaluation log by a specific evaluation id.\n",
-        "operationId": "evaluation#downloadOneEvaluation",
-        "x-qlik-stability": "stable",
-        "x-qlik-deprecated": true,
-        "x-qlik-visibility": "public",
-        "x-qlik-deprecated-sunset": "2026-09",
-        "x-qlik-deprecated-version": "2026-06",
-        "x-qlik-deprecated-description": "Replaced by namespaced API",
-        "x-qlik-replaced-by": [
-          {
-            "namespace": "analytics",
-            "uniqueIdentifier": "GET:/analytics/apps/evaluations/{id}/actions/download"
-          }
-        ],
-        "x-qlik-tier": {
-          "tier": "1",
-          "limit": 1000
         }
       }
     },
@@ -63156,8 +62583,8 @@
       "comparison": {
         "type": "object",
         "properties": {
-          "objHeavy": {
-            "$ref": "#/components/schemas/sortedcomparisonoobjheavy"
+          "engine": {
+            "$ref": "#/components/schemas/cmpEngineSpec"
           },
           "rowCount": {
             "$ref": "#/components/schemas/cmpint"
@@ -63168,14 +62595,8 @@
           "sheetCount": {
             "$ref": "#/components/schemas/cmpint"
           },
-          "fileSizeMib": {
-            "$ref": "#/components/schemas/cmpfloat"
-          },
           "objectCount": {
             "$ref": "#/components/schemas/cmpint"
-          },
-          "maxMemoryMib": {
-            "$ref": "#/components/schemas/cmpfloat"
           },
           "sheetsCached": {
             "$ref": "#/components/schemas/sortedcomparisonobjresponsetime"
@@ -63189,14 +62610,11 @@
           "sheetsUncached": {
             "$ref": "#/components/schemas/sortedcomparisonobjresponsetime"
           },
-          "documentSizeMib": {
+          "documentSizeMiB": {
             "$ref": "#/components/schemas/cmpfloat"
           },
           "objSlowUncached": {
             "$ref": "#/components/schemas/sortedcomparisonobjresponsetime"
-          },
-          "dataModelSizeMib": {
-            "$ref": "#/components/schemas/cmpfloat"
           },
           "hasSectionAccess": {
             "$ref": "#/components/schemas/cmpbool"
@@ -63209,9 +62627,6 @@
           },
           "objSingleThreaded": {
             "$ref": "#/components/schemas/sortedcomparisonobjresponsetime"
-          },
-          "appOpenTimeSeconds": {
-            "$ref": "#/components/schemas/cmpfloat"
           }
         }
       },
@@ -63220,41 +62635,34 @@
         "items": {
           "allOf": [
             {
-              "$ref": "#/components/schemas/objecttopspec"
-            },
-            {
               "type": "object",
               "properties": {
                 "name": {
                   "type": "string",
-                  "example": "a"
+                  "format": "string",
+                  "example": "a field name"
+                },
+                "byteSize": {
+                  "$ref": "#/components/schemas/cmpint"
                 },
                 "cardinal": {
                   "$ref": "#/components/schemas/cmpint"
                 },
-                "byte_size": {
-                  "$ref": "#/components/schemas/cmpint"
+                "isSystem": {
+                  "type": "boolean",
+                  "example": false
                 },
-                "is_system": {
-                  "$ref": "#/components/schemas/cmpbool"
-                },
-                "total_count": {
+                "totalCount": {
                   "$ref": "#/components/schemas/cmpint"
                 },
                 "dataSourceStatus": {
-                  "enum": [
-                    "full",
-                    "none",
-                    "baselinemissing",
-                    "comparisonmissing"
-                  ],
-                  "type": "string",
-                  "example": "full"
+                  "$ref": "#/components/schemas/dataSourceStatus"
                 }
               }
             }
           ]
-        }
+        },
+        "maxItems": 2147483647
       },
       "comparisonobjMemoryLimit": {
         "type": "array",
@@ -63267,14 +62675,7 @@
               "type": "object",
               "properties": {
                 "dataSourceStatus": {
-                  "enum": [
-                    "full",
-                    "none",
-                    "baselinemissing",
-                    "comparisonmissing"
-                  ],
-                  "type": "string",
-                  "example": "full"
+                  "$ref": "#/components/schemas/dataSourceStatus"
                 },
                 "baselineMemoryLimitStatusCode": {
                   "type": "string",
@@ -63287,7 +62688,8 @@
               }
             }
           ]
-        }
+        },
+        "maxItems": 2147483647
       },
       "comparisonobjresponsetime": {
         "type": "array",
@@ -63300,14 +62702,7 @@
               "type": "object",
               "properties": {
                 "dataSourceStatus": {
-                  "enum": [
-                    "full",
-                    "none",
-                    "baselinemissing",
-                    "comparisonmissing"
-                  ],
-                  "type": "string",
-                  "example": "full"
+                  "$ref": "#/components/schemas/dataSourceStatus"
                 },
                 "responseTimeSeconds1": {
                   "$ref": "#/components/schemas/cmpfloatWithTimeout"
@@ -63318,45 +62713,39 @@
               }
             }
           ]
-        }
+        },
+        "maxItems": 2147483647
       },
       "comparisontables": {
         "type": "array",
         "items": {
           "allOf": [
             {
-              "$ref": "#/components/schemas/objecttopspec"
-            },
-            {
               "type": "object",
               "properties": {
                 "name": {
                   "type": "string",
-                  "example": "a"
+                  "format": "string",
+                  "example": "a table name"
                 },
-                "byte_size": {
+                "byteSize": {
                   "$ref": "#/components/schemas/cmpint"
                 },
-                "is_system": {
-                  "$ref": "#/components/schemas/cmpbool"
+                "isSystem": {
+                  "type": "boolean",
+                  "example": false
                 },
-                "no_of_rows": {
+                "noOfRows": {
                   "$ref": "#/components/schemas/cmpint"
                 },
                 "dataSourceStatus": {
-                  "enum": [
-                    "full",
-                    "none",
-                    "baselinemissing",
-                    "comparisonmissing"
-                  ],
-                  "type": "string",
-                  "example": "full"
+                  "$ref": "#/components/schemas/dataSourceStatus"
                 }
               }
             }
           ]
-        }
+        },
+        "maxItems": 2147483647
       },
       "dataSourceStatus": {
         "enum": [
@@ -63432,11 +62821,15 @@
             "format": "date-time",
             "example": "2022-02-09T06:58:40.575Z"
           },
+          "engine": {
+            "$ref": "#/components/schemas/engineSpec"
+          },
           "events": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/event"
-            }
+            },
+            "maxItems": 2147483647
           },
           "result": {
             "$ref": "#/components/schemas/result"
@@ -63460,7 +62853,8 @@
                   "type": "string",
                   "format": "string",
                   "example": "this is an error"
-                }
+                },
+                "maxItems": 2147483647
               },
               "warnings": {
                 "type": "array",
@@ -63468,12 +62862,8 @@
                   "type": "string",
                   "format": "string",
                   "example": "this is a warning"
-                }
-              },
-              "dedicated": {
-                "type": "boolean",
-                "example": false,
-                "deprecated": true
+                },
+                "maxItems": 2147483647
               },
               "objectMetrics": {
                 "type": "object",
@@ -63491,11 +62881,6 @@
               }
             }
           },
-          "sheetId": {
-            "type": "string",
-            "format": "string",
-            "example": "zyb2bQTeFmPVt9TXZOS0I5GZCFn"
-          },
           "started": {
             "type": "string",
             "format": "date-time",
@@ -63504,9 +62889,6 @@
           "version": {
             "type": "number",
             "example": 1
-          },
-          "metadata": {
-            "$ref": "#/components/schemas/metadata"
           },
           "tenantId": {
             "type": "string",
@@ -63523,10 +62905,11 @@
             "format": "date-time",
             "example": "2022-02-09T06:58:40.575Z"
           },
-          "sheetTitle": {
-            "type": "string",
-            "format": "string",
-            "example": "my sheet"
+          "openAppProgress": {
+            "$ref": "#/components/schemas/openAppProgress"
+          },
+          "reloadInformation": {
+            "$ref": "#/components/schemas/reloadInformation"
           }
         }
       },
@@ -63547,7 +62930,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/evaluation"
-            }
+            },
+            "maxItems": 2147483647
           },
           "links": {
             "type": "object",
@@ -63594,14 +62978,15 @@
                   "example": 427
                 }
               }
-            }
+            },
+            "maxItems": 2147483647
           }
         }
       },
       "event": {
         "type": "object",
         "properties": {
-          "details": {
+          "message": {
             "type": "string",
             "example": "An object failed"
           },
@@ -63773,19 +63158,26 @@
       "objectmetrics": {
         "type": "object",
         "properties": {
+          "errorCode": {
+            "type": "string",
+            "format": "string",
+            "example": "WARN-CALC-TOO-LARGE"
+          },
           "cpuSeconds": {
             "type": "array",
             "items": {
               "type": "number",
               "example": 12.3
-            }
+            },
+            "maxItems": 2147483647
           },
           "cpuQuotients": {
             "type": "array",
             "items": {
               "type": "number",
               "example": 12.3
-            }
+            },
+            "maxItems": 2147483647
           },
           "responseTimeSeconds": {
             "type": "number",
@@ -63814,6 +63206,11 @@
           "objectType": {
             "type": "string",
             "example": "table"
+          },
+          "sheetTitle": {
+            "type": "string",
+            "format": "string",
+            "example": "my sheet"
           }
         }
       },
@@ -63825,11 +63222,11 @@
             "format": "string",
             "example": "some field/table"
           },
-          "byte_size": {
+          "byteSize": {
             "type": "number",
             "example": 12873
           },
-          "is_system": {
+          "isSystem": {
             "type": "boolean",
             "example": false
           }
@@ -63919,10 +63316,20 @@
       "result": {
         "type": "object",
         "properties": {
-          "sheets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/resultobjsheet"
+          "openApp": {
+            "type": "object",
+            "properties": {
+              "steps": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/openAppStep"
+                },
+                "maxItems": 2147483647
+              },
+              "totalDurationMilliseconds": {
+                "type": "number",
+                "example": 12345
+              }
             }
           },
           "rowCount": {
@@ -63933,7 +63340,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/resultobjresponsetime"
-            }
+            },
+            "maxItems": 2147483647
           },
           "sheetCount": {
             "type": "number",
@@ -63943,17 +63351,33 @@
             "type": "number",
             "example": 33
           },
+          "sheetsCached": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/resultobjsheet"
+            },
+            "maxItems": 2147483647
+          },
           "objSlowCached": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/resultobjresponsetime"
-            }
+            },
+            "maxItems": 2147483647
           },
           "objMemoryLimit": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/resultobjMemoryLimit"
-            }
+            },
+            "maxItems": 2147483647
+          },
+          "sheetsUncached": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/resultobjsheet"
+            },
+            "maxItems": 2147483647
           },
           "documentSizeMiB": {
             "type": "number",
@@ -63963,7 +63387,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/resultobjresponsetime"
-            }
+            },
+            "maxItems": 2147483647
           },
           "hasSectionAccess": {
             "type": "boolean",
@@ -63972,20 +63397,23 @@
           "topFieldsByBytes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/resultmetadatatopfields"
-            }
+              "$ref": "#/components/schemas/objecttopspec"
+            },
+            "maxItems": 2147483647
           },
           "topTablesByBytes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/resultmetadatatoptables"
-            }
+              "$ref": "#/components/schemas/objecttopspec"
+            },
+            "maxItems": 2147483647
           },
           "objSingleThreaded": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/resultsingle"
-            }
+            },
+            "maxItems": 2147483647
           }
         }
       },
@@ -64001,7 +63429,8 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/objectmetrics"
-                }
+                },
+                "maxItems": 2147483647
               }
             }
           }
@@ -64057,7 +63486,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/resultobjresponsetime"
-            }
+            },
+            "maxItems": 2147483647
           }
         }
       },
@@ -64069,7 +63499,15 @@
           {
             "type": "object",
             "properties": {
-              "cpuQuotient1": {
+              "cpuQuotients": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "example": 12.3
+                },
+                "maxItems": 2147483647
+              },
+              "responseTimeSeconds": {
                 "type": "number",
                 "example": 12.3
               }
@@ -64095,14 +63533,7 @@
                 "$ref": "#/components/schemas/comparisonfields"
               },
               "dataSourceStatus": {
-                "enum": [
-                  "full",
-                  "none",
-                  "baselinemissing",
-                  "comparisonmissing"
-                ],
-                "type": "string",
-                "example": "full"
+                "$ref": "#/components/schemas/dataSourceStatus"
               },
               "relativeDiffDesc": {
                 "$ref": "#/components/schemas/comparisonfields"
@@ -64129,14 +63560,7 @@
                 "$ref": "#/components/schemas/comparisonobjresponsetime"
               },
               "dataSourceStatus": {
-                "enum": [
-                  "full",
-                  "none",
-                  "baselinemissing",
-                  "comparisonmissing"
-                ],
-                "type": "string",
-                "example": "full"
+                "$ref": "#/components/schemas/dataSourceStatus"
               },
               "relativeDiffDesc": {
                 "$ref": "#/components/schemas/comparisonobjresponsetime"
@@ -64163,14 +63587,7 @@
                 "$ref": "#/components/schemas/comparisontables"
               },
               "dataSourceStatus": {
-                "enum": [
-                  "full",
-                  "none",
-                  "baselinemissing",
-                  "comparisonmissing"
-                ],
-                "type": "string",
-                "example": "full"
+                "$ref": "#/components/schemas/dataSourceStatus"
               },
               "relativeDiffDesc": {
                 "$ref": "#/components/schemas/comparisontables"
@@ -67053,43 +66470,6 @@
         },
         "description": "classification defines the default role that attribute can play in an analysis"
       },
-      "comparisonoobjheavy": {
-        "type": "array",
-        "items": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/objectspec"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "cpuSeconds1": {
-                  "$ref": "#/components/schemas/cmpfloat"
-                },
-                "cpuSeconds2": {
-                  "$ref": "#/components/schemas/cmpfloat"
-                },
-                "cpuQuotient1": {
-                  "$ref": "#/components/schemas/cmpfloat"
-                },
-                "cpuQuotient2": {
-                  "$ref": "#/components/schemas/cmpfloat"
-                },
-                "dataSourceStatus": {
-                  "enum": [
-                    "full",
-                    "none",
-                    "baselinemissing",
-                    "comparisonmissing"
-                  ],
-                  "type": "string",
-                  "example": "full"
-                }
-              }
-            }
-          ]
-        }
-      },
       "CompositionMinMax": {
         "type": "object",
         "properties": {
@@ -68091,52 +67471,6 @@
           }
         }
       },
-      "metadata": {
-        "type": "object",
-        "properties": {
-          "reloadmeta": {
-            "type": "object",
-            "properties": {
-              "cpuspent": {
-                "type": "number",
-                "example": "123983"
-              },
-              "peakmemorybytes": {
-                "type": "number",
-                "example": 112
-              }
-            }
-          },
-          "amountofrows": {
-            "type": "number",
-            "example": 1423423234
-          },
-          "amountoffields": {
-            "type": "number",
-            "example": 12
-          },
-          "amountoftables": {
-            "type": "number",
-            "example": 7
-          },
-          "staticbytesize": {
-            "type": "number",
-            "example": 1444234
-          },
-          "hassectionaccess": {
-            "type": "boolean",
-            "example": false
-          },
-          "amountoffieldvalues": {
-            "type": "number",
-            "example": 144423433
-          },
-          "amountofcardinalfieldvalues": {
-            "type": "number",
-            "example": 14442
-          }
-        }
-      },
       "NavigationLink": {
         "type": "object",
         "properties": {
@@ -68813,46 +68147,6 @@
           }
         }
       },
-      "resultmetadatatopfields": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/objecttopspec"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "example": "a"
-              },
-              "byte_size": {
-                "type": "number",
-                "example": 1234
-              }
-            }
-          }
-        ]
-      },
-      "resultmetadatatoptables": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/objecttopspec"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "example": "a"
-              },
-              "byte_size": {
-                "type": "number",
-                "example": 1234
-              }
-            }
-          }
-        ]
-      },
       "Script": {
         "type": "object",
         "properties": {
@@ -69015,40 +68309,6 @@
           ],
           "type": "string"
         }
-      },
-      "sortedcomparisonoobjheavy": {
-        "allOf": [
-          {
-            "type": "object",
-            "properties": {
-              "list": {
-                "$ref": "#/components/schemas/comparisonoobjheavy"
-              },
-              "absoluteDiffAsc": {
-                "$ref": "#/components/schemas/comparisonoobjheavy"
-              },
-              "relativeDiffAsc": {
-                "$ref": "#/components/schemas/comparisonoobjheavy"
-              },
-              "absoluteDiffDesc": {
-                "$ref": "#/components/schemas/comparisonoobjheavy"
-              },
-              "dataSourceStatus": {
-                "enum": [
-                  "full",
-                  "none",
-                  "baselinemissing",
-                  "comparisonmissing"
-                ],
-                "type": "string",
-                "example": "full"
-              },
-              "relativeDiffDesc": {
-                "$ref": "#/components/schemas/comparisonoobjheavy"
-              }
-            }
-          }
-        ]
       },
       "SymbolFrequency": {
         "type": "object",
@@ -91367,7 +90627,8 @@
           "undefined"
         ],
         "type": "string",
-        "description": "The mode of an alias. Default mode means the model assigned to that alias will be used if alias is not specified"
+        "nullable": true,
+        "description": "The mode of an alias. Default mode means the model assigned to that alias will be used if alias is not specified. Null for a regular alias."
       },
       "AliasPatch": {
         "type": "array",
