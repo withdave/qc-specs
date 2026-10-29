@@ -1317,6 +1317,267 @@
         }
       }
     },
+    "/api/scheduling/tasks/resources/{id}/actions/reload/on-dataset-updated": {
+      "post": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Create a reload task triggered by a dataset update",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                },
+                "examples": {
+                  "reloadOnDatasetUpdated": {
+                    "$ref": "#/components/examples/reloadOnDatasetUpdatedTask"
+                  }
+                }
+              }
+            },
+            "description": "Task created successfully."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "424": {
+            "$ref": "#/components/responses/FailedDependency"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The unique identifier of the app to reload."
+          }
+        ],
+        "description": "Creates a reload task for the app that runs when a Data Integration (Qlik Talend\nCloud) pipeline finishes updating or loading a dataset (QVD or data warehouse\nstorage) that the app uses.\nThis is a convenience wrapper over `POST /scheduling/tasks`; the full task\ndefinition is generated server-side. Use `POST /scheduling/tasks` for advanced\nconfigurations.\n\nEligible datasets are resolved from the app's lineage when the task is created,\nas the task owner; datasets the app starts using later are not picked up. Other\ndata sources, such as data files or QVDs in spaces, do not trigger the task.\nAn app can have only one such task, and it is shared with the app's legacy\nreload-task auto-reload setting: changing that setting replaces or removes this\ntask's trigger. One pipeline run may start the task more than once.\n\nErrors:\n- `400` `CHO-001`: the request body or the path `id` is invalid. This includes a\n  `name` or `description` over its maximum length.\n- `403` `CHO-003`: the app does not exist, is not accessible, or the caller\n  lacks `app:reload` on it.\n- `404`: not returned for a missing app, which gets `403` as above. Kept for\n  compatibility.\n- `409` `CHO-031`: the app already has a dataset-update task, enabled or not. Its ID\n  is returned in `value.existingTaskId`.\n- `422` `CHO-030`: the app does not use any dataset produced by a Data Integration\n  pipeline, or the task owner cannot see all of them.\n  `CHO-014`: the app already has the maximum number of tasks.\n  `CHO-018`: the caller has reached the per-user task quota, when one is configured.\n- `424` `CHO-013`: the task could not be stored. Nothing is created.",
+        "operationId": "createReloadTaskOnDatasetUpdated",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReloadOnDatasetUpdatedRequest"
+              },
+              "examples": {
+                "reloadOnDatasetUpdated": {
+                  "$ref": "#/components/examples/reloadOnDatasetUpdatedRequest"
+                }
+              }
+            }
+          },
+          "required": true,
+          "description": "The name and the reload options of the task to create."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/scheduling/tasks/resources/{id}/actions/reload/on-task-event": {
+      "post": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Create a reload task triggered by another task",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                },
+                "examples": {
+                  "reloadOnTaskEvent": {
+                    "$ref": "#/components/examples/reloadOnTaskEventTask"
+                  }
+                }
+              }
+            },
+            "description": "Task created successfully."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "424": {
+            "$ref": "#/components/responses/FailedDependency"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The unique identifier of the app to reload."
+          }
+        ],
+        "description": "Creates a reload task for the app that runs when another task finishes with\nthe given status.\nThis is a convenience wrapper over `POST /scheduling/tasks`; the full task\ndefinition is generated server-side. Use `POST /scheduling/tasks` for advanced\nconfigurations.\n\nThe upstream task (`onTaskId`) must belong to the caller's tenant, and the caller\nneeds read access to the upstream task's app. The server adds the upstream task's\n`spaceId` and `appId` to the event correlations of the created task. If the\nupstream task is deleted later, this task no longer runs.\n\nErrors:\n- `400` `CHO-001`: the request body or the path `id` is invalid. This includes a\n  `name` or `description` over its maximum length, and an `onTaskStatus` other\n  than `succeeded`, `failed` or `any`.\n- `400` `CHO-016`: `onTaskId` is not a UUID, or no such task exists in the caller's tenant.\n- `403` `CHO-003`: the app does not exist, is not accessible, or the caller\n  lacks `app:reload` on it.\n  `CHO-015`: the caller cannot read the upstream task's app.\n- `422` `CHO-014`: the app already has the maximum number of tasks.\n  `CHO-018`: the caller has reached the per-user task quota, when one is configured.\n- `424` `CHO-013`: the task could not be stored. Nothing is created.\n- `404` `CHO-004`: the upstream task was deleted while the request was processed.",
+        "operationId": "createReloadTaskOnTaskEvent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReloadOnTaskEventRequest"
+              },
+              "examples": {
+                "reloadOnTaskEvent": {
+                  "$ref": "#/components/examples/reloadOnTaskEventRequest"
+                }
+              }
+            }
+          },
+          "required": true,
+          "description": "The upstream task, the status that triggers the reload, and the reload options."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
+    "/api/scheduling/tasks/resources/{id}/actions/reload/on-time-schedule": {
+      "post": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Create a time-scheduled reload task",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                },
+                "examples": {
+                  "reloadOnTimeSchedule": {
+                    "$ref": "#/components/examples/reloadOnTimeScheduleTask"
+                  }
+                }
+              }
+            },
+            "description": "Task created successfully."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "424": {
+            "$ref": "#/components/responses/FailedDependency"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The unique identifier of the app to reload."
+          }
+        ],
+        "description": "Creates a reload task for the app that runs on a recurring time schedule.\nThis is a convenience wrapper over `POST /scheduling/tasks`; the full task\ndefinition is generated server-side. Use `POST /scheduling/tasks` for advanced\nconfigurations.\n\nThe schedule is evaluated in `timezone`. The first run is the next occurrence of\n`recurrence` after the task is created; creating a task never runs it immediately.\nA task is created disabled unless `enabled` is `true`.\n\nErrors:\n- `400` `CHO-001`: the request body or the path `id` is invalid. This includes a\n  `name` or `description` over its maximum length.\n- `400` `CHO-017`: the schedule was rejected: `recurrence` or `timezone` is\n  invalid, `endDateTime` is not after `startDateTime`, or `endDateTime` is in the past.\n- `403` `CHO-003`: the app does not exist, is not accessible, or the caller\n  lacks `app:reload` on it.\n- `404`: not returned for a missing app, which gets `403` as above. Kept for\n  compatibility.\n- `422` `CHO-014`: the app already has the maximum number of tasks.\n  `CHO-018`: the caller has reached the per-user task quota, when one is configured.\n- `424` `CHO-013`: the task could not be stored. Nothing is created.\n- `503` `CHO-024`: the scheduler is temporarily unavailable. Nothing is created.",
+        "operationId": "createReloadTaskOnTimeSchedule",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReloadOnTimeScheduleRequest"
+              },
+              "examples": {
+                "reloadOnTimeSchedule": {
+                  "$ref": "#/components/examples/reloadOnTimeScheduleRequest"
+                }
+              }
+            }
+          },
+          "required": true,
+          "description": "The schedule and the reload options of the task to create."
+        },
+        "x-qlik-visibility": "public",
+        "x-qlik-stability": "stable",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
+    },
     "/api/scheduling/tasks/resources/{id}/runs": {
       "get": {
         "tags": [
@@ -1474,6 +1735,243 @@
           "description": "This is a Reload Task Demo in Serverless Workflow Spec"
         },
         "summary": "payload for creating a Task"
+      },
+      "reloadOnDatasetUpdatedRequest": {
+        "value": {
+          "name": "Reload sales app when its data is refreshed",
+          "enabled": true
+        },
+        "summary": "Reload when a pipeline updates the app's data"
+      },
+      "reloadOnDatasetUpdatedTask": {
+        "value": {
+          "id": "a7b8c9d0-e1f2-4a3b-8c4d-5e6f7a8b9c0d",
+          "name": "Reload sales app when its data is refreshed",
+          "events": [
+            {
+              "name": "dataset-updated",
+              "type": "com.qlik/active-analytics-orch",
+              "source": "dataset.updated",
+              "correlation": [
+                {
+                  "contextAttributeName": "appId",
+                  "contextAttributeValue": "23d42e7e-febc-4ac5-ae58-8f2792eebfb1"
+                }
+              ]
+            }
+          ],
+          "states": [
+            {
+              "name": "init_state",
+              "type": "EVENT",
+              "onEvents": [
+                {
+                  "actions": [
+                    {
+                      "name": "App Reload",
+                      "functionRef": {
+                        "refName": "app.reload",
+                        "arguments": {
+                          "appId": "23d42e7e-febc-4ac5-ae58-8f2792eebfb1",
+                          "weight": 1,
+                          "partial": false
+                        }
+                      }
+                    }
+                  ],
+                  "eventRefs": [
+                    "start"
+                  ]
+                }
+              ]
+            }
+          ],
+          "enabled": true,
+          "version": "1.0.0",
+          "metadata": {
+            "usage": "ANALYTICS",
+            "ownerId": "6f1c2d3e4a5b6c7d8e9f0a1b",
+            "spaceId": "073bccb3-4787-4604-8749-8454e479dfa8",
+            "trigger": {
+              "id": "c9d0e1f2-a3b4-4c5d-8e6f-7a8b9c0d1e2f",
+              "type": 4
+            },
+            "tenantId": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+            "createdAt": "2026-10-15T02:14:42.130Z",
+            "createdBy": "6f1c2d3e4a5b6c7d8e9f0a1b",
+            "spaceType": "shared",
+            "updatedAt": "2026-10-15T02:14:42.130Z",
+            "resourceName": "Sales",
+            "resourceType": "app",
+            "orchestration": {
+              "id": "b8c9d0e1-f2a3-4b4c-9d5e-6f7a8b9c0d1e",
+              "type": 3
+            },
+            "resourceSubType": "reload"
+          },
+          "resourceId": "23d42e7e-febc-4ac5-ae58-8f2792eebfb1",
+          "specVersion": "2.8.1"
+        },
+        "summary": "Created reload task triggered by a dataset update"
+      },
+      "reloadOnTaskEventRequest": {
+        "value": {
+          "name": "Reload sales app after ingest",
+          "enabled": true,
+          "onTaskId": "7f3e2a1b-5c4d-4e8f-9a0b-1c2d3e4f5a6b",
+          "onTaskStatus": "succeeded"
+        },
+        "summary": "Reload when the upstream task succeeds"
+      },
+      "reloadOnTaskEventTask": {
+        "value": {
+          "id": "d4e5f6a7-b8c9-4d0e-9f1a-2b3c4d5e6f7a",
+          "name": "Reload sales app after ingest",
+          "events": [
+            {
+              "name": "task-event",
+              "type": "com.qlik.v1.task.run.finished",
+              "source": "system-events.task",
+              "correlation": [
+                {
+                  "contextAttributeName": "id",
+                  "contextAttributeValue": "7f3e2a1b-5c4d-4e8f-9a0b-1c2d3e4f5a6b"
+                }
+              ]
+            }
+          ],
+          "states": [
+            {
+              "name": "init_state",
+              "type": "EVENT",
+              "onEvents": [
+                {
+                  "actions": [
+                    {
+                      "name": "App Reload",
+                      "functionRef": {
+                        "refName": "app.reload",
+                        "arguments": {
+                          "appId": "78dd3dfc-32f3-468c-90e7-f302d4fb0fdf",
+                          "weight": 1,
+                          "partial": false
+                        }
+                      }
+                    }
+                  ],
+                  "eventRefs": [
+                    "start"
+                  ]
+                }
+              ]
+            }
+          ],
+          "enabled": true,
+          "version": "1.0.0",
+          "metadata": {
+            "usage": "ANALYTICS",
+            "ownerId": "6f1c2d3e4a5b6c7d8e9f0a1b",
+            "spaceId": "434f9f7c-4eeb-43f0-8f08-88b91f357c07",
+            "trigger": {
+              "id": "f6a7b8c9-d0e1-4f2a-9b3c-4d5e6f7a8b9c",
+              "type": 1
+            },
+            "tenantId": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+            "createdAt": "2026-10-15T02:14:42.130Z",
+            "createdBy": "6f1c2d3e4a5b6c7d8e9f0a1b",
+            "spaceType": "shared",
+            "updatedAt": "2026-10-15T02:14:42.130Z",
+            "resourceName": "Sales",
+            "resourceType": "app",
+            "orchestration": {
+              "id": "e5f6a7b8-c9d0-4e1f-8a2b-3c4d5e6f7a8b",
+              "type": 3
+            },
+            "resourceSubType": "reload"
+          },
+          "resourceId": "78dd3dfc-32f3-468c-90e7-f302d4fb0fdf",
+          "specVersion": "2.8.1"
+        },
+        "summary": "Created reload task triggered by another task"
+      },
+      "reloadOnTimeScheduleRequest": {
+        "value": {
+          "name": "Reload sales app every weekday morning",
+          "enabled": true,
+          "timezone": "Europe/Stockholm",
+          "recurrence": "RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
+          "description": "Reload the sales app at 09:00 Stockholm time on weekdays",
+          "endDateTime": "2030-12-31T23:59:59",
+          "startDateTime": "2026-11-02T00:00:00"
+        },
+        "summary": "Reload every weekday at 09:00 Stockholm time"
+      },
+      "reloadOnTimeScheduleTask": {
+        "value": {
+          "id": "3c9d1f6e-8b2a-4d7c-a5e1-0f4b6d8e2a17",
+          "name": "Reload sales app every weekday morning",
+          "start": {
+            "schedule": {
+              "timezone": "Europe/Stockholm",
+              "recurrence": "RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
+              "endDateTime": "2030-12-31T23:59:59",
+              "startDateTime": "2026-11-02T00:00:00"
+            }
+          },
+          "states": [
+            {
+              "name": "init_state",
+              "type": "EVENT",
+              "onEvents": [
+                {
+                  "actions": [
+                    {
+                      "name": "App Reload",
+                      "functionRef": {
+                        "refName": "app.reload",
+                        "arguments": {
+                          "appId": "80c6f35f-c9d7-4488-bb5a-ad973b13ec00",
+                          "weight": 1,
+                          "partial": false
+                        }
+                      }
+                    }
+                  ],
+                  "eventRefs": [
+                    "start"
+                  ]
+                }
+              ]
+            }
+          ],
+          "enabled": true,
+          "version": "1.0.0",
+          "metadata": {
+            "usage": "ANALYTICS",
+            "ownerId": "6f1c2d3e4a5b6c7d8e9f0a1b",
+            "spaceId": "434f9f7c-4eeb-43f0-8f08-88b91f357c07",
+            "trigger": {
+              "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
+              "type": 0
+            },
+            "tenantId": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+            "createdAt": "2026-10-15T02:14:42.130Z",
+            "createdBy": "6f1c2d3e4a5b6c7d8e9f0a1b",
+            "spaceType": "shared",
+            "updatedAt": "2026-10-15T02:14:42.130Z",
+            "resourceName": "Sales",
+            "resourceType": "app",
+            "orchestration": {
+              "id": "9a7b5c3d-1e2f-4a6b-8c0d-2e4f6a8b0c1d",
+              "type": 3
+            },
+            "resourceSubType": "reload"
+          },
+          "resourceId": "80c6f35f-c9d7-4488-bb5a-ad973b13ec00",
+          "description": "Reload the sales app at 09:00 Stockholm time on weekdays",
+          "specVersion": "2.8.1"
+        },
+        "summary": "Created time-scheduled reload task"
       }
     },
     "responses": {
@@ -1525,6 +2023,16 @@
         },
         "description": "The request conflicts with the current state of the resource."
       },
+      "FailedDependency": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "A dependency the operation relies on failed, such as storing the result."
+      },
       "Forbidden": {
         "content": {
           "application/json": {
@@ -1574,6 +2082,16 @@
           }
         },
         "description": "Authentication credentials are missing or invalid."
+      },
+      "UnprocessableEntity": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        },
+        "description": "The request was well-formed but cannot be processed in its current state."
       }
     },
     "schemas": {
@@ -2190,6 +2708,147 @@
         ],
         "description": "The value to use in a JSON Patch operation."
       },
+      "ReloadOnDatasetUpdatedRequest": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Reload sales app when its data is refreshed",
+            "maxLength": 100,
+            "minLength": 1,
+            "description": "The name that identifies the task."
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the task is enabled. A disabled task never runs on its own. Defaults to `false`."
+          },
+          "partial": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the reload is partial."
+          },
+          "description": {
+            "type": "string",
+            "example": "Reload the sales app whenever its pipeline updates the sales dataset",
+            "maxLength": 1024,
+            "description": "A human-readable description of the task's purpose."
+          }
+        },
+        "description": "Request body for creating a reload task that runs when a dataset the app uses is updated by a Data Integration pipeline.",
+        "additionalProperties": false
+      },
+      "ReloadOnTaskEventRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "onTaskId"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Reload sales app after ingest",
+            "maxLength": 100,
+            "minLength": 1,
+            "description": "The name that identifies the task."
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the task is enabled. A disabled task never runs on its own. Defaults to `false`."
+          },
+          "partial": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the reload is partial."
+          },
+          "onTaskId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "7f3e2a1b-5c4d-4e8f-9a0b-1c2d3e4f5a6b",
+            "minLength": 1,
+            "description": "The unique identifier of the upstream task whose runs trigger this reload. It must belong to the caller's tenant, and the caller needs read access to its app."
+          },
+          "description": {
+            "type": "string",
+            "example": "Reload the sales app when the ingest task succeeds",
+            "maxLength": 1024,
+            "description": "A human-readable description of the task's purpose."
+          },
+          "onTaskStatus": {
+            "enum": [
+              "succeeded",
+              "failed",
+              "any"
+            ],
+            "type": "string",
+            "default": "succeeded",
+            "example": "succeeded",
+            "description": "The outcome of an upstream task run that triggers this reload. Defaults to `succeeded`.\n- `succeeded`: the run completed successfully. For an automation, `finished`\n  and `finished with warnings` count as success.\n- `failed`: the run ended in any unsuccessful state, such as failed, canceled\n  or exceeded limits.\n- `any`: either of the above.\n\nOnly runs started by the scheduling service count: scheduled, triggered or\nmanual task runs. A reload started directly on the app does not."
+          }
+        },
+        "description": "Request body for creating a reload task that runs when another task finishes with a given status.",
+        "additionalProperties": false
+      },
+      "ReloadOnTimeScheduleRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "recurrence"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Reload sales app every weekday morning",
+            "maxLength": 100,
+            "minLength": 1,
+            "description": "The name that identifies the task."
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the task is enabled. A disabled task never runs on its own. Defaults to `false`."
+          },
+          "partial": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the reload is partial."
+          },
+          "timezone": {
+            "type": "string",
+            "default": "UTC",
+            "example": "Europe/Stockholm",
+            "description": "An IANA time zone name, such as `Europe/Stockholm`, used to evaluate `recurrence`, `startDateTime` and `endDateTime`. Defaults to `UTC`."
+          },
+          "recurrence": {
+            "type": "string",
+            "example": "RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
+            "minLength": 1,
+            "description": "An RFC 5545 recurrence rule prefixed with `RRULE:`, for example\n`RRULE:FREQ=DAILY;BYHOUR=9;BYMINUTE=0;BYSECOND=0` to run every day at 09:00:00.\n`FREQ` is required. The scheduler also enforces these limits:\n- The shortest frequency is `MINUTELY`; `SECONDLY` is not supported.\n- `COUNT` is at most 100.\n- `INTERVAL` is at most 1000 for `MINUTELY` and `HOURLY`, 548 for `DAILY`,\n  78 for `WEEKLY`, 18 for `MONTHLY` and 2 for `YEARLY`.\n- An `INTERVAL` greater than 1 cannot be combined with the `BY*` part of the\n  same unit, for example `FREQ=MINUTELY;INTERVAL=5;BYMINUTE=10`.\n- `DTSTART`, `UNTIL`, `EXDATE` and `RDATE` are not supported; use\n  `startDateTime` and `endDateTime` instead.\n\nTime-of-day parts that are left out (`BYHOUR`, `BYMINUTE`, `BYSECOND`) are taken\nfrom `startDateTime`, or from the creation time when `startDateTime` is omitted.\nSet them explicitly to run at a fixed time of day."
+          },
+          "description": {
+            "type": "string",
+            "example": "Reload the sales app at 09:00 Stockholm time on weekdays",
+            "maxLength": 1024,
+            "description": "A human-readable description of the task's purpose."
+          },
+          "endDateTime": {
+            "type": "string",
+            "example": "2030-12-31T23:59:59",
+            "description": "The local date and time in `timezone` when the schedule ends, in the same format as `startDateTime`; any offset or `Z` is ignored in the same way. It must be after `startDateTime` and in the future. Omit it for a schedule with no end."
+          },
+          "startDateTime": {
+            "type": "string",
+            "example": "2026-11-02T00:00:00",
+            "description": "The local date and time in `timezone` when the schedule starts, in the format `YYYY-MM-DDThh:mm:ss`. Any offset or `Z` is ignored: the value is always read as wall-clock time in `timezone`, so `2026-11-02T09:00:00Z` with `timezone` set to `Europe/Stockholm` means 09:00 Stockholm time. Defaults to the time the task is created. Occurrences before the task is created are skipped, not caught up, but they still count towards `COUNT`."
+          }
+        },
+        "description": "Request body for creating a reload task that runs on a recurring time schedule.",
+        "additionalProperties": false
+      },
       "schedule": {
         "oneOf": [
           {
@@ -2278,7 +2937,7 @@
       "Task": {
         "type": "object",
         "example": {
-          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "id": "3c9d1f6e-8b2a-4d7c-a5e1-0f4b6d8e2a17",
           "name": "TaskExample",
           "events": [
             {
@@ -2288,7 +2947,7 @@
               "correlation": [
                 {
                   "contextAttributeName": "appId",
-                  "contextAttributeValue": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                  "contextAttributeValue": "80c6f35f-c9d7-4488-bb5a-ad973b13ec00"
                 }
               ]
             }
@@ -2306,7 +2965,7 @@
                       "functionRef": {
                         "refName": "app.reload",
                         "arguments": {
-                          "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                          "appId": "80c6f35f-c9d7-4488-bb5a-ad973b13ec00",
                           "partial": false
                         }
                       }
@@ -2327,7 +2986,7 @@
             "ownerId": 0,
             "spaceId": "",
             "trigger": {
-              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
               "type": 4
             },
             "tenantId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -2335,7 +2994,7 @@
             "createdBy": 0,
             "updatedAt": "2025-08-31T23:27:51.207Z",
             "orchestration": {
-              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "id": "9a7b5c3d-1e2f-4a6b-8c0d-2e4f6a8b0c1d",
               "type": 3,
               "attrs": {
                 "last_run_status": "SUCCEEDED",
@@ -2346,7 +3005,7 @@
             }
           },
           "keepActive": false,
-          "resourceId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "resourceId": "80c6f35f-c9d7-4488-bb5a-ad973b13ec00",
           "description": "this is an example of task response",
           "specVersion": "1.16.0"
         },
@@ -2357,7 +3016,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "example": "1111aaaa-bbbb-1a1a-b22b-aaaa1111bbbb2222",
+            "example": "3c9d1f6e-8b2a-4d7c-a5e1-0f4b6d8e2a17",
             "readOnly": true,
             "description": "The unique identifier assigned to the task by the service."
           },
@@ -2431,9 +3090,9 @@
           },
           "specVersion": {
             "type": "string",
-            "example": "1.12.0",
+            "example": "2.8.1",
             "minLength": 1,
-            "description": "The Serverless Workflow specification version used by this task."
+            "description": "The version of the task definition format. If omitted, the service sets it to the API version that created the task. Tasks created by the simplified reload endpoints always get the API version."
           }
         },
         "additionalProperties": false

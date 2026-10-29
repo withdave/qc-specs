@@ -28,6 +28,9 @@
             },
             "description": "OK"
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -70,7 +73,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "The next page cursor"
+            "description": "The next page cursor. An invalid cursor returns `400 Bad Request`."
           },
           {
             "in": "query",
@@ -79,7 +82,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "The previous page cursor"
+            "description": "The previous page cursor. An invalid cursor returns `400 Bad Request`."
           },
           {
             "in": "query",
@@ -845,6 +848,11 @@
             "type": "boolean",
             "readOnly": true,
             "description": "OAuth client has been deleted by owning tenant, only applies for published clients."
+          },
+          "hashedCIMDSecurityFields": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Hash of the CIMD security fields captured when the connection was approved."
           }
         },
         "description": "Response schema for reading a connection config"
@@ -1297,6 +1305,11 @@
               "type": "string"
             },
             "description": "List of allowed authentication methods for the client"
+          },
+          "hashedCIMDSecurityFields": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Hash of CIMD security fields used to identify changes requiring reapproval."
           }
         },
         "description": "Base schema for OAuth client requests and responses"

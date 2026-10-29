@@ -4185,7 +4185,8 @@
             "type": "string",
             "format": "uri",
             "example": "https://tenant.qlik-cloud.com:443/api/v1/apps/816e23e1-03d2-446b-8721-cdee6b5e59cf/report-filters?filter=&filterTypes=REP&filterTypes=REP&limit=20&page=0&sort=%2Bname",
-            "nullable": true
+            "nullable": true,
+            "x-omitempty": false
           }
         },
         "additionalProperties": false
