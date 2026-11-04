@@ -293,7 +293,7 @@
         "tags": [
           "deployments"
         ],
-        "summary": "Activate the model for this deployment",
+        "summary": "Activate deployment models",
         "responses": {
           "204": {
             "$ref": "#/components/responses/204NoContentModelState"
@@ -328,8 +328,18 @@
             "$ref": "#/components/parameters/deploymentId"
           }
         ],
-        "description": "Activates the deployed model on this deployment's default alias. The\nresponse reports which model was targeted and whether its state\nactually changed via the `qlik-model-id` and `qlik-state-change`\nresponse headers. If the model was already active, the request still\nsucceeds but `qlik-state-change` is `NO_CHANGE`.\n",
+        "description": "Activates the deployed model on this deployment. By default this is the model on the\ndefault alias; optionally pass `modelId`, `aliasId` or `aliasName` in the\nrequest body to target another model (precedence in that order, only one\nis used). The\nresponse reports which model was targeted and whether its state\nactually changed via the `qlik-model-id` and `qlik-state-change`\nresponse headers. If the model was already active, the request still\nsucceeds but `qlik-state-change` is `NO_CHANGE`.\n",
         "operationId": "activateDeploymentModels",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateDeactivateModelsRequest"
+              }
+            }
+          },
+          "required": false
+        },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -344,7 +354,7 @@
         "tags": [
           "deployments"
         ],
-        "summary": "Deactivate the model for this deployment",
+        "summary": "Deactivate deployment models",
         "responses": {
           "204": {
             "$ref": "#/components/responses/204NoContentModelState"
@@ -379,8 +389,18 @@
             "$ref": "#/components/parameters/deploymentId"
           }
         ],
-        "description": "Deactivates the deployed model on this deployment's default alias.\nThe response reports which model was targeted and whether its state\nactually changed via the `qlik-model-id` and `qlik-state-change`\nresponse headers. If the model was already inactive, the request\nstill succeeds but `qlik-state-change` is `NO_CHANGE`.\n",
+        "description": "Deactivates the deployed model on this deployment. By default this is the model on the\ndefault alias; optionally pass `modelId`, `aliasId` or `aliasName` in the\nrequest body to target another model (precedence in that order, only one\nis used).\nThe response reports which model was targeted and whether its state\nactually changed via the `qlik-model-id` and `qlik-state-change`\nresponse headers. If the model was already inactive, the request\nstill succeeds but `qlik-state-change` is `NO_CHANGE`.\n",
         "operationId": "deactivateDeploymentModels",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateDeactivateModelsRequest"
+              }
+            }
+          },
+          "required": false
+        },
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
@@ -2716,7 +2736,7 @@
         },
         "example": "`filter=spaceId eq \"UUID\" and predictionEnabled eq \"true\" and nameContains co \"abc\"`",
         "required": false,
-        "description": "Deployment fields by which you can filter responses.<br><br>\n- `spaceId` ID string (or empty string for personal space) - ID of space in which deployment(s) exist\n- `modelId` UUID string - By model ID\n- `createdBy` ID string\n- `ownerId` ID string\n- `experimentId` UUID string - ID of experiment in which model(s) exist\n- `experimentVersionId` UUID string - ID of experiment version in which model(s) exist\n- `predictionId` UUID string - ID of prediction which exists on deployment\n- `predictionEnabled` boolean - Are predictions enabled\n- `exactName` string - Deployments with exact name. Names may not be unique.\n- `nameContains` string - Deployments where name includes this. Names may not be unique\n- `experimentType` string - Deployments that have models of the experiment type\n"
+        "description": "Deployment fields by which you can filter responses.<br><br>\n- `spaceId` ID string (or empty string for personal space) - ID of space in which deployment(s) exist\n- `modelId` UUID string - By model ID\n- `createdBy` ID string\n- `ownerId` ID string\n- `experimentId` UUID string - ID of experiment in which model(s) exist\n- `experimentVersionId` UUID string - ID of experiment version in which model(s) exist\n- `predictionId` UUID string - ID of prediction which exists on deployment\n- `predictionEnabled` boolean - Are predictions enabled\n- `exactName` string - Deployments with this exact, case-sensitive name. `eq` only (`exactName eq \"x\"`). Names may not be unique\n- `nameContains` string - Deployments where name includes this case-insensitive string. `co` only (`nameContains co \"x\"`)\n- If both `exactName` and `nameContains` are provided, only `exactName` is applied\n- `experimentType` string - Deployments that have models of the experiment type\n"
       },
       "deploymentsSort": {
         "in": "query",
@@ -2828,9 +2848,9 @@
         "schema": {
           "type": "string"
         },
-        "example": "`filter=\"id eq \"UUID1\" and experimentId eq \"UUID\" and hasDeployment eq true`",
+        "example": "`filter=id eq \"UUID1\" and experimentId eq \"UUID\" and hasDeployment eq true`",
         "required": false,
-        "description": "Model fields you can filter by:<br><br>\n\n- `experimentVersionId` UUID string - Find by experiment version ID\n- `batchNum` UUID string - Search by batch number\n- `isHpo` boolean - Is hyperparameter optimization used?\n- `isMetrics` boolean - Are metrics for regression, binary, or multiclass are used?\n- `id` UUID string - Find by model ID\n- `algorithm` enum string - Find by algorithm<br><br>\n\n  - Valid algorithms: catboost_classifier, catboost_regression,\n    elasticnet_regression, gaussian_nb, kneighbors_classifier,\n    lasso_regression, lasso, lgbm_classifier, lgbm_regression,\n    linear_regression, logistic_regression, random_forest_classifier,\n    random_forest_regression, sgd_regression, xgb_classifier,\n    xgb_regression<br><br>\n\n- `status` enum string - find by status<br><br>\n  - Valid statuses: pending, training_requested, training_done, ready, error<br><br>\n- `hasDeployment` boolean - Models that are part of a deployment\n- `nameContains` string - Models with name includes this case-insensitive string\n- `exactName` string - Models with exact name. Model names may not be unique\n- `samplingRatio` number - Find models by sampling ratio\n- `modelState` enum string - State by which to find models<br><br>\n  - Valid states: `pending, enabled, disabled, inactive`\n"
+        "description": "Model fields you can filter by:<br><br>\n\n- `experimentVersionId` UUID string - Find by experiment version ID\n- `batchNum` UUID string - Search by batch number\n- `isHpo` boolean - Is hyperparameter optimization used?\n- `isMetrics` boolean - Are metrics for regression, binary, or multiclass are used?\n- `id` UUID string - Find by model ID\n- `algorithm` enum string - Find by algorithm<br><br>\n\n  - Valid algorithms: catboost_classifier, catboost_regression,\n    elasticnet_regression, gaussian_nb, kneighbors_classifier,\n    lasso_regression, lasso, lgbm_classifier, lgbm_regression,\n    linear_regression, logistic_regression, random_forest_classifier,\n    random_forest_regression, sgd_regression, xgb_classifier,\n    xgb_regression<br><br>\n\n- `status` enum string - find by status<br><br>\n  - Valid statuses: pending, training_requested, training_done, ready, error<br><br>\n- `hasDeployment` boolean - Models that are part of a deployment\n- `exactName` string - Models with this exact, case-sensitive name. `eq` only (`exactName eq \"x\"`). Model names may not be unique\n- `nameContains` string - Models where name includes this case-insensitive string. `co` only (`nameContains co \"x\"`)\n- `name` string - With `eq`, same as `exactName` (case-sensitive). With `co`, same as `nameContains` (case-insensitive)\n- If both an exact name and a contains name filter are provided, only the exact name filter is applied\n- `samplingRatio` number - Find models by sampling ratio\n- `modelState` enum string - State by which to find models<br><br>\n  - Valid states: `pending, enabled, disabled, inactive`\n"
       },
       "modelsSort": {
         "in": "query",
@@ -2995,6 +3015,30 @@
       }
     },
     "schemas": {
+      "ActivateDeactivateModelsRequest": {
+        "type": "object",
+        "properties": {
+          "aliasId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "7d1f3c52-8b2e-4a6d-b0f4-3e9c6a1d2b75",
+            "description": "ID of an alias on this deployment. Its model is used."
+          },
+          "modelId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "2ac6a1f1-0c43-4f6b-9c3a-5d7e1b8a9f10",
+            "description": "ID of a model deployed on this deployment."
+          },
+          "aliasName": {
+            "type": "string",
+            "example": "Challenger",
+            "minLength": 1,
+            "description": "Name of an alias on this deployment. Its model is used."
+          }
+        },
+        "description": "Optional body that selects which model on the deployment to activate\nor deactivate. Only one identifier is used. If more than one is\nprovided, the order of precedence is `modelId`, `aliasId`, `aliasName`.\nIf none are provided, the model on the deployment's default alias is\nused. Unrecognized properties are ignored.\n"
+      },
       "Alias": {
         "type": "object",
         "required": [
@@ -5764,7 +5808,7 @@
           "predictionSpeed": {
             "type": "number",
             "nullable": true,
-            "description": "Model prediction speed in rows/second (from recommend-models endpoint)"
+            "description": "Model prediction speed in rows/second. Returned by recommend-models, and by the model list/get endpoints when includeSpeed=true."
           }
         },
         "description": "Model metrics based on the type of model\n",
