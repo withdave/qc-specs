@@ -1810,7 +1810,7 @@
             "resourceSubType": "reload"
           },
           "resourceId": "23d42e7e-febc-4ac5-ae58-8f2792eebfb1",
-          "specVersion": "2.8.1"
+          "specVersion": "2.9.0"
         },
         "summary": "Created reload task triggered by a dataset update"
       },
@@ -1890,7 +1890,7 @@
             "resourceSubType": "reload"
           },
           "resourceId": "78dd3dfc-32f3-468c-90e7-f302d4fb0fdf",
-          "specVersion": "2.8.1"
+          "specVersion": "2.9.0"
         },
         "summary": "Created reload task triggered by another task"
       },
@@ -1969,7 +1969,7 @@
           },
           "resourceId": "80c6f35f-c9d7-4488-bb5a-ad973b13ec00",
           "description": "Reload the sales app at 09:00 Stockholm time on weekdays",
-          "specVersion": "2.8.1"
+          "specVersion": "2.9.0"
         },
         "summary": "Created time-scheduled reload task"
       }
@@ -3090,7 +3090,7 @@
           },
           "specVersion": {
             "type": "string",
-            "example": "2.8.1",
+            "example": "2.9.0",
             "minLength": 1,
             "description": "The version of the task definition format. If omitted, the service sets it to the API version that created the task. Tasks created by the simplified reload endpoints always get the API version."
           }

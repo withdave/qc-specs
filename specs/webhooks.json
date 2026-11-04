@@ -171,6 +171,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "GET:/core/webhooks"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -223,6 +229,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "POST:/core/webhooks"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -281,6 +293,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "GET:/core/webhooks/{id}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -343,6 +361,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "PATCH:/core/webhooks/{id}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -409,6 +433,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "PUT:/core/webhooks/{id}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -458,6 +488,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "DELETE:/core/webhooks/{id}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -580,6 +616,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "GET:/core/webhooks/{id}/deliveries"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -647,6 +689,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "GET:/core/webhooks/{id}/deliveries/{deliveryId}"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
@@ -715,6 +763,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "POST:/core/webhooks/{id}/deliveries/{deliveryId}/actions/resend"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "2",
           "limit": 100
@@ -753,6 +807,12 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-replaced-by": [
+          {
+            "namespace": "core",
+            "uniqueIdentifier": "GET:/core/webhooks/event-types"
+          }
+        ],
         "x-qlik-tier": {
           "tier": "1",
           "limit": 1000
