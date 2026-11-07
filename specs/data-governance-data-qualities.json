@@ -690,6 +690,116 @@
           "limit": 100
         }
       }
+    },
+    "/api/data-governance/data-qualities/global-results/data-quality-rules/actions/filter": {
+      "post": {
+        "tags": [
+          "data-quality"
+        ],
+        "summary": "Get rule-quality aggregation for a rule across datasets",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleQualityAggregationResponse"
+                }
+              }
+            },
+            "description": "Rule-quality aggregation for the requested rule."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "The request is in incorrect format."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have valid authentication credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "User does not have access to the resource."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "No rule found with the specified `ruleId`."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested service is not available."
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SortDescendingInQuery"
+          },
+          {
+            "$ref": "#/components/parameters/PageInQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitInQuery"
+          }
+        ],
+        "description": "Retrieves the dataset-level rule-quality outcomes for a rule, plus the aggregate outcome across the included\ndatasets. When `datasetIds` is provided (max 100), the result and aggregate are limited to those datasets\nthat are accessible to the caller. When `datasetIds` is absent or empty, the service determines all\naccessible datasets where the rule is instantiated and returns the result and aggregate for that scope.\n\nFor each dataset in the resolved scope, the service selects the most recent data quality computation\nacross all connections. Only datasets whose latest computation contains a result for the requested rule\nare included in `ruleQualities` and contribute to `ruleQualityAggregate`. Datasets without a computed\nquality result, or whose latest computation has no result for the requested rule, are excluded; the\nservice does not fall back to an older computation. This behavior also applies when `datasetIds` is\nabsent or empty.\n\nThe `ruleQualities` list is sorted by `datasetId` and paginated using the `page` and `limit` query\nparameters. Set `sortDescending` to `true` to sort in descending order (default is ascending).\n`ruleQualityAggregate` always covers the full resolved scope, independently of sorting and pagination.\n",
+        "operationId": "getDataQualityRuleResultsFiltered",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RuleQualityAggregationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "x-qlik-stability": "stable",
+        "x-qlik-visibility": "public",
+        "x-qlik-deprecated": false,
+        "x-qlik-tier": {
+          "tier": "2",
+          "limit": 100
+        }
+      }
     }
   },
   "openapi": "3.0.0",
@@ -704,6 +814,18 @@
         "required": true,
         "description": "The unique identifier of the dataset."
       },
+      "LimitInQuery": {
+        "in": "query",
+        "name": "limit",
+        "schema": {
+          "type": "integer",
+          "default": 50,
+          "maximum": 100,
+          "minimum": 1
+        },
+        "required": false,
+        "description": "Maximum number of datasets to return in the `ruleQualities` page."
+      },
       "OptionalConnectionIdInQuery": {
         "in": "query",
         "name": "connectionId",
@@ -712,6 +834,27 @@
         },
         "required": false,
         "description": "The unique identifier of the connection."
+      },
+      "PageInQuery": {
+        "in": "query",
+        "name": "page",
+        "schema": {
+          "type": "integer",
+          "default": 1,
+          "minimum": 1
+        },
+        "required": false,
+        "description": "Page number to retrieve (1-indexed). Defaults to 1."
+      },
+      "SortDescendingInQuery": {
+        "in": "query",
+        "name": "sortDescending",
+        "schema": {
+          "type": "boolean",
+          "default": false
+        },
+        "required": false,
+        "description": "When true, sorts the `ruleQualities` list by `datasetId` in descending order. Defaults to false (ascending)."
       }
     },
     "schemas": {
@@ -1333,6 +1476,189 @@
             "description": "Timestamp of the most recent data quality computation for this dataset and connection."
           }
         }
+      },
+      "RuleQualityAggregateMetrics": {
+        "type": "object",
+        "required": [
+          "valid",
+          "invalid",
+          "notApplicable",
+          "notExecutable",
+          "total"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Sum of the total cell counts across the included field/rule-mapping entries."
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Sum of the numbers of cells that passed the rule across the included field/rule-mapping entries."
+          },
+          "invalid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Sum of the numbers of cells that failed the rule across the included field/rule-mapping entries."
+          },
+          "notApplicable": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Sum of the numbers of cells where the rule does not apply across the included field/rule-mapping entries."
+          },
+          "notExecutable": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Sum of the numbers of cells where the rule could not be executed across the included field/rule-mapping entries."
+          }
+        },
+        "description": "Summed quality counts across one or more field/rule-mapping entries."
+      },
+      "RuleQualityAggregationRequest": {
+        "type": "object",
+        "required": [
+          "ruleId"
+        ],
+        "properties": {
+          "ruleId": {
+            "type": "string",
+            "example": "9996fbb942b02a6987534999",
+            "description": "The unique identifier of the rule to analyze, represented as a 24-character hexadecimal MongoDB ObjectId."
+          },
+          "datasetIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetIdType"
+            },
+            "maxItems": 100,
+            "description": "Optional selection of datasets. When non-empty, only these datasets are considered (filtered to those\naccessible to the caller); the maximum number of dataset IDs is 100. When absent or empty, the service\ndetermines all accessible datasets where the rule is instantiated.\n"
+          }
+        },
+        "description": "Request to retrieve rule-quality outcomes for a rule across an optional dataset selection."
+      },
+      "RuleQualityAggregationResponse": {
+        "type": "object",
+        "required": [
+          "ruleId",
+          "ruleQualities",
+          "ruleQualityAggregate"
+        ],
+        "properties": {
+          "ruleId": {
+            "type": "string",
+            "description": "The unique identifier of the analyzed rule."
+          },
+          "ruleQualities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuleQualityDatasetEntry"
+            },
+            "description": "Rule-quality outcomes, one entry per dataset in the current page."
+          },
+          "ruleQualityAggregate": {
+            "$ref": "#/components/schemas/RuleQualityAggregateMetrics"
+          }
+        },
+        "description": "Rule-quality outcomes for a rule, grouped per dataset, plus the aggregate across all included datasets.\n`ruleQualityAggregate` sums the quality counts of all field/rule-mapping entries for the requested rule\nacross all included datasets, using the latest computation per dataset. It is independent of sorting\nand pagination and is not limited to the datasets in the current `ruleQualities` page.\n"
+      },
+      "RuleQualityDatasetEntry": {
+        "type": "object",
+        "required": [
+          "datasetId",
+          "fields",
+          "datasetAggregate"
+        ],
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuleQualityFieldEntry"
+            },
+            "description": "Rule-quality outcome for each field of this dataset where the rule is mapped."
+          },
+          "datasetId": {
+            "$ref": "#/components/schemas/DatasetIdType"
+          },
+          "datasetAggregate": {
+            "$ref": "#/components/schemas/RuleQualityAggregateMetrics"
+          }
+        },
+        "description": "Rule-quality outcomes for a single dataset. `datasetAggregate` sums the quality counts of all\nfield/rule-mapping entries for the requested rule within this dataset's latest computation.\n"
+      },
+      "RuleQualityFieldEntry": {
+        "type": "object",
+        "required": [
+          "fieldName",
+          "ruleMappingId",
+          "quality"
+        ],
+        "properties": {
+          "quality": {
+            "$ref": "#/components/schemas/RuleQualityFieldMetrics"
+          },
+          "fieldName": {
+            "type": "string",
+            "description": "The name of the field the rule is mapped to."
+          },
+          "ruleMappingId": {
+            "type": "string",
+            "description": "The unique identifier of the rule mapping."
+          }
+        },
+        "description": "Rule-quality outcome for a single field/rule-mapping pair."
+      },
+      "RuleQualityFieldMetrics": {
+        "type": "object",
+        "required": [
+          "valid",
+          "invalid",
+          "notApplicable",
+          "notExecutable",
+          "total",
+          "updatedAt"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of cells evaluated by the rule."
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells that passed the rule."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of error identifiers encountered during rule execution."
+          },
+          "invalid": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells that failed the rule."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-10-01T12:00:00Z",
+            "description": "Timestamp of the computation this outcome comes from."
+          },
+          "notApplicable": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells where the rule does not apply."
+          },
+          "notExecutable": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of cells where the rule could not be executed."
+          }
+        },
+        "description": "Detailed quality counts for a rule applied to a single field, plus computation metadata."
       },
       "SamplingConfiguration": {
         "type": "object",

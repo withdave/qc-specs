@@ -12,7 +12,7 @@
         "summary": "Delete a data contract",
         "responses": {
           "204": {
-            "description": "The data contract, its expectations, and its evaluation history were deleted."
+            "description": "The data contract, its expectations, and its evaluation history were deleted, with an empty body."
           },
           "400": {
             "content": {
@@ -94,7 +94,7 @@
                 }
               }
             },
-            "description": "User does not have access to the resource, or the feature is not available for this tenant."
+            "description": "User does not have access to the resource, or the feature is not available for this tenant. DC-001: the feature is not available for this tenant (feature flag disabled). DC-004: the user lacks the 'Compute data quality' privilege. DC-007: the user can read the dataset but lacks update permission on its space."
           },
           "404": {
             "content": {
@@ -129,7 +129,7 @@
                 }
               }
             },
-            "description": "Dataset or data contract not found."
+            "description": "Dataset or data contract not found. DC-006: the dataset was not found, or the user has no read access to the dataset's space. DC-003: no data contract exists for the dataset."
           },
           "500": {
             "content": {
@@ -170,7 +170,7 @@
             "$ref": "#/components/parameters/DatasetIdPath"
           }
         ],
-        "description": "Permanently deletes the data contract for the given dataset, along with every expectation and evaluation belonging to it. This is a hard delete: unlike deactivation, nothing is preserved and the operation cannot be undone.",
+        "description": "Permanently deletes the data contract for the given dataset, along with every expectation and evaluation belonging to it. This is a hard delete: unlike deactivation, nothing is preserved and the operation cannot be undone. The schema expectation, its field expectations and all their evaluations are deleted too, whatever the schema flag.",
         "operationId": "deleteDataContractByDatasetId",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -205,6 +205,30 @@
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "examples": {
+                  "invalidPage": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "page: not a valid cursor"
+                        }
+                      ]
+                    },
+                    "summary": "page is not a cursor issued by this service"
+                  },
+                  "invalidLimit": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "limit: must be less than or equal to 100"
+                        }
+                      ]
+                    },
+                    "summary": "limit is outside 1..100"
+                  },
                   "invalidDatasetId": {
                     "value": {
                       "errors": [
@@ -220,7 +244,7 @@
                 }
               }
             },
-            "description": "The datasetId path parameter is malformed."
+            "description": "The datasetId path parameter is malformed, the limit is outside 1..100, or the page cursor is not valid."
           },
           "401": {
             "content": {
@@ -266,7 +290,7 @@
                 }
               }
             },
-            "description": "User does not have access to the resource, or the feature is not available for this tenant."
+            "description": "User does not have access to the resource, or the feature is not available for this tenant. DC-001: feature flag disabled. DC-004: can read the dataset but lacks the 'Compute data quality' read privilege."
           },
           "404": {
             "content": {
@@ -289,7 +313,7 @@
                 }
               }
             },
-            "description": "Dataset not found."
+            "description": "Dataset not found, or the caller has no read access to the dataset's space."
           },
           "500": {
             "content": {
@@ -330,7 +354,7 @@
             "$ref": "#/components/parameters/DatasetIdPath"
           }
         ],
-        "description": "Returns every expectation for the dataset — the Trust Score dimension expectations and the data volume expectation — with their current activation status, configured thresholds or bounds, latest actual value, and last evaluation result. If the dataset has no data contract, the operation still returns 200 with the default, non-activated expectations. For non-activated expectations, the actual value (Trust Score) or row count (volume) is fetched live while the response is built and is omitted if it cannot be retrieved.",
+        "description": "Returns the list of all expectations of the global catalog, merged with the dataset's activated ones, with their current activation status, configured thresholds or bounds, latest actual value and last evaluation result. The catalog holds `trust_score` (8 dimensions: global, validity, completeness, accuracy, diversity, discoverability, usage, timeliness), `data_profile` (1 expectation: volume) and `schema` (1 expectation: structure, experimental). Each item has the four top-level fields `category`, `name`, `status`, `updatedAt` and exactly one category-specific details sub-object (`trustScore`, `dataProfile` or `schema`) holding every category-specific field. If the dataset has no data contract, the operation still returns 200 with the default, non-activated expectations. For non-activated expectations the actual value (Trust Score) or row count (volume) is fetched live while the response is built and is omitted if it cannot be retrieved.\nWhen schema compliance is enabled for the tenant, the schema / structure expectation is listed too (experimental), with every non-deleted field of the activated schema nested under it in `schema.fields` (experimental), sorted by name in case-sensitive order — never as sibling items of their own: this response never has a `category: field` item. The schema expectation also stores the name of every field it knows, deleted ones included (`fieldNames`), for the drift detection of later tickets; no response exposes it.\nOrder, the same on every page: the top-level items, ACTIVATED ones before the others; the `schema` item is one of them. When schema compliance is disabled (or the flag service cannot answer), the schema entry, stored or NOT_ACTIVATED placeholder, is omitted from this response, from suggest and from lookup; a schema activated before the flag was turned off is kept, only hidden, and so are its fields, nested under it.\nPagination (experimental): at most `limit` items per page, in this order, which never changes from one page to the next. `links.next.href` leads to the next page and is null on the last one; a page that ends exactly on the last item also has `next: null`, so no next link ever leads to an empty page. `links.prev.href` leads to the previous page, which holds the `limit` items before the current one or fewer, and is null on the first. There is no page number: the Qlik pagination guidelines are cursor-based, so call the links as is. `meta.count` is the total number of top-level items over all pages, the same on every page of one pass. Only the top-level items are paged and counted: the fields nested under `schema.fields` are never paged nor counted, and the page that holds the schema item holds every one of its fields regardless of `limit` — a deliberate exception, since a cap would silently drop fields from the only API that lists them; a dataset with many fields can return 1,000 or more of them in that one schema item. When schema compliance is disabled there is no schema item, so every item comes on a single page with `links.prev` and `links.next` both null.",
         "operationId": "getExpectations",
         "x-qlik-stability": "stable",
         "x-qlik-visibility": "public",
@@ -351,10 +375,89 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UpdateExpectationsResponse"
+                },
+                "examples": {
+                  "fieldDeleted": {
+                    "value": {
+                      "expectations": {}
+                    },
+                    "summary": "A field deleted (experimental)"
+                  },
+                  "fieldsClassified": {
+                    "value": {
+                      "expectations": {}
+                    },
+                    "summary": "A field classified and an unknown field name (experimental)"
+                  },
+                  "mixedSuccessAndError": {
+                    "value": {
+                      "expectations": {
+                        "trustScore": [
+                          {
+                            "name": "validity",
+                            "status": "ACTIVATED",
+                            "warning": 90,
+                            "category": "trust_score",
+                            "threshold": 85,
+                            "updatedAt": "2026-05-13T10:00:00Z",
+                            "updateStatus": "SUCCESS",
+                            "lastEvaluation": {
+                              "status": "PASS",
+                              "trigger": "MANUAL",
+                              "actualValue": 92,
+                              "evaluatedAt": "2026-05-13T10:00:00Z",
+                              "expectedWarning": 90,
+                              "expectedThreshold": 85
+                            },
+                            "dimensionStatus": "AVAILABLE"
+                          }
+                        ]
+                      }
+                    },
+                    "summary": "One Trust Score item updated and one unknown dimension"
+                  },
+                  "schemaNotActivatable": {
+                    "value": {
+                      "expectations": {}
+                    },
+                    "summary": "Schema activation rejected because Catalog lists no non-orphan field (experimental)"
+                  },
+                  "schemaCatalogUnavailable": {
+                    "value": {
+                      "expectations": {}
+                    },
+                    "summary": "Schema activation rejected because Catalog cannot be reached (experimental)"
+                  },
+                  "successWithErrorEvaluation": {
+                    "value": {
+                      "expectations": {
+                        "trustScore": [
+                          {
+                            "name": "validity",
+                            "status": "ACTIVATED",
+                            "category": "trust_score",
+                            "threshold": 85,
+                            "updatedAt": "2026-05-13T10:00:00Z",
+                            "updateStatus": "SUCCESS",
+                            "lastEvaluation": {
+                              "error": "Dimension not available",
+                              "status": "ERROR",
+                              "trigger": "MANUAL",
+                              "errorCode": "DCI-001",
+                              "evaluatedAt": "2026-05-13T10:00:00Z",
+                              "expectedThreshold": 85
+                            },
+                            "dimensionStatus": "NOT_AVAILABLE"
+                          }
+                        ]
+                      }
+                    },
+                    "summary": "Item updated, but its re-evaluation failed because the dimension is not available"
+                  }
                 }
               }
             },
-            "description": "Per-item results are returned. Individual items may have succeeded or failed."
+            "description": "Per-item results are returned. Individual items may have succeeded or failed. Per-item error codes (`code`, with `updateStatus: ERROR`):\n\n  - DCI-001: activation or reactivation of an unavailable Trust Score dimension; activation or reactivation of a `schema` when Catalog reports no non-orphan field (`Dataset schema not available`).\n  - DCI-002: Trust Score service unavailable on activation.\n  - DCI-003: unknown expectation name; a `schema` or `field` item while the schema flag is OFF; an update of an expectation that was never activated; a `field` item while the schema expectation is not ACTIVATED; a `field` item without `fieldStatus` on a deleted field.\n  - DCI-009: Catalog service unavailable on a `dataProfile` or `schema` activation or reactivation, or on a `field` change that needs an evaluation (change on an activated field, reactivation); the field is left unchanged.\n  - DCI-010: no Trust Score computed for the dataset on activation."
           },
           "400": {
             "content": {
@@ -387,6 +490,18 @@
                     },
                     "summary": "Duplicate name in trustScore array"
                   },
+                  "malformedBody": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "Invalid request content"
+                        }
+                      ]
+                    },
+                    "summary": "Malformed JSON body"
+                  },
                   "invalidDatasetId": {
                     "value": {
                       "errors": [
@@ -399,6 +514,42 @@
                     },
                     "summary": "datasetId does not match the required pattern"
                   },
+                  "noUpdatableField": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "At least one updatable field is required for expectation: structure"
+                        }
+                      ]
+                    },
+                    "summary": "A schema item with nothing to update besides its name (experimental)"
+                  },
+                  "duplicateFieldName": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "Duplicate expectation: category='field', name='City'"
+                        }
+                      ]
+                    },
+                    "summary": "The same field name twice in the field array, compared exactly (experimental)"
+                  },
+                  "invalidFieldStatus": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "fieldStatus: must be one of EXPECTED, OPTIONAL, FORBIDDEN, DELETED"
+                        }
+                      ]
+                    },
+                    "summary": "A fieldStatus a user cannot set, such as NEW (experimental)"
+                  },
                   "noActivationStatus": {
                     "value": {
                       "errors": [
@@ -410,11 +561,23 @@
                       ]
                     },
                     "summary": "No activation status when no contract exists"
+                  },
+                  "invalidAdditionalFieldsPolicy": {
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "DC-002",
+                          "title": "The request contains an invalid value.",
+                          "detail": "additionalFieldsPolicy: must be one of IGNORE, WARN, FAIL"
+                        }
+                      ]
+                    },
+                    "summary": "An additionalFieldsPolicy outside IGNORE, WARN and FAIL (experimental)"
                   }
                 }
               }
             },
-            "description": "Request-level validation failure."
+            "description": "Request-level validation failure. DC-002: the request is rejected when the `expectations` object is absent; none of `trustScore`, `dataProfile`, `schema` or `field` contains any item; a `name` is duplicated within a category array (compared case-insensitively for `trustScore`, `dataProfile` and `schema`, exactly for `field`: `City` twice is rejected, `City` and `city` are both processed); an item has no updatable field besides `name` (for `schema`, `status` or `additionalFieldsPolicy`, detail `At least one updatable field is required for expectation: structure`; for `field`, `status` or `fieldStatus`); only unknown category keys are present (no `trustScore`, `dataProfile`, `schema` or `field`); `additionalFieldsPolicy` is outside its enum; `fieldStatus` is other than EXPECTED, OPTIONAL, FORBIDDEN or DELETED; the JSON body is malformed. DC-008: no data contract exists for the dataset and the batch contains no item with `status: ACTIVATED`; include at least one ACTIVATED item to create the contract automatically."
           },
           "401": {
             "content": {
@@ -472,7 +635,7 @@
                 }
               }
             },
-            "description": "User does not have access to the resource, or the feature is not available for this tenant."
+            "description": "User does not have access to the resource, or the feature is not available for this tenant. DC-001: the feature is not available for this tenant (feature flag disabled). DC-004: the user lacks the 'Compute data quality' privilege (checked independently of the dataset's space/owner, on every request regardless of what it contains). DC-007: the user can read the dataset but lacks update permission on its space."
           },
           "404": {
             "content": {
@@ -495,7 +658,7 @@
                 }
               }
             },
-            "description": "Dataset not found."
+            "description": "Dataset not found (or the user has no read access to the dataset's space)."
           },
           "500": {
             "content": {
@@ -536,13 +699,21 @@
             "$ref": "#/components/parameters/DatasetIdPath"
           }
         ],
-        "description": "Updates, activates, or deactivates the dataset's expectations in a single call. Trust Score and data volume expectations are supplied in their respective arrays, and each item is processed independently: some items may succeed while others fail, and the per-item outcome is reported in the response with HTTP 200. When the dataset has no data contract yet, activating at least one expectation creates the contract; a request that would create a contract without activating any expectation is rejected with HTTP 400. For Trust Score items, threshold and warning must be within 0-100 and warning, when set, must be strictly greater than threshold.",
+        "description": "Updates, activates or deactivates the dataset's expectations in a single call. The request body groups update items by category key (`trustScore`, `dataProfile`, `schema`, `field`); items are processed independently (partial success): valid items are applied, failures are reported per item, and the response is 200. Activating at least one expectation creates the data contract when none exists. `schema` (structure) and `field` items are experimental and processed only while schema compliance is enabled for the tenant. Activation, re-evaluation and per-category rules are on `UpdateExpectationsByCategory` and its item schemas.",
         "operationId": "updateExpectations",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateExpectationsRequest"
+              },
+              "examples": {
+                "classifyFields": {
+                  "value": {
+                    "expectations": {}
+                  },
+                  "summary": "Forbid one field and deactivate another (experimental)"
+                }
               }
             }
           },
@@ -572,7 +743,7 @@
                 }
               }
             },
-            "description": "Per-dataset results are returned. Individual datasets may have succeeded or failed."
+            "description": "Per-dataset results are returned. Individual datasets may have succeeded or failed. Per-dataset failure codes (`code`):\n\n  - DCI-011: dataset not found, or user has no read access to it. The user cannot even see the dataset, so its existence is not revealed.\n  - DCI-012: user can read the dataset but lacks write/update permission on it. The caller already knows the dataset exists. Only for the dataset-scoped part of the check; a missing 'Compute data quality' privilege is rejected upfront for the whole request (DC-004) instead.\n  - DCI-013: a data contract already exists for the dataset. The existing contract is left untouched.\n  - DCI-014: no item with `status: ACTIVATED` in the dataset's expectations (the per-item counterpart of DC-008, so that it does not block other datasets).\n  - DCI-015: no processable expectation in the dataset entry: every requested expectation name was unknown.\n  - DCI-016: no expectation could be activated (every requested expectation failed, e.g. the Trust Score is not yet computed). No contract is persisted, so the call can be retried once the underlying indicators exist.\n  - DCI-009: Catalog service unavailable.\n  - DCI-005: unexpected error."
           },
           "400": {
             "content": {
@@ -632,7 +803,7 @@
                 }
               }
             },
-            "description": "Request-level validation failure. No contract is created for any dataset."
+            "description": "Request-level validation failure. No contract is created for any dataset. DC-002: `datasets` empty or has more than 100 entries; duplicate `datasetId`; malformed expectations for one of the entries."
           },
           "401": {
             "content": {
@@ -691,7 +862,7 @@
             "description": "Internal Server Error."
           }
         },
-        "description": "Creates a data contract for each listed dataset ID, notably to apply a contract to every dataset of a data product at once. The caller's \"Compute data quality\" write privilege is checked once for the whole request, before any dataset is processed: it does not depend on any single dataset, so a caller lacking it is rejected upfront with HTTP 403, rather than failing every dataset entry individually. Each dataset is then processed independently and concurrently: a failure on one dataset (no write permission on its space, dataset not found, or a contract already existing for that dataset) does not block the others. An existing contract is never overwritten. The request is capped at 100 datasets; a larger batch is rejected upfront with HTTP 400, before any contract is created.",
+        "description": "Creates a data contract for each listed dataset ID, notably to apply a contract to every dataset of a data product at once. The caller's \"Compute data quality\" write privilege is checked once for the whole request, before any dataset is processed, so a caller lacking it is rejected upfront with HTTP 403 rather than failing every entry individually. Each dataset is then processed independently and concurrently: a failure on one (no write permission on its space, dataset not found, or a contract already existing) does not block the others. Unlike PATCH /expectations, an existing contract is never overwritten: it is reported as a failure. The dataset-level write permission, which depends on each dataset's space/owner, is still checked per dataset. The request is capped at 100 datasets; a larger batch is rejected upfront with HTTP 400, before any contract is created.",
         "operationId": "createDataContracts",
         "requestBody": {
           "content": {
@@ -738,7 +909,7 @@
           "code": {
             "type": "string",
             "example": "DCI-013",
-            "description": "Diagnostic error code for the failure (only present when updateStatus is ERROR). Provided to help troubleshooting; the example values shown are not an exhaustive list of possible codes."
+            "description": "Diagnostic error code for the failure (only present when updateStatus is ERROR). The example values shown are not an exhaustive list of possible codes."
           },
           "reason": {
             "type": "string",
@@ -778,7 +949,8 @@
           "expectations": {
             "$ref": "#/components/schemas/UpdateExpectationsByCategory"
           }
-        }
+        },
+        "description": "`expectations` has the same shape and validation rules as the `expectations` field of PATCH /expectations (non-empty arrays, no duplicate names, at least one processable expectation); a malformed entry is rejected with 400 DC-002 before any contract is created for any dataset. Auto-baseline vs explicit threshold follows the same rules as activation via PATCH. A `schema` or `field` item is rejected per item with DCI-003, whatever the schema compliance flag, until creation supports the schema expectation (DGAI-10167); neither counts as a processable expectation, so an entry holding only such items is a 400 DC-002. An entry where at least one expectation activates is reported with `updateStatus: SUCCESS` and an `expectations` block using the same per-category result shape as PATCH's response, including per-expectation `updateStatus: ERROR` items for names that individually failed. An entry where every expectation fails is reported as a per-dataset failure (DCI-016) and no contract is created for it."
       },
       "CreateDataContractsRequest": {
         "type": "object",
@@ -792,7 +964,8 @@
               "$ref": "#/components/schemas/CreateDataContractsDatasetEntry"
             },
             "maxItems": 100,
-            "minItems": 1
+            "minItems": 1,
+            "description": "The batch of datasets to create contracts for. 1 to 100 entries, no duplicate `datasetId`."
           }
         }
       },
@@ -943,8 +1116,10 @@
             "$ref": "#/components/schemas/GetVolumeExpectationItem"
           }
         ],
+        "description": "One expectation of the dataset. The notes below apply to every item.\n\n- `category`: one of `trust_score`, `data_profile` or `schema`.\n- `status`: `ACTIVATED` means the expectation is enforced and being evaluated, `DEACTIVATED`\n  means it was previously activated but is currently disabled (explicitly turned off), and\n  `NOT_ACTIVATED` means it exists in the catalog but has never been activated for this\n  dataset.\n- `activatable`: for `schema` it is true when Catalog reports at least one non-orphan field\n  for the dataset, false otherwise (no schema, no field, only orphan fields, or Catalog\n  unreachable).\n- `trustScore.dimensionStatus` is AVAILABLE or NOT_AVAILABLE, as recorded on the stored\n  expectation; absent for NOT_ACTIVATED items. `trustScore.threshold` and\n  `trustScore.warning` are absent for NOT_ACTIVATED.\n- `trustScore.actualValue`: the current score. ACTIVATED: the score recorded by the latest\n  evaluation (evaluations run on every incoming Trust Score event, so it is current),\n  omitted when that evaluation is an ERROR (dimension unavailable / service failure), as an\n  ERROR evaluation carries no real measurement. NOT_ACTIVATED and DEACTIVATED: fetched live\n  from the Trust Score service when the response is built, once per expectation category\n  per request, and never falling back to the stale stored value; evaluations only run\n  while an expectation is activated, so the stored value of a DEACTIVATED expectation\n  dates from the moment it was deactivated and drifts further from reality the longer it\n  stays off, and a NOT_ACTIVATED expectation has no evaluation record at all (the live\n  value lets a caller see the current score before activating). The field is always\n  omitted rather than defaulted to 0 whenever no actual value is available (a genuine\n  measured 0 is still reported as 0), notably when the external service is unreachable\n  (fail-open behavior): no error is returned to the client and the rest of the response is\n  unaffected. For an ACTIVATED item it normally agrees with `lastEvaluation.actualValue`;\n  for a DEACTIVATED item they usually differ, and that is expected.\n- `dataProfile.min` and `dataProfile.max`: ACTIVATED/DEACTIVATED: the stored bound (absent\n  if the bound was removed). NOT_ACTIVATED: a preview of the bound activation would apply\n  right now, `ceil(actualRowCount * 0.95)` for `min` (-5% baseline) and\n  `ceil(actualRowCount * 1.05)` for `max` (+5% baseline), present only when\n  `actualRowCount` is available and absent otherwise, so a caller can preview the default\n  bounds before activating.\n- `dataProfile.actualRowCount`: the current row count, with the same semantics as\n  `trustScore.actualValue` (recorded by the latest evaluation for ACTIVATED, omitted when\n  that evaluation is an ERROR, never 0; fetched live, once per expectation category per\n  request, for NOT_ACTIVATED and DEACTIVATED, never falling back to the stale stored\n  value; omitted rather than defaulted to 0 when unavailable) but taken from Catalog:\n  evaluations run on every incoming profile event, and when Catalog is unreachable the\n  field is omitted (fail-open behavior), with no error returned to the client and the rest\n  of the response unaffected. For an ACTIVATED item it normally agrees with\n  `lastEvaluation.actualRowCount`; for a DEACTIVATED item they usually differ, and that is\n  expected.\n- `lastEvaluation` is present for ACTIVATED/DEACTIVATED items with at least one\n  evaluation. `lastEvaluation.error`: human-readable error message, present when status is\n  ERROR. `lastEvaluation.actualValue`: the score recorded at evaluation time; for an\n  ACTIVATED item it normally agrees with the top-level `actualValue`, for a DEACTIVATED\n  item they usually differ, and that is expected. `lastEvaluation.expectedWarning`:\n  omitted when no warning was set.\n- `schema.fields`: every non-deleted field of the schema, nested here and never as a\n  sibling `category: field` item; always present, `[]` when the schema has no field or was\n  never activated. Not counted by `meta.count` and not paged: present in full whatever the\n  page `limit`.",
         "discriminator": {
           "mapping": {
+            "schema": "#/components/schemas/GetSchemaExpectationItem",
             "trust_score": "#/components/schemas/GetTrustScoreExpectationItem",
             "data_profile": "#/components/schemas/GetVolumeExpectationItem"
           },
@@ -1217,7 +1392,7 @@
           "code": {
             "type": "string",
             "example": "DCI-001",
-            "description": "The error code for failure (only present when updateStatus is ERROR)."
+            "description": "Diagnostic error code for the failure (only present when updateStatus is ERROR). The example values shown are not an exhaustive list of possible codes."
           },
           "name": {
             "type": "string",
@@ -1289,15 +1464,18 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UpdateTrustScoreExpectationItem"
-            }
+            },
+            "description": "Array of trust score expectation update items. Must not be empty if present."
           },
           "dataProfile": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UpdateVolumeExpectationItem"
-            }
+            },
+            "description": "Array of data profile (volume) expectation update items. Must not be empty if present."
           }
-        }
+        },
+        "description": "Object whose keys are category identifiers in camelCase (e.g. `trustScore` maps to the `trust_score` category), each containing an array of updates. Unknown keys are silently ignored. `name` is matched case-insensitively for `trustScore`, `dataProfile` and `schema` (e.g. `VAlidity` matches `validity`), and the response `name` is always the canonical stored name (e.g. `validity`; a per-item error result may carry the name as sent). A `field` name is matched exactly and case-sensitively: `City` and `city` are two fields. Each `status` accepts only ACTIVATED and DEACTIVATED, the lifecycle status of the expectation.\nPartial success: valid items are applied and invalid ones are reported per item. When no data contract exists, a batch with at least one activation of a NOT_ACTIVATED expectation creates (upserts) the contract instead of returning DC-008; a batch with no `status: ACTIVATED` item is rejected with 400 DC-008. A contract that exists but is not yet activated is activated in place before the batch is processed. For Trust Score items, threshold and warning must be within 0-100 and warning, when set, strictly greater than threshold.\nActivation. Routing depends only on the requested target status: any item carrying `status: ACTIVATED` goes through the full activation pipeline, whatever the current status (NOT_ACTIVATED or DEACTIVATED), instead of returning a per-item error, so a caller can activate and update expectations in a single request. First-time activation: if no threshold is provided, it is bootstrapped from the current actual value returned by the external service; a provided threshold (and optionally a warning) is used directly. Reactivation (DEACTIVATED to ACTIVATED) applies the same partial-override semantics. Trust Score: a `threshold` or `warning` in the request is applied; an absent one keeps the stored value, and an explicit `null` warning clears it. Data Profile: a `min` or `max` in the request is applied; an absent one keeps the stored value, and an explicit removal clears it. In both cases the external service (Trust Score service / Catalog dataset row count) is called for the current live value, and the evaluation is recorded with trigger `MANUAL` against that value and the resulting threshold/warning or bounds. Result items for activated expectations use the same `updateStatus: SUCCESS` / `ERROR` shape as regular update results.\nTrust Score activation failures. A Trust Score activation item is rejected with `updateStatus: ERROR`, never SUCCESS, regardless of any provided threshold, and no expectation and no evaluation are persisted for it (a failed reactivation leaves the existing expectation DEACTIVATED); the HTTP response is still 200 and other items are unaffected. `DCI-002`: the Trust Score service is unreachable (transient, retryable). `DCI-010`: no Trust Score has ever been computed for the dataset (profiling / Data Quality never ran; not retryable until quality is computed). `DCI-001`: the dataset has a computed Trust Score but this specific dimension is turned off in the Trust Score settings (the most common cause of a non-GLOBAL activation failure); activation or reactivation always requires the dimension to be available, and an explicit threshold does not bypass this check.\nRe-evaluation. A re-evaluation using the `actualValue` of the most recent evaluation is triggered when `threshold` or `warning` changes and the expectation is (or becomes) ACTIVATED, and when `status` changes from DEACTIVATED to ACTIVATED even if threshold/warning remain unchanged. An expectation that ends up DEACTIVATED is not re-evaluated automatically, although a manual evaluation via the evaluate API can still be triggered. When a re-evaluation fails, `lastEvaluation.status` is ERROR and the `lastEvaluation` block carries both `error` (human-readable message) and `errorCode` (machine-readable DCI-NNN code)."
       },
       "UpdateExpectationsRequest": {
         "type": "object",
@@ -1330,7 +1508,7 @@
           "name": {
             "type": "string",
             "example": "global",
-            "description": "The name of the trust score dimension. One of: global, validity, completeness, accuracy, diversity, discoverability, usage, timeliness. Unknown names produce a per-item error in the response.\n"
+            "description": "The name of the trust score dimension. One of: global, validity, completeness, accuracy, diversity, discoverability, usage, timeliness. Matched case-insensitively. Unknown names produce a per-item error in the response.\n"
           },
           "status": {
             "$ref": "#/components/schemas/ExpectationStatus"
@@ -1340,7 +1518,7 @@
             "format": "float",
             "example": 90,
             "nullable": true,
-            "description": "New warning range value (0-100 inclusive). Must be strictly greater than threshold. Set to null to remove."
+            "description": "New warning range value (0-100 inclusive). Must be strictly greater than the effective threshold. Absent means no change. Set to null to remove."
           },
           "threshold": {
             "type": "number",
@@ -1375,7 +1553,7 @@
           "name": {
             "type": "string",
             "example": "volume",
-            "description": "The name of the volume expectation. Currently only \"volume\" is supported."
+            "description": "The name of the volume expectation. Currently only \"volume\" is supported (case-insensitive). Unknown names produce per-item errors (not 400)."
           },
           "status": {
             "$ref": "#/components/schemas/ExpectationStatus"
@@ -1450,7 +1628,7 @@
           "code": {
             "type": "string",
             "example": "DCI-008",
-            "description": "Diagnostic error code for the failure (only present when updateStatus is ERROR). Provided to help troubleshooting; the example values shown are not an exhaustive list of possible codes."
+            "description": "Diagnostic error code for the failure (only present when updateStatus is ERROR). The example values shown are not an exhaustive list of possible codes."
           },
           "name": {
             "type": "string",

@@ -249,6 +249,16 @@
               }
             },
             "description": "Forbidden because user is disabled or has reached the maximum number of tokens."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "description": "The identity provider is temporarily unavailable while refreshing the token. The refresh token remains valid; retry later."
           }
         },
         "description": "Allows a client to perform an OAuth flow to obtain a token set.",
