@@ -3148,6 +3148,36 @@
           }
         }
       },
+      "TemplateFileNameSegment": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TemplateFileNameSegmentType"
+          },
+          "value": {
+            "type": "string",
+            "example": "yyyy-MM-dd_HH-mm",
+            "description": "Segment-specific configuration. Only meaningful for type \"text\" (the literal string to emit) and type \"timestamp\" (the format string to use, from the same set of formats accepted by fileTimeStamp). Ignored for all other segment types."
+          }
+        },
+        "description": "One segment of a dynamicFileName schema. Segments are resolved and concatenated in array order to build the final report fileName."
+      },
+      "TemplateFileNameSegmentType": {
+        "enum": [
+          "text",
+          "cycle",
+          "recipientEmail",
+          "recipientName",
+          "recipientFilterName",
+          "timestamp"
+        ],
+        "type": "string",
+        "example": "recipientEmail",
+        "description": "The type of segment. Can be:\n  - \"text\": a literal string, taken from \"value\".\n  - \"cycle\": cycle dimension value, if the template\n    has cycle fields configured.\n  - \"recipientEmail\": the recipient's email address.\n  - \"recipientName\": the recipient's display name. Same\n    restriction as recipientEmail.\n  - \"recipientFilterName\": the name of the recipient filter\n    applied to this report.\n  - \"timestamp\": a formatted timestamp, using the format string\n    in \"value\"."
+      },
       "TemplatePersist": {
         "type": "object",
         "required": [
@@ -3189,7 +3219,7 @@
           "fileName": {
             "type": "string",
             "example": "sales-report",
-            "description": "fileName to be used when generating the report"
+            "description": "fileName to be used when generating the report. Applies to sheet-sharing, chart-sharing and template-sharing tasks. For template-sharing tasks, dynamicFileName should be used instead and takes precedence when set."
           },
           "chartData": {
             "$ref": "#/components/schemas/ChartTemplate"
@@ -3221,7 +3251,7 @@
             ],
             "type": "string",
             "example": "yyyy-MM-dd",
-            "description": "file name timestamp to be used when generating the report"
+            "description": "file name timestamp to be used when generating the report. Applies to sheet-sharing, chart-sharing and template-sharing tasks. For template-sharing tasks, dynamicFileName should be used instead and takes precedence when set."
           },
           "multiSheetData": {
             "type": "array",
@@ -3229,6 +3259,15 @@
               "$ref": "#/components/schemas/MultiSheetTemplate"
             },
             "description": "array of sheet data for multi-sheet type template"
+          },
+          "dynamicFileName": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateFileNameSegment"
+            },
+            "description": "Dynamic fileName schema, expressed as an ordered list of segments that are concatenated at delivery time to build the final report fileName. When set (non-empty), this takes precedence over fileName/fileTimeStamp for this template; those fields are ignored.",
+            "x-qlik-stability": "stable",
+            "x-qlik-visibility": "public"
           }
         },
         "description": "Depending on the value of type, sharing service will internally validate a specific property regarding its data. Type \"file\" validates property \"fileData\", type \"chart\" validates property \"chartData\", type \"story\" validates property \"storyData\". Check description of each of the models for their required properties."
