@@ -2130,6 +2130,17 @@
                 }
               }
             },
+            "headers": {
+              "link": {
+                "$ref": "#/components/headers/trainingDurationDeprecationLink"
+              },
+              "sunset": {
+                "$ref": "#/components/headers/trainingDurationSunset"
+              },
+              "deprecation": {
+                "$ref": "#/components/headers/trainingDurationDeprecation"
+              }
+            },
             "description": "`OK`"
           },
           "400": {
@@ -2158,6 +2169,9 @@
           }
         },
         "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentVersionApiVersion"
+          },
           {
             "$ref": "#/components/parameters/experimentId"
           },
@@ -2197,6 +2211,17 @@
                 }
               }
             },
+            "headers": {
+              "link": {
+                "$ref": "#/components/headers/trainingDurationDeprecationLink"
+              },
+              "sunset": {
+                "$ref": "#/components/headers/trainingDurationSunset"
+              },
+              "deprecation": {
+                "$ref": "#/components/headers/trainingDurationDeprecation"
+              }
+            },
             "description": "`Accepted`"
           },
           "400": {
@@ -2225,6 +2250,9 @@
           }
         },
         "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentVersionApiVersion"
+          },
           {
             "$ref": "#/components/parameters/experimentId"
           }
@@ -2264,6 +2292,17 @@
                 }
               }
             },
+            "headers": {
+              "link": {
+                "$ref": "#/components/headers/trainingDurationDeprecationLink"
+              },
+              "sunset": {
+                "$ref": "#/components/headers/trainingDurationSunset"
+              },
+              "deprecation": {
+                "$ref": "#/components/headers/trainingDurationDeprecation"
+              }
+            },
             "description": "`OK`"
           },
           "400": {
@@ -2292,6 +2331,9 @@
           }
         },
         "parameters": [
+          {
+            "$ref": "#/components/parameters/experimentVersionApiVersion"
+          },
           {
             "$ref": "#/components/parameters/experimentId"
           },
@@ -2620,6 +2662,29 @@
   },
   "openapi": "3.0.0",
   "components": {
+    "headers": {
+      "trainingDurationDeprecation": {
+        "schema": {
+          "type": "string"
+        },
+        "example": "@1793491200",
+        "description": "Deprecation date of trainingDuration as an RFC 9745 structured date.\nPresent when the response includes trainingDuration and qlik-api-version\nis missing, malformed, or older than 2026-11.\n"
+      },
+      "trainingDurationDeprecationLink": {
+        "schema": {
+          "type": "string"
+        },
+        "example": "<https://qlik.dev/apis/rest/ml/>; rel=\"deprecation\"; type=\"text/html\"",
+        "description": "Link to the public API documentation for the trainingDuration deprecation.\nPresent with the deprecation header.\n"
+      },
+      "trainingDurationSunset": {
+        "schema": {
+          "type": "string"
+        },
+        "example": "Mon, 01 Nov 2027 00:00:00 GMT",
+        "description": "Earliest planned removal date of trainingDuration as an RFC 8594 HTTP date.\nPresent with the deprecation header.\n"
+      }
+    },
     "parameters": {
       "aliasesFilter": {
         "in": "query",
@@ -2788,6 +2853,16 @@
         },
         "required": false,
         "description": "The optional experiment type for profile-insights GET requests after\nthis is known.\n"
+      },
+      "experimentVersionApiVersion": {
+        "in": "header",
+        "name": "qlik-api-version",
+        "schema": {
+          "type": "string"
+        },
+        "example": "2026-11",
+        "required": false,
+        "description": "Date-based contract acknowledgement in YYYY-MM format, using a supported\nquarterly version (02, 05, 08, or 11), or latest. Missing, malformed,\nnon-quarterly, expired, or future versions resolve to the oldest supported\nversion, as returned in the qlik-api-version response header.\nA resolved version at or after 2026-11, or an explicit latest request,\nacknowledges the trainingDuration deprecation. Otherwise, deprecation,\nsunset, and link headers are returned when the response includes\ntrainingDuration. Both trainingDuration and maxTrainingDuration remain\nin the response regardless of this header.\n"
       },
       "experimentVersionId": {
         "in": "path",
@@ -4984,7 +5059,15 @@
             "$ref": "#/components/schemas/OwnerId"
           },
           "trainingDuration": {
-            "$ref": "#/components/schemas/TrainingDuration"
+            "type": "integer",
+            "maximum": 21600,
+            "minimum": 900,
+            "deprecated": true,
+            "description": "Maximum allowed training duration in seconds, not elapsed training time.\nDeprecated. Use maxTrainingDuration instead.\n",
+            "x-qlik-deprecated": true,
+            "x-qlik-deprecated-sunset": "2027-11",
+            "x-qlik-deprecated-version": "2026-11",
+            "x-qlik-deprecated-description": "Use maxTrainingDuration instead. Both fields represent the maximum allowed training duration, not elapsed training time."
           },
           "maxTrainingDuration": {
             "$ref": "#/components/schemas/TrainingDuration"
@@ -5150,7 +5233,15 @@
                     "$ref": "#/components/schemas/ExperimentType"
                   },
                   "trainingDuration": {
-                    "$ref": "#/components/schemas/TrainingDurationInput"
+                    "type": "integer",
+                    "maximum": 21600,
+                    "minimum": 900,
+                    "deprecated": true,
+                    "description": "Maximum allowed training duration in seconds, not elapsed training time.\nDeprecated. Use maxTrainingDuration instead.\nIf both fields are provided, maxTrainingDuration takes precedence.\n",
+                    "x-qlik-deprecated": true,
+                    "x-qlik-deprecated-sunset": "2027-11",
+                    "x-qlik-deprecated-version": "2026-11",
+                    "x-qlik-deprecated-description": "Use maxTrainingDuration instead. If both fields are provided, maxTrainingDuration takes precedence."
                   },
                   "maxTrainingDuration": {
                     "$ref": "#/components/schemas/TrainingDurationInput"
@@ -6851,7 +6942,7 @@
         "type": "integer",
         "maximum": 21600,
         "minimum": 900,
-        "description": "Maximum allowed training duration in seconds, not elapsed training time.\nmaxTrainingDuration takes precedence over trainingDuration when both are provided.\nIf neither field is provided, the maximum for the experiment type is used.\nAccepted ranges:\n- min 900 (15m), max 21600 (6h)\n"
+        "description": "Maximum allowed training duration in seconds, not elapsed training time.\nmaxTrainingDuration takes precedence over the deprecated trainingDuration field.\nIf neither field is provided, the maximum for the experiment type is used.\nAccepted ranges:\n- min 900 (15m), max 21600 (6h)\n"
       },
       "Transform": {
         "type": "object",
