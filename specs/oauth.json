@@ -258,7 +258,7 @@
                 }
               }
             },
-            "description": "The identity provider is temporarily unavailable while refreshing the token. The refresh token remains valid; retry later."
+            "description": "The identity provider is temporarily unavailable while refreshing the token, or another refresh for the same session is in progress. Retry later with the same refresh token."
           }
         },
         "description": "Allows a client to perform an OAuth flow to obtain a token set.",
