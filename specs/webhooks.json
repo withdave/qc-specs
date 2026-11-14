@@ -171,6 +171,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use GET /api/core/webhooks instead of GET /api/v1/webhooks.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
@@ -229,6 +232,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use POST /api/core/webhooks instead of POST /api/v1/webhooks.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
@@ -293,6 +299,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use GET /api/core/webhooks/{id} instead of GET /api/v1/webhooks/{id}.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
@@ -361,6 +370,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use PATCH /api/core/webhooks/{id} instead of PATCH /api/v1/webhooks/{id}.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
@@ -433,6 +445,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use PUT /api/core/webhooks/{id} instead of PUT /api/v1/webhooks/{id}.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
@@ -488,6 +503,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use DELETE /api/core/webhooks/{id} instead of DELETE /api/v1/webhooks/{id}.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
@@ -616,6 +634,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use GET /api/core/webhooks/{id}/deliveries instead of GET /api/v1/webhooks/{id}/deliveries.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
@@ -689,6 +710,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use GET /api/core/webhooks/{id}/deliveries/{deliveryId} instead of GET /api/v1/webhooks/{id}/deliveries/{deliveryId}.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
@@ -763,6 +787,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use POST /api/core/webhooks/{id}/deliveries/{deliveryId}/actions/resend instead of POST /api/v1/webhooks/{id}/deliveries/{deliveryId}/actions/resend.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
@@ -807,6 +834,9 @@
         "x-qlik-visibility": "public",
         "x-qlik-stability": "stable",
         "x-qlik-deprecated": false,
+        "x-qlik-deprecated-version": "2026-11",
+        "x-qlik-deprecated-sunset": "2027-11",
+        "x-qlik-deprecated-description": "Deprecated from API version 2026-11, with sunset in 2027-11 after a 12-month deprecation period. Use GET /api/core/webhooks/event-types instead of GET /api/v1/webhooks/event-types.",
         "x-qlik-replaced-by": [
           {
             "namespace": "core",
