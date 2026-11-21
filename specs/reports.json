@@ -1681,7 +1681,9 @@
             "description": "Sense visualization id. Visualizations created \"on the fly\" are not supported."
           },
           "appId": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$",
+            "description": "The app ID. Allowed characters are letters, digits, '.', '_' and '-' (1-128 characters); the values '.' and '..' are rejected."
           },
           "patches": {
             "type": "array",
@@ -1761,7 +1763,9 @@
         ],
         "properties": {
           "appId": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$",
+            "description": "The app ID. Allowed characters are letters, digits, '.', '_' and '-' (1-128 characters); the values '.' and '..' are rejected."
           },
           "selectionType": {
             "$ref": "#/components/schemas/SenseSelectionType"
@@ -1834,7 +1838,9 @@
         "properties": {
           "appId": {
             "type": "string",
-            "example": "11ecf638-0be4-4b94-a9e6-91218f34e175"
+            "example": "11ecf638-0be4-4b94-a9e6-91218f34e175",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$",
+            "description": "The app ID. Allowed characters are letters, digits, '.', '_' and '-' (1-128 characters); the values '.' and '..' are rejected."
           },
           "sheet": {
             "$ref": "#/components/schemas/Sheet"

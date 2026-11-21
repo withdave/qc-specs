@@ -1414,6 +1414,12 @@
           "name"
         ],
         "properties": {
+          "id": {
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011",
+            "readOnly": true,
+            "description": "A system-generated, stable identifier for this data field. This is not a classical id - there is no Catalog API to look up a DataField by this value, and it is not indexed."
+          },
           "name": {
             "type": "string",
             "maxLength": 255,

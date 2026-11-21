@@ -477,7 +477,7 @@
             "description": "Requested service is not available."
           }
         },
-        "description": "Assigns a standard or semantic type to one or more fields in a dataset. This is a partial update:\nonly the fields included in the request are modified; any field not included in the request keeps\nits current assigned structure unchanged.\n",
+        "description": "Assigns a standard or semantic type, an `emptyValidity` policy, or both, to one or more fields in a\ndataset, and/or sets the dataset-level default `emptyValidity`. This is a partial update: only the\nfields and properties included in the request are modified; anything not included keeps its\ncurrent value unchanged.\n",
         "operationId": "updateFieldsStructures",
         "requestBody": {
           "content": {
@@ -906,14 +906,35 @@
           },
           "datasetId": {
             "$ref": "#/components/schemas/DatasetIdType"
+          },
+          "emptyValidity": {
+            "$ref": "#/components/schemas/EmptyValidity"
           }
-        }
+        },
+        "description": "Request to assign types and/or `emptyValidity` to fields, and/or set the dataset-level default `emptyValidity`.\n"
       },
       "AssignTypeRequest": {
+        "not": {
+          "allOf": [
+            {
+              "not": {
+                "required": [
+                  "type"
+                ]
+              }
+            },
+            {
+              "not": {
+                "required": [
+                  "emptyValidity"
+                ]
+              }
+            }
+          ]
+        },
         "type": "object",
         "required": [
-          "name",
-          "type"
+          "name"
         ],
         "properties": {
           "name": {
@@ -923,8 +944,12 @@
           },
           "type": {
             "$ref": "#/components/schemas/FieldInformation"
+          },
+          "emptyValidity": {
+            "$ref": "#/components/schemas/EmptyValidity"
           }
-        }
+        },
+        "description": "At least one of `type` / `emptyValidity` must be set per item. Both may be set together.\n"
       },
       "BatchComputationAggregatedStatus": {
         "enum": [
@@ -1192,6 +1217,16 @@
             }
           }
         }
+      },
+      "EmptyValidity": {
+        "enum": [
+          "VALID",
+          "INVALID",
+          "EMPTY"
+        ],
+        "type": "string",
+        "example": "EMPTY",
+        "description": "Policy applied to an empty (null/blank) cell when computing a field's combined quality.\n"
       },
       "Error": {
         "type": "object",

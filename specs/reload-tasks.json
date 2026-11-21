@@ -430,7 +430,7 @@
                 }
               }
             },
-            "description": "Bad Request."
+            "description": "Bad Request. Also returned with error code TASKS-001 when the task cannot be updated because it has already been migrated to Enterprise-Scheduling."
           },
           "401": {
             "content": {
@@ -461,16 +461,6 @@
               }
             },
             "description": "Not Found."
-          },
-          "410": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Errors"
-                }
-              }
-            },
-            "description": "the task cannot be updated as it has already been migrated to Enterprise-Scheduling."
           },
           "500": {
             "content": {
@@ -553,7 +543,7 @@
                 }
               }
             },
-            "description": "Bad Request."
+            "description": "Bad Request. Also returned with error code TASKS-001 when the task cannot be deleted because it has already been migrated to Enterprise-Scheduling."
           },
           "401": {
             "content": {
@@ -584,16 +574,6 @@
               }
             },
             "description": "Not Found."
-          },
-          "410": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Errors"
-                }
-              }
-            },
-            "description": "the task cannot be updated as it has already been migrated to Enterprise-Scheduling."
           },
           "500": {
             "content": {

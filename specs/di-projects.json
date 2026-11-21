@@ -2504,7 +2504,8 @@
               "COMPLETED",
               "FAILED",
               "CANCELED",
-              "STOPPING"
+              "STOPPING",
+              "DISCONNECTED"
             ],
             "type": "string"
           },
