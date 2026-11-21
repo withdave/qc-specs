@@ -692,6 +692,10 @@
             "type": "string",
             "readOnly": true,
             "description": "The migration state of the extension. It can be either \"READY_TO_MOVE\", \"IN_PROGRESS\" or \"COMPLETED\"."
+          },
+          "qlikApplicationId": {
+            "type": "string",
+            "description": "Application ID provided by Qlik, read from the qlikApplicationId property of the QEXT file. Used to attribute extension usage in telemetry."
           }
         },
         "description": "The extension model."
