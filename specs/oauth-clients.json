@@ -849,6 +849,18 @@
             "readOnly": true,
             "description": "OAuth client has been deleted by owning tenant, only applies for published clients."
           },
+          "accessTokenDuration": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Overrides the OAuth client's access token lifetime in seconds for this connection. Only supported for CIMD clients."
+          },
+          "refreshTokenDuration": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Overrides the OAuth client's refresh token lifetime in seconds for this connection. Only supported for CIMD clients."
+          },
           "hashedCIMDSecurityFields": {
             "type": "string",
             "readOnly": true,
@@ -1306,6 +1318,16 @@
             },
             "description": "List of allowed authentication methods for the client"
           },
+          "accessTokenDuration": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Effective access token lifetime in seconds - the configured value, or the default when not configured."
+          },
+          "refreshTokenDuration": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Effective refresh token lifetime in seconds - the configured value, or the default when not configured."
+          },
           "hashedCIMDSecurityFields": {
             "type": "string",
             "readOnly": true,
@@ -1629,7 +1651,9 @@
               "/allowedGrantTypes",
               "/publicKeys",
               "/allowedAuthMethods",
-              "/jwksUri"
+              "/jwksUri",
+              "/accessTokenDuration",
+              "/refreshTokenDuration"
             ],
             "type": "string",
             "description": "The path for the given resource field to patch"
@@ -1640,13 +1664,17 @@
                 "type": "string"
               },
               {
+                "type": "integer",
+                "format": "int64"
+              },
+              {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
               }
             ],
-            "description": "The value to be used for this operation."
+            "description": "The value to be used for this operation. Token expiration durations are integers in seconds, see the create request for the rules."
           }
         },
         "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902"
