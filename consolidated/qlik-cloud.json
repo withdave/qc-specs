@@ -3,7 +3,7 @@
   "info": {
     "title": "Qlik Cloud",
     "description": "Consolidated OpenAPI specification for published Qlik Cloud APIs.\n\nSee [withdave/qc-specs](https://github.com/withdave/qc-specs) for detailed configuration steps.\n\n## Authentication\n\nEndpoints on the  path in this collection support authentication via API key or OAuth2. Use API key authentication if you want to get started fast or access content as your interactive user, or OAuth2 Machine-to-Machine authentication for the best security and deeper integration.",
-    "version": "1.0.82",
+    "version": "1.0.83",
     "contact": {
       "name": "Dave Channon",
       "url": "https://github.com/withdave/qc-specs"
@@ -83367,10 +83367,11 @@
               "add",
               "remove",
               "removedFromCatalog",
-              "update"
+              "update",
+              "unpublishedFromPipeline"
             ],
             "type": "string",
-            "description": "`removedFromCatalog` is a removal applied by the system after a catalog event (dataset updated or\ndeleted), as opposed to `remove`, which is a removal deliberately performed by a user.\n`update` is a partial modification of an existing entity applied by the system after a catalog event\n(dataset schema updated). It is currently only used with the `/semanticModel/tables` path, where the\nvalue describes the fields added to and removed from a table.\n"
+            "description": "`removedFromCatalog` is a removal applied by the system after a catalog event (dataset updated or\ndeleted), as opposed to `remove`, which is a removal deliberately performed by a user.\n`update` is a partial modification of an existing entity, applied when a user synchronizes the semantic\nmodel with the dataset schema changes detected in the catalog, and attributed to that user. It is\ncurrently only used with the `/semanticModel/tables` path, where the value describes the fields added\nto and removed from a table, and the new name of the table when it was renamed after its dataset.\n`unpublishedFromPipeline` is a removal applied by the system when \"publish to catalog\" is turned off.\n"
           }
         }
       },
@@ -83383,6 +83384,10 @@
           "tableId": {
             "type": "string",
             "description": "Identifier of the updated table."
+          },
+          "updatedName": {
+            "type": "string",
+            "description": "New name of the table, including any suffix added to keep it unique in the semantic model. Present only\nwhen the table was renamed after its dataset.\n"
           },
           "addedFieldIds": {
             "type": "array",
@@ -83399,7 +83404,7 @@
             "description": "Identifiers of the fields removed from the table. Empty when no field was removed."
           }
         },
-        "description": "Fields added to and removed from a semantic model table by a dataset schema change."
+        "description": "Fields added to and removed from a semantic model table, and its new name when it was renamed, by a dataset\nschema change.\n"
       },
       "ComputationResponse": {
         "type": "object",
@@ -98497,6 +98502,18 @@
             "readOnly": true,
             "description": "OAuth client has been deleted by owning tenant, only applies for published clients."
           },
+          "accessTokenDuration": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Overrides the OAuth client's access token lifetime in seconds for this connection. Only supported for CIMD clients."
+          },
+          "refreshTokenDuration": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Overrides the OAuth client's refresh token lifetime in seconds for this connection. Only supported for CIMD clients."
+          },
           "hashedCIMDSecurityFields": {
             "type": "string",
             "readOnly": true,
@@ -98895,6 +98912,16 @@
             },
             "description": "List of allowed authentication methods for the client"
           },
+          "accessTokenDuration": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Effective access token lifetime in seconds - the configured value, or the default when not configured."
+          },
+          "refreshTokenDuration": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Effective refresh token lifetime in seconds - the configured value, or the default when not configured."
+          },
           "hashedCIMDSecurityFields": {
             "type": "string",
             "readOnly": true,
@@ -99218,7 +99245,9 @@
               "/allowedGrantTypes",
               "/publicKeys",
               "/allowedAuthMethods",
-              "/jwksUri"
+              "/jwksUri",
+              "/accessTokenDuration",
+              "/refreshTokenDuration"
             ],
             "type": "string",
             "description": "The path for the given resource field to patch"
@@ -99229,13 +99258,17 @@
                 "type": "string"
               },
               {
+                "type": "integer",
+                "format": "int64"
+              },
+              {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
               }
             ],
-            "description": "The value to be used for this operation."
+            "description": "The value to be used for this operation. Token expiration durations are integers in seconds, see the create request for the rules."
           }
         },
         "description": "A JSON Patch document as defined in http://tools.ietf.org/html/rfc6902"
